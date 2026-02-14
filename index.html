@@ -31,7 +31,27 @@ body{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.7;overf
 @keyframes fadeUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
 @keyframes hoverFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 @keyframes pulseBorder{0%,100%{box-shadow:0 0 0 rgba(201,168,76,0)}50%{box-shadow:0 0 18px rgba(201,168,76,0.12)}}
-@keyframes stripSlide{0%{transform:translateX(-3%)}50%{transform:translateX(3%)}100%{transform:translateX(-3%)}}
+@keyframes frameGlow{0%,100%{filter:drop-shadow(0 0 4px rgba(201,168,76,0.1))}50%{filter:drop-shadow(0 0 12px rgba(201,168,76,0.3))}}
+@keyframes spotlightPulse{0%,100%{opacity:0.15}50%{opacity:0.35}}
+
+/* ═══ ORNAMENTAL FRAMES ═══ */
+.framed{position:relative;overflow:hidden;}
+.framed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+.framed svg.frame-svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
+
+.framed-portrait{
+  width:clamp(140px,35vw,200px);aspect-ratio:3/4;margin:0 auto 14px;
+  animation:hoverFloat 8s ease-in-out infinite,frameGlow 4s ease-in-out infinite;
+  position:relative;
+}
+.framed-portrait img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;border-radius:4px;}
+.framed-portrait svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
+
+.framed-marquee{
+  flex:1;aspect-ratio:1;min-width:0;position:relative;overflow:hidden;
+}
+.framed-marquee img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+.framed-marquee svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
 @keyframes revealLine{from{width:0}to{width:100%}}
 
 .sparkles{position:fixed;inset:0;pointer-events:none;z-index:9999;}
@@ -277,9 +297,62 @@ footer .copy{font-family:'Special Elite',monospace;font-size:0.33rem;color:rgba(
     <svg width="22" height="70" viewBox="0 0 24 75"><defs><radialGradient id="fg"><stop offset="0%" stop-color="rgba(255,180,40,0.2)"/><stop offset="100%" stop-color="transparent"/></radialGradient><linearGradient id="wx" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0e6d0"/><stop offset="100%" stop-color="#c4b08a"/></linearGradient></defs><circle cx="12" cy="14" r="16" fill="url(#fg)" style="animation:flicker 1.5s ease-in-out infinite"/><path d="M12 10 Q9 18 12 24 Q15 18 12 10Z" fill="rgba(255,160,20,0.85)"><animate attributeName="d" dur="0.9s" repeatCount="indefinite" values="M12 10 Q9 18 12 24 Q15 18 12 10Z;M12 9 Q8 17 12 25 Q16 17 12 9Z;M12 10 Q9 18 12 24 Q15 18 12 10Z"/></path><path d="M12 15 Q11 19 12 22 Q13 19 12 15Z" fill="rgba(255,220,80,0.7)"/><line x1="12" y1="23" x2="12" y2="26" stroke="#2a2015" stroke-width="1"/><rect x="7" y="26" width="10" height="42" rx="1" fill="url(#wx)"/><path d="M17 30 Q19 36 17 40 L17 30Z" fill="#e0d4b8" opacity="0.6"/></svg>
   </div>
 
-  <!-- PORTRAIT -->
-  <div class="hero-portrait photo-ph" style="border-radius:4px;">
-    <img src="images/headshot-hero.jpg" alt="Lauren Clark" style="border-radius:4px;">
+  <!-- PORTRAIT with gilded frame -->
+  <div class="framed-portrait">
+    <img src="images/headshot-hero.jpg" alt="Lauren Clark">
+    <svg viewBox="0 0 180 240">
+      <defs>
+        <linearGradient id="gold-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#f5e8c0"/><stop offset="30%" stop-color="#c9a84c"/><stop offset="60%" stop-color="#8a7635"/><stop offset="100%" stop-color="#5c3a1a"/></linearGradient>
+        <linearGradient id="gold-g2" x1="1" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8d5a3"/><stop offset="50%" stop-color="#c9a84c"/><stop offset="100%" stop-color="#6b5020"/></linearGradient>
+        <filter id="glow1"><feGaussianBlur stdDeviation="2" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect x="4" y="4" width="172" height="232" rx="4" fill="none" stroke="url(#gold-g)" stroke-width="3"/>
+      <rect x="12" y="12" width="156" height="216" rx="2" fill="none" stroke="url(#gold-g2)" stroke-width="1.5"/>
+      <rect x="18" y="18" width="144" height="204" rx="1" fill="none" stroke="rgba(201,168,76,0.15)" stroke-width="0.5"/>
+      <g opacity="0.6" filter="url(#glow1)">
+        <path d="M12 12 Q12 30 20 38 Q14 32 14 20 Q16 28 22 34 Q16 24 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <path d="M12 12 Q30 12 38 20 Q32 14 20 14 Q28 16 34 22 Q24 16 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <circle cx="14" cy="14" r="2" fill="#c9a84c" opacity="0.4"/>
+        <path d="M20 14 Q22 18 20 22 Q18 18 20 14Z" fill="#c9a84c" opacity="0.2"/>
+        <path d="M14 20 Q18 22 22 20 Q18 18 14 20Z" fill="#c9a84c" opacity="0.2"/>
+      </g>
+      <g opacity="0.6" filter="url(#glow1)" transform="translate(180,0) scale(-1,1)">
+        <path d="M12 12 Q12 30 20 38 Q14 32 14 20 Q16 28 22 34 Q16 24 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <path d="M12 12 Q30 12 38 20 Q32 14 20 14 Q28 16 34 22 Q24 16 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <circle cx="14" cy="14" r="2" fill="#c9a84c" opacity="0.4"/>
+      </g>
+      <g opacity="0.6" filter="url(#glow1)" transform="translate(0,240) scale(1,-1)">
+        <path d="M12 12 Q12 30 20 38 Q14 32 14 20 Q16 28 22 34 Q16 24 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <path d="M12 12 Q30 12 38 20 Q32 14 20 14 Q28 16 34 22 Q24 16 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <circle cx="14" cy="14" r="2" fill="#c9a84c" opacity="0.4"/>
+      </g>
+      <g opacity="0.6" filter="url(#glow1)" transform="translate(180,240) scale(-1,-1)">
+        <path d="M12 12 Q12 30 20 38 Q14 32 14 20 Q16 28 22 34 Q16 24 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <path d="M12 12 Q30 12 38 20 Q32 14 20 14 Q28 16 34 22 Q24 16 14 14" fill="none" stroke="#c9a84c" stroke-width="0.6"/>
+        <circle cx="14" cy="14" r="2" fill="#c9a84c" opacity="0.4"/>
+      </g>
+      <g opacity="0.5" transform="translate(90,6)">
+        <path d="M0 0 Q-8 6 -4 10 Q0 6 4 10 Q8 6 0 0Z" fill="#c9a84c" opacity="0.3"/>
+        <circle cx="0" cy="5" r="1.5" fill="#c9a84c" opacity="0.4"/>
+        <path d="M-12 4 Q-6 2 0 4 Q6 2 12 4" fill="none" stroke="#c9a84c" stroke-width="0.4"/>
+      </g>
+      <g opacity="0.5" transform="translate(90,234)">
+        <path d="M0 0 Q-8 -6 -4 -10 Q0 -6 4 -10 Q8 -6 0 0Z" fill="#c9a84c" opacity="0.3"/>
+        <circle cx="0" cy="-5" r="1.5" fill="#c9a84c" opacity="0.4"/>
+        <path d="M-12 -4 Q-6 -2 0 -4 Q6 -2 12 -4" fill="none" stroke="#c9a84c" stroke-width="0.4"/>
+      </g>
+      <g opacity="0.3">
+        <path d="M8 60 Q6 80 8 100 Q6 120 8 140 Q6 160 8 180" fill="none" stroke="#c9a84c" stroke-width="0.4"/>
+        <circle cx="8" cy="80" r="1" fill="#c9a84c"/><circle cx="8" cy="120" r="1" fill="#c9a84c"/><circle cx="8" cy="160" r="1" fill="#c9a84c"/>
+      </g>
+      <g opacity="0.3">
+        <path d="M172 60 Q174 80 172 100 Q174 120 172 140 Q174 160 172 180" fill="none" stroke="#c9a84c" stroke-width="0.4"/>
+        <circle cx="172" cy="80" r="1" fill="#c9a84c"/><circle cx="172" cy="120" r="1" fill="#c9a84c"/><circle cx="172" cy="160" r="1" fill="#c9a84c"/>
+      </g>
+      <rect x="18" y="18" width="144" height="204" rx="1" fill="rgba(201,168,76,0.015)">
+        <animate attributeName="opacity" values="0.015;0.04;0.015" dur="5s" repeatCount="indefinite"/>
+      </rect>
+    </svg>
   </div>
 
   <div class="hero-border"></div>
@@ -312,13 +385,49 @@ footer .copy{font-family:'Special Elite',monospace;font-size:0.33rem;color:rgba(
     <span class="tag">comedy · content · @roguefemmegenius</span>
   </div>
 
-  <!-- Comedy photos -->
+  <!-- Comedy photos with marquee frames -->
   <div class="comedy-photos rv">
-    <div class="comedy-ph photo-ph">
+    <div class="framed-marquee">
       <img src="images/teal-velvet-live.jpg" alt="Lauren performing live comedy">
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="curtain-l" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4a1020"/><stop offset="100%" stop-color="#3d1019" stop-opacity="0"/></linearGradient>
+          <linearGradient id="curtain-r" x1="1" y1="0" x2="0" y2="0"><stop offset="0%" stop-color="#4a1020"/><stop offset="100%" stop-color="#3d1019" stop-opacity="0"/></linearGradient>
+        </defs>
+        <rect x="3" y="3" width="194" height="194" rx="3" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+        <path d="M3 3 L3 197 Q13 192 18 197 Q23 182 28 197 L28 3Z" fill="url(#curtain-l)" opacity="0.7"/>
+        <path d="M197 3 L197 197 Q187 192 182 197 Q177 182 172 197 L172 3Z" fill="url(#curtain-r)" opacity="0.7"/>
+        <path d="M3 3 Q50 23 100 16 Q150 23 197 3" fill="rgba(74,16,32,0.6)" stroke="rgba(201,168,76,0.15)" stroke-width="0.4"/>
+        <ellipse cx="100" cy="120" rx="50" ry="30" fill="rgba(201,168,76,0.02)"><animate attributeName="opacity" values="0.02;0.06;0.02" dur="4s" repeatCount="indefinite"/></ellipse>
+        <circle cx="30" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" repeatCount="indefinite"/></circle>
+        <circle cx="55" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.15s" repeatCount="indefinite"/></circle>
+        <circle cx="80" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.3s" repeatCount="indefinite"/></circle>
+        <circle cx="105" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.45s" repeatCount="indefinite"/></circle>
+        <circle cx="130" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.6s" repeatCount="indefinite"/></circle>
+        <circle cx="155" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.75s" repeatCount="indefinite"/></circle>
+        <circle cx="170" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.9s" repeatCount="indefinite"/></circle>
+      </svg>
     </div>
-    <div class="comedy-ph photo-ph">
+    <div class="framed-marquee">
       <img src="images/red-blazer-laughing.jpg" alt="Lauren on stage laughing">
+      <svg viewBox="0 0 200 200">
+        <defs>
+          <linearGradient id="curtain-l2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4a1020"/><stop offset="100%" stop-color="#3d1019" stop-opacity="0"/></linearGradient>
+          <linearGradient id="curtain-r2" x1="1" y1="0" x2="0" y2="0"><stop offset="0%" stop-color="#4a1020"/><stop offset="100%" stop-color="#3d1019" stop-opacity="0"/></linearGradient>
+        </defs>
+        <rect x="3" y="3" width="194" height="194" rx="3" fill="none" stroke="rgba(201,168,76,0.25)" stroke-width="1"/>
+        <path d="M3 3 L3 197 Q13 192 18 197 Q23 182 28 197 L28 3Z" fill="url(#curtain-l2)" opacity="0.7"/>
+        <path d="M197 3 L197 197 Q187 192 182 197 Q177 182 172 197 L172 3Z" fill="url(#curtain-r2)" opacity="0.7"/>
+        <path d="M3 3 Q50 23 100 16 Q150 23 197 3" fill="rgba(74,16,32,0.6)" stroke="rgba(201,168,76,0.15)" stroke-width="0.4"/>
+        <ellipse cx="100" cy="120" rx="50" ry="30" fill="rgba(201,168,76,0.02)"><animate attributeName="opacity" values="0.02;0.06;0.02" dur="4s" repeatCount="indefinite"/></ellipse>
+        <circle cx="30" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.2s" repeatCount="indefinite"/></circle>
+        <circle cx="55" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.35s" repeatCount="indefinite"/></circle>
+        <circle cx="80" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.5s" repeatCount="indefinite"/></circle>
+        <circle cx="105" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.65s" repeatCount="indefinite"/></circle>
+        <circle cx="130" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.8s" repeatCount="indefinite"/></circle>
+        <circle cx="155" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="0.95s" repeatCount="indefinite"/></circle>
+        <circle cx="170" cy="6" r="2" fill="#c9a84c" opacity="0.15"><animate attributeName="opacity" values="0.1;0.35;0.1" dur="1.2s" begin="1.1s" repeatCount="indefinite"/></circle>
+      </svg>
     </div>
   </div>
 
@@ -353,8 +462,40 @@ footer .copy{font-family:'Special Elite',monospace;font-size:0.33rem;color:rgba(
   <div class="broadside-header rv"><div class="ornament"></div><h2>The RFG Palette System</h2><div class="sub">A Proprietary Method of Color Analysis</div><div class="ornament"></div></div>
   <div class="victorian-body rv"><p>Built from a decade studying the pioneers — <em>Kibbe, Zyla, Kitchener</em> — then synthesized into something none of them imagined. Your colors aren't seasonal. They're <em>yours.</em></p></div>
 
-  <div class="palette-photo photo-ph-light rv">
-    <img src="images/palette-swatches.png" alt="RFG Palette System - Signature Colors">
+  <div style="width:clamp(160px,40vw,220px);margin:14px auto;position:relative;aspect-ratio:9/14;animation:frameGlow 5s ease-in-out infinite;" class="rv">
+    <img src="images/green-satin-color.jpg" alt="Lauren in color draping" style="position:absolute;width:72%;height:53%;top:7%;left:14%;object-fit:cover;object-position:center 15%;clip-path:ellipse(50% 50%);z-index:1;">
+    <svg viewBox="0 0 180 280" style="position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;">
+      <defs>
+        <linearGradient id="mirror-gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#8b6914"/><stop offset="35%" stop-color="#5c3a1a"/><stop offset="70%" stop-color="#8a6520"/><stop offset="100%" stop-color="#3d2510"/></linearGradient>
+        <filter id="glow2"><feGaussianBlur stdDeviation="1.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+      <rect x="78" y="185" width="24" height="70" rx="4" fill="none" stroke="url(#mirror-gold)" stroke-width="2"/>
+      <line x1="84" y1="195" x2="84" y2="245" stroke="rgba(92,58,26,0.25)" stroke-width="0.4"/>
+      <line x1="96" y1="195" x2="96" y2="245" stroke="rgba(92,58,26,0.25)" stroke-width="0.4"/>
+      <ellipse cx="90" cy="258" rx="14" ry="6" fill="none" stroke="url(#mirror-gold)" stroke-width="1.5"/>
+      <circle cx="90" cy="258" r="2" fill="#5c3a1a" opacity="0.3"/>
+      <circle cx="90" cy="210" r="3" fill="none" stroke="#5c3a1a" stroke-width="0.4" opacity="0.3"/>
+      <circle cx="90" cy="230" r="2" fill="none" stroke="#5c3a1a" stroke-width="0.3" opacity="0.25"/>
+      <ellipse cx="90" cy="95" rx="78" ry="88" fill="none" stroke="url(#mirror-gold)" stroke-width="3"/>
+      <ellipse cx="90" cy="95" rx="70" ry="80" fill="none" stroke="url(#mirror-gold)" stroke-width="1.2"/>
+      <ellipse cx="90" cy="95" rx="64" ry="74" fill="none" stroke="rgba(92,58,26,0.15)" stroke-width="0.5"/>
+      <g opacity="0.4" filter="url(#glow2)">
+        <path d="M90 5 Q80 12 85 18 Q90 10 95 18 Q100 12 90 5Z" fill="#5c3a1a" opacity="0.35"/>
+        <path d="M75 12 Q82 8 90 5 Q98 8 105 12" fill="none" stroke="#5c3a1a" stroke-width="0.5"/>
+        <circle cx="90" cy="10" r="1.5" fill="#5c3a1a" opacity="0.4"><animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite"/></circle>
+        <path d="M12 95 Q8 80 14 70 Q10 80 14 90 Q10 100 14 110 Q8 100 12 95Z" fill="none" stroke="#5c3a1a" stroke-width="0.5"/>
+        <path d="M168 95 Q172 80 166 70 Q170 80 166 90 Q170 100 166 110 Q172 100 168 95Z" fill="none" stroke="#5c3a1a" stroke-width="0.5"/>
+        <path d="M72 178 Q80 184 90 186 Q100 184 108 178" fill="none" stroke="#5c3a1a" stroke-width="0.6"/>
+        <circle cx="90" cy="185" r="2.5" fill="#5c3a1a" opacity="0.3"/>
+      </g>
+      <ellipse cx="70" cy="70" rx="20" ry="30" fill="rgba(92,58,26,0.03)" transform="rotate(-15 70 70)">
+        <animate attributeName="opacity" values="0.01;0.06;0.01" dur="6s" repeatCount="indefinite"/>
+      </ellipse>
+    </svg>
+  </div>
+
+  <div class="palette-photo photo-ph-light rv" style="border-radius:4px;">
+    <img src="images/palette-swatches.png" alt="RFG Palette System - Signature Colors" style="border-radius:4px;">
   </div>
 
   <div class="vial-row rv">
