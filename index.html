@@ -51,7 +51,6 @@ body{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.7;overf
   flex:1;aspect-ratio:1;min-width:0;position:relative;overflow:hidden;
 }
 .framed-marquee img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%;z-index:1;}
-#comedy-teal{object-position:center 0% !important;}
 .framed-marquee svg{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none;}
 @keyframes revealLine{from{width:0}to{width:100%}}
 
@@ -97,7 +96,6 @@ body{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.7;overf
 }
 .strip-ph{
   flex:1;min-width:0;position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
   border-right:1px solid rgba(201,168,76,0.08);
   transition:all 0.4s;cursor:pointer;
 }
@@ -106,7 +104,7 @@ body{font-family:'Cormorant Garamond',serif;font-size:18px;line-height:1.7;overf
 .strip-ph::after{content:'';position:absolute;top:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(201,168,76,0.03),transparent);animation:slideShimmer 6s ease-in-out infinite;}
 .strip-ph .ph-label{font-family:'Cinzel',serif;font-size:0.3rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(201,168,76,0.3);}
 .strip-ph img,.comedy-ph img,.palette-photo img,.hero-portrait img{width:100%;height:100%;object-fit:cover;display:block;}
-.strip-ph img{object-position:center 20%;}
+.strip-ph img{object-position:center 20%;position:absolute;top:0;left:0;}
 .comedy-ph img,.palette-photo img{border-radius:0;}
 .photo-ph img,.photo-ph-light img{position:relative;z-index:1;}
 .strip-1{background:linear-gradient(160deg,rgba(61,16,25,0.9),rgba(40,10,18,0.95));}
@@ -399,7 +397,7 @@ footer .copy{font-family:'Special Elite',monospace;font-size:0.33rem;color:rgba(
   <!-- Comedy photos with marquee frames -->
   <div class="comedy-photos rv">
     <div class="framed-marquee">
-      <img id="comedy-teal" src="images/teal-velvet-live.jpg" alt="Lauren performing live comedy">
+      <img src="images/teal-velvet-live.jpg" alt="Lauren performing live comedy">
       <svg viewBox="0 0 200 200">
         <defs>
           <linearGradient id="curtain-l" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#4a1020"/><stop offset="100%" stop-color="#3d1019" stop-opacity="0"/></linearGradient>
