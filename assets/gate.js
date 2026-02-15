@@ -30,6 +30,7 @@
 
   const overlay = document.createElement("div");
   overlay.id = "rfg-gate";
+  overlay.style.visibility = "visible";
   overlay.innerHTML = `
     <style>
       #rfg-gate {
