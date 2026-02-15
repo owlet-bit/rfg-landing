@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFG Palette — Lauren's Soft Autumn</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #2a2520;
+    --bg-card: #342e28;
+    --bg-elevated: #3d352e;
+    --text: #e8ddd3;
+    --text-dim: #a89a8c;
+    --accent: #c4956a;
+    --accent-glow: rgba(196, 149, 106, 0.3);
+    --border: rgba(196, 149, 106, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    animation: drift 8s infinite ease-in-out;
+  }
+  @keyframes drift {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.2; }
+    100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
+  }
+
+  @keyframes headerGlow {
+    0%, 100% { text-shadow: 0 0 20px rgba(196,149,106,0.1); }
+    50% { text-shadow: 0 0 40px rgba(196,149,106,0.25), 0 0 80px rgba(196,149,106,0.08); }
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1) rotate(180deg); }
+  }
+
+  @keyframes softPulse {
+    0%, 100% { box-shadow: 0 0 0 0 var(--accent-glow); }
+    50% { box-shadow: 0 0 15px 3px var(--accent-glow); }
+  }
+
+  .sparkle-dot {
+    position: absolute;
+    width: 4px; height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: sparkle 3s infinite ease-in-out;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    position: relative;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    animation: headerGlow 4s infinite ease-in-out;
+    margin-bottom: 8px;
+  }
+  header .subtitle {
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  header .metrics {
+    margin-top: 16px;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    font-family: 'Jost', monospace;
+    letter-spacing: 0.04em;
+  }
+  header .metrics span {
+    display: inline-block;
+    margin: 0 12px;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+  }
+  header .note {
+    margin-top: 14px;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-style: italic;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.5;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--accent);
+    margin: 48px 0 8px;
+    position: relative;
+    display: inline-block;
+  }
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .section-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .skin-ref {
+    display: flex;
+    gap: 6px;
+    padding: 16px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    align-items: center;
+  }
+  .skin-ref-label {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+  .skin-swatch {
+    min-width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    flex-shrink: 0;
+  }
+  .skin-swatch:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    z-index: 2;
+  }
+  .skin-swatch .tip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    color: var(--text);
+    z-index: 10;
+    pointer-events: none;
+  }
+  .skin-swatch:hover .tip { display: block; }
+
+  .palette-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .color-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.25s, box-shadow 0.25s;
+    position: relative;
+  }
+  .color-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .color-card.active {
+    animation: softPulse 2s infinite;
+  }
+
+  .color-main {
+    height: 72px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  .color-main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.08));
+  }
+
+  .skin-compare {
+    display: flex;
+    height: 16px;
+  }
+  .skin-compare div {
+    flex: 1;
+    transition: flex 0.3s;
+  }
+  .skin-compare:hover div.hovered {
+    flex: 3;
+  }
+
+  .color-info {
+    padding: 8px 10px;
+  }
+  .color-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1px;
+  }
+  .color-hex {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+    font-family: 'Jost', monospace;
+  }
+  .color-hsv {
+    font-size: 0.62rem;
+    color: var(--text-dim);
+    opacity: 0.7;
+  }
+
+  .harmony-tester {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    margin-top: 20px;
+  }
+  .harmony-canvas {
+    display: flex;
+    gap: 0;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 16px 0;
+    box-shadow: inset 0 0 30px rgba(0,0,0,0.2);
+  }
+  .harmony-canvas div {
+    flex: 1;
+    transition: flex 0.4s ease, opacity 0.3s;
+    cursor: pointer;
+    position: relative;
+  }
+  .harmony-canvas div:hover {
+    flex: 2.5;
+  }
+  .harmony-canvas div::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.8);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+    opacity: 0;
+    transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+  .harmony-canvas div:hover::after { opacity: 1; }
+
+  .selected-info {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    min-height: 24px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.8rem; }
+    .palette-group { grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 8px; }
+    .color-main { height: 58px; }
+    .skin-swatch { min-width: 36px; height: 36px; }
+    header .metrics span { margin: 4px 6px; font-size: 0.72rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <header>
+    <h1>Lauren's Soft Autumn</h1>
+    <div class="subtitle">Personalized palette from pixel data · RFG Palette System</div>
+    <div class="metrics">
+      <span>Hue 16.9° warm</span>
+      <span>Sat 41% muted</span>
+      <span>Val 69% light-medium</span>
+    </div>
+    <div class="note">Every color below is grey-touched and dusty — the hallmark of Soft Autumn. Most saturation stays under 50%, matching your skin's natural 28–51% range. Exception: Your Warm Chromatics section pushes to 53% because your skin already lives at 46% in the coral/rose hues — the Velvet Teddy zone where more chroma still reads as natural on you.</div>
+    <div class="sparkle-dot" style="top:10px;left:15%;animation-delay:0s;"></div>
+    <div class="sparkle-dot" style="top:5px;right:18%;animation-delay:1.2s;"></div>
+    <div class="sparkle-dot" style="bottom:8px;left:40%;animation-delay:2.4s;"></div>
+  </header>
+
+  <!-- SKIN REFERENCE -->
+  <div class="section-title">Your Skin — Reference Samples</div>
+  <div class="section-desc">14 skin samples + Velvet Teddy lip, cheek flush, and hat — your confirmed-on-you reference points. Hover for HSV data.</div>
+  <div class="skin-ref" id="skinRef">
+    <div class="skin-ref-label">Sampled Skin</div>
+  </div>
+
+  <!-- PALETTE SECTIONS -->
+  <div id="paletteContainer"></div>
+
+  <!-- HARMONY TESTER -->
+  <div class="section-title">Harmony Tester</div>
+  <div class="section-desc">Click any palette swatch to add it here. Your skin is always anchored on the left.</div>
+  <div class="harmony-tester">
+    <div class="harmony-canvas" id="harmonyCanvas">
+      <div style="background:#d5a499;" data-label="Your skin (light)"></div>
+      <div style="background:#c1845f;" data-label="Your skin (mid)"></div>
+      <div style="background:#bd806e;" data-label="Your skin (warm)"></div>
+    </div>
+    <div class="selected-info" id="selectedInfo">Click palette swatches to build combinations</div>
+    <div style="text-align:center;margin-top:10px;">
+      <button onclick="resetHarmony()" style="background:transparent;border:1px solid var(--border);color:var(--text-dim);padding:6px 16px;border-radius:20px;cursor:pointer;font-family:'Jost',sans-serif;font-size:0.78rem;letter-spacing:0.04em;transition:all 0.3s;">Reset</button>
+    </div>
+  </div>
+
+  <footer>
+    RFG Palette System · Pixel-derived seasonal analysis · Feb 15, 2026<br>
+    Soft Autumn score +7.0 · 14 skin samples · Warm + Muted + Light-Medium
+  </footer>
+</div>
+
+<script>
+const skinSamples = [
+  { name: "Forehead", hex: "#d5a499", hsv: "H11° S28% V84%" },
+  { name: "R Cheek", hex: "#916251", hsv: "H16° S44% V57%" },
+  { name: "L Cheek", hex: "#bd806e", hsv: "H14° S42% V74%" },
+  { name: "Jaw", hex: "#764d3f", hsv: "H15° S47% V46%" },
+  { name: "Neck", hex: "#9a6b58", hsv: "H17° S43% V60%" },
+  { name: "Nose", hex: "#ce8c7e", hsv: "H11° S39% V81%" },
+  { name: "Forehead R", hex: "#bd8677", hsv: "H13° S37% V74%" },
+  { name: "Forehead L", hex: "#c18a7c", hsv: "H12° S36% V76%" },
+  { name: "Temple", hex: "#755344", hsv: "H18° S42% V46%" },
+  { name: "Chest", hex: "#9e705d", hsv: "H18° S41% V62%" },
+  { name: "Shoulder", hex: "#b78d7a", hsv: "H19° S33% V72%" },
+  { name: "Forearm", hex: "#c1845f", hsv: "H23° S51% V76%" },
+  { name: "Palm", hex: "#c18965", hsv: "H23° S48% V76%" },
+  { name: "Lower Arm", hex: "#cf9a6f", hsv: "H27° S46% V81%" },
+  { name: "──", hex: "transparent", hsv: "divider" },
+  { name: "VT Lip (avg)", hex: "#a05a52", hsv: "H6° S49% V63%" },
+  { name: "VT Lip (deep)", hex: "#883a3b", hsv: "H359° S57% V53%" },
+  { name: "VT Lip (light)", hex: "#bc6b65", hsv: "H4° S46% V74%" },
+  { name: "Cheek Flush", hex: "#bc8073", hsv: "H11° S39% V74%" },
+  { name: "──", hex: "transparent", hsv: "divider" },
+  { name: "Hat (olive)", hex: "#444535", hsv: "H64° S23% V27%" },
+];
+
+const skinStripColors = ["#d5a499", "#bd806e", "#c1845f", "#9a6b58", "#a05a52"];
+
+// PROPERLY MUTED SOFT AUTUMN — all saturation ≤50%, most 15-42%
+const palette = {
+  "Warm Neutrals": {
+    desc: "Your foundation — ivory through espresso, all with that warm grey-touch",
+    colors: [
+      { name: "Parchment", hex: "#EDE4D8", h: 33, s: 9, v: 93 },
+      { name: "Oat Milk", hex: "#DDD0BE", h: 34, s: 14, v: 87 },
+      { name: "Sandstone", hex: "#CABB9F", h: 36, s: 22, v: 79 },
+      { name: "Fawn", hex: "#B8A48A", h: 34, s: 25, v: 72 },
+      { name: "Driftwood", hex: "#A08E76", h: 34, s: 26, v: 63 },
+      { name: "Warm Taupe", hex: "#8D7D6B", h: 32, s: 24, v: 55 },
+      { name: "Umber", hex: "#6E5E4E", h: 30, s: 29, v: 43 },
+      { name: "Dark Cocoa", hex: "#504038", h: 20, s: 30, v: 31 },
+    ]
+  },
+  "Cool-Touched Neutrals": {
+    desc: "The Soft Autumn grey family — warm enough to belong, cool enough to add depth",
+    colors: [
+      { name: "Oyster", hex: "#D6CFC7", h: 32, s: 7, v: 84 },
+      { name: "Greige", hex: "#B5ADA3", h: 33, s: 10, v: 71 },
+      { name: "Mushroom", hex: "#9E9488", h: 33, s: 14, v: 62 },
+      { name: "Stone", hex: "#8A827A", h: 30, s: 12, v: 54 },
+      { name: "Pewter", hex: "#7B7570", h: 27, s: 9, v: 48 },
+      { name: "Charcoal Taupe", hex: "#5C5550", h: 25, s: 12, v: 36 },
+    ]
+  },
+  "Earth & Terracotta": {
+    desc: "Grounded warmth — clay, cinnamon, and coffee with the volume turned down",
+    colors: [
+      { name: "Biscuit", hex: "#CBAB8E", h: 27, s: 30, v: 80 },
+      { name: "Camel", hex: "#BEA07C", h: 31, s: 34, v: 75 },
+      { name: "Soft Terracotta", hex: "#B8896E", h: 21, s: 40, v: 72 },
+      { name: "Cinnamon Dust", hex: "#A67E65", h: 22, s: 39, v: 65 },
+      { name: "Clay", hex: "#9D7560", h: 20, s: 38, v: 62 },
+      { name: "Roasted Pecan", hex: "#876554", h: 19, s: 38, v: 53 },
+      { name: "Leather", hex: "#7A5C4A", h: 22, s: 39, v: 48 },
+      { name: "Tobacco", hex: "#6B503D", h: 24, s: 44, v: 42 },
+    ]
+  },
+  "Dusty Rose & Blush": {
+    desc: "Your pinks are never bubblegum — they're roses left to dry in warm light",
+    colors: [
+      { name: "Pale Blush", hex: "#DBBFB7", h: 13, s: 17, v: 86 },
+      { name: "Shell Pink", hex: "#CCADA4", h: 13, s: 20, v: 80 },
+      { name: "Dusty Rose", hex: "#BF9B93", h: 11, s: 23, v: 75 },
+      { name: "Rose Taupe", hex: "#A98681", h: 8, s: 25, v: 66 },
+      { name: "Muted Coral", hex: "#B58D80", h: 15, s: 30, v: 71 },
+      { name: "Warm Mauve", hex: "#A08082", h: 356, s: 20, v: 63 },
+      { name: "Rosewood", hex: "#8A6B6B", h: 0, s: 23, v: 54 },
+      { name: "Dried Petal", hex: "#7D6062", h: 355, s: 23, v: 49 },
+    ]
+  },
+  "Your Warm Chromatics": {
+    desc: "Where your coloring gets to turn the volume up — the Velvet Teddy zone. Your skin already lives at 36-46% sat in these hues, so you can push to 60% and it still reads as YOU",
+    colors: [
+      { name: "Warm Peach", hex: "#E0A68E", h: 16, s: 37, v: 88 },
+      { name: "Sunlit Coral", hex: "#D4917A", h: 15, s: 43, v: 83 },
+      { name: "Velvet Teddy", hex: "#B5705E", h: 12, s: 48, v: 71 },
+      { name: "Flushed Coral", hex: "#CC7E68", h: 14, s: 50, v: 80 },
+      { name: "Rose Clay", hex: "#C27366", h: 8, s: 48, v: 76 },
+      { name: "Warm Sienna", hex: "#B06B58", h: 14, s: 51, v: 69 },
+      { name: "Spiced Rose", hex: "#B86D62", h: 8, s: 47, v: 72 },
+      { name: "Burnt Rose", hex: "#A56259", h: 7, s: 46, v: 65 },
+      { name: "Terra Rosa", hex: "#C0806A", h: 17, s: 44, v: 75 },
+      { name: "Copper Blush", hex: "#C48770", h: 16, s: 43, v: 77 },
+      { name: "Cayenne Dusk", hex: "#A35E50", h: 10, s: 51, v: 64 },
+      { name: "Deep Coral", hex: "#9E5D52", h: 9, s: 48, v: 62 },
+      { name: "Cinnamon Rose", hex: "#AF6E5E", h: 12, s: 46, v: 69 },
+      { name: "Warm Brick", hex: "#9A5E4E", h: 14, s: 49, v: 60 },
+      { name: "Toasted Paprika", hex: "#A6604F", h: 12, s: 53, v: 65 },
+      { name: "Ember", hex: "#8F534A", h: 8, s: 48, v: 56 },
+    ]
+  },
+  "Plum & Berry": {
+    desc: "Deep mauves that look like twilight through dusty glass",
+    colors: [
+      { name: "Lavender Dusk", hex: "#A9949E", h: 316, s: 12, v: 66 },
+      { name: "Heather", hex: "#95818D", h: 324, s: 14, v: 58 },
+      { name: "Dusty Plum", hex: "#887280", h: 320, s: 17, v: 53 },
+      { name: "Muted Berry", hex: "#7D6472", h: 325, s: 20, v: 49 },
+      { name: "Raisin", hex: "#6B5660", h: 327, s: 21, v: 42 },
+      { name: "Fig", hex: "#5E4B53", h: 335, s: 20, v: 37 },
+    ]
+  },
+  "Sage & Olive": {
+    desc: "Your greens — mossy, earthy, like a walk through dry autumn fields",
+    colors: [
+      { name: "Pale Sage", hex: "#C3CCBA", h: 90, s: 10, v: 80 },
+      { name: "Sage", hex: "#A3AC8E", h: 78, s: 18, v: 67 },
+      { name: "Dried Herb", hex: "#96A082", h: 80, s: 19, v: 63 },
+      { name: "Olive Haze", hex: "#8B9171", h: 71, s: 22, v: 57 },
+      { name: "Moss", hex: "#7A8367", h: 80, s: 22, v: 51 },
+      { name: "Olive", hex: "#6F7758", h: 76, s: 27, v: 47 },
+      { name: "Forest Floor", hex: "#5F6A4E", h: 84, s: 28, v: 42 },
+      { name: "Dark Olive", hex: "#4E5740", h: 82, s: 28, v: 34 },
+    ]
+  },
+  "Muted Gold & Amber": {
+    desc: "Warm metallics turned to watercolor — honey, wheat, and dusty gold",
+    colors: [
+      { name: "Pale Wheat", hex: "#DDD0AB", h: 44, s: 23, v: 87 },
+      { name: "Soft Gold", hex: "#CCBB8B", h: 44, s: 32, v: 80 },
+      { name: "Honey Dusk", hex: "#C0AA78", h: 42, s: 37, v: 75 },
+      { name: "Ochre", hex: "#B59A66", h: 39, s: 44, v: 71 },
+      { name: "Old Gold", hex: "#A48D5C", h: 40, s: 44, v: 64 },
+      { name: "Bronze Mist", hex: "#917D50", h: 39, s: 45, v: 57 },
+    ]
+  },
+  "Dusty Blue & Teal": {
+    desc: "Warmed-down, hazed-over water tones — never icy, never electric",
+    colors: [
+      { name: "Pale Mist", hex: "#C0C8C7", h: 172, s: 5, v: 78 },
+      { name: "Dusty Sky", hex: "#9DAAAB", h: 184, s: 9, v: 67 },
+      { name: "Teal Haze", hex: "#8A9E9B", h: 170, s: 13, v: 62 },
+      { name: "Storm", hex: "#7E8F90", h: 183, s: 12, v: 56 },
+      { name: "Slate Teal", hex: "#6E8481", h: 172, s: 17, v: 52 },
+      { name: "Deep Lagoon", hex: "#5E7573", h: 174, s: 20, v: 46 },
+      { name: "Atlantic", hex: "#536A6B", h: 182, s: 22, v: 42 },
+      { name: "Petrol", hex: "#455C5C", h: 180, s: 25, v: 36 },
+    ]
+  },
+  "Muted Blue & Denim": {
+    desc: "Soft Autumn's blues are always warm enough to not feel borrowed from Summer",
+    colors: [
+      { name: "Soft Chambray", hex: "#A0ABBA", h: 215, s: 14, v: 73 },
+      { name: "Dusty Blue", hex: "#8D98A6", h: 213, s: 15, v: 65 },
+      { name: "Worn Denim", hex: "#7D8A96", h: 210, s: 17, v: 59 },
+      { name: "Steel Blue", hex: "#6E7E8C", h: 208, s: 21, v: 55 },
+      { name: "Slate", hex: "#647380", h: 209, s: 22, v: 50 },
+      { name: "Deep Slate", hex: "#566470", h: 209, s: 23, v: 44 },
+    ]
+  },
+  "Warm Red & Spice": {
+    desc: "Your reds are brick and paprika, not fire engine — heat without screaming",
+    colors: [
+      { name: "Soft Brick", hex: "#AD7E72", h: 12, s: 34, v: 68 },
+      { name: "Muted Paprika", hex: "#A07060", h: 14, s: 40, v: 63 },
+      { name: "Cayenne Dust", hex: "#946558", h: 12, s: 41, v: 58 },
+      { name: "Warm Brick", hex: "#8C5F52", h: 14, s: 42, v: 55 },
+      { name: "Spiced Wine", hex: "#7A544C", h: 10, s: 38, v: 48 },
+      { name: "Oxblood", hex: "#6B4A44", h: 9, s: 37, v: 42 },
+    ]
+  },
+  "Your Metals": {
+    desc: "Warm, patinated, lived-in — if the metal could be a word in your palette, it's yours",
+    colors: [
+      { name: "Pale Gold", hex: "#D4C5A0", h: 44, s: 25, v: 83 },
+      { name: "Brushed Gold", hex: "#C4AD7C", h: 41, s: 37, v: 77 },
+      { name: "Antique Gold", hex: "#B09A68", h: 42, s: 42, v: 69 },
+      { name: "Old Brass", hex: "#A89058", h: 42, s: 48, v: 66 },
+      { name: "Deep Brass", hex: "#8E7A48", h: 42, s: 49, v: 56 },
+      { name: "Rose Gold", hex: "#C49A86", h: 17, s: 33, v: 77 },
+      { name: "Warm Copper", hex: "#B07E62", h: 21, s: 45, v: 69 },
+      { name: "Aged Copper", hex: "#9A7258", h: 23, s: 43, v: 60 },
+      { name: "Dark Copper", hex: "#86634A", h: 22, s: 45, v: 53 },
+      { name: "Matte Bronze", hex: "#8D7352", h: 34, s: 42, v: 55 },
+      { name: "Deep Bronze", hex: "#756044", h: 33, s: 42, v: 46 },
+      { name: "Champagne", hex: "#D9CBAF", h: 40, s: 19, v: 85 },
+    ]
+  },
+  "Deep Accent": {
+    desc: "For drama — still muted, still dusty, but these anchor an outfit",
+    colors: [
+      { name: "Dark Forest", hex: "#4A5C47", h: 110, s: 23, v: 36 },
+      { name: "Warm Burgundy", hex: "#65454A", h: 350, s: 33, v: 40 },
+      { name: "Midnight Teal", hex: "#3F5252", h: 180, s: 23, v: 32 },
+      { name: "Charred Umber", hex: "#4A3A30", h: 23, s: 35, v: 29 },
+      { name: "Deep Aubergine", hex: "#54404B", h: 327, s: 25, v: 33 },
+      { name: "Near Black", hex: "#3A3532", h: 22, s: 14, v: 23 },
+    ]
+  },
+};
+
+// --- RENDER SKIN REFERENCE ---
+const skinRefEl = document.getElementById('skinRef');
+skinSamples.forEach(s => {
+  if (s.hex === 'transparent') {
+    const div = document.createElement('div');
+    div.style.cssText = 'width:1px;min-width:1px;height:48px;background:var(--border);flex-shrink:0;margin:0 6px;';
+    skinRefEl.appendChild(div);
+    return;
+  }
+  const sw = document.createElement('div');
+  sw.className = 'skin-swatch';
+  sw.style.background = s.hex;
+  sw.innerHTML = `<div class="tip">${s.name}<br>${s.hex} · ${s.hsv}</div>`;
+  skinRefEl.appendChild(sw);
+});
+
+// --- RENDER PALETTE ---
+const container = document.getElementById('paletteContainer');
+let allCards = [];
+let totalColors = 0;
+
+Object.entries(palette).forEach(([groupName, groupData]) => {
+  const titleEl = document.createElement('div');
+  titleEl.className = 'section-title';
+  titleEl.textContent = groupName;
+  container.appendChild(titleEl);
+
+  const descEl = document.createElement('div');
+  descEl.className = 'section-desc';
+  descEl.textContent = groupData.desc;
+  container.appendChild(descEl);
+
+  const grid = document.createElement('div');
+  grid.className = 'palette-group';
+
+  groupData.colors.forEach(color => {
+    totalColors++;
+    const card = document.createElement('div');
+    card.className = 'color-card';
+    card.dataset.hex = color.hex;
+    card.dataset.name = color.name;
+
+    const main = document.createElement('div');
+    main.className = 'color-main';
+    main.style.background = color.hex;
+    main.onclick = () => addToHarmony(color.hex, color.name);
+    card.appendChild(main);
+
+    const compare = document.createElement('div');
+    compare.className = 'skin-compare';
+    skinStripColors.forEach(sc => {
+      const div = document.createElement('div');
+      div.style.background = sc;
+      div.onmouseenter = () => div.classList.add('hovered');
+      div.onmouseleave = () => div.classList.remove('hovered');
+      compare.appendChild(div);
+    });
+    card.appendChild(compare);
+
+    const info = document.createElement('div');
+    info.className = 'color-info';
+    info.innerHTML = `
+      <div class="color-name">${color.name}</div>
+      <div class="color-hex">${color.hex}</div>
+      <div class="color-hsv">H${color.h}° S${color.s}% V${color.v}%</div>
+    `;
+    card.appendChild(info);
+
+    grid.appendChild(card);
+    allCards.push(card);
+  });
+
+  container.appendChild(grid);
+});
+
+// --- HARMONY TESTER ---
+const harmonyCanvas = document.getElementById('harmonyCanvas');
+const selectedInfo = document.getElementById('selectedInfo');
+let harmonyColors = [];
+
+function addToHarmony(hex, name) {
+  harmonyColors.push({ hex, name });
+  if (harmonyColors.length > 6) harmonyColors.shift();
+  renderHarmony();
+  allCards.forEach(c => {
+    if (c.dataset.hex === hex) {
+      c.classList.add('active');
+      setTimeout(() => c.classList.remove('active'), 1500);
+    }
+  });
+}
+
+function renderHarmony() {
+  const skinAnchors = [
+    { hex: "#d5a499", label: "Your skin (light)" },
+    { hex: "#c1845f", label: "Your skin (mid)" },
+  ];
+  let strips = skinAnchors.map(s =>
+    `<div style="background:${s.hex};" data-label="${s.label}"></div>`
+  );
+  harmonyColors.forEach(c => {
+    strips.push(`<div style="background:${c.hex};" data-label="${c.name}"></div>`);
+  });
+  harmonyCanvas.innerHTML = strips.join('');
+  selectedInfo.textContent = harmonyColors.length
+    ? harmonyColors.map(c => c.name).join(' · ')
+    : 'Click palette swatches to build combinations';
+}
+
+function resetHarmony() {
+  harmonyColors = [];
+  renderHarmony();
+}
+
+// --- PARTICLES ---
+const particlesEl = document.getElementById('particles');
+for (let i = 0; i < 25; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.top = (50 + Math.random() * 50) + '%';
+  p.style.animationDelay = (Math.random() * 8) + 's';
+  p.style.animationDuration = (6 + Math.random() * 6) + 's';
+  particlesEl.appendChild(p);
+}
+</body> tag: <script src="../assets/gate.js">
+</script>
+</body>
+</html>
