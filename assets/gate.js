@@ -16,7 +16,6 @@
   if (sessionStorage.getItem(SESSION_KEY) === PASS_HASH) return;
 
   document.documentElement.style.overflow = "hidden";
-  document.body.style.visibility = "hidden";
 
   async function sha256(str) {
     const buf = await crypto.subtle.digest(
@@ -30,7 +29,6 @@
 
   const overlay = document.createElement("div");
   overlay.id = "rfg-gate";
-  overlay.style.visibility = "visible";
   overlay.innerHTML = `
     <style>
       #rfg-gate {
@@ -154,7 +152,6 @@
       overlay.style.opacity = "0";
       setTimeout(() => {
         overlay.remove();
-        document.body.style.visibility = "visible";
         document.documentElement.style.overflow = "";
       }, 300);
     } else {
