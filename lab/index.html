@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFG Lab</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #1e1a17;
+    --bg-card: #2a2520;
+    --bg-hover: #342e28;
+    --text: #e8ddd3;
+    --text-dim: #a89a8c;
+    --accent: #c4956a;
+    --accent-glow: rgba(196, 149, 106, 0.15);
+    --border: rgba(196, 149, 106, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    animation: drift 8s infinite ease-in-out;
+  }
+  @keyframes drift {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.2; }
+    100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
+  }
+  @keyframes headerGlow {
+    0%, 100% { text-shadow: 0 0 20px rgba(196,149,106,0.1); }
+    50% { text-shadow: 0 0 40px rgba(196,149,106,0.25), 0 0 80px rgba(196,149,106,0.08); }
+  }
+  @keyframes cardEnter {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 52px;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--accent);
+    animation: headerGlow 4s infinite ease-in-out;
+    margin-bottom: 8px;
+  }
+  header .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 0.06em;
+  }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--accent);
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .palette-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    animation: cardEnter 0.5s ease-out backwards;
+  }
+  .palette-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3);
+    border-color: rgba(196,149,106,0.3);
+  }
+
+  .card-swatches {
+    display: flex;
+    height: 64px;
+  }
+  .card-swatches div {
+    flex: 1;
+    transition: flex 0.3s;
+  }
+  .card-swatches:hover div:hover {
+    flex: 2;
+  }
+
+  .card-body {
+    padding: 16px 18px;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+  .card-meta {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+  .card-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    color: var(--accent);
+    border: 1px solid var(--border);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 8px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+    margin-top: 16px;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 60px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.9rem; }
+    .palette-grid { grid-template-columns: 1fr; }
+    .container { padding: 36px 16px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <header>
+    <h1>RFG Lab</h1>
+    <div class="subtitle">Private palette prototypes & tools</div>
+  </header>
+
+  <div id="labContent"></div>
+
+  <footer>
+    RFG Palette System · Private prototypes — do not share
+  </footer>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PALETTE REGISTRY
+//  Add new palettes here and they auto-render as cards.
+//  Colors array = the preview swatches shown on the card.
+// ═══════════════════════════════════════════════════════
+
+const palettes = [
+  // ── CLIENT PALETTES ──
+  {
+    section: "Client Palettes",
+    items: [
+      {
+        title: "Lauren — Soft Autumn",
+        file: "soft-autumn-lauren.html",
+        meta: "106 colors · 13 groups · pixel-derived",
+        tag: "personal",
+        colors: ["#CABB9F", "#B8896E", "#BF9B93", "#A3AC8E", "#B59A66", "#8A9E9B", "#9A7258", "#65454A"],
+      },
+      // Add more client palettes:
+      // {
+      //   title: "Client Name — Season",
+      //   file: "season-clientname.html",
+      //   meta: "X colors · notes",
+      //   tag: "client",
+      //   colors: ["#hex1", "#hex2", "#hex3", "#hex4", "#hex5", "#hex6"],
+      // },
+    ],
+  },
+
+  // ── SEASONAL REFERENCE PALETTES ──
+  {
+    section: "Seasonal Reference",
+    items: [
+      // {
+      //   title: "True Spring",
+      //   file: "true-spring-ref.html",
+      //   meta: "Reference palette",
+      //   tag: "reference",
+      //   colors: ["#hex1", "#hex2", "#hex3", "#hex4", "#hex5", "#hex6"],
+      // },
+    ],
+  },
+
+  // ── TOOLS & PROTOTYPES ──
+  {
+    section: "Tools & Prototypes",
+    items: [
+      // {
+      //   title: "Color Sampler",
+      //   file: "sampler.html",
+      //   meta: "Photo → HSV extraction",
+      //   tag: "tool",
+      //   colors: ["#E8DDD3", "#C4956A", "#2A2520", "#A89A8C"],
+      // },
+    ],
+  },
+];
+
+// ── RENDER ──
+const container = document.getElementById("labContent");
+
+palettes.forEach((section, si) => {
+  const label = document.createElement("div");
+  label.className = "section-label";
+  label.textContent = section.section;
+  container.appendChild(label);
+
+  if (section.items.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty-state";
+    empty.textContent = "No palettes yet — add them to the registry in this file";
+    container.appendChild(empty);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "palette-grid";
+
+  section.items.forEach((item, i) => {
+    const card = document.createElement("a");
+    card.className = "palette-card";
+    card.href = item.file;
+    card.style.animationDelay = `${(si * 0.1) + (i * 0.08)}s`;
+
+    const swatches = document.createElement("div");
+    swatches.className = "card-swatches";
+    (item.colors || []).forEach((c) => {
+      const s = document.createElement("div");
+      s.style.background = c;
+      swatches.appendChild(s);
+    });
+    card.appendChild(swatches);
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+    body.innerHTML = `
+      <div class="card-title">${item.title}</div>
+      <div class="card-meta">${item.meta || ""}</div>
+      ${item.tag ? `<span class="card-tag">${item.tag}</span>` : ""}
+    `;
+    card.appendChild(body);
+
+    grid.appendChild(card);
+  });
+
+  container.appendChild(grid);
+});
+
+// ── PARTICLES ──
+const particlesEl = document.getElementById("particles");
+for (let i = 0; i < 20; i++) {
+  const p = document.createElement("div");
+  p.className = "particle";
+  p.style.left = Math.random() * 100 + "%";
+  p.style.top = 50 + Math.random() * 50 + "%";
+  p.style.animationDelay = Math.random() * 8 + "s";
+  p.style.animationDuration = 6 + Math.random() * 6 + "s";
+  particlesEl.appendChild(p);
+}
+</script>
+
+<!-- PASSWORD GATE — remove this line to make the page public -->
+<script src="../assets/gate.js"></script>
+</body>
+</html>
