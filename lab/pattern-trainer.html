@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pattern Recognition Trainer</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #1a1a2e;
+  --bg-surface: #16213e;
+  --bg-card: rgba(30, 41, 82, 0.6);
+  --surface-bone: #F5F0EB;
+  --surface-warm: #D8D0C8;
+  --text-light: #F5F0EB;
+  --text-muted: #8892a0;
+  --accent-lavender: #9A8FBF;
+  --accent-jade: #6B9B8A;
+  --accent-rose: #C48B9F;
+  --accent-gold: #C9A86C;
+  --accent-cyan: #5DADE2;
+  --success: #6B9B8A;
+  --error: #C48B9F;
+  --shadow: rgba(0,0,0,0.4);
+  --glow: rgba(154, 143, 191, 0.4);
+}
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+@keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+@keyframes correctPulse { 0% { box-shadow: 0 0 0 0 var(--success); } 100% { box-shadow: 0 0 40px 10px transparent; } }
+@keyframes incorrectShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes countUp { from { transform: scale(1.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes sparkle { 0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); } 50% { opacity: 1; transform: scale(1) rotate(180deg); } }
+
+html { font-size: 16px; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-surface) 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+.particles {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 3px; height: 3px;
+  background: var(--accent-lavender);
+  border-radius: 50%;
+  animation: pulse 4s ease-in-out infinite;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 30px 20px 40px;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: normal;
+  color: var(--surface-bone);
+  margin-bottom: 8px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Stats Bar */
+.stats-bar {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  border: 1px solid rgba(154, 143, 191, 0.15);
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  color: var(--accent-lavender);
+  font-weight: normal;
+}
+
+.stat-value.updating {
+  animation: countUp 0.3s ease-out;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+}
+
+/* Mode Selection */
+.mode-selection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.mode-btn {
+  padding: 16px 12px;
+  background: var(--bg-card);
+  border: 1px solid rgba(154, 143, 191, 0.2);
+  border-radius: 12px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.mode-btn:hover {
+  border-color: var(--accent-lavender);
+  transform: translateY(-2px);
+}
+
+.mode-btn.active {
+  border-color: var(--accent-jade);
+  background: rgba(107, 155, 138, 0.15);
+}
+
+.mode-btn-icon {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.mode-btn-name {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.mode-btn-desc {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Game Area */
+.game-area {
+  background: var(--bg-card);
+  border: 1px solid rgba(154, 143, 191, 0.15);
+  border-radius: 16px;
+  padding: 30px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.game-area.correct {
+  animation: correctPulse 0.5s ease-out;
+}
+
+.game-area.incorrect {
+  animation: incorrectShake 0.4s ease-out;
+}
+
+/* Difficulty & Controls */
+.controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.difficulty-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.diff-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid rgba(154, 143, 191, 0.3);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-height: 36px;
+}
+
+.diff-btn:hover { border-color: var(--accent-lavender); color: var(--text-light); }
+.diff-btn.active { background: var(--accent-lavender); color: var(--bg-deep); border-color: var(--accent-lavender); }
+
+.timer-display {
+  font-size: 1.25rem;
+  color: var(--accent-gold);
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-display.warning { color: var(--accent-rose); }
+
+/* Sequence Display */
+.sequence-display {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.sequence-item {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 2px solid rgba(255,255,255,0.1);
+  animation: fadeIn 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.sequence-item.question {
+  border: 2px dashed var(--accent-lavender);
+  background: rgba(154, 143, 191, 0.1);
+  color: var(--accent-lavender);
+  font-size: 1.5rem;
+}
+
+/* Answer Options */
+.answer-options {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.answer-btn {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  border: 2px solid rgba(255,255,255,0.15);
+  background: var(--bg-surface);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.answer-btn:hover {
+  transform: scale(1.08);
+  border-color: var(--accent-lavender);
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.answer-btn.selected {
+  border-color: var(--accent-jade);
+  box-shadow: 0 0 20px rgba(107, 155, 138, 0.4);
+}
+
+.answer-btn.correct {
+  border-color: var(--success);
+  background: rgba(107, 155, 138, 0.2);
+}
+
+.answer-btn.incorrect {
+  border-color: var(--error);
+  background: rgba(196, 139, 159, 0.2);
+}
+
+/* Matrix Grid */
+.matrix-grid {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.matrix-cell {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255,255,255,0.1);
+  font-size: 1.25rem;
+}
+
+.matrix-cell.question {
+  border: 2px dashed var(--accent-lavender);
+  background: rgba(154, 143, 191, 0.1);
+}
+
+/* Color Harmony */
+.color-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.color-swatch {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.1);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  border-color: rgba(255,255,255,0.3);
+}
+
+.color-swatch.selected {
+  border-color: var(--accent-lavender);
+  box-shadow: 0 0 20px var(--glow);
+}
+
+.color-swatch.correct {
+  border-color: var(--success);
+}
+
+.color-swatch.incorrect {
+  border-color: var(--error);
+}
+
+/* Prompt Text */
+.prompt-text {
+  font-size: 1rem;
+  color: var(--surface-warm);
+  text-align: center;
+  margin-bottom: 24px;
+  font-style: italic;
+}
+
+/* Feedback */
+.feedback {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 100;
+}
+
+.feedback.show {
+  animation: sparkle 0.6s ease-out forwards;
+}
+
+/* Start Screen */
+.start-screen {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.start-screen h2 {
+  font-size: 1.25rem;
+  color: var(--surface-bone);
+  margin-bottom: 16px;
+  font-weight: normal;
+}
+
+.start-screen p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.7;
+}
+
+.start-btn {
+  padding: 14px 40px;
+  background: linear-gradient(135deg, var(--accent-lavender), var(--accent-jade));
+  border: none;
+  border-radius: 30px;
+  color: var(--bg-deep);
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.start-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px var(--glow);
+}
+
+/* Results */
+.results-screen {
+  text-align: center;
+  padding: 30px;
+}
+
+.results-score {
+  font-size: 4rem;
+  color: var(--accent-lavender);
+  margin-bottom: 8px;
+}
+
+.results-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.results-breakdown {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.results-stat {
+  text-align: center;
+}
+
+.results-stat-value {
+  font-size: 1.5rem;
+  color: var(--surface-bone);
+}
+
+.results-stat-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.results-message {
+  font-size: 1rem;
+  color: var(--surface-warm);
+  font-style: italic;
+  margin-bottom: 30px;
+  line-height: 1.7;
+}
+
+/* History */
+.history-section {
+  margin-top: 30px;
+}
+
+.history-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--accent-lavender);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
+}
+
+.history-item {
+  background: rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.history-mode {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-jade);
+  margin-bottom: 4px;
+}
+
+.history-score {
+  font-size: 1.25rem;
+  color: var(--surface-bone);
+}
+
+.history-date {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.clear-history {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--accent-rose);
+  border-radius: 20px;
+  color: var(--accent-rose);
+  font-family: inherit;
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-history:hover {
+  background: var(--accent-rose);
+  color: var(--bg-deep);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .sequence-item { width: 50px; height: 50px; font-size: 1.25rem; }
+  .answer-btn { width: 60px; height: 60px; }
+  .color-swatch { width: 55px; height: 55px; }
+  .matrix-cell { width: 40px; height: 40px; font-size: 1rem; }
+  .stats-bar { gap: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <header class="header">
+    <h1 class="title">Pattern Recognition Trainer</h1>
+    <p class="subtitle">Train the muscle that sees what others miss</p>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value" id="totalScore">0</div>
+      <div class="stat-label">Total Score</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="streak">0</div>
+      <div class="stat-label">Streak</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="bestStreak">0</div>
+      <div class="stat-label">Best Streak</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="accuracy">--%</div>
+      <div class="stat-label">Accuracy</div>
+    </div>
+  </div>
+
+  <!-- Mode Selection -->
+  <div class="mode-selection">
+    <button class="mode-btn active" data-mode="sequence">
+      <span class="mode-btn-icon">&#9654;&#9654;&#9654;</span>
+      <span class="mode-btn-name">Sequence</span>
+      <span class="mode-btn-desc">What comes next?</span>
+    </button>
+    <button class="mode-btn" data-mode="matrix">
+      <span class="mode-btn-icon">&#9632;&#9632;<br>&#9632;?</span>
+      <span class="mode-btn-name">Matrix</span>
+      <span class="mode-btn-desc">Complete the grid</span>
+    </button>
+    <button class="mode-btn" data-mode="oddOne">
+      <span class="mode-btn-icon">&#9679;&#9679;&#9672;&#9679;</span>
+      <span class="mode-btn-name">Odd One</span>
+      <span class="mode-btn-desc">Find the anomaly</span>
+    </button>
+    <button class="mode-btn" data-mode="colorHarmony">
+      <span class="mode-btn-icon">&#127912;</span>
+      <span class="mode-btn-name">Color</span>
+      <span class="mode-btn-desc">Find the discord</span>
+    </button>
+    <button class="mode-btn" data-mode="analogy">
+      <span class="mode-btn-icon">A:B::C:?</span>
+      <span class="mode-btn-name">Analogy</span>
+      <span class="mode-btn-desc">Relationship mapping</span>
+    </button>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls-bar">
+    <div class="difficulty-selector">
+      <button class="diff-btn active" data-diff="easy">Easy</button>
+      <button class="diff-btn" data-diff="medium">Medium</button>
+      <button class="diff-btn" data-diff="hard">Hard</button>
+    </div>
+    <div class="timer-display" id="timerDisplay">--:--</div>
+  </div>
+
+  <!-- Game Area -->
+  <div class="game-area" id="gameArea">
+    <div class="start-screen" id="startScreen">
+      <h2>Ready to train?</h2>
+      <p>Each round has 10 puzzles. Answer quickly for bonus points. Streaks multiply your score.</p>
+      <button class="start-btn" id="startBtn">Begin</button>
+    </div>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <!-- History -->
+  <div class="history-section" id="historySection">
+    <div class="history-title">Session History</div>
+    <div class="history-grid" id="historyGrid"></div>
+    <button class="clear-history" id="clearHistory">Clear History</button>
+  </div>
+</div>
+
+<script>
+// State
+let currentMode = "sequence";
+let difficulty = "easy";
+let score = 0;
+let streak = 0;
+let bestStreak = 0;
+let correct = 0;
+let total = 0;
+let roundNumber = 0;
+let maxRounds = 10;
+let timerInterval = null;
+let timeLeft = 0;
+let history = [];
+
+// Load persisted data
+try {
+  const saved = localStorage.getItem("patternTrainerStats");
+  if (saved) {
+    const data = JSON.parse(saved);
+    bestStreak = data.bestStreak || 0;
+    history = data.history || [];
+  }
+} catch(e) {}
+
+// Difficulty settings
+const diffSettings = {
+  easy: { time: 20, items: 4, options: 4 },
+  medium: { time: 15, items: 5, options: 5 },
+  hard: { time: 10, items: 6, options: 6 }
+};
+
+// Shapes and colors for patterns
+const shapes = ["&#9679;", "&#9650;", "&#9632;", "&#9670;", "&#9733;", "&#9829;", "&#10070;", "&#9684;"];
+const colors = ["#C48B9F", "#6B9B8A", "#9A8FBF", "#C9A86C", "#5DADE2", "#E8B4B8", "#6B9AC4", "#88B09A"];
+
+// Color harmony sets (for color mode)
+const harmonyGroups = [
+  { name: "cool", colors: ["#6B9AC4", "#9A8FBF", "#5DADE2", "#88CCC7", "#A7C7E7"] },
+  { name: "warm", colors: ["#C9A86C", "#D4A5A5", "#C48B9F", "#E9967A", "#DDA0A0"] },
+  { name: "muted", colors: ["#8B8589", "#6B7280", "#88B09A", "#9A8FBF", "#A0A5AB"] },
+  { name: "jewel", colors: ["#6B3A5B", "#3D6B5A", "#3A4D6B", "#5A3D4A", "#4A3A50"] }
+];
+
+// Initialize
+function init() {
+  initParticles();
+  updateStats();
+  renderHistory();
+  setupEventListeners();
+}
+
+function initParticles() {
+  const container = document.getElementById("particles");
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement("div");
+    p.className = "particle";
+    p.style.left = Math.random() * 100 + "%";
+    p.style.top = Math.random() * 100 + "%";
+    p.style.animationDelay = Math.random() * 4 + "s";
+    container.appendChild(p);
+  }
+}
+
+function setupEventListeners() {
+  // Mode buttons
+  document.querySelectorAll(".mode-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentMode = btn.dataset.mode;
+    });
+  });
+
+  // Difficulty buttons
+  document.querySelectorAll(".diff-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".diff-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      difficulty = btn.dataset.diff;
+    });
+  });
+
+  // Start button
+  document.getElementById("startBtn").addEventListener("click", startGame);
+
+  // Clear history
+  document.getElementById("clearHistory").addEventListener("click", () => {
+    history = [];
+    saveData();
+    renderHistory();
+  });
+}
+
+function startGame() {
+  score = 0;
+  streak = 0;
+  correct = 0;
+  total = 0;
+  roundNumber = 0;
+  document.getElementById("startScreen").style.display = "none";
+  nextRound();
+}
+
+function nextRound() {
+  roundNumber++;
+  if (roundNumber > maxRounds) {
+    endGame();
+    return;
+  }
+
+  updateStats();
+  
+  const settings = diffSettings[difficulty];
+  timeLeft = settings.time;
+  updateTimer();
+  
+  clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimer();
+    if (timeLeft <= 0) {
+      handleAnswer(null); // Time out
+    }
+  }, 1000);
+
+  // Generate puzzle based on mode
+  switch(currentMode) {
+    case "sequence": generateSequence(); break;
+    case "matrix": generateMatrix(); break;
+    case "oddOne": generateOddOne(); break;
+    case "colorHarmony": generateColorHarmony(); break;
+    case "analogy": generateAnalogy(); break;
+  }
+}
+
+// Sequence mode
+function generateSequence() {
+  const settings = diffSettings[difficulty];
+  const gameArea = document.getElementById("gameArea");
+  
+  // Pick a pattern type
+  const patternTypes = ["repeat", "increment", "alternate", "mirror"];
+  const patternType = patternTypes[Math.floor(Math.random() * patternTypes.length)];
+  
+  let sequence = [];
+  let answer;
+  const baseShape = shapes[Math.floor(Math.random() * shapes.length)];
+  const baseColor = colors[Math.floor(Math.random() * colors.length)];
+  
+  if (patternType === "repeat") {
+    // A B A B A ?
+    const shape2 = shapes.filter(s => s !== baseShape)[Math.floor(Math.random() * (shapes.length - 1))];
+    for (let i = 0; i < settings.items; i++) {
+      sequence.push({ shape: i % 2 === 0 ? baseShape : shape2, color: baseColor });
+    }
+    answer = { shape: settings.items % 2 === 0 ? baseShape : shape2, color: baseColor };
+  } else if (patternType === "increment") {
+    // Shape stays same, color changes in order
+    const colorStart = Math.floor(Math.random() * (colors.length - settings.items));
+    for (let i = 0; i < settings.items; i++) {
+      sequence.push({ shape: baseShape, color: colors[colorStart + i] });
+    }
+    answer = { shape: baseShape, color: colors[colorStart + settings.items] };
+  } else if (patternType === "alternate") {
+    // A B C A B C
+    const usedShapes = shapes.slice(0, 3);
+    for (let i = 0; i < settings.items; i++) {
+      sequence.push({ shape: usedShapes[i % 3], color: baseColor });
+    }
+    answer = { shape: usedShapes[settings.items % 3], color: baseColor };
+  } else {
+    // Mirror: A B C B A
+    const half = Math.floor(settings.items / 2);
+    const usedShapes = shapes.slice(0, half + 1);
+    for (let i = 0; i < settings.items; i++) {
+      const idx = i <= half ? i : settings.items - 1 - i;
+      sequence.push({ shape: usedShapes[Math.min(idx, usedShapes.length - 1)], color: baseColor });
+    }
+    const answerIdx = settings.items <= half ? settings.items : settings.items - 1 - settings.items;
+    answer = { shape: usedShapes[Math.abs(answerIdx) % usedShapes.length], color: baseColor };
+  }
+
+  // Generate wrong options
+  const options = [answer];
+  while (options.length < settings.options) {
+    const wrongShape = shapes[Math.floor(Math.random() * shapes.length)];
+    const wrongColor = colors[Math.floor(Math.random() * colors.length)];
+    const wrong = { shape: wrongShape, color: wrongColor };
+    if (!options.some(o => o.shape === wrong.shape && o.color === wrong.color)) {
+      options.push(wrong);
+    }
+  }
+  shuffleArray(options);
+
+  // Render
+  gameArea.innerHTML = `
+    <div class="feedback" id="feedback"></div>
+    <p class="prompt-text">What comes next in the sequence?</p>
+    <div class="sequence-display">
+      ${sequence.map((item, i) => `
+        <div class="sequence-item" style="background: ${item.color}; animation-delay: ${i * 0.1}s;">${item.shape}</div>
+      `).join("")}
+      <div class="sequence-item question">?</div>
+    </div>
+    <div class="answer-options">
+      ${options.map((opt, i) => `
+        <button class="answer-btn" style="background: ${opt.color};" data-correct="${opt === answer}" data-index="${i}">${opt.shape}</button>
+      `).join("")}
+    </div>
+  `;
+
+  setupAnswerButtons();
+}
+
+// Matrix mode
+function generateMatrix() {
+  const settings = diffSettings[difficulty];
+  const gameArea = document.getElementById("gameArea");
+  const size = difficulty === "easy" ? 2 : 3;
+  
+  // Simple pattern: each row has same shape, each column has same color
+  const rowShapes = shapes.slice(0, size);
+  const colColors = colors.slice(0, size);
+  
+  const grid = [];
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      grid.push({ shape: rowShapes[r], color: colColors[c], isQuestion: r === size - 1 && c === size - 1 });
+    }
+  }
+  
+  const answer = { shape: rowShapes[size - 1], color: colColors[size - 1] };
+  
+  // Generate options
+  const options = [answer];
+  while (options.length < settings.options) {
+    const wrong = { shape: shapes[Math.floor(Math.random() * shapes.length)], color: colors[Math.floor(Math.random() * colors.length)] };
+    if (!options.some(o => o.shape === wrong.shape && o.color === wrong.color)) {
+      options.push(wrong);
+    }
+  }
+  shuffleArray(options);
+
+  gameArea.innerHTML = `
+    <div class="feedback" id="feedback"></div>
+    <p class="prompt-text">Complete the matrix</p>
+    <div class="matrix-grid" style="grid-template-columns: repeat(${size}, 1fr);">
+      ${grid.map(cell => cell.isQuestion 
+        ? `<div class="matrix-cell question">?</div>`
+        : `<div class="matrix-cell" style="background: ${cell.color};">${cell.shape}</div>`
+      ).join("")}
+    </div>
+    <div class="answer-options">
+      ${options.map((opt, i) => `
+        <button class="answer-btn" style="background: ${opt.color};" data-correct="${opt === answer}" data-index="${i}">${opt.shape}</button>
+      `).join("")}
+    </div>
+  `;
+
+  setupAnswerButtons();
+}
+
+// Odd One Out mode
+function generateOddOne() {
+  const settings = diffSettings[difficulty];
+  const gameArea = document.getElementById("gameArea");
+  
+  const baseShape = shapes[Math.floor(Math.random() * shapes.length)];
+  const baseColor = colors[Math.floor(Math.random() * colors.length)];
+  
+  // One item is different
+  const oddIndex = Math.floor(Math.random() * settings.items);
+  const oddShape = shapes.filter(s => s !== baseShape)[Math.floor(Math.random() * (shapes.length - 1))];
+  
+  const items = [];
+  for (let i = 0; i < settings.items; i++) {
+    if (i === oddIndex) {
+      items.push({ shape: oddShape, color: baseColor, isOdd: true });
+    } else {
+      items.push({ shape: baseShape, color: baseColor, isOdd: false });
+    }
+  }
+
+  gameArea.innerHTML = `
+    <div class="feedback" id="feedback"></div>
+    <p class="prompt-text">Find the one that doesn't belong</p>
+    <div class="answer-options">
+      ${items.map((item, i) => `
+        <button class="answer-btn" style="background: ${item.color};" data-correct="${item.isOdd}" data-index="${i}">${item.shape}</button>
+      `).join("")}
+    </div>
+  `;
+
+  setupAnswerButtons();
+}
+
+// Color Harmony mode
+function generateColorHarmony() {
+  const settings = diffSettings[difficulty];
+  const gameArea = document.getElementById("gameArea");
+  
+  // Pick a harmony group
+  const group = harmonyGroups[Math.floor(Math.random() * harmonyGroups.length)];
+  const harmonyColors = [...group.colors].slice(0, settings.items - 1);
+  
+  // Pick a discord color from a different group
+  const otherGroups = harmonyGroups.filter(g => g.name !== group.name);
+  const discordGroup = otherGroups[Math.floor(Math.random() * otherGroups.length)];
+  const discordColor = discordGroup.colors[Math.floor(Math.random() * discordGroup.colors.length)];
+  
+  // Insert discord at random position
+  const discordIndex = Math.floor(Math.random() * settings.items);
+  const displayColors = [...harmonyColors];
+  displayColors.splice(discordIndex, 0, discordColor);
+
+  gameArea.innerHTML = `
+    <div class="feedback" id="feedback"></div>
+    <p class="prompt-text">Which color breaks the harmony?</p>
+    <div class="color-row">
+      ${displayColors.map((color, i) => `
+        <div class="color-swatch" style="background: ${color};" data-correct="${i === discordIndex}" data-index="${i}"></div>
+      `).join("")}
+    </div>
+  `;
+
+  document.querySelectorAll(".color-swatch").forEach(swatch => {
+    swatch.addEventListener("click", function() {
+      const isCorrect = this.dataset.correct === "true";
+      handleAnswer(isCorrect, this);
+    });
+  });
+}
+
+// Analogy mode
+function generateAnalogy() {
+  const settings = diffSettings[difficulty];
+  const gameArea = document.getElementById("gameArea");
+  
+  // A is to B as C is to ?
+  // Transformation: color change, shape change, or both
+  const transformTypes = ["colorShift", "shapeChange"];
+  const transform = transformTypes[Math.floor(Math.random() * transformTypes.length)];
+  
+  const shapeA = shapes[Math.floor(Math.random() * shapes.length)];
+  const colorA = colors[Math.floor(Math.random() * colors.length)];
+  
+  let shapeB, colorB, shapeC, colorC, shapeD, colorD;
+  
+  if (transform === "colorShift") {
+    // Same shape, different color
+    shapeB = shapeA;
+    colorB = colors.filter(c => c !== colorA)[Math.floor(Math.random() * (colors.length - 1))];
+    shapeC = shapes.filter(s => s !== shapeA)[Math.floor(Math.random() * (shapes.length - 1))];
+    colorC = colorA;
+    shapeD = shapeC;
+    colorD = colorB;
+  } else {
+    // Different shape, same color
+    shapeB = shapes.filter(s => s !== shapeA)[Math.floor(Math.random() * (shapes.length - 1))];
+    colorB = colorA;
+    shapeC = shapeA;
+    colorC = colors.filter(c => c !== colorA)[Math.floor(Math.random() * (colors.length - 1))];
+    shapeD = shapeB;
+    colorD = colorC;
+  }
+
+  const answer = { shape: shapeD, color: colorD };
+  const options = [answer];
+  while (options.length < settings.options) {
+    const wrong = { shape: shapes[Math.floor(Math.random() * shapes.length)], color: colors[Math.floor(Math.random() * colors.length)] };
+    if (!options.some(o => o.shape === wrong.shape && o.color === wrong.color)) {
+      options.push(wrong);
+    }
+  }
+  shuffleArray(options);
+
+  gameArea.innerHTML = `
+    <div class="feedback" id="feedback"></div>
+    <p class="prompt-text">Complete the analogy</p>
+    <div class="sequence-display">
+      <div class="sequence-item" style="background: ${colorA};">${shapeA}</div>
+      <div class="sequence-item question" style="font-size: 1rem;">:</div>
+      <div class="sequence-item" style="background: ${colorB};">${shapeB}</div>
+      <div class="sequence-item question" style="font-size: 1rem;">::</div>
+      <div class="sequence-item" style="background: ${colorC};">${shapeC}</div>
+      <div class="sequence-item question" style="font-size: 1rem;">:</div>
+      <div class="sequence-item question">?</div>
+    </div>
+    <div class="answer-options">
+      ${options.map((opt, i) => `
+        <button class="answer-btn" style="background: ${opt.color};" data-correct="${opt === answer}" data-index="${i}">${opt.shape}</button>
+      `).join("")}
+    </div>
+  `;
+
+  setupAnswerButtons();
+}
+
+function setupAnswerButtons() {
+  document.querySelectorAll(".answer-btn").forEach(btn => {
+    btn.addEventListener("click", function() {
+      const isCorrect = this.dataset.correct === "true";
+      handleAnswer(isCorrect, this);
+    });
+  });
+}
+
+function handleAnswer(isCorrect, element = null) {
+  clearInterval(timerInterval);
+  total++;
+  
+  const gameArea = document.getElementById("gameArea");
+  const feedback = document.getElementById("feedback");
+  
+  if (isCorrect) {
+    correct++;
+    streak++;
+    if (streak > bestStreak) bestStreak = streak;
+    
+    // Score: base + time bonus + streak multiplier
+    const timeBonus = Math.floor(timeLeft * 5);
+    const streakMultiplier = Math.min(streak, 5);
+    const roundScore = (10 + timeBonus) * streakMultiplier;
+    score += roundScore;
+    
+    gameArea.classList.add("correct");
+    if (element) element.classList.add("correct");
+    feedback.innerHTML = "&#10003;";
+    feedback.style.color = "var(--success)";
+  } else {
+    streak = 0;
+    gameArea.classList.add("incorrect");
+    if (element) element.classList.add("incorrect");
+    
+    // Show correct answer
+    document.querySelectorAll("[data-correct='true']").forEach(el => {
+      el.classList.add("correct");
+    });
+    
+    feedback.innerHTML = "&#10007;";
+    feedback.style.color = "var(--error)";
+  }
+  
+  feedback.classList.add("show");
+  
+  setTimeout(() => {
+    gameArea.classList.remove("correct", "incorrect");
+    feedback.classList.remove("show");
+    nextRound();
+  }, 1000);
+  
+  updateStats();
+}
+
+function endGame() {
+  clearInterval(timerInterval);
+  
+  const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
+  const gameArea = document.getElementById("gameArea");
+  
+  // Save to history
+  history.unshift({
+    mode: currentMode,
+    difficulty,
+    score,
+    accuracy,
+    date: new Date().toLocaleDateString()
+  });
+  if (history.length > 20) history.pop();
+  saveData();
+  
+  // Get message based on performance
+  let message;
+  if (accuracy >= 90) message = "Exceptional. Your pattern recognition is operating at peak performance.";
+  else if (accuracy >= 70) message = "Strong showing. You're seeing connections others would miss.";
+  else if (accuracy >= 50) message = "Solid foundation. Keep training - the patterns will become clearer.";
+  else message = "Every master was once a disaster. The neural pathways are forming.";
+
+  gameArea.innerHTML = `
+    <div class="results-screen">
+      <div class="results-score">${score}</div>
+      <div class="results-label">Final Score</div>
+      <div class="results-breakdown">
+        <div class="results-stat">
+          <div class="results-stat-value">${correct}/${total}</div>
+          <div class="results-stat-label">Correct</div>
+        </div>
+        <div class="results-stat">
+          <div class="results-stat-value">${accuracy}%</div>
+          <div class="results-stat-label">Accuracy</div>
+        </div>
+        <div class="results-stat">
+          <div class="results-stat-value">${bestStreak}</div>
+          <div class="results-stat-label">Best Streak</div>
+        </div>
+      </div>
+      <p class="results-message">${message}</p>
+      <button class="start-btn" onclick="location.reload()">Train Again</button>
+    </div>
+  `;
+  
+  renderHistory();
+}
+
+function updateStats() {
+  document.getElementById("totalScore").textContent = score;
+  document.getElementById("streak").textContent = streak;
+  document.getElementById("bestStreak").textContent = bestStreak;
+  document.getElementById("accuracy").textContent = total > 0 ? Math.round((correct / total) * 100) + "%" : "--%";
+}
+
+function updateTimer() {
+  const display = document.getElementById("timerDisplay");
+  const seconds = timeLeft % 60;
+  display.textContent = `0:${seconds.toString().padStart(2, "0")}`;
+  display.classList.toggle("warning", timeLeft <= 5);
+}
+
+function saveData() {
+  try {
+    localStorage.setItem("patternTrainerStats", JSON.stringify({ bestStreak, history }));
+  } catch(e) {}
+}
+
+function renderHistory() {
+  const grid = document.getElementById("historyGrid");
+  const section = document.getElementById("historySection");
+  
+  if (history.length === 0) {
+    section.style.display = "none";
+    return;
+  }
+  
+  section.style.display = "block";
+  grid.innerHTML = history.slice(0, 12).map(h => `
+    <div class="history-item">
+      <div class="history-mode">${h.mode} - ${h.difficulty}</div>
+      <div class="history-score">${h.score}</div>
+      <div class="history-date">${h.accuracy}% - ${h.date}</div>
+    </div>
+  `).join("");
+}
+
+function shuffleArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+}
+
+init();
+</script>
+
+</body>
+</html>
