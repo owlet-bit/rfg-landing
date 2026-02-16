@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lauren's Color Palette | The Verdant Siren</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #F8F6F3;
+            --bg-soft: #EFEDE8;
+            --text-primary: #3D3D3D;
+            --text-secondary: #6B6B6B;
+            --accent-rose: #9E4A5D;
+            --border-soft: #E0DDD8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--bg-cream);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, #F5F3F0 0%, var(--bg-cream) 100%);
+            position: relative;
+        }
+
+        .season-tag {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.3s;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.5s;
+        }
+
+        .hero h1 span {
+            display: block;
+            font-style: italic;
+            font-weight: 300;
+            color: var(--accent-rose);
+        }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeUp 1s ease forwards 0.7s;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 5rem 0;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 0.875rem;
+            color: var(--accent-rose);
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            font-weight: 400;
+            letter-spacing: 0.05em;
+        }
+
+        .section-subtitle {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Personal Coloring */
+        .personal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .personal-card {
+            background: white;
+            padding: 1.5rem;
+            border: 1px solid var(--border-soft);
+        }
+
+        .personal-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .personal-card .description {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .color-row {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .color-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .chip {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .chip.large {
+            width: 65px;
+            height: 65px;
+        }
+
+        .color-chip span {
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 60px;
+        }
+
+        .color-chip .hex {
+            font-family: monospace;
+            font-size: 0.55rem;
+        }
+
+        /* Accurate Eye Pattern */
+        .eye-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .eye-circle {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.15);
+            /* Outer ring - dark muted teal */
+            background: #4A6B6B;
+        }
+
+        .eye-circle::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            /* Mid zone - sage/moss green */
+            background: radial-gradient(circle, #8A9B78 0%, #7A8B6A 50%, #6A7B5A 100%);
+        }
+
+        .eye-circle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            /* Pupil with gold ring around it */
+            background: radial-gradient(circle, #1A1A1A 0%, #1A1A1A 50%, #C9A855 55%, #B89845 70%, #8A9B78 75%);
+        }
+
+        /* Metals */
+        .metal-circle {
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+
+        .metal-circle.silver {
+            background: linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 30%, #FFFFFF 50%, #A8A8A8 70%, #D0D0D0 100%);
+        }
+
+        .metal-circle.gold {
+            background: linear-gradient(135deg, #F5E6C8 0%, #D4AF37 30%, #FFE5A0 50%, #C5A028 70%, #E8D080 100%);
+        }
+
+        .metal-circle.small {
+            width: 65px;
+            height: 65px;
+        }
+
+        /* Star Colors Section */
+        .star-colors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .star-color-card {
+            background: white;
+            border: 1px solid var(--border-soft);
+            overflow: hidden;
+        }
+
+        .star-color-swatch {
+            height: 120px;
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+        }
+
+        .star-color-swatch .color-info {
+            color: white;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .star-color-swatch .color-info .name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 500;
+            display: block;
+        }
+
+        .star-color-swatch .color-info .hex {
+            font-family: monospace;
+            font-size: 0.75rem;
+            opacity: 0.9;
+        }
+
+        .star-color-reason {
+            padding: 1.25rem;
+        }
+
+        .star-color-reason p {
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .star-color-reason strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Palette Grid */
+        .palette-section {
+            margin-bottom: 3rem;
+        }
+
+        .palette-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .category-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 400;
+            white-space: nowrap;
+        }
+
+        .category-header p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .category-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-soft);
+        }
+
+        .swatch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 0.75rem;
+        }
+
+        .swatch-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .swatch-color {
+            aspect-ratio: 1;
+            border-radius: 3px 3px 0 0;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+
+        .swatch-info {
+            background: white;
+            padding: 0.4rem;
+            border-radius: 0 0 3px 3px;
+            text-align: center;
+            border: 1px solid var(--border-soft);
+            border-top: none;
+        }
+
+        .swatch-info .name {
+            font-size: 0.65rem;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.1rem;
+        }
+
+        .swatch-info .hex {
+            font-size: 0.55rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* Makeup */
+        .makeup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .makeup-card {
+            background: white;
+            padding: 1.25rem;
+            border: 1px solid var(--border-soft);
+        }
+
+        .makeup-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .makeup-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .makeup-chip {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .makeup-dot {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+        }
+
+        .makeup-chip .name {
+            font-size: 0.5rem;
+            color: var(--text-secondary);
+            text-align: center;
+            max-width: 50px;
+        }
+
+        .makeup-chip .hex {
+            font-size: 0.45rem;
+            color: var(--text-secondary);
+            font-family: monospace;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: var(--bg-soft);
+        }
+
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-style: italic;
+            color: var(--accent-rose);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 600px) {
+            .swatch-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .star-colors-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <span class="season-tag">True Summer · Personal Color Analysis</span>
+        <h1>The Verdant<span>Siren</span></h1>
+        <p class="hero-subtitle">A bespoke palette for Lauren</p>
+    </header>
+
+    <!-- Personal Coloring -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h2 class="section-title">Your Natural Coloring</h2>
+            </div>
+
+            <div class="personal-grid">
+                <div class="personal-card">
+                    <h3>Hair</h3>
+                    <p class="description">Dimensional dark blonde to light brown with natural sun-lightened pieces throughout.</p>
+                    <div class="color-row">
+                        <div class="color-chip">
+                            <div class="chip" style="background: #6B5B4F;"></div>
+                            <span>Base</span>
+                            <span class="hex">#6B5B4F</span>
+                        </div>
+                        <div class="color-chip">
+                            <div class="chip" style="background: #9C8B78;"></div>
+                            <span>Mid</span>
+                            <span class="hex">#9C8B78</span>
+                        </div>
+                        <div class="color-chip">
+                            <div class="chip" style="background: #C4B39E;"></div>
+                            <span>Highlight</span>
+                            <span class="hex">#C4B39E</span>
+                        </div>
+                        <div class="color-chip">
+                            <div class="chip" style="background: #D8CCBA;"></div>
+                            <span>Lightest</span>
+                            <span class="hex">#D8CCBA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="personal-card">
+                    <h3>Eyes</h3>
+                    <p class="description">Complex hazel-green with a golden amber ring around the pupil, sage-moss mid-zone, and a dark muted teal outer limbal ring.</p>
+                    <div class="eye-display">
+                        <div class="eye-circle"></div>
+                        <div class="color-row" style="justify-content: center;">
+                            <div class="color-chip">
+                                <div class="chip" style="background: #4A6B6B;"></div>
+                                <span>Outer Ring</span>
+                                <span class="hex">#4A6B6B</span>
+                            </div>
+                            <div class="color-chip">
+                                <div class="chip" style="background: #7A8B6A;"></div>
+                                <span>Mid Green</span>
+                                <span class="hex">#7A8B6A</span>
+                            </div>
+                            <div class="color-chip">
+                                <div class="chip" style="background: #C9A855;"></div>
+                                <span>Gold Ring</span>
+                                <span class="hex">#C9A855</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="personal-card">
+                    <h3>Skin</h3>
+                    <p class="description">Light, cool-neutral with a translucent quality. Pink undertones visible throughout with natural redness around the nose and cheeks.</p>
+                    <div class="color-row">
+                        <div class="color-chip">
+                            <div class="chip large" style="background: #F0DDD0;"></div>
+                            <span>Overall</span>
+                            <span class="hex">#F0DDD0</span>
+                        </div>
+                        <div class="color-chip">
+                            <div class="chip" style="background: #E0B0B0;"></div>
+                            <span>Flush</span>
+                            <span class="hex">#E0B0B0</span>
+                        </div>
+                        <div class="color-chip">
+                            <div class="chip" style="background: #C8A0A0;"></div>
+                            <span>Natural Lip</span>
+                            <span class="hex">#C8A0A0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="personal-card">
+                    <h3>Metals</h3>
+                    <p class="description">Both shiny silver and shiny gold work beautifully - silver harmonizes with cool undertones, gold echoes the amber ring in your eyes.</p>
+                    <div class="color-row" style="justify-content: center; gap: 1.5rem;">
+                        <div class="color-chip">
+                            <div class="chip large metal-circle small silver"></div>
+                            <span>Shiny Silver</span>
+                        </div>
+                        <div class="color-chip">
+                            <div class="chip large metal-circle small gold"></div>
+                            <span>Shiny Gold</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Star Colors -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <h2 class="section-title">Your Star Colors</h2>
+                <p class="section-subtitle">The colors that make your unique features sing</p>
+            </div>
+
+            <div class="star-colors-grid">
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #2D7580;">
+                        <div class="color-info">
+                            <span class="name">Deep Teal</span>
+                            <span class="hex">#2D7580</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> This is your eye color amplified. Deep teal echoes that striking dark outer ring around your iris, making the whole eye appear larger and more luminous while the gold ring pops against it.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #3A7868;">
+                        <div class="color-info">
+                            <span class="name">Blue-Forest</span>
+                            <span class="hex">#3A7868</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> This cool, blue-leaning forest green sits between your teal outer ring and sage mid-zone, creating seamless harmony. Your eyes become the focal point without competing contrast.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #7A2028;">
+                        <div class="color-info">
+                            <span class="name">Burgundy</span>
+                            <span class="hex">#7A2028</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> Deep burgundy creates magnetic contrast with your green eyes (red-green complementary magic) while the cool, blue-based red harmonizes with your skin's pink undertones and natural flush.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #6B4880;">
+                        <div class="color-info">
+                            <span class="name">Plum</span>
+                            <span class="hex">#6B4880</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> Purple contains both the red that contrasts your green eyes and the blue that harmonizes with your cool undertones. This depth of plum adds drama while flattering your translucent skin.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #B85565;">
+                        <div class="color-info">
+                            <span class="name">Raspberry</span>
+                            <span class="hex">#B85565</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> This cool pink-red picks up your natural flush and creates vibrant contrast with your green-gold eyes. It reads as healthy and magnetic against your cool-pink undertones.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #1E3A5F;">
+                        <div class="color-info">
+                            <span class="name">Navy</span>
+                            <span class="hex">#1E3A5F</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> Deep navy provides a sophisticated neutral that enhances your cool undertones while the blue relates to the teal in your outer iris ring. Creates beautiful framing for your face.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #8A9B78;">
+                        <div class="color-info">
+                            <span class="name">Sage</span>
+                            <span class="hex">#8A9B78</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> Sage directly matches the mid-zone of your iris, creating effortless harmony. This is your "easy" color - it makes your eyes the star while keeping the overall effect soft and approachable.</p>
+                    </div>
+                </div>
+
+                <div class="star-color-card">
+                    <div class="star-color-swatch" style="background: #D4A0A8;">
+                        <div class="color-info">
+                            <span class="name">Dusty Rose</span>
+                            <span class="hex">#D4A0A8</span>
+                        </div>
+                    </div>
+                    <div class="star-color-reason">
+                        <p><strong>Why it works:</strong> This soft, muted rose relates directly to your natural flush and lip color, creating a harmonious glow. The dusty quality keeps it sophisticated rather than saccharine against your cool skin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Palette by Mood -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h2 class="section-title">Your Palette by Mood</h2>
+            </div>
+
+            <!-- 1 - Romantic -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>1 — Romantic</h3>
+                    <p>Loving, sensual, magnetic</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #F0C8C8;"></div>
+                        <div class="swatch-info"><span class="name">Pale Pink</span><span class="hex">#F0C8C8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #E4B0B4;"></div>
+                        <div class="swatch-info"><span class="name">Blush</span><span class="hex">#E4B0B4</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #D4A0A8;"></div>
+                        <div class="swatch-info"><span class="name">Dusty Rose</span><span class="hex">#D4A0A8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #C89098;"></div>
+                        <div class="swatch-info"><span class="name">Rose</span><span class="hex">#C89098</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #B85565;"></div>
+                        <div class="swatch-info"><span class="name">Raspberry</span><span class="hex">#B85565</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #C04050;"></div>
+                        <div class="swatch-info"><span class="name">True Red</span><span class="hex">#C04050</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #A83040;"></div>
+                        <div class="swatch-info"><span class="name">Crimson</span><span class="hex">#A83040</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #902838;"></div>
+                        <div class="swatch-info"><span class="name">Deep Red</span><span class="hex">#902838</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #7A2028;"></div>
+                        <div class="swatch-info"><span class="name">Burgundy</span><span class="hex">#7A2028</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #601820;"></div>
+                        <div class="swatch-info"><span class="name">Wine</span><span class="hex">#601820</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #4A1018;"></div>
+                        <div class="swatch-info"><span class="name">Claret</span><span class="hex">#4A1018</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2 - Powerful -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>2 — Powerful</h3>
+                    <p>Commanding, assertive, confident</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <!-- Blues -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #7AA8C0;"></div>
+                        <div class="swatch-info"><span class="name">Sky Blue</span><span class="hex">#7AA8C0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #5890A8;"></div>
+                        <div class="swatch-info"><span class="name">Steel Blue</span><span class="hex">#5890A8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #3A7890;"></div>
+                        <div class="swatch-info"><span class="name">Denim</span><span class="hex">#3A7890</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #285878;"></div>
+                        <div class="swatch-info"><span class="name">Cobalt</span><span class="hex">#285878</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #1E3A5F;"></div>
+                        <div class="swatch-info"><span class="name">Navy</span><span class="hex">#1E3A5F</span></div>
+                    </div>
+                    <!-- Teals -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #58A8A8;"></div>
+                        <div class="swatch-info"><span class="name">Aqua Teal</span><span class="hex">#58A8A8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #3D8888;"></div>
+                        <div class="swatch-info"><span class="name">Teal</span><span class="hex">#3D8888</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #2D7580;"></div>
+                        <div class="swatch-info"><span class="name">Deep Teal</span><span class="hex">#2D7580</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #1E5860;"></div>
+                        <div class="swatch-info"><span class="name">Dark Teal</span><span class="hex">#1E5860</span></div>
+                    </div>
+                    <!-- Blue-Greens -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #70B0A0;"></div>
+                        <div class="swatch-info"><span class="name">Seafoam</span><span class="hex">#70B0A0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #509080;"></div>
+                        <div class="swatch-info"><span class="name">Jade</span><span class="hex">#509080</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #3A7868;"></div>
+                        <div class="swatch-info"><span class="name">Emerald</span><span class="hex">#3A7868</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #286050;"></div>
+                        <div class="swatch-info"><span class="name">Forest</span><span class="hex">#286050</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #1A4840;"></div>
+                        <div class="swatch-info"><span class="name">Deep Forest</span><span class="hex">#1A4840</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3 - Playful -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>3 — Playful</h3>
+                    <p>Light-hearted, energetic, casual</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <!-- Soft Corals/Pinks -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #E8B0A8;"></div>
+                        <div class="swatch-info"><span class="name">Soft Coral</span><span class="hex">#E8B0A8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #DC9890;"></div>
+                        <div class="swatch-info"><span class="name">Coral Pink</span><span class="hex">#DC9890</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #C88080;"></div>
+                        <div class="swatch-info"><span class="name">Watermelon</span><span class="hex">#C88080</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #B06868;"></div>
+                        <div class="swatch-info"><span class="name">Deep Coral</span><span class="hex">#B06868</span></div>
+                    </div>
+                    <!-- Soft Yellows -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #E8D8A8;"></div>
+                        <div class="swatch-info"><span class="name">Butter</span><span class="hex">#E8D8A8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #DCC898;"></div>
+                        <div class="swatch-info"><span class="name">Soft Yellow</span><span class="hex">#DCC898</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #D0B888;"></div>
+                        <div class="swatch-info"><span class="name">Straw</span><span class="hex">#D0B888</span></div>
+                    </div>
+                    <!-- Cool Muted Greens -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #98B890;"></div>
+                        <div class="swatch-info"><span class="name">Soft Green</span><span class="hex">#98B890</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #80A078;"></div>
+                        <div class="swatch-info"><span class="name">Celadon</span><span class="hex">#80A078</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #688868;"></div>
+                        <div class="swatch-info"><span class="name">Fern</span><span class="hex">#688868</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #507050;"></div>
+                        <div class="swatch-info"><span class="name">Clover</span><span class="hex">#507050</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 - Sophisticated -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>4 — Sophisticated</h3>
+                    <p>Refined, elegant, formal</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <!-- Purples -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #B8A0C8;"></div>
+                        <div class="swatch-info"><span class="name">Lavender</span><span class="hex">#B8A0C8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #A890B8;"></div>
+                        <div class="swatch-info"><span class="name">Wisteria</span><span class="hex">#A890B8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #9878A8;"></div>
+                        <div class="swatch-info"><span class="name">Orchid</span><span class="hex">#9878A8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #8860A0;"></div>
+                        <div class="swatch-info"><span class="name">Violet</span><span class="hex">#8860A0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #6B4880;"></div>
+                        <div class="swatch-info"><span class="name">Plum</span><span class="hex">#6B4880</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #5A3870;"></div>
+                        <div class="swatch-info"><span class="name">Aubergine</span><span class="hex">#5A3870</span></div>
+                    </div>
+                    <!-- Blue-Purples -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #B8B0D0;"></div>
+                        <div class="swatch-info"><span class="name">Periwinkle</span><span class="hex">#B8B0D0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #9890B8;"></div>
+                        <div class="swatch-info"><span class="name">Soft Violet</span><span class="hex">#9890B8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #7870A0;"></div>
+                        <div class="swatch-info"><span class="name">Twilight</span><span class="hex">#7870A0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #585088;"></div>
+                        <div class="swatch-info"><span class="name">Iris</span><span class="hex">#585088</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #383870;"></div>
+                        <div class="swatch-info"><span class="name">Deep Iris</span><span class="hex">#383870</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 - Calm -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>5 — Calm</h3>
+                    <p>Restful, peaceful, gentle</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <!-- Golds -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #D8C898;"></div>
+                        <div class="swatch-info"><span class="name">Wheat</span><span class="hex">#D8C898</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #C8B888;"></div>
+                        <div class="swatch-info"><span class="name">Flax</span><span class="hex">#C8B888</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #BBA878;"></div>
+                        <div class="swatch-info"><span class="name">Antique Gold</span><span class="hex">#BBA878</span></div>
+                    </div>
+                    <!-- Sages -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #B8C0A0;"></div>
+                        <div class="swatch-info"><span class="name">Pale Sage</span><span class="hex">#B8C0A0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #8A9B78;"></div>
+                        <div class="swatch-info"><span class="name">Sage</span><span class="hex">#8A9B78</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #788868;"></div>
+                        <div class="swatch-info"><span class="name">Moss</span><span class="hex">#788868</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #687858;"></div>
+                        <div class="swatch-info"><span class="name">Olive Sage</span><span class="hex">#687858</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #586848;"></div>
+                        <div class="swatch-info"><span class="name">Dark Sage</span><span class="hex">#586848</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #485840;"></div>
+                        <div class="swatch-info"><span class="name">Hunter</span><span class="hex">#485840</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6 - Understated -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>6 — Understated</h3>
+                    <p>Distinguished, rich formality</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <!-- Burgundies -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #8A3848;"></div>
+                        <div class="swatch-info"><span class="name">Berry</span><span class="hex">#8A3848</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #702838;"></div>
+                        <div class="swatch-info"><span class="name">Mulberry</span><span class="hex">#702838</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #5A1828;"></div>
+                        <div class="swatch-info"><span class="name">Oxblood</span><span class="hex">#5A1828</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #481020;"></div>
+                        <div class="swatch-info"><span class="name">Maroon</span><span class="hex">#481020</span></div>
+                    </div>
+                    <!-- Cool Greens -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #789888;"></div>
+                        <div class="swatch-info"><span class="name">Eucalyptus</span><span class="hex">#789888</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #507868;"></div>
+                        <div class="swatch-info"><span class="name">Pine</span><span class="hex">#507868</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #385850;"></div>
+                        <div class="swatch-info"><span class="name">Spruce</span><span class="hex">#385850</span></div>
+                    </div>
+                    <!-- Slates -->
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #8090A0;"></div>
+                        <div class="swatch-info"><span class="name">Slate</span><span class="hex">#8090A0</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #607080;"></div>
+                        <div class="swatch-info"><span class="name">Storm</span><span class="hex">#607080</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #2A3848;"></div>
+                        <div class="swatch-info"><span class="name">Ink</span><span class="hex">#2A3848</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7 - Reserved -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>7 — Reserved</h3>
+                    <p>Relaxed sophistication</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #785848;"></div>
+                        <div class="swatch-info"><span class="name">Cocoa</span><span class="hex">#785848</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #604838;"></div>
+                        <div class="swatch-info"><span class="name">Chocolate</span><span class="hex">#604838</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #4A3828;"></div>
+                        <div class="swatch-info"><span class="name">Espresso</span><span class="hex">#4A3828</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #382820;"></div>
+                        <div class="swatch-info"><span class="name">Dark Cocoa</span><span class="hex">#382820</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #483838;"></div>
+                        <div class="swatch-info"><span class="name">Charcoal Brown</span><span class="hex">#483838</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #6A6058;"></div>
+                        <div class="swatch-info"><span class="name">Taupe</span><span class="hex">#6A6058</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 - Conservative -->
+            <div class="palette-section">
+                <div class="category-header">
+                    <h3>8 — Conservative</h3>
+                    <p>Somber, austere</p>
+                    <div class="category-line"></div>
+                </div>
+                <div class="swatch-grid">
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #F5F0E8; border: 1px solid #ddd;"></div>
+                        <div class="swatch-info"><span class="name">Ivory</span><span class="hex">#F5F0E8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #EAE5DC; border: 1px solid #ddd;"></div>
+                        <div class="swatch-info"><span class="name">Off-White</span><span class="hex">#EAE5DC</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #E0D8CC;"></div>
+                        <div class="swatch-info"><span class="name">Oyster</span><span class="hex">#E0D8CC</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #D5C8B8;"></div>
+                        <div class="swatch-info"><span class="name">Stone</span><span class="hex">#D5C8B8</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #B0A898;"></div>
+                        <div class="swatch-info"><span class="name">Warm Gray</span><span class="hex">#B0A898</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #908880;"></div>
+                        <div class="swatch-info"><span class="name">Pewter</span><span class="hex">#908880</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #706860;"></div>
+                        <div class="swatch-info"><span class="name">Charcoal</span><span class="hex">#706860</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #484440;"></div>
+                        <div class="swatch-info"><span class="name">Dark Charcoal</span><span class="hex">#484440</span></div>
+                    </div>
+                    <div class="swatch-item">
+                        <div class="swatch-color" style="background: #282828;"></div>
+                        <div class="swatch-info"><span class="name">Black</span><span class="hex">#282828</span></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Power Neutrals -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">04</div>
+                <h2 class="section-title">Power Neutrals</h2>
+                <p class="section-subtitle">Your foundation colors for large amounts</p>
+            </div>
+
+            <div class="swatch-grid">
+                <div class="swatch-item">
+                    <div class="swatch-color" style="background: #282828;"></div>
+                    <div class="swatch-info"><span class="name">Black</span><span class="hex">#282828</span></div>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch-color" style="background: #1E3A5F;"></div>
+                    <div class="swatch-info"><span class="name">Navy</span><span class="hex">#1E3A5F</span></div>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch-color" style="background: #4A3828;"></div>
+                    <div class="swatch-info"><span class="name">Espresso</span><span class="hex">#4A3828</span></div>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch-color" style="background: #484440;"></div>
+                    <div class="swatch-info"><span class="name">Charcoal</span><span class="hex">#484440</span></div>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch-color" style="background: #F5F0E8; border: 1px solid #ddd;"></div>
+                    <div class="swatch-info"><span class="name">Ivory</span><span class="hex">#F5F0E8</span></div>
+                </div>
+                <div class="swatch-item">
+                    <div class="swatch-color" style="background: #E0D8CC;"></div>
+                    <div class="swatch-info"><span class="name">Oyster</span><span class="hex">#E0D8CC</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Makeup -->
+    <section>
+        <div class="container">
+            <div class="section-header">
+                <div class="section-number">05</div>
+                <h2 class="section-title">Makeup Wardrobe</h2>
+            </div>
+
+            <div class="makeup-grid">
+                <div class="makeup-card">
+                    <h4>Lips</h4>
+                    <div class="makeup-row">
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #E4B0B4;"></div>
+                            <span class="name">Blush</span>
+                            <span class="hex">#E4B0B4</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #D4A0A8;"></div>
+                            <span class="name">Dusty Rose</span>
+                            <span class="hex">#D4A0A8</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #C89098;"></div>
+                            <span class="name">Rose</span>
+                            <span class="hex">#C89098</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #B85565;"></div>
+                            <span class="name">Raspberry</span>
+                            <span class="hex">#B85565</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #C04050;"></div>
+                            <span class="name">True Red</span>
+                            <span class="hex">#C04050</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #902838;"></div>
+                            <span class="name">Deep Red</span>
+                            <span class="hex">#902838</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #7A2028;"></div>
+                            <span class="name">Burgundy</span>
+                            <span class="hex">#7A2028</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #4A1018;"></div>
+                            <span class="name">Claret</span>
+                            <span class="hex">#4A1018</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="makeup-card">
+                    <h4>Blush</h4>
+                    <div class="makeup-row">
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #F0C8C8;"></div>
+                            <span class="name">Pale Pink</span>
+                            <span class="hex">#F0C8C8</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #E4B0B4;"></div>
+                            <span class="name">Blush</span>
+                            <span class="hex">#E4B0B4</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #E8B0A8;"></div>
+                            <span class="name">Soft Coral</span>
+                            <span class="hex">#E8B0A8</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #DC9890;"></div>
+                            <span class="name">Coral Pink</span>
+                            <span class="hex">#DC9890</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #C89098;"></div>
+                            <span class="name">Rose</span>
+                            <span class="hex">#C89098</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="makeup-card">
+                    <h4>Eyes</h4>
+                    <div class="makeup-row">
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #E0D8CC;"></div>
+                            <span class="name">Oyster</span>
+                            <span class="hex">#E0D8CC</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #C8B888;"></div>
+                            <span class="name">Flax</span>
+                            <span class="hex">#C8B888</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #8A9B78;"></div>
+                            <span class="name">Sage</span>
+                            <span class="hex">#8A9B78</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #B8A0C8;"></div>
+                            <span class="name">Lavender</span>
+                            <span class="hex">#B8A0C8</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #785848;"></div>
+                            <span class="name">Cocoa</span>
+                            <span class="hex">#785848</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #4A3828;"></div>
+                            <span class="name">Espresso</span>
+                            <span class="hex">#4A3828</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #282828;"></div>
+                            <span class="name">Black</span>
+                            <span class="hex">#282828</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="makeup-card">
+                    <h4>Liner</h4>
+                    <div class="makeup-row">
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #4A3828;"></div>
+                            <span class="name">Espresso</span>
+                            <span class="hex">#4A3828</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #282828;"></div>
+                            <span class="name">Black</span>
+                            <span class="hex">#282828</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #1E3A5F;"></div>
+                            <span class="name">Navy</span>
+                            <span class="hex">#1E3A5F</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #286050;"></div>
+                            <span class="name">Forest</span>
+                            <span class="hex">#286050</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #5A3870;"></div>
+                            <span class="name">Aubergine</span>
+                            <span class="hex">#5A3870</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #1E5860;"></div>
+                            <span class="name">Dark Teal</span>
+                            <span class="hex">#1E5860</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="makeup-card">
+                    <h4>Brows</h4>
+                    <div class="makeup-row">
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #6A6058;"></div>
+                            <span class="name">Taupe</span>
+                            <span class="hex">#6A6058</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #4A3828;"></div>
+                            <span class="name">Espresso</span>
+                            <span class="hex">#4A3828</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #382820;"></div>
+                            <span class="name">Dark Cocoa</span>
+                            <span class="hex">#382820</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="makeup-card">
+                    <h4>Bronzer</h4>
+                    <div class="makeup-row">
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #C8B888;"></div>
+                            <span class="name">Flax</span>
+                            <span class="hex">#C8B888</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #785848;"></div>
+                            <span class="name">Cocoa</span>
+                            <span class="hex">#785848</span>
+                        </div>
+                        <div class="makeup-chip">
+                            <div class="makeup-dot" style="background: #604838;"></div>
+                            <span class="name">Chocolate</span>
+                            <span class="hex">#604838</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-logo">The Verdant Siren</div>
+        <p>A personal color palette for Lauren</p>
+        <p style="margin-top: 0.25rem;">Based on John Kitchener PSC analysis · True Summer</p>
+    </footer>
+
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
