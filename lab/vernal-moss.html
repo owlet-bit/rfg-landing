@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Vernal Moss & Morning Light</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--moss:#7D8B6A;--moss-deep:#5A6B4A;--moss-pale:#A8B89A;--amber:#B8A060;--rose:#B8989A;--rose-deep:#9A7070;--vein:#8A9BB8;--cream:#F7F4EF;--cream-warm:#F5EDE6;--ink:#3D3D3B;--ink-soft:#6A6A66;--ink-faint:#9A9A96}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{font-family:"Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;background:var(--cream);min-height:100vh;color:var(--ink);line-height:1.6;overflow-x:hidden}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--cream);border-top:1px solid var(--moss-pale);display:flex;z-index:1000;padding-bottom:env(safe-area-inset-bottom)}
+.nav-item{flex:1;padding:12px 8px 10px;text-align:center;font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-faint);background:none;border:none;font-family:inherit;cursor:pointer;transition:color .2s}
+.nav-item.active{color:var(--moss)}
+.nav-item::before{content:"";display:block;width:4px;height:4px;background:currentColor;border-radius:50%;margin:0 auto 6px;opacity:.5}
+.nav-item.active::before{opacity:1}
+.page{display:none;min-height:100vh;padding:24px 20px 100px;max-width:600px;margin:0 auto;animation:fadeIn .3s ease}
+.page.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:1.5rem;font-weight:normal;font-style:italic;text-align:center;margin-bottom:4px}
+.page-subtitle{font-size:.6875rem;letter-spacing:.2em;text-transform:uppercase;text-align:center;color:var(--ink-faint);margin-bottom:32px}
+h2{font-size:.6875rem;font-weight:normal;letter-spacing:.18em;text-transform:uppercase;color:var(--moss);margin-bottom:16px}
+.analysis-header{text-align:center;padding:40px 0 32px}
+.monogram{width:56px;height:56px;border:1px solid var(--moss-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:1.25rem;color:var(--moss);font-style:italic}
+.season-badge{display:inline-block;padding:8px 16px;border:1px solid var(--moss-pale);font-size:.75rem;letter-spacing:.1em;color:var(--ink-soft);margin-bottom:32px}
+.analysis-text{font-size:.9375rem;line-height:1.85;margin-bottom:40px}
+.analysis-text p{margin-bottom:1.25em;text-indent:1.5em}
+.analysis-text p:first-child{text-indent:0}
+.drop-cap{float:left;font-size:3.25em;line-height:.8;margin:.06em .08em 0 0;color:var(--moss);font-style:italic}
+.pigments{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;margin-bottom:8px}
+.pigment{aspect-ratio:1;position:relative;cursor:pointer;transition:transform .15s}
+.pigment:active{transform:scale(.94)}
+.pigment-info{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:8px 12px;font-size:.6875rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:10}
+.pigment:hover .pigment-info{opacity:1}
+.pigment-legend{font-size:.6875rem;color:var(--ink-faint);text-align:center;font-style:italic}
+.palette-controls{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap}
+.view-toggle{padding:10px 14px;background:none;border:1px solid var(--moss-pale);font-family:inherit;font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer;transition:all .2s}
+.view-toggle.active{background:var(--moss);border-color:var(--moss);color:var(--cream)}
+.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.palette-grid.spectrum{grid-template-columns:repeat(8,1fr);gap:3px}
+.swatch{aspect-ratio:1;position:relative;cursor:pointer;transition:transform .15s;border:1px solid rgba(0,0,0,.04)}
+.swatch:active{transform:scale(.92)}
+.swatch.favorite::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--cream);border-radius:50%;box-shadow:0 0 0 1px var(--moss)}
+.swatch-name{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:6px 10px;font-size:.625rem;font-family:"Courier New",monospace;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:50}
+.swatch:hover .swatch-name{opacity:1}
+.group-label{grid-column:1/-1;font-size:.625rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);padding:16px 0 8px}
+.group-label:first-child{padding-top:0}
+.oracle-intro{text-align:center;font-size:.875rem;color:var(--ink-soft);font-style:italic;margin-bottom:32px;line-height:1.7}
+.oracle-button{display:block;width:100%;padding:20px;background:var(--moss);border:none;color:var(--cream);font-family:inherit;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;margin-bottom:32px;transition:background .2s}
+.oracle-button:active{background:var(--moss-deep)}
+.oracle-result{background:var(--cream-warm);padding:24px;margin-bottom:24px;opacity:0;transform:translateY(10px);transition:all .4s ease}
+.oracle-result.visible{opacity:1;transform:translateY(0)}
+.oracle-colors{display:flex;gap:4px;height:64px;margin-bottom:16px}
+.oracle-color{flex:1;border:1px solid rgba(0,0,0,.04)}
+.oracle-title{font-size:1rem;font-style:italic;margin-bottom:8px}
+.oracle-text{font-size:.875rem;color:var(--ink-soft);line-height:1.7}
+.time-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.time-display{text-align:center;margin-bottom:24px}
+.time-label{font-size:.625rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.time-value{font-size:1.125rem;font-style:italic;color:var(--ink)}
+.time-palette{display:flex;gap:4px;height:48px;margin-bottom:12px}
+.time-color{flex:1;border:1px solid rgba(0,0,0,.04);cursor:pointer;transition:transform .15s}
+.time-color:active{transform:scale(.95)}
+.time-advice{font-size:.8125rem;color:var(--ink-soft);text-align:center;font-style:italic}
+.look-card{background:var(--cream-warm);padding:20px;margin-bottom:20px}
+.look-colors{display:flex;gap:3px;height:52px;margin-bottom:16px}
+.look-color{flex:1;border:1px solid rgba(0,0,0,.04)}
+.look-title{font-size:1rem;font-style:italic;margin-bottom:6px}
+.look-desc{font-size:.8125rem;color:var(--ink-soft);line-height:1.7}
+.compare-slots{display:flex;gap:12px;margin-bottom:20px}
+.compare-slot{flex:1;aspect-ratio:1;border:2px dashed var(--moss-pale);display:flex;align-items:center;justify-content:center;font-size:.6875rem;color:var(--ink-faint);text-align:center;padding:12px;cursor:pointer;transition:all .2s;min-height:120px}
+.compare-slot.filled{border-style:solid}
+.compare-slot.selecting{border-color:var(--amber);background:rgba(184,160,96,.08)}
+.compare-verdict{background:var(--cream-warm);padding:20px;margin-bottom:24px;min-height:80px}
+.verdict-text{font-size:.875rem;line-height:1.75;color:var(--ink)}
+.compare-actions{display:flex;gap:8px}
+.compare-btn{flex:1;padding:14px;background:none;border:1px solid var(--moss-pale);font-family:inherit;font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer}
+.audit-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.audit-input-wrap{margin-bottom:20px}
+.audit-label{display:block;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+.audit-input{width:100%;padding:14px;border:1px solid var(--moss-pale);font-family:inherit;font-size:.875rem;background:var(--cream);color:var(--ink)}
+.audit-input:focus{outline:none;border-color:var(--moss)}
+.audit-result{background:var(--cream-warm);padding:20px;display:none}
+.audit-result.visible{display:block}
+.audit-swatch{width:100%;height:48px;margin-bottom:12px;border:1px solid rgba(0,0,0,.04)}
+.audit-verdict{font-size:.875rem;color:var(--ink);line-height:1.7}
+.undertone-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.undertone-test{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.undertone-option{padding:20px;border:1px solid var(--moss-pale);cursor:pointer;transition:all .2s;text-align:center}
+.undertone-option:active{transform:scale(.98)}
+.undertone-option.selected{border-color:var(--moss);background:rgba(125,139,106,.08)}
+.undertone-swatch{height:40px;margin-bottom:8px}
+.undertone-label{font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft)}
+.undertone-result{background:var(--cream-warm);padding:20px;text-align:center;display:none}
+.undertone-result.visible{display:block}
+.undertone-verdict{font-size:.9375rem;color:var(--ink);line-height:1.7}
+.harmony-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.harmony-wheel{position:relative;width:260px;height:260px;margin:0 auto 24px}
+.harmony-note{text-align:center;font-size:.8125rem;color:var(--ink-soft);font-style:italic}
+.favorites-empty{text-align:center;padding:60px 20px;color:var(--ink-faint);font-style:italic}
+.favorites-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:32px}
+.fav-item{position:relative}
+.fav-swatch{aspect-ratio:1;border:1px solid rgba(0,0,0,.04);cursor:pointer;transition:transform .15s}
+.fav-swatch:active{transform:scale(.94)}
+.fav-name{font-size:.5625rem;color:var(--ink-faint);text-align:center;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.export-section{border-top:1px solid var(--moss-pale);padding-top:24px}
+.export-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.export-btn{padding:14px 12px;background:var(--moss);border:none;color:var(--cream);font-family:inherit;font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.export-btn.secondary{background:none;border:1px solid var(--moss);color:var(--moss)}
+.shopping-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.shopping-scenario{background:var(--cream-warm);padding:20px;margin-bottom:16px;cursor:pointer;transition:transform .15s}
+.shopping-scenario:active{transform:scale(.99)}
+.shopping-q{font-size:.875rem;font-style:italic;color:var(--ink);margin-bottom:12px}
+.shopping-colors{display:flex;gap:4px;height:32px;margin-bottom:8px}
+.shopping-color{flex:1;border:1px solid rgba(0,0,0,.04)}
+.shopping-answer{font-size:.75rem;color:var(--ink-soft);line-height:1.7;display:none}
+.shopping-scenario.open .shopping-answer{display:block}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--cream);padding:12px 20px;font-size:.75rem;letter-spacing:.05em;opacity:0;transition:all .25s ease;z-index:2000;pointer-events:none}
+.toast.visible{transform:translateX(-50%) translateY(0);opacity:1}
+.modal{position:fixed;inset:0;background:rgba(61,61,59,.9);display:none;align-items:center;justify-content:center;z-index:3000;padding:24px}
+.modal.visible{display:flex}
+.modal-content{background:var(--cream);width:100%;max-width:400px;max-height:70vh;overflow-y:auto;padding:24px}
+.modal-title{font-size:.6875rem;letter-spacing:.15em;text-transform:uppercase;color:var(--moss);margin-bottom:16px;text-align:center}
+.modal-body{font-family:"Courier New",monospace;font-size:.6875rem;line-height:1.8;white-space:pre-wrap;word-break:break-all;background:var(--cream-warm);padding:16px;margin-bottom:16px;max-height:250px;overflow-y:auto}
+.modal-close{display:block;width:100%;padding:14px;background:var(--moss);border:none;color:var(--cream);font-family:inherit;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer}
+.mood-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.mood-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.mood-card{padding:16px;border:1px solid var(--moss-pale);cursor:pointer;transition:all .2s}
+.mood-card:active{transform:scale(.98)}
+.mood-card.selected{border-color:var(--moss);background:rgba(125,139,106,.06)}
+.mood-name{font-size:.75rem;font-style:italic;margin-bottom:8px}
+.mood-colors{display:flex;gap:2px;height:24px}
+.mood-color{flex:1}
+.mood-result{background:var(--cream-warm);padding:20px;margin-top:20px;display:none}
+.mood-result.visible{display:block}
+.mood-advice{font-size:.875rem;line-height:1.7;color:var(--ink)}
+.capsule-section{margin-top:40px;padding-top:32px;border-top:1px solid var(--moss-pale)}
+.capsule-intro{font-size:.8125rem;color:var(--ink-soft);margin-bottom:20px;line-height:1.7}
+.capsule-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.capsule-item{text-align:center;cursor:pointer;transition:transform .15s}
+.capsule-item:active{transform:scale(.95)}
+.capsule-swatch{aspect-ratio:1;border:1px solid rgba(0,0,0,.04);margin-bottom:6px;position:relative}
+.capsule-swatch.favorite::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;background:var(--cream);border-radius:50%;box-shadow:0 0 0 1px var(--moss)}
+.capsule-label{font-size:.5625rem;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
+.capsule-hex{font-family:"Courier New",monospace;font-size:.5625rem;color:var(--ink-soft);margin-top:2px}
+.capsule-note{font-size:.75rem;color:var(--ink-soft);font-style:italic;text-align:center}
+.capsule-hint{font-size:.6875rem;color:var(--ink-faint);text-align:center;margin-top:12px}
+</style>
+</head>
+<body>
+<nav class="nav">
+<button class="nav-item active" data-page="analysis">Study</button>
+<button class="nav-item" data-page="palette">Palette</button>
+<button class="nav-item" data-page="oracle">Oracle</button>
+<button class="nav-item" data-page="looks">Looks</button>
+<button class="nav-item" data-page="tools">Tools</button>
+<button class="nav-item" data-page="favorites">Saved</button>
+</nav>
+
+<div class="page active" id="page-analysis">
+<div class="analysis-header">
+<div class="monogram">L</div>
+<h1>Vernal Moss & Morning Light</h1>
+<div class="page-subtitle">A Personal Color Study</div>
+<div class="season-badge">Soft Summer / Autumn Cusp</div>
+</div>
+<div class="analysis-text">
+<p><span class="drop-cap">Y</span>our coloring possesses the quality of early spring light filtered through new leaves: luminous, complex, quietly extraordinary. The skin carries the translucence of alabaster held to morning sun, revealing its secrets in the blue-violet rivers at the wrist, the rose-dust flush that blooms across the cheekbones like the first warmth of the season. This is not merely fair skin but transparent skin, the kind that honest light loves.</p>
+<p>The eyes are the anchor of your palette, and they refuse simple description. A warm amber corona radiates from the pupil like pollen scattered on water, dissolving into sage-green depths before meeting the cool grey perimeter. They shift with the light, sometimes appearing purely green, sometimes catching gold, occasionally revealing unexpected grey. This is the color of moss on stone, of lichen, of things that grow where water meets earth.</p>
+<p>Your hair echoes this complexity: cool ash roots giving way to sun-touched lengths of honey and wheat, the palette of wild grasses in late afternoon. Together with your rose-mauve lips and golden freckles, these elements compose a coloring that exists in fertile territory where warm and cool meet and make something more interesting than either alone.</p>
+</div>
+<h2>Your Source Pigments</h2>
+<div class="pigments" id="pigments"></div>
+<div class="pigment-legend">Tap to copy hex</div>
+
+<div class="capsule-section">
+<h2>Your 9-Color Capsule</h2>
+<div class="capsule-intro">If you could only wear nine colors forever, these would serve you completely: three neutrals, three accents, three signatures.</div>
+<div class="capsule-grid" id="capsuleGrid"></div>
+<div class="capsule-note">Every color here works with every other</div>
+<div class="capsule-hint">Tap to copy and select for compare. Double-tap to favorite.</div>
+</div>
+</div>
+
+<div class="page" id="page-palette">
+<h1>Your Palette</h1>
+<div class="page-subtitle">40 Colors Derived From You</div>
+<div class="palette-controls">
+<button class="view-toggle active" data-view="grouped">Grouped</button>
+<button class="view-toggle" data-view="light">By Light</button>
+<button class="view-toggle" data-view="warm">By Warmth</button>
+</div>
+<div class="palette-grid" id="paletteGrid"></div>
+</div>
+
+<div class="page" id="page-oracle">
+<h1>The Color Oracle</h1>
+<div class="page-subtitle">Serendipity Engine</div>
+<div class="oracle-intro">When you cannot decide, when you need permission, when you want to be surprised: ask the oracle for a color story.</div>
+<button class="oracle-button" id="oracleBtn">Draw a Color Story</button>
+<div class="oracle-result" id="oracleResult">
+<div class="oracle-colors" id="oracleColors"></div>
+<div class="oracle-title" id="oracleTitle"></div>
+<div class="oracle-text" id="oracleText"></div>
+</div>
+
+<div class="time-section">
+<h2>Right Now</h2>
+<div class="time-display">
+<div class="time-label">Colors for this moment</div>
+<div class="time-value" id="timeValue"></div>
+</div>
+<div class="time-palette" id="timePalette"></div>
+<div class="time-advice" id="timeAdvice"></div>
+</div>
+
+<div class="mood-section">
+<h2>How Do You Feel?</h2>
+<div class="mood-grid" id="moodGrid"></div>
+<div class="mood-result" id="moodResult">
+<div class="mood-advice" id="moodAdvice"></div>
+</div>
+</div>
+
+<div class="shopping-section">
+<h2>Shopping Companion</h2>
+<div id="shoppingScenarios"></div>
+</div>
+</div>
+
+<div class="page" id="page-looks">
+<h1>Styled Looks</h1>
+<div class="page-subtitle">Complete Color Stories</div>
+<div id="looksContainer"></div>
+</div>
+
+<div class="page" id="page-tools">
+<h1>Color Tools</h1>
+<div class="page-subtitle">Compare, Test, Discover</div>
+<h2>Compare Two Colors</h2>
+<div class="compare-slots">
+<div class="compare-slot" id="slot1">Tap here after selecting a swatch</div>
+<div class="compare-slot" id="slot2">Then tap here with another</div>
+</div>
+<div class="compare-verdict">
+<div class="verdict-text" id="verdictText">Select swatches from your palette, then tap the slots above</div>
+</div>
+<div class="compare-actions">
+<button class="compare-btn" id="clearCompare">Clear</button>
+<button class="compare-btn" id="swapCompare">Swap</button>
+</div>
+
+<div class="audit-section">
+<h2>Wardrobe Audit</h2>
+<div class="audit-input-wrap">
+<label class="audit-label">Enter a hex code from your closet</label>
+<input type="text" class="audit-input" id="auditInput" placeholder="#8B4513">
+</div>
+<div class="audit-result" id="auditResult">
+<div class="audit-swatch" id="auditSwatch"></div>
+<div class="audit-verdict" id="auditVerdict"></div>
+</div>
+</div>
+
+<div class="undertone-section">
+<h2>Quick Undertone Check</h2>
+<p style="font-size:.8125rem;color:var(--ink-soft);margin-bottom:16px">Which looks more harmonious against your skin?</p>
+<div class="undertone-test" id="undertoneTest"></div>
+<div class="undertone-result" id="undertoneResult">
+<div class="undertone-verdict" id="undertoneVerdict"></div>
+</div>
+</div>
+
+<div class="harmony-section">
+<h2>Your Color Harmonies</h2>
+<div class="harmony-wheel" id="harmonyWheel"></div>
+<div class="harmony-note">Your palette arranged by hue: analogous colors flow together, complementary colors face each other</div>
+</div>
+</div>
+
+<div class="page" id="page-favorites">
+<h1>Saved Colors</h1>
+<div class="page-subtitle">Your Curated Selection</div>
+<div class="favorites-empty" id="favEmpty">Double-tap any swatch to save it here</div>
+<div class="favorites-grid" id="favGrid"></div>
+<div class="export-section">
+<h2>Export Full Palette</h2>
+<div class="export-btns">
+<button class="export-btn" id="exportJSON">Palette JSON</button>
+<button class="export-btn secondary" id="exportText">Copy Text</button>
+</div>
+</div>
+<div class="export-section" id="exportFavSection" style="display:none">
+<h2>Export Favorites</h2>
+<div class="export-btns">
+<button class="export-btn" id="exportFavJSON">Favorites JSON</button>
+<button class="export-btn secondary" id="exportFavText">Favorites Text</button>
+</div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal">
+<div class="modal-content">
+<div class="modal-title" id="modalTitle"></div>
+<div class="modal-body" id="modalBody"></div>
+<button class="modal-close" id="modalClose">Close</button>
+</div>
+</div>
+
+<script>
+(function(){"use strict";
+var sourcePigments=[
+{name:"Translucent Base",hex:"#F5EDE6"},
+{name:"Rose Flush",hex:"#D4A5A5"},
+{name:"Vein Blue",hex:"#8A9BB8"},
+{name:"Amber Corona",hex:"#B8A060"},
+{name:"Moss Green",hex:"#7D8B6A"},
+{name:"Grey Perimeter",hex:"#8E9A9A"},
+{name:"Ash Root",hex:"#8B8070"},
+{name:"Honey Length",hex:"#C4AA78"},
+{name:"Lip Mauve",hex:"#B8989A"},
+{name:"Freckle Gold",hex:"#C9A87C"}
+];
+
+var paletteData=[
+{name:"Wet Slate",hex:"#5D6066",group:"Stone",warmth:-0.02,light:0.38},
+{name:"Storm Cloud",hex:"#7A7E85",group:"Stone",warmth:-0.02,light:0.50},
+{name:"Pewter",hex:"#8E9196",group:"Stone",warmth:-0.02,light:0.58},
+{name:"Silver Sage",hex:"#A5ADA8",group:"Stone",warmth:0.00,light:0.68},
+{name:"Morning Fog",hex:"#C4C8C5",group:"Stone",warmth:0.00,light:0.78},
+{name:"Deep Fern",hex:"#4A5A47",group:"Moss",warmth:0.02,light:0.34},
+{name:"Forest Floor",hex:"#5E6B56",group:"Moss",warmth:0.03,light:0.42},
+{name:"Sage Leaf",hex:"#7D8B6A",group:"Moss",warmth:0.06,light:0.54},
+{name:"Lichen",hex:"#9AA086",group:"Moss",warmth:0.06,light:0.63},
+{name:"Dried Moss",hex:"#B5B8A0",group:"Moss",warmth:0.06,light:0.72},
+{name:"Rich Loam",hex:"#5A4A3E",group:"Earth",warmth:0.10,light:0.32},
+{name:"Driftwood",hex:"#7A6B5A",group:"Earth",warmth:0.12,light:0.44},
+{name:"Mushroom",hex:"#9A8B78",group:"Earth",warmth:0.12,light:0.56},
+{name:"Linen",hex:"#C4B8A8",group:"Earth",warmth:0.08,light:0.73},
+{name:"Oat",hex:"#D8CFC0",group:"Earth",warmth:0.06,light:0.82},
+{name:"Dried Rose",hex:"#9A7070",group:"Rose",warmth:0.14,light:0.48},
+{name:"Dusty Mauve",hex:"#A8868A",group:"Rose",warmth:0.10,light:0.56},
+{name:"Heather",hex:"#B89A9E",group:"Rose",warmth:0.08,light:0.64},
+{name:"Blush",hex:"#D4B8B8",group:"Rose",warmth:0.08,light:0.74},
+{name:"Petal",hex:"#E8D0D0",group:"Rose",warmth:0.06,light:0.84},
+{name:"Deep Wisteria",hex:"#5A5A70",group:"Violet",warmth:-0.08,light:0.38},
+{name:"Twilight",hex:"#6E7088",group:"Violet",warmth:-0.08,light:0.46},
+{name:"Periwinkle Dust",hex:"#8A8BA0",group:"Violet",warmth:-0.06,light:0.56},
+{name:"Lavender Grey",hex:"#A8A8B8",group:"Violet",warmth:-0.04,light:0.68},
+{name:"Soft Violet",hex:"#C8C4D0",group:"Violet",warmth:-0.02,light:0.78},
+{name:"Deep Spruce",hex:"#3A5050",group:"Teal",warmth:-0.04,light:0.32},
+{name:"Atlantic",hex:"#506868",group:"Teal",warmth:-0.04,light:0.42},
+{name:"Eucalyptus",hex:"#6A8080",group:"Teal",warmth:-0.04,light:0.50},
+{name:"Sea Glass",hex:"#8AA0A0",group:"Teal",warmth:-0.04,light:0.62},
+{name:"Seafoam",hex:"#A8C0C0",group:"Teal",warmth:-0.04,light:0.74},
+{name:"Caramel",hex:"#8A7050",group:"Amber",warmth:0.18,light:0.46},
+{name:"Amber",hex:"#A88858",group:"Amber",warmth:0.22,light:0.56},
+{name:"Honey",hex:"#C4A070",group:"Amber",warmth:0.24,light:0.66},
+{name:"Wheat",hex:"#D4BA90",group:"Amber",warmth:0.18,light:0.76},
+{name:"Buttercream",hex:"#E8D8B8",group:"Amber",warmth:0.14,light:0.86},
+{name:"Soft Black",hex:"#3D3D3B",group:"Neutral",warmth:0.01,light:0.24},
+{name:"Charcoal",hex:"#5A5A57",group:"Neutral",warmth:0.01,light:0.36},
+{name:"Warm Grey",hex:"#8A887E",group:"Neutral",warmth:0.04,light:0.54},
+{name:"Greige",hex:"#B8B4A8",group:"Neutral",warmth:0.04,light:0.72},
+{name:"Ivory",hex:"#F5F0E8",group:"Neutral",warmth:0.02,light:0.94}
+];
+
+var capsuleColors=[
+{name:"Soft Black",hex:"#3D3D3B",label:"Base Dark"},
+{name:"Greige",hex:"#B8B4A8",label:"Base Mid"},
+{name:"Ivory",hex:"#F5F0E8",label:"Base Light"},
+{name:"Sage Leaf",hex:"#7D8B6A",label:"Signature"},
+{name:"Heather",hex:"#B89A9E",label:"Accent Soft"},
+{name:"Deep Spruce",hex:"#3A5050",label:"Accent Deep"},
+{name:"Honey",hex:"#C4A070",label:"Warm Pop"},
+{name:"Vein Blue",hex:"#8A9BB8",label:"Cool Pop"},
+{name:"Dried Rose",hex:"#9A7070",label:"Statement"}
+];
+
+var allColors=paletteData.concat(capsuleColors.filter(function(c){
+  return !paletteData.some(function(p){return p.hex===c.hex});
+}));
+
+var looks=[
+{title:"Morning Walk",colors:["#7D8B6A","#D4B8B8","#C4B8A8","#F5F0E8","#5A5A57"],desc:"Sage green knit layered over dusty rose, oatmeal trousers. The green echoes your moss-green irises while rose picks up your natural flush. Makeup: tinted balm, clear brow gel, one coat brown mascara."},
+{title:"Evening Out",colors:["#3A5050","#C8C4D0","#B8989A","#E8D0D0","#5A4A3E"],desc:"Deep spruce silk blouse, soft violet jewelry, rich loam trousers. The teal ignites your eye's green while violet catches its grey perimeter. Makeup: berry-tinted lip, soft brown crease, champagne inner corner."},
+{title:"Weekend Market",colors:["#C4A070","#F5F0E8","#7A6B5A","#8AA0A0","#B89A9E"],desc:"Honey linen tucked into driftwood chinos, sea glass scarf. Your amber eye pigment externalized. Makeup: clear gloss, bronzer across cheekbones, groomed brows."},
+{title:"Important Meeting",colors:["#5D6066","#E8D8B8","#9A7070","#D8CFC0","#3D3D3B"],desc:"Wet slate blazer over buttercream silk, dried rose earrings. The grey harmonizes with your eye's outer ring. Makeup: matte dusty rose lip, defined brows, light mascara."},
+{title:"Creative Evening",colors:["#5A5A70","#A88858","#C8C4D0","#B5B8A0","#9A8B78"],desc:"Deep wisteria wrap dress, amber jewelry, lichen suede boots. The violet-gold tension mirrors your coloring. Makeup: copper wash over lids, intensified mauve lip."},
+{title:"Sunday Rest",colors:["#D8CFC0","#B8B4A8","#C4C8C5","#F5EDE6","#8A887E"],desc:"Oat cashmere, greige joggers, silver sage blanket. A study in your skin's undertones. Nothing competes. Makeup: none, or tinted moisturizer."}
+];
+
+var oracleStories=[
+{title:"The Scholar",colors:["#5A5A70","#D8CFC0","#7D8B6A","#F5F0E8"],text:"Today calls for quiet authority. Lead with deep wisteria and let oat ground you. The sage is your secret weapon."},
+{title:"Wild Garden",colors:["#9AA086","#C9A87C","#B89A9E","#5E6B56"],text:"Let the lichen, freckle gold, and heather intermingle like an overgrown cottage garden. Abundance, not perfection."},
+{title:"Before the Storm",colors:["#5D6066","#8A9BB8","#C4C8C5","#3A5050"],text:"Channel the electric stillness before rain. Wet slate, vein blue, fog, deep spruce. Dramatic but hushed."},
+{title:"Honeyed Hours",colors:["#C4A070","#E8D8B8","#B8989A","#8B8070"],text:"Lean into your warmest colors today: honey, buttercream, lip mauve, ash root. Golden hour all day."},
+{title:"First Frost",colors:["#C8C4D0","#8E9A9A","#E8D0D0","#6E7088"],text:"Soft violet, grey perimeter, petal pink, twilight. The palette of cold mornings and warm coffee."},
+{title:"Earth and Sky",colors:["#5A4A3E","#8AA0A0","#C4B8A8","#506868"],text:"Ground meets atmosphere: rich loam and linen below, sea glass and atlantic above. You are the horizon."},
+{title:"Rose Study",colors:["#9A7070","#D4B8B8","#A8868A","#E8D0D0"],text:"Today is a rose day. All the dusty, muted, sophisticated pinks that mirror your natural flush."},
+{title:"Moss and Stone",colors:["#7D8B6A","#8E9196","#4A5A47","#A5ADA8"],text:"Channel the forest floor: sage leaf and pewter, deep fern and silver sage. Ancient, grounded, wise."}
+];
+
+var moods=[
+{name:"Energized",colors:["#7D8B6A","#C4A070","#9A7070"],advice:"You're feeling alive - wear your signatures. Sage leaf as your main piece, honey as an accent, dried rose for warmth. This is your power combination."},
+{name:"Contemplative",colors:["#5A5A70","#8A9BB8","#C8C4D0"],advice:"Honor the quiet with your cool tones. Deep wisteria, vein blue, soft violet. These colors support reflection without demanding attention."},
+{name:"Tender",colors:["#B89A9E","#E8D0D0","#D4B8B8"],advice:"Wrap yourself in softness. Heather, petal, blush. Your rose family is gentle armor for vulnerable days."},
+{name:"Bold",colors:["#3A5050","#5A4A3E","#9A7070"],advice:"Reach for your deepest colors. Deep spruce, rich loam, dried rose. Saturated but still sophisticated - you'll command any room."}
+];
+
+var shoppingScenarios=[
+{q:"I found a bright coral top. Should I buy it?",colors:["#FF6B6B","#B8989A","#D4A5A5"],a:"Likely too saturated for your muted coloring. The coral will overpower you. Look for dusty rose or heather instead."},
+{q:"What about this navy blazer?",colors:["#1E3A5F","#5D6066","#3A5050"],a:"Navy can work, but wet slate or deep spruce will be more harmonious. True navy has too much pure blue saturation."},
+{q:"I love this mustard sweater but I'm unsure.",colors:["#DAA520","#C4A070","#A88858"],a:"Pure mustard is too golden-bright. Your honey or amber would be better - same warmth family but softer."},
+{q:"Black or your soft black for evening?",colors:["#000000","#3D3D3B","#5A5A57"],a:"Your soft black, always. True black creates too much contrast against your translucent skin."},
+{q:"This sage green dress is calling my name.",colors:["#7D8B6A","#9AA086","#7D8B6A"],a:"Yes. This is literally your color - extracted from your own eyes. It will make your green irises luminous. Buy it."}
+];
+
+var favorites=JSON.parse(localStorage.getItem("rfg-favorites")||"{}");
+var selectedSwatch=null;
+var compareSlots={1:null,2:null};
+var selectingSlot=null;
+var undertoneAnswers=[];
+
+var toast=document.getElementById("toast");
+var modal=document.getElementById("modal");
+
+function showToast(msg){toast.textContent=msg;toast.classList.add("visible");setTimeout(function(){toast.classList.remove("visible")},1800)}
+function showModal(title,content){document.getElementById("modalTitle").textContent=title;document.getElementById("modalBody").textContent=content;modal.classList.add("visible")}
+function copy(text){if(navigator.clipboard){navigator.clipboard.writeText(text)}else{var ta=document.createElement("textarea");ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand("copy");document.body.removeChild(ta)}}
+function saveFavorites(){localStorage.setItem("rfg-favorites",JSON.stringify(favorites));renderFavorites();updateCapsuleFavorites()}
+function hexToRgb(hex){return{r:parseInt(hex.slice(1,3),16),g:parseInt(hex.slice(3,5),16),b:parseInt(hex.slice(5,7),16)}}
+function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;var max=Math.max(r,g,b),min=Math.min(r,g,b);var h,s,l=(max+min)/2;if(max===min){h=s=0}else{var d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break}}return{h:h*360,s:s,l:l}}
+
+document.querySelectorAll(".nav-item").forEach(function(btn){btn.addEventListener("click",function(){var page=this.getAttribute("data-page");document.querySelectorAll(".nav-item").forEach(function(b){b.classList.remove("active")});document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});this.classList.add("active");document.getElementById("page-"+page).classList.add("active");window.scrollTo(0,0)})});
+
+function renderPigments(){var container=document.getElementById("pigments");sourcePigments.forEach(function(p){var div=document.createElement("div");div.className="pigment";div.style.background=p.hex;div.innerHTML="<div class=\"pigment-info\">"+p.name+" "+p.hex+"</div>";div.addEventListener("click",function(){copy(p.hex);showToast("Copied "+p.hex)});container.appendChild(div)})}
+
+function updateCapsuleFavorites(){document.querySelectorAll(".capsule-swatch").forEach(function(el){var hex=el.getAttribute("data-hex");if(favorites[hex]){el.classList.add("favorite")}else{el.classList.remove("favorite")}})}
+
+function renderCapsule(){var grid=document.getElementById("capsuleGrid");capsuleColors.forEach(function(c){var item=document.createElement("div");item.className="capsule-item";var swatchClass="capsule-swatch"+(favorites[c.hex]?" favorite":"");item.innerHTML="<div class=\""+swatchClass+"\" style=\"background:"+c.hex+"\" data-hex=\""+c.hex+"\"></div><div class=\"capsule-label\">"+c.label+"</div><div class=\"capsule-hex\">"+c.hex+"</div>";
+var swatch=item.querySelector(".capsule-swatch");
+swatch.addEventListener("click",function(){selectedSwatch={name:c.name,hex:c.hex};copy(c.hex);showToast("Copied "+c.hex+" - tap compare slot");if(selectingSlot){fillCompareSlot(selectingSlot,{name:c.name,hex:c.hex})}});
+swatch.addEventListener("dblclick",function(e){e.preventDefault();if(favorites[c.hex]){delete favorites[c.hex];swatch.classList.remove("favorite");showToast("Removed from favorites")}else{favorites[c.hex]=c.name;swatch.classList.add("favorite");showToast("Saved to favorites")}saveFavorites()});
+grid.appendChild(item)})}
+
+function renderPalette(view){var container=document.getElementById("paletteGrid");container.innerHTML="";container.className="palette-grid";var sortedData=paletteData.slice();if(view==="light"){sortedData.sort(function(a,b){return a.light-b.light});container.classList.add("spectrum")}else if(view==="warm"){sortedData.sort(function(a,b){return a.warmth-b.warmth});container.classList.add("spectrum")}else{var groups={};paletteData.forEach(function(c){if(!groups[c.group])groups[c.group]=[];groups[c.group].push(c)});Object.keys(groups).forEach(function(groupName){var label=document.createElement("div");label.className="group-label";label.textContent=groupName;container.appendChild(label);groups[groupName].forEach(function(color){container.appendChild(createSwatch(color))})});return}sortedData.forEach(function(color){container.appendChild(createSwatch(color))})}
+
+function createSwatch(color){var div=document.createElement("div");div.className="swatch";if(favorites[color.hex])div.classList.add("favorite");div.style.background=color.hex;div.setAttribute("data-hex",color.hex);div.innerHTML="<span class=\"swatch-name\">"+color.name+" "+color.hex+"</span>";div.addEventListener("click",function(){selectedSwatch=color;copy(color.hex);showToast("Copied "+color.hex);if(selectingSlot){fillCompareSlot(selectingSlot,color)}});div.addEventListener("dblclick",function(e){e.preventDefault();if(favorites[color.hex]){delete favorites[color.hex];div.classList.remove("favorite");showToast("Removed from favorites")}else{favorites[color.hex]=color.name;div.classList.add("favorite");showToast("Saved to favorites")}saveFavorites()});return div}
+
+document.querySelectorAll(".view-toggle").forEach(function(btn){btn.addEventListener("click",function(){document.querySelectorAll(".view-toggle").forEach(function(b){b.classList.remove("active")});this.classList.add("active");renderPalette(this.getAttribute("data-view"))})});
+
+function renderOracle(){var btn=document.getElementById("oracleBtn");var result=document.getElementById("oracleResult");var colorsEl=document.getElementById("oracleColors");var titleEl=document.getElementById("oracleTitle");var textEl=document.getElementById("oracleText");btn.addEventListener("click",function(){var story=oracleStories[Math.floor(Math.random()*oracleStories.length)];colorsEl.innerHTML="";story.colors.forEach(function(hex){var div=document.createElement("div");div.className="oracle-color";div.style.background=hex;colorsEl.appendChild(div)});titleEl.textContent=story.title;textEl.textContent=story.text;result.classList.add("visible")})}
+
+function updateTimePalette(){var hour=new Date().getHours();var timeValue=document.getElementById("timeValue");var timePalette=document.getElementById("timePalette");var timeAdvice=document.getElementById("timeAdvice");var periods={morning:{name:"Early Morning",hours:[5,6,7,8],colors:["#F5F0E8","#C4C8C5","#B89A9E","#9AA086","#8A9BB8"],advice:"Soft, awakening colors. Let your skin breathe."},midmorning:{name:"Late Morning",hours:[9,10,11],colors:["#7D8B6A","#C4B8A8","#D4B8B8","#A88858","#F5EDE6"],advice:"Your strongest colors work now. Natural light is your friend."},afternoon:{name:"Afternoon",hours:[12,13,14,15,16],colors:["#5E6B56","#B8989A","#C4A070","#8E9196","#D8CFC0"],advice:"Grounded, professional tones. You can handle more saturation."},evening:{name:"Golden Hour",hours:[17,18,19],colors:["#C4AA78","#9A7070","#E8D8B8","#7A6B5A","#D4A5A5"],advice:"Warm light flatters your amber undertones. Lean into it."},night:{name:"Evening",hours:[20,21,22,23],colors:["#3A5050","#5A5A70","#A8868A","#3D3D3B","#C8C4D0"],advice:"Deeper colors under artificial light. Your cool tones shine."},latenight:{name:"Late Night",hours:[0,1,2,3,4],colors:["#5A4A3E","#8A9BB8","#6E7088","#8B8070","#A8A8B8"],advice:"Muted, contemplative. Honor the quiet hours."}};var current=null;Object.keys(periods).forEach(function(key){if(periods[key].hours.indexOf(hour)!==-1){current=periods[key]}});if(!current)current=periods.latenight;timeValue.textContent=current.name;timePalette.innerHTML="";current.colors.forEach(function(hex){var div=document.createElement("div");div.className="time-color";div.style.background=hex;div.addEventListener("click",function(){copy(hex);showToast("Copied "+hex)});timePalette.appendChild(div)});timeAdvice.textContent=current.advice}
+
+function renderMoods(){var grid=document.getElementById("moodGrid");var result=document.getElementById("moodResult");var advice=document.getElementById("moodAdvice");moods.forEach(function(m){var card=document.createElement("div");card.className="mood-card";var colorsHtml=m.colors.map(function(c){return"<div class=\"mood-color\" style=\"background:"+c+"\"></div>"}).join("");card.innerHTML="<div class=\"mood-name\">"+m.name+"</div><div class=\"mood-colors\">"+colorsHtml+"</div>";card.addEventListener("click",function(){document.querySelectorAll(".mood-card").forEach(function(c){c.classList.remove("selected")});card.classList.add("selected");advice.textContent=m.advice;result.classList.add("visible")});grid.appendChild(card)})}
+
+function renderShopping(){var container=document.getElementById("shoppingScenarios");shoppingScenarios.forEach(function(s){var div=document.createElement("div");div.className="shopping-scenario";var colorsHtml=s.colors.map(function(c){return"<div class=\"shopping-color\" style=\"background:"+c+"\"></div>"}).join("");div.innerHTML="<div class=\"shopping-q\">"+s.q+"</div><div class=\"shopping-colors\">"+colorsHtml+"</div><div class=\"shopping-answer\">"+s.a+"</div>";div.addEventListener("click",function(){div.classList.toggle("open")});container.appendChild(div)})}
+
+function renderLooks(){var container=document.getElementById("looksContainer");looks.forEach(function(look){var div=document.createElement("div");div.className="look-card";var colorsHtml=look.colors.map(function(c){return"<div class=\"look-color\" style=\"background:"+c+"\"></div>"}).join("");div.innerHTML="<div class=\"look-colors\">"+colorsHtml+"</div><div class=\"look-title\">"+look.title+"</div><div class=\"look-desc\">"+look.desc+"</div>";container.appendChild(div)})}
+
+function setupCompare(){var slot1=document.getElementById("slot1");var slot2=document.getElementById("slot2");slot1.addEventListener("click",function(){if(selectedSwatch&&!selectingSlot){fillCompareSlot(1,selectedSwatch)}else{selectingSlot=selectingSlot===1?null:1;slot1.classList.toggle("selecting",selectingSlot===1);slot2.classList.remove("selecting");if(selectingSlot)showToast("Now tap a swatch")}});slot2.addEventListener("click",function(){if(selectedSwatch&&!selectingSlot){fillCompareSlot(2,selectedSwatch)}else{selectingSlot=selectingSlot===2?null:2;slot2.classList.toggle("selecting",selectingSlot===2);slot1.classList.remove("selecting");if(selectingSlot)showToast("Now tap a swatch")}});document.getElementById("clearCompare").addEventListener("click",function(){compareSlots={1:null,2:null};slot1.style.background="";slot2.style.background="";slot1.textContent="Tap here after selecting a swatch";slot2.textContent="Then tap here with another";slot1.classList.remove("filled","selecting");slot2.classList.remove("filled","selecting");selectingSlot=null;document.getElementById("verdictText").textContent="Select swatches from your palette, then tap the slots above"});document.getElementById("swapCompare").addEventListener("click",function(){var temp=compareSlots[1];compareSlots[1]=compareSlots[2];compareSlots[2]=temp;if(compareSlots[1]){slot1.style.background=compareSlots[1].hex;slot1.textContent="";slot1.classList.add("filled")}if(compareSlots[2]){slot2.style.background=compareSlots[2].hex;slot2.textContent="";slot2.classList.add("filled")}if(compareSlots[1]&&compareSlots[2]){updateVerdict()}})}
+
+function fillCompareSlot(slot,color){compareSlots[slot]=color;var el=document.getElementById("slot"+slot);el.style.background=color.hex;el.textContent="";el.classList.add("filled");el.classList.remove("selecting");selectingSlot=null;selectedSwatch=null;if(compareSlots[1]&&compareSlots[2]){updateVerdict()}}
+
+function updateVerdict(){var c1=compareSlots[1];var c2=compareSlots[2];var rgb1=hexToRgb(c1.hex);var rgb2=hexToRgb(c2.hex);var hsl1=rgbToHsl(rgb1.r,rgb1.g,rgb1.b);var hsl2=rgbToHsl(rgb2.r,rgb2.g,rgb2.b);var lumDiff=Math.abs(hsl1.l-hsl2.l);var hueDiff=Math.abs(hsl1.h-hsl2.h);if(hueDiff>180)hueDiff=360-hueDiff;var warmth1=(rgb1.r-rgb1.b)/255;var warmth2=(rgb2.r-rgb2.b)/255;var warmDiff=Math.abs(warmth1-warmth2);var verdict=[];if(lumDiff>0.4){verdict.push(c1.name+" and "+c2.name+" have strong contrast - excellent for a top/bottom pairing.")}else if(lumDiff>0.2){verdict.push("Good separation between "+c1.name+" and "+c2.name+" - they work adjacent without competing.")}else{verdict.push("These are close in value - beautiful for tonal dressing, but add a third color for definition.")}if(hueDiff<30){verdict.push("Analogous harmony: they share a color family and will feel cohesive.")}else if(hueDiff>150){verdict.push("Near-complementary: this pairing has tension and energy. Use one as accent.")}if(warmDiff>0.15){verdict.push("One leans warm, one cool - this mirrors the complexity in your own coloring.")}document.getElementById("verdictText").textContent=verdict.join(" ")}
+
+function setupAudit(){var input=document.getElementById("auditInput");var result=document.getElementById("auditResult");var swatch=document.getElementById("auditSwatch");var verdict=document.getElementById("auditVerdict");input.addEventListener("input",function(){var val=input.value.trim();if(/^#[0-9A-Fa-f]{6}$/.test(val)){swatch.style.background=val;result.classList.add("visible");verdict.textContent=analyzeWardrobeColor(val)}else{result.classList.remove("visible")}})}
+
+function analyzeWardrobeColor(hex){var rgb=hexToRgb(hex);var hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);var warmth=(rgb.r-rgb.b)/255;var closest=null;var closestDist=Infinity;allColors.forEach(function(c){var cRgb=hexToRgb(c.hex);var dist=Math.sqrt(Math.pow(rgb.r-cRgb.r,2)+Math.pow(rgb.g-cRgb.g,2)+Math.pow(rgb.b-cRgb.b,2));if(dist<closestDist){closestDist=dist;closest=c}});var analysis=[];var isCapsule=capsuleColors.some(function(cap){return cap.hex===closest.hex});var capsuleNote=isCapsule?" (one of your essential 9)":"";if(closestDist<30){analysis.push("This is very close to your "+closest.name+capsuleNote+" - an excellent color for you.")}else if(closestDist<60){analysis.push("In the family of "+closest.name+capsuleNote+", but slightly off. "+closest.name+" ("+closest.hex+") would be more harmonious.")}else{analysis.push("Outside your ideal palette. Closest equivalent: "+closest.name+capsuleNote+" ("+closest.hex+").")}if(hsl.s>0.7){analysis.push("Saturation is high - this may overpower your soft coloring.")}if(warmth>0.3){analysis.push("Quite warm. Check if it makes your skin look sallow.")}else if(warmth<-0.2){analysis.push("Quite cool. Check that it doesn't make you look drained.")}return analysis.join(" ")}
+
+function setupUndertone(){var tests=[{warm:"#FFD700",cool:"#C0C0C0",label:["Gold","Silver"]},{warm:"#FF6347",cool:"#E0BBE4",label:["Tomato Red","Orchid Pink"]},{warm:"#8B4513",cool:"#4A4A4A",label:["Saddle Brown","Charcoal"]}];var container=document.getElementById("undertoneTest");var resultEl=document.getElementById("undertoneResult");var verdictEl=document.getElementById("undertoneVerdict");var currentTest=0;function showTest(index){if(index>=tests.length){var coolCount=undertoneAnswers.filter(function(a){return a==="cool"}).length;var warmCount=undertoneAnswers.length-coolCount;var result="";if(coolCount>warmCount){result="Your instincts lean cool - consistent with your Soft Summer placement. Silver jewelry and blue-based colors suit you."}else if(warmCount>coolCount){result="Your instincts lean warm - aligning with your Autumn influence. Gold jewelry and earthy tones flatter you."}else{result="Genuinely neutral - you can borrow from both palettes. This matches your cusp placement perfectly."}resultEl.classList.add("visible");verdictEl.textContent=result;return}var test=tests[index];container.innerHTML="";var warmOpt=document.createElement("div");warmOpt.className="undertone-option";warmOpt.innerHTML="<div class=\"undertone-swatch\" style=\"background:"+test.warm+"\"></div><div class=\"undertone-label\">"+test.label[0]+"</div>";warmOpt.addEventListener("click",function(){undertoneAnswers.push("warm");showTest(currentTest+1);currentTest++});var coolOpt=document.createElement("div");coolOpt.className="undertone-option";coolOpt.innerHTML="<div class=\"undertone-swatch\" style=\"background:"+test.cool+"\"></div><div class=\"undertone-label\">"+test.label[1]+"</div>";coolOpt.addEventListener("click",function(){undertoneAnswers.push("cool");showTest(currentTest+1);currentTest++});container.appendChild(warmOpt);container.appendChild(coolOpt)}showTest(0)}
+
+function renderHarmonyWheel(){var wheel=document.getElementById("harmonyWheel");var sorted=paletteData.slice().map(function(c){var rgb=hexToRgb(c.hex);var hsl=rgbToHsl(rgb.r,rgb.g,rgb.b);return{hex:c.hex,h:hsl.h,s:hsl.s,l:hsl.l}}).sort(function(a,b){return a.h-b.h});function makeGradient(colors){var stops=colors.map(function(c,i){var pct=(i/colors.length)*100;var pct2=((i+1)/colors.length)*100;return c.hex+" "+pct+"%,"+c.hex+" "+pct2+"%"}).join(",");return"conic-gradient(from 0deg,"+stops+")"}var rings=[sorted.slice(0,14),sorted.slice(14,28),sorted.slice(28)];var sizes=[[0,0,260,260],[26,26,208,208],[52,52,156,156]];rings.forEach(function(colors,i){var ring=document.createElement("div");ring.style.cssText="position:absolute;left:"+sizes[i][0]+"px;top:"+sizes[i][1]+"px;width:"+sizes[i][2]+"px;height:"+sizes[i][3]+"px;border-radius:50%;background:"+makeGradient(colors);wheel.appendChild(ring)});var center=document.createElement("div");center.style.cssText="position:absolute;left:78px;top:78px;width:104px;height:104px;border-radius:50%;background:#F5EDE6;display:flex;align-items:center;justify-content:center;font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:#9A9A96";center.textContent="You";wheel.appendChild(center)}
+
+function renderFavorites(){var grid=document.getElementById("favGrid");var empty=document.getElementById("favEmpty");var favExportSection=document.getElementById("exportFavSection");grid.innerHTML="";var keys=Object.keys(favorites);if(keys.length===0){empty.style.display="block";grid.style.display="none";favExportSection.style.display="none"}else{empty.style.display="none";grid.style.display="grid";favExportSection.style.display="block";keys.forEach(function(hex){var item=document.createElement("div");item.className="fav-item";item.innerHTML="<div class=\"fav-swatch\" style=\"background:"+hex+"\"></div><div class=\"fav-name\">"+favorites[hex]+"</div>";item.querySelector(".fav-swatch").addEventListener("click",function(){copy(hex);showToast("Copied "+hex)});item.querySelector(".fav-swatch").addEventListener("dblclick",function(){delete favorites[hex];saveFavorites();var main=document.querySelector(".swatch[data-hex=\""+hex+"\"]");if(main)main.classList.remove("favorite");var capsule=document.querySelector(".capsule-swatch[data-hex=\""+hex+"\"]");if(capsule)capsule.classList.remove("favorite");showToast("Removed")});grid.appendChild(item)})}}
+
+function setupExport(){document.getElementById("exportJSON").addEventListener("click",function(){var data={title:"Vernal Moss & Morning Light",season:"Soft Summer / Autumn Cusp",sourcePigments:sourcePigments,capsule:capsuleColors,palette:paletteData.map(function(c){return{name:c.name,hex:c.hex,group:c.group}})};showModal("Full Palette JSON",JSON.stringify(data,null,2));copy(JSON.stringify(data,null,2));showToast("Copied")});document.getElementById("exportText").addEventListener("click",function(){var lines=["VERNAL MOSS & MORNING LIGHT","Soft Summer / Autumn Cusp",""];lines.push("9-COLOR CAPSULE:");capsuleColors.forEach(function(c){lines.push(c.label+": "+c.name+" "+c.hex)});lines.push("");lines.push("SOURCE PIGMENTS:");sourcePigments.forEach(function(p){lines.push(p.name+": "+p.hex)});lines.push("");var groups={};paletteData.forEach(function(c){if(!groups[c.group])groups[c.group]=[];groups[c.group].push(c)});Object.keys(groups).forEach(function(g){lines.push(g.toUpperCase()+":");groups[g].forEach(function(c){lines.push("  "+c.name+": "+c.hex)});lines.push("")});var text=lines.join("\n");showModal("Full Palette Text",text);copy(text);showToast("Copied")});document.getElementById("exportFavJSON").addEventListener("click",function(){if(Object.keys(favorites).length===0){showToast("No favorites");return}showModal("Favorites JSON",JSON.stringify(favorites,null,2));copy(JSON.stringify(favorites,null,2));showToast("Copied")});document.getElementById("exportFavText").addEventListener("click",function(){if(Object.keys(favorites).length===0){showToast("No favorites");return}var lines=["FAVORITES:"];Object.keys(favorites).forEach(function(hex){lines.push(favorites[hex]+": "+hex)});var text=lines.join("\n");showModal("Favorites Text",text);copy(text);showToast("Copied")});document.getElementById("modalClose").addEventListener("click",function(){modal.classList.remove("visible")});modal.addEventListener("click",function(e){if(e.target===modal)modal.classList.remove("visible")})}
+
+function init(){renderPigments();renderCapsule();renderPalette("grouped");renderOracle();updateTimePalette();renderMoods();renderShopping();renderLooks();setupCompare();setupAudit();setupUndertone();renderHarmonyWheel();renderFavorites();setupExport();setInterval(updateTimePalette,60000)}
+
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init)}else{init()}
+})();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
