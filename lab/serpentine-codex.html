@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Serpentine Codex</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--void:#141418;
+--deep:#1E1E24;
+--surface:#2A2A32;
+--raised:#363640;
+--muted:#6A6A78;
+--text:#F0ECE6;
+--dim:#A0A0A8;
+--gold:#CFA830;
+--gold-l:#E8C860;
+--gold-d:#906818;
+--emerald:#2A6050;
+--teal:#3A7068;
+--wine:#702840;
+--wine-l:#904058;
+--rose:#C89898;
+--shadow:rgba(0,0,0,.5);
+--glow:rgba(207,168,48,.2)
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 var(--glow)}50%{box-shadow:0 0 25px 8px var(--glow)}}
+@keyframes flash{0%{transform:scale(1)}50%{transform:scale(1.08);filter:brightness(1.3)}100%{transform:scale(1)}}
+@keyframes glow{0%,100%{border-color:var(--gold-d)}50%{border-color:var(--gold)}}
+body{font-family:Georgia,"Times New Roman",serif;background:var(--void);color:var(--text);line-height:1.7;font-size:16px}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--deep)}::-webkit-scrollbar-thumb{background:var(--gold-d);border-radius:3px}
+
+.codex{max-width:100vw;overflow-x:hidden}
+.header{background:linear-gradient(var(--deep),var(--void));padding:2.5rem 1.5rem;text-align:center;border-bottom:1px solid var(--gold-d);position:relative}
+.header::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.sigil{width:70px;height:70px;margin:0 auto 1rem;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.75rem;color:var(--gold);background:var(--void);box-shadow:0 0 30px var(--glow);animation:pulse 4s infinite}
+.title{font-size:1.625rem;font-style:italic;color:var(--gold-l);letter-spacing:.08em;text-shadow:0 0 30px var(--glow)}
+.subtitle{font-size:.75rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-top:.5rem}
+
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:.375rem;padding:.875rem .5rem;background:var(--deep);border-bottom:1px solid var(--gold-d);position:sticky;top:0;z-index:100}
+.nav-btn{padding:.625rem .75rem;min-height:44px;background:transparent;border:1px solid var(--raised);color:var(--dim);font-family:inherit;font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.nav-btn:hover{border-color:var(--gold-d);color:var(--gold-l)}
+.nav-btn.on{background:var(--gold-d);border-color:var(--gold);color:var(--void)}
+
+section{display:none;padding:2rem 1.25rem;animation:fadeUp .5s}
+section.on{display:block}
+.sec-head{text-align:center;margin-bottom:2rem}
+.sec-title{font-size:1.125rem;font-style:italic;color:var(--gold-l);letter-spacing:.05em}
+.sec-line{width:40px;height:1px;background:var(--gold-d);margin:.75rem auto 0}
+.sec-desc{font-size:.875rem;color:var(--dim);font-style:italic;margin-top:1rem;max-width:500px;margin-left:auto;margin-right:auto}
+
+/* Analysis */
+.scroll{max-width:620px;margin:0 auto;background:var(--deep);border:1px solid var(--gold-d);padding:2rem 1.5rem;position:relative}
+.scroll::before,.scroll::after{content:"\2726";position:absolute;color:var(--gold-d);font-size:1rem}
+.scroll::before{top:.75rem;left:.75rem}.scroll::after{bottom:.75rem;right:.75rem}
+.para{text-indent:1.5rem;margin-bottom:1.5rem;text-align:justify;font-size:.9375rem;color:var(--text)}
+.para:first-of-type::first-letter{font-size:3rem;float:left;line-height:1;margin-right:.5rem;color:var(--gold);text-shadow:0 0 20px var(--glow)}
+.seal{text-align:center;padding:1.5rem;background:var(--void);border:1px solid var(--gold-d);margin-top:1.5rem}
+.seal-name{font-size:1rem;font-style:italic;color:var(--gold-l);margin-bottom:.75rem}
+.seal-note{font-size:.8125rem;color:var(--dim);font-style:italic;line-height:1.6}
+
+/* Pigments */
+.pig-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.pig-card{background:var(--deep);border:1px solid var(--raised);padding:1rem;text-align:center;cursor:pointer;transition:.3s}
+.pig-card:hover{border-color:var(--gold-d);transform:translateY(-2px)}
+.pig-swatch{width:100%;height:55px;margin-bottom:.75rem;position:relative;transition:.2s}
+.pig-swatch.flash{animation:flash .3s}
+.pig-swatch.fav::after{content:"\2666";position:absolute;top:4px;right:4px;color:var(--gold);font-size:.875rem}
+.pig-origin{font-size:.6875rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gold-l)}
+.pig-hex{font-family:"Courier New",monospace;font-size:.8125rem;margin-top:.25rem;color:var(--text)}
+.pig-desc{font-size:.75rem;font-style:italic;color:var(--dim);margin-top:.5rem}
+
+/* Palette */
+.pal-group{margin-bottom:2.5rem}
+.group-title{font-size:.8125rem;text-transform:uppercase;letter-spacing:.15em;color:var(--gold-l);text-align:center;margin-bottom:1rem;padding-bottom:.75rem;border-bottom:1px solid var(--raised)}
+.gem-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+.gem{aspect-ratio:1;min-height:44px;border:1px solid rgba(255,255,255,.1);cursor:pointer;position:relative;transition:.25s}
+.gem:hover{transform:scale(1.12);z-index:10;box-shadow:0 4px 20px var(--shadow)}
+.gem.flash{animation:flash .3s}
+.gem.fav::after{content:"\2666";position:absolute;top:2px;right:2px;color:var(--gold);font-size:.625rem}
+.gem-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--void);border:1px solid var(--gold-d);color:var(--text);padding:.5rem .75rem;font-size:.6875rem;white-space:nowrap;z-index:100;pointer-events:none}
+.gem:hover .gem-tip{display:block}
+
+/* Looks */
+.look{background:var(--deep);border:1px solid var(--raised);margin-bottom:1.5rem;overflow:hidden;transition:.3s}
+.look:hover{border-color:var(--gold-d)}
+.look-head{padding:1rem;border-bottom:1px solid var(--raised)}
+.look-name{font-size:.9375rem;font-style:italic;color:var(--gold-l)}
+.look-ctx{font-size:.6875rem;text-transform:uppercase;letter-spacing:.12em;color:var(--dim);margin-top:.25rem}
+.look-gems{display:flex;height:45px}
+.look-gem{flex:1;cursor:pointer;transition:.3s}
+.look-gem:hover{flex:1.8}
+.look-text{padding:1rem;font-size:.8125rem;font-style:italic;line-height:1.7;color:var(--text)}
+
+/* Oracle */
+.oracle-wrap{max-width:400px;margin:0 auto}
+.oracle-upload{border:2px dashed var(--raised);padding:2rem 1rem;text-align:center;cursor:pointer;transition:.3s;position:relative;margin-bottom:1.5rem}
+.oracle-upload:hover,.oracle-upload.drag{border-color:var(--gold-d);background:var(--glow)}
+.oracle-upload input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.oracle-upload-text{font-size:.875rem;color:var(--dim);font-style:italic}
+.oracle-upload-hint{font-size:.75rem;color:var(--muted);margin-top:.5rem}
+.oracle-canvas-wrap{display:none;margin-bottom:1.5rem}
+.oracle-canvas-wrap.on{display:block}
+.oracle-canvas{width:100%;max-height:300px;object-fit:contain;cursor:crosshair;border:1px solid var(--raised)}
+.oracle-picked{display:none;align-items:center;gap:1rem;padding:1rem;background:var(--deep);border:1px solid var(--raised);margin-bottom:1rem}
+.oracle-picked.on{display:flex}
+.oracle-picked-swatch{width:50px;height:50px;border:1px solid rgba(255,255,255,.1);flex-shrink:0}
+.oracle-picked-hex{font-family:"Courier New",monospace;font-size:1rem;color:var(--gold-l)}
+.oracle-picked-hint{font-size:.75rem;color:var(--dim);margin-top:.25rem}
+.oracle-div{display:flex;align-items:center;gap:1rem;margin:1.5rem 0;color:var(--dim);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em}
+.oracle-div::before,.oracle-div::after{content:"";flex:1;height:1px;background:var(--raised)}
+.oracle-manual{margin-bottom:1.5rem}
+.oracle-label{display:block;font-size:.6875rem;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);margin-bottom:.5rem}
+.oracle-input{width:100%;padding:.875rem;min-height:44px;border:1px solid var(--raised);background:var(--void);font-family:"Courier New",monospace;font-size:1rem;color:var(--text);transition:.3s}
+.oracle-input:focus{outline:0;border-color:var(--gold)}
+.oracle-input::placeholder{color:var(--muted)}
+.oracle-verdict{background:var(--deep);border:1px solid var(--gold-d);padding:1.5rem;text-align:center}
+.verdict-sym{font-size:1.5rem;margin-bottom:.5rem;color:var(--gold-l)}
+.verdict-title{font-size:1rem;font-style:italic;color:var(--gold-l);margin-bottom:.75rem}
+.verdict-text{font-size:.8125rem;line-height:1.6;color:var(--text)}
+.verdict-matches{display:flex;justify-content:center;gap:.5rem;margin-top:1rem}
+.verdict-match{width:35px;height:35px;border:1px solid rgba(255,255,255,.1)}
+
+/* Compare */
+.cmp-wrap{max-width:400px;margin:0 auto}
+.cmp-slots{display:flex;gap:1rem;margin-bottom:1.5rem}
+.cmp-slot{flex:1;aspect-ratio:1;min-height:100px;border:2px dashed var(--raised);display:flex;align-items:center;justify-content:center;font-size:.75rem;color:var(--dim);text-align:center;padding:1rem;cursor:pointer;transition:.3s}
+.cmp-slot.filled{border-style:solid;border-color:var(--gold-d)}
+.cmp-slot.on{animation:glow 1s infinite}
+.cmp-reading{background:var(--deep);border:1px solid var(--gold-d);padding:1.5rem;text-align:center}
+.cmp-reading-title{font-size:.6875rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gold-l);margin-bottom:.75rem}
+.cmp-reading-text{font-size:.875rem;font-style:italic;line-height:1.7;color:var(--text)}
+.cmp-clear{display:block;width:100%;margin-top:1rem;padding:.875rem;min-height:44px;background:transparent;border:1px solid var(--muted);color:var(--dim);font-family:inherit;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.cmp-clear:hover{background:var(--wine);border-color:var(--wine);color:var(--text)}
+
+/* Time */
+.time-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin-bottom:2rem}
+.time-btn{padding:.75rem 1rem;min-height:44px;background:transparent;border:1px solid var(--raised);color:var(--dim);font-family:inherit;font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.time-btn:hover{border-color:var(--gold-d);color:var(--gold-l)}
+.time-btn.on{background:var(--gold-d);border-color:var(--gold);color:var(--void)}
+.time-gems{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:1.5rem}
+.time-gem{aspect-ratio:1;min-height:44px;cursor:pointer;transition:.2s}
+.time-gem:hover{transform:scale(1.1)}
+.time-wisdom{background:var(--deep);border:1px solid var(--gold-d);padding:1.5rem;text-align:center;font-size:.875rem;font-style:italic;line-height:1.7;color:var(--text)}
+
+/* Wardrobe */
+.ward-cats{display:grid;grid-template-columns:repeat(2,1fr);gap:.75rem;margin-bottom:1.5rem}
+.ward-cat{padding:1rem;min-height:44px;background:var(--deep);border:1px solid var(--raised);color:var(--dim);font-family:inherit;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.ward-cat:hover{border-color:var(--gold-d);color:var(--gold-l)}
+.ward-cat.on{background:var(--gold-d);border-color:var(--gold);color:var(--void)}
+.ward-display{background:var(--deep);border:1px solid var(--gold-d);padding:1.5rem}
+.ward-title{font-size:.875rem;font-style:italic;color:var(--gold-l);text-align:center;margin-bottom:1rem}
+.ward-gems{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem;margin-bottom:1rem}
+.ward-gem{aspect-ratio:1;min-height:40px;cursor:pointer;transition:.2s}
+.ward-gem:hover{transform:scale(1.1)}
+.ward-note{font-size:.8125rem;font-style:italic;text-align:center;line-height:1.6;color:var(--text)}
+
+/* Alchemy */
+.alch-wrap{max-width:400px;margin:0 auto}
+.alch-slots{display:flex;gap:.5rem;margin-bottom:1rem;flex-wrap:wrap}
+.alch-slot{width:50px;height:50px;border:2px dashed var(--raised);cursor:pointer;transition:.3s;display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:var(--muted)}
+.alch-slot.filled{border-style:solid;border-color:var(--gold-d)}
+.alch-slot.on{animation:glow 1s infinite}
+.alch-result{background:var(--deep);border:1px solid var(--gold-d);padding:1.5rem;text-align:center;margin-bottom:1rem}
+.alch-blend{width:80px;height:80px;margin:0 auto 1rem;border:2px solid var(--gold)}
+.alch-name{font-size:1rem;font-style:italic;color:var(--gold-l);margin-bottom:.5rem}
+.alch-hex{font-family:"Courier New",monospace;font-size:.875rem;color:var(--text)}
+.alch-advice{font-size:.8125rem;color:var(--dim);font-style:italic;margin-top:1rem}
+.alch-clear{display:block;width:100%;padding:.875rem;min-height:44px;background:transparent;border:1px solid var(--muted);color:var(--dim);font-family:inherit;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.alch-clear:hover{background:var(--wine);border-color:var(--wine);color:var(--text)}
+
+/* Story */
+.story-box{background:var(--deep);border:1px solid var(--gold-d);padding:2rem 1.5rem;text-align:center;margin-bottom:1.5rem;min-height:220px}
+.story-title{font-size:1.125rem;font-style:italic;color:var(--gold-l);margin-bottom:1rem}
+.story-text{font-size:.9375rem;line-height:1.8;font-style:italic;color:var(--text)}
+.story-gems{display:flex;justify-content:center;gap:.5rem;margin-top:1.5rem}
+.story-gem{width:28px;height:28px;border:1px solid rgba(255,255,255,.1)}
+.story-btn{display:block;width:100%;max-width:300px;margin:0 auto;padding:1rem;min-height:44px;background:var(--wine);border:1px solid var(--wine-l);color:var(--text);font-family:inherit;font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.3s}
+.story-btn:hover{background:var(--wine-l)}
+
+/* Harmony Wheel */
+.harmony-wrap{position:relative;width:260px;height:260px;margin:0 auto 2rem}
+.harmony-wheel{width:100%;height:100%;border-radius:50%;position:relative;border:3px solid var(--gold);box-shadow:0 0 40px var(--glow),inset 0 0 30px rgba(0,0,0,.5);overflow:hidden}
+.harmony-center-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:70px;height:70px;background:var(--void);border:2px solid var(--gold-d);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.625rem;color:var(--dim);text-transform:uppercase;letter-spacing:.1em;text-align:center;line-height:1.4;z-index:10}
+.harmony-segment{position:absolute;width:50%;height:50%;transform-origin:100% 100%}
+.harmony-legend{display:grid;grid-template-columns:repeat(2,1fr);gap:.625rem;max-width:340px;margin:0 auto 1.5rem}
+.harmony-item{display:flex;align-items:center;gap:.625rem;font-size:.75rem;color:var(--dim)}
+.harmony-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,.1)}
+.harmony-note{text-align:center;font-size:.8125rem;font-style:italic;color:var(--dim);max-width:400px;margin:0 auto;line-height:1.6}
+
+/* Favorites */
+.fav-empty{text-align:center;padding:3rem 1.5rem}
+.fav-empty-icon{font-size:2.5rem;color:var(--gold-d);margin-bottom:1rem;opacity:.5}
+.fav-empty-text{font-size:.875rem;color:var(--dim);font-style:italic;line-height:1.6}
+.fav-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem}
+.fav-item{text-align:center}
+.fav-gem{width:100%;aspect-ratio:1;border:1px solid var(--gold-d);margin-bottom:.5rem;cursor:pointer;position:relative;transition:.2s}
+.fav-gem:hover{transform:scale(1.05)}
+.fav-gem::after{content:"\2666";position:absolute;top:4px;right:4px;color:var(--gold);font-size:.625rem}
+.fav-name{font-size:.625rem;color:var(--dim);text-transform:uppercase;letter-spacing:.05em}
+
+/* Export */
+.exp-btns{display:flex;flex-direction:column;gap:.75rem;max-width:300px;margin:0 auto 2rem}
+.exp-btn{padding:1rem;min-height:44px;background:var(--gold-d);border:1px solid var(--gold);color:var(--void);font-family:inherit;font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:.3s;font-weight:600}
+.exp-btn:hover{background:var(--gold)}
+.exp-scroll{background:var(--void);border:1px solid var(--raised);color:var(--dim);padding:1rem;font-family:"Courier New",monospace;font-size:.75rem;max-height:250px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+
+/* Toast */
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gold);color:var(--void);padding:.875rem 1.5rem;font-size:.8125rem;font-style:italic;z-index:1000;transition:.3s;box-shadow:0 4px 20px var(--shadow);font-weight:600}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+.footer{text-align:center;padding:2rem;border-top:1px solid var(--raised);margin-top:2rem}
+.footer p{font-size:.75rem;color:var(--dim);font-style:italic}
+
+@media(min-width:768px){
+.header{padding:3.5rem 2rem}.title{font-size:2rem}
+section{padding:3rem 2rem;max-width:900px;margin:0 auto}
+.pig-grid{grid-template-columns:repeat(3,1fr)}
+.gem-grid{grid-template-columns:repeat(8,1fr)}
+.fav-grid{grid-template-columns:repeat(6,1fr)}
+.time-gems,.ward-gems{grid-template-columns:repeat(8,1fr)}
+.ward-cats{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="codex">
+<header class="header">
+<div class="sigil">&Phi;</div>
+<h1 class="title">The Serpentine Codex</h1>
+<p class="subtitle">A Chromatic Grimoire</p>
+</header>
+
+<nav class="nav">
+<button class="nav-btn on" data-s="analysis">Reading</button>
+<button class="nav-btn" data-s="pigments">Source</button>
+<button class="nav-btn" data-s="palette">Archive</button>
+<button class="nav-btn" data-s="looks">Looks</button>
+<button class="nav-btn" data-s="oracle">Oracle</button>
+<button class="nav-btn" data-s="time">Hours</button>
+<button class="nav-btn" data-s="wardrobe">Wardrobe</button>
+<button class="nav-btn" data-s="alchemy">Alchemy</button>
+<button class="nav-btn" data-s="story">Tales</button>
+<button class="nav-btn" data-s="harmony">Harmony</button>
+<button class="nav-btn" data-s="compare">Compare</button>
+<button class="nav-btn" data-s="favorites">Treasures</button>
+<button class="nav-btn" data-s="export">Export</button>
+</nav>
+
+<section id="analysis" class="on">
+<div class="sec-head"><h2 class="sec-title">The Reading</h2><div class="sec-line"></div></div>
+<div class="scroll">
+<p class="para">Yours is the coloring of contradictions resolved into beauty. At first glance, the eye perceives porcelain delicacy - a cool, luminous complexion that speaks of northern light. But closer examination reveals layers of warmth woven through: the honey undertone that surfaces when sun touches your skin, the golden starburst encircling each pupil like a secret fire at the center of a cool green pool. Your eyes are a study in chromatic complexity - sage and seafoam and antique brass all at once, shifting with the light as if alive.</p>
+<p class="para">Your hair holds dimensional richness that refuses simple naming: champagne lightness gives way to wheat gives way to cooler ash, with threads of strawberry that emerge only in certain light. This is not the flat blonde of the simply fair but the living color of autumn grain. Your natural flush runs cool - wild rose rather than peach - while your lips carry a sophisticated mauve-pink that bridges your warm and cool selves. The blue-violet veins at your wrist confirm what your presence declares: cool at the root, warm at the bloom.</p>
+<p class="para">You can wear stronger color than you have been told. Your features have clarity; your coloring has enough contrast to anchor saturated hues. The key lies in choosing colors that honor your position at the intersection - where forest meets twilight, where gold meets grey, where rose meets wine. You are not fragile pastels. You are jeweled depths, muted magnificence, quiet power.</p>
+<div class="seal">
+<div class="seal-name">Soft Summer Ascending to True</div>
+<div class="seal-note">The muted depth of Soft Summer, but with enough clarity to borrow True Summer's cooler jewels and Soft Autumn's earthen warmth - a liminal sovereign commanding three realms.</div>
+</div>
+</div>
+</section>
+
+<section id="pigments">
+<div class="sec-head"><h2 class="sec-title">Source Pigments</h2><div class="sec-line"></div><p class="sec-desc">The colors drawn directly from you - the wellspring from which your palette flows.</p></div>
+<div class="pig-grid" id="pigGrid"></div>
+</section>
+
+<section id="palette">
+<div class="sec-head"><h2 class="sec-title">The Wearable Archive</h2><div class="sec-line"></div><p class="sec-desc">Tap to copy. Double-tap to treasure.</p></div>
+<div id="palGroups"></div>
+</section>
+
+<section id="looks">
+<div class="sec-head"><h2 class="sec-title">Chromatic Compositions</h2><div class="sec-line"></div></div>
+<div id="looksBox"></div>
+</section>
+
+<section id="oracle">
+<div class="sec-head"><h2 class="sec-title">The Shopping Oracle</h2><div class="sec-line"></div><p class="sec-desc">Upload any image and tap to extract colors. Receive judgment on whether they belong.</p></div>
+<div class="oracle-wrap">
+<div class="oracle-upload" id="oracleUpload">
+<div class="oracle-upload-text">Tap to upload an image</div>
+<div class="oracle-upload-hint">or drag and drop</div>
+<input type="file" accept="image/*" id="oracleFile">
+</div>
+<div class="oracle-canvas-wrap" id="oracleCanvasWrap"><canvas class="oracle-canvas" id="oracleCanvas"></canvas></div>
+<div class="oracle-picked" id="oraclePicked"><div class="oracle-picked-swatch" id="oraclePickedSwatch"></div><div><div class="oracle-picked-hex" id="oraclePickedHex">#000000</div><div class="oracle-picked-hint">Tap image for another color</div></div></div>
+<div class="oracle-div">or enter manually</div>
+<div class="oracle-manual"><label class="oracle-label">Hex Code</label><input type="text" class="oracle-input" id="oracleInput" placeholder="#8B4A5E" maxlength="7"></div>
+<div class="oracle-verdict" id="oracleVerdict"><div class="verdict-sym">&#8258;</div><div class="verdict-title">Awaiting Your Query</div><div class="verdict-text">Upload an image or enter a hex code.</div></div>
+</div>
+</section>
+
+<section id="time">
+<div class="sec-head"><h2 class="sec-title">The Hours</h2><div class="sec-line"></div><p class="sec-desc">Your palette transforms with the day's light.</p></div>
+<div class="time-btns">
+<button class="time-btn on" data-t="dawn">Dawn</button>
+<button class="time-btn" data-t="morning">Morning</button>
+<button class="time-btn" data-t="noon">Noon</button>
+<button class="time-btn" data-t="golden">Golden</button>
+<button class="time-btn" data-t="dusk">Dusk</button>
+<button class="time-btn" data-t="night">Night</button>
+</div>
+<div class="time-gems" id="timeGems"></div>
+<div class="time-wisdom" id="timeWisdom"></div>
+</section>
+
+<section id="wardrobe">
+<div class="sec-head"><h2 class="sec-title">The Wardrobe Audit</h2><div class="sec-line"></div><p class="sec-desc">Your optimal colors for each category.</p></div>
+<div class="ward-cats">
+<button class="ward-cat on" data-w="coats">Coats</button>
+<button class="ward-cat" data-w="suits">Suits</button>
+<button class="ward-cat" data-w="dresses">Dresses</button>
+<button class="ward-cat" data-w="blouses">Blouses</button>
+<button class="ward-cat" data-w="knitwear">Knitwear</button>
+<button class="ward-cat" data-w="denim">Denim</button>
+<button class="ward-cat" data-w="evening">Evening</button>
+<button class="ward-cat" data-w="athletic">Athletic</button>
+</div>
+<div class="ward-display" id="wardDisplay"></div>
+</section>
+
+<section id="alchemy">
+<div class="sec-head"><h2 class="sec-title">Color Alchemy</h2><div class="sec-line"></div><p class="sec-desc">Select colors to blend new harmonies. Tap a slot, then any swatch.</p></div>
+<div class="alch-wrap">
+<div class="alch-slots" id="alchSlots">
+<div class="alch-slot" data-i="0">+</div>
+<div class="alch-slot" data-i="1">+</div>
+<div class="alch-slot" data-i="2">+</div>
+</div>
+<div class="alch-result"><div class="alch-blend" id="alchBlend"></div><div class="alch-name" id="alchName">Select colors to blend</div><div class="alch-hex" id="alchHex"></div><div class="alch-advice" id="alchAdvice"></div></div>
+<button class="alch-clear" id="alchClear">Clear Cauldron</button>
+</div>
+</section>
+
+<section id="story">
+<div class="sec-head"><h2 class="sec-title">Chromatic Tales</h2><div class="sec-line"></div></div>
+<div class="story-box" id="storyBox"><div class="story-title">Press below to conjure...</div><div class="story-text"></div><div class="story-gems" id="storyGems"></div></div>
+<button class="story-btn" id="storyBtn">Conjure a New Tale</button>
+</section>
+
+<section id="harmony">
+<div class="sec-head"><h2 class="sec-title">Personal Harmony Wheel</h2><div class="sec-line"></div><p class="sec-desc">Your complete chromatic spectrum - the colors that sing in harmony with your natural coloring.</p></div>
+<div class="harmony-wrap">
+<div class="harmony-wheel" id="harmonyWheel"></div>
+<div class="harmony-center-label">Your<br>Spectrum</div>
+</div>
+<div class="harmony-legend" id="harmonyLegend"></div>
+<div class="harmony-note">These twelve anchor points define your color territory. All colors in your wearable archive orbit these positions.</div>
+</section>
+
+<section id="compare">
+<div class="sec-head"><h2 class="sec-title">The Comparison</h2><div class="sec-line"></div><p class="sec-desc">Tap a vessel, then tap any swatch to fill it.</p></div>
+<div class="cmp-wrap">
+<div class="cmp-slots"><div class="cmp-slot" id="cmpSlot1" data-n="1">Tap to select</div><div class="cmp-slot" id="cmpSlot2" data-n="2">Tap to select</div></div>
+<div class="cmp-reading"><div class="cmp-reading-title">The Reading</div><div class="cmp-reading-text" id="cmpText">Select two colors to divine their relationship.</div></div>
+<button class="cmp-clear" id="cmpClear">Clear Vessels</button>
+</div>
+</section>
+
+<section id="favorites">
+<div class="sec-head"><h2 class="sec-title">Your Treasures</h2><div class="sec-line"></div></div>
+<div id="favBox"><div class="fav-empty"><div class="fav-empty-icon">&diams;</div><div class="fav-empty-text">Double-tap any swatch to treasure it.<br>Your collection appears here.</div></div></div>
+</section>
+
+<section id="export">
+<div class="sec-head"><h2 class="sec-title">Archive & Share</h2><div class="sec-line"></div></div>
+<div class="exp-btns">
+<button class="exp-btn" id="expJson">Export Palette JSON</button>
+<button class="exp-btn" id="expFavJson">Export Treasures JSON</button>
+<button class="exp-btn" id="expText">Copy Palette Text</button>
+<button class="exp-btn" id="expFavText">Copy Treasures Text</button>
+</div>
+<div class="exp-scroll" id="expScroll">Your exported data appears here...</div>
+</section>
+
+<footer class="footer"><p>The Serpentine Codex &middot; A chromatic grimoire for Lauren</p></footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+var SRC=[
+{n:"Eye: Golden Cipher",h:"#A89050",d:"The amber sunburst at your pupil"},
+{n:"Eye: Sage Depths",h:"#6E8068",d:"The muted green of your mid-iris"},
+{n:"Eye: Seafoam Ring",h:"#7A9088",d:"The cool teal at the outer edge"},
+{n:"Skin: Porcelain",h:"#F2E8E0",d:"Your lightest highlight"},
+{n:"Skin: Neutral True",h:"#E8DCD0",d:"Your predominant skin tone"},
+{n:"Skin: Honey Glow",h:"#E8D8C0",d:"The warmth in golden light"},
+{n:"Hair: Champagne",h:"#D8C8A8",d:"The brightest pieces at crown"},
+{n:"Hair: Wheat",h:"#B8A078",d:"Your predominant hair color"},
+{n:"Hair: Ash Shadow",h:"#8A7868",d:"The cooler tone at roots"},
+{n:"Hair: Strawberry",h:"#C8A088",d:"The warm notes in sunlight"},
+{n:"Lip: Natural Mauve",h:"#B89098",d:"Your bare lip color"},
+{n:"Flush: Wild Rose",h:"#C8A0A0",d:"Your natural cool-pink blush"}
+];
+
+var PAL={
+"Jeweled Neutrals":[{n:"Antique Ivory",h:"#F0EAE0"},{n:"Oyster",h:"#E0D8D0"},{n:"Warm Stone",h:"#C8BAA8"},{n:"Greige",h:"#A89888"},{n:"Taupe Shadow",h:"#887870"},{n:"Espresso Mist",h:"#5A5048"},{n:"Charcoal Warm",h:"#484038"},{n:"Soft Black",h:"#2A2828"}],
+"Verdant Realm":[{n:"Sage Mist",h:"#B8C8B0"},{n:"Eucalyptus",h:"#8AA888"},{n:"Soft Jade",h:"#7A9880"},{n:"Forest Sage",h:"#607860"},{n:"Deep Moss",h:"#4A6048"},{n:"Hunter Soft",h:"#3A5040"},{n:"Evergreen",h:"#2A4038"},{n:"Teal Forest",h:"#3A5858"}],
+"Rose Dynasty":[{n:"Blush Whisper",h:"#E8D0D0"},{n:"Soft Rose",h:"#D8B0B0"},{n:"Dusty Rose",h:"#C89898"},{n:"Mauve",h:"#B08888"},{n:"Rose Taupe",h:"#987878"},{n:"Berry Dust",h:"#906070"},{n:"Raspberry",h:"#885060"},{n:"Wine",h:"#703848"}],
+"Cool Waters":[{n:"Ice Whisper",h:"#E0E8F0"},{n:"Periwinkle",h:"#B8C0D8"},{n:"Steel Blue",h:"#8090A8"},{n:"Slate",h:"#687888"},{n:"Storm",h:"#506070"},{n:"Navy Soft",h:"#3A4858"},{n:"Teal Deep",h:"#2A4850"},{n:"Midnight",h:"#203840"}],
+"Golden Hour":[{n:"Champagne",h:"#E8DCC0"},{n:"Soft Gold",h:"#D0C0A0"},{n:"Antique Brass",h:"#B8A070"},{n:"Bronze Mist",h:"#A08858"},{n:"Burnished",h:"#907840"},{n:"Ochre Soft",h:"#886838"},{n:"Amber Earth",h:"#785830"},{n:"Bronze Deep",h:"#604828"}],
+"Twilight Court":[{n:"Lavender Mist",h:"#D8D0E0"},{n:"Wisteria",h:"#B8A8C8"},{n:"Dusty Violet",h:"#9888A8"},{n:"Plum Dust",h:"#807090"},{n:"Eggplant",h:"#605070"},{n:"Plum Deep",h:"#4A3858"},{n:"Aubergine",h:"#3A2848"},{n:"Amethyst Dark",h:"#382040"}]
+};
+
+var LOOKS=[
+{t:"The Botanical Scholar",c:"Editorial Day",cols:["#3A5040","#F0EAE0","#B8A070","#C89898","#2A2828"],txt:"Hunter-soft blazer over antique ivory silk, antique brass jewelry. Dusty rose lip, soft black patent details. The woman who reads rare botany texts in the greenhouse."},
+{t:"Midnight Garden",c:"Evening Event",cols:["#703848","#D8C8A8","#3A5858","#E8D0D0","#907840"],txt:"Wine velvet against champagne silk lining, teal forest accents. Blush whisper pearls, burnished gold at the ear. A woman with secrets and expensive taste."},
+{t:"Storm Approaching",c:"Power Professional",cols:["#506070","#E0E8F0","#887870","#B8C0D8","#484038"],txt:"Storm grey suit, ice whisper blouse, taupe shadow bag. Soft periwinkle scarf as the only concession to softness. The woman they call when things get serious."},
+{t:"Golden Afternoon",c:"Romantic Weekend",cols:["#8AA888","#E8DCC0","#D8B0B0","#A08858","#2A4038"],txt:"Eucalyptus linen dress, champagne cardigan, bronze mist sandals. Soft rose at cheeks, evergreen ribbon. Picnic baskets and poetry."},
+{t:"The Collector",c:"Gallery Opening",cols:["#4A3858","#F0EAE0","#B8A070","#B08888","#203840"],txt:"Plum deep wide-leg trousers, antique ivory silk camisole, antique brass cuff. Mauve lip, midnight teal clutch. She knows the provenance of everything."},
+{t:"Victorian Greenhouse",c:"Special Occasion",cols:["#2A4038","#E8D0D0","#907840","#9888A8","#703848"],txt:"Evergreen gown with blush whisper underskirt, burnished gold belt. Dusty violet wrap, wine lip. Leading lady energy."},
+{t:"Coastal Fog",c:"Elevated Casual",cols:["#A89888","#E0E8F0","#7A9880","#D0C0A0","#687888"],txt:"Greige cashmere, ice whisper tee, soft jade scarf. Slate denim, soft gold studs. Effortless precision."}
+];
+
+var TIME={
+dawn:{cols:["#E8D0D0","#E0E8F0","#B8C8B0","#D8D0E0","#F0EAE0","#B8C0D8","#D8B0B0","#C8BAA8","#B8A8C8","#8AA888"],w:"In dawn's soft light, lean into your coolest, softest tones. Blush whisper, ice whisper, sage mist - colors that feel like the world just waking."},
+morning:{cols:["#8AA888","#C8BAA8","#C89898","#8090A8","#E8DCC0","#7A9880","#B08888","#A89888","#9888A8","#D8B0B0"],w:"Morning reveals your balanced nature. Greens sing, roses feel natural, golds are present but not dominant. Your most truthful light."},
+noon:{cols:["#607860","#887870","#687888","#906070","#785830","#506070","#4A6048","#5A5048","#807090","#3A5040"],w:"Harsh midday sun can bleach you out. Reach for deeper, more saturated colors - they anchor you against the flattening effect."},
+golden:{cols:["#B8A070","#C89898","#907840","#D8C8A8","#703848","#A08858","#E8DCC0","#885060","#886838","#B08888"],w:"Your golden hour glory. This is when your warm undertones ignite. Antique brass, burnished gold, wine - lean into warmth."},
+dusk:{cols:["#703848","#3A5858","#4A3858","#605070","#2A4038","#3A4858","#885060","#3A2848","#506070","#2A4850"],w:"As light fades blue, your deepest jewel tones come alive. Wine, teal forest, plum deep - mystery in the in-between hours."},
+night:{cols:["#2A2828","#382040","#203840","#703848","#907840","#3A2848","#2A4038","#484038","#4A3858","#3A4858"],w:"Under candlelight, go dark and rich. Soft black, amethyst dark, midnight teal, wine. Add gold jewelry. Drama hour."}
+};
+
+var WARD={
+coats:{t:"Coats & Outerwear",cols:["#A89888","#3A5040","#484038","#506070","#887870","#703848","#2A4038","#3A4858"],n:"Greige, hunter soft, charcoal warm, storm - your presence colors. Wine and evergreen for statements."},
+suits:{t:"Suits & Tailoring",cols:["#687888","#887870","#484038","#3A5040","#506070","#5A5048","#605070","#2A4038"],n:"Slate, taupe shadow, charcoal warm - power neutrals. Forest and storm for creative industries."},
+dresses:{t:"Dresses",cols:["#8AA888","#C89898","#B8A8C8","#703848","#3A5858","#D8B0B0","#607860","#4A3858"],n:"Eucalyptus, dusty rose, wisteria for day. Wine, teal forest, plum deep for evening drama."},
+blouses:{t:"Blouses & Tops",cols:["#F0EAE0","#E0E8F0","#E8DCC0","#E8D0D0","#B8C8B0","#D8D0E0","#C8BAA8","#D8B0B0"],n:"Near the face, stay lighter. Antique ivory, ice whisper, champagne illuminate."},
+knitwear:{t:"Knitwear",cols:["#C8BAA8","#8AA888","#C89898","#A89888","#9888A8","#7A9880","#B08888","#807090"],n:"Knits handle mid-tones beautifully. Warm stone, eucalyptus, dusty rose - cozy-but-polished."},
+denim:{t:"Denim & Casual",cols:["#687888","#506070","#3A4858","#2A4850","#484038","#5A5048","#607860","#4A6048"],n:"Skip bright indigo - yours runs slate, storm, navy soft. Grey-based washes over blue."},
+evening:{t:"Evening & Formal",cols:["#703848","#2A2828","#3A2848","#382040","#907840","#4A3858","#2A4038","#203840"],n:"Evening demands darkest jewels. Wine, soft black, aubergine. Burnished gold accessories."},
+athletic:{t:"Athletic & Leisure",cols:["#687888","#8AA888","#A89888","#7A9880","#8090A8","#906070","#607860","#B08888"],n:"Slate, eucalyptus, greige - elevated athletic neutrals that still harmonize."}
+};
+
+var STORIES=[
+{t:"The Botanist's Widow",x:"She kept his greenhouse alive for twenty years. The morning she finally cleared his desk, she wore wine velvet and antique brass - the colors of dried roses.",cols:["#703848","#B8A070","#3A5040","#F0EAE0"]},
+{t:"Appointment at Dusk",x:"The letter specified dusk. She chose storm grey, knowing how it would disappear into failing light. Only her soft gold brooch would give her away.",cols:["#506070","#D0C0A0","#2A2828","#E0E8F0"]},
+{t:"The Restoration",x:"Three years of careful work. When it was finished, she dressed to match - eucalyptus silk, champagne pearls, blush whisper at the cheeks.",cols:["#8AA888","#E8DCC0","#E8D0D0","#907840"]},
+{t:"The Heir Returns",x:"The house remembered her differently. She climbed the stairs in evergreen and soft black, dusty violet scarf trailing like a ghost.",cols:["#2A4038","#2A2828","#9888A8","#703848"]},
+{t:"Midnight Archive",x:"The restricted collection opened only after hours. She pulled manuscripts by candlelight in plum deep velvet, wine-stained fingers turning centuries-old pages.",cols:["#4A3858","#A08858","#703848","#E8DCC0"]},
+{t:"The Forger's Daughter",x:"She learned to mix pigments before she learned to read. Now she recreated Old Masters in a studio that smelled of linseed and secrets, wearing sage to disappear into the work.",cols:["#607860","#C8BAA8","#887870","#B8A070"]},
+{t:"Winter Correspondence",x:"The letters arrived on the solstice, written in a hand she almost recognized. She read them in ice whisper cashmere, storm light falling through tall windows.",cols:["#E0E8F0","#506070","#D8D0E0","#687888"]},
+{t:"The Cartographer's Wife",x:"She traced coastlines he would never see again. The maps spread across tables in rooms painted the exact green of shallow seas, her dress the rose of sunset on water.",cols:["#3A5858","#C89898","#2A4850","#E8DCC0"]},
+{t:"Auction Lot 247",x:"The velvet box contained her grandmother's serpent ring - emerald eyes, gold coils. She wore teal forest to bid, knowing the color of wanting.",cols:["#3A5858","#907840","#2A4038","#F0EAE0"]},
+{t:"The Understudy",x:"Opening night arrived without warning. She stepped into the role wearing someone else's costume - dusty rose, wine accents - and made it hers.",cols:["#C89898","#703848","#E8D0D0","#484038"]},
+{t:"Laboratory Hours",x:"The research continued past midnight, past reason. In her slate coat and steel blue, she was nearly invisible against the machines that hummed with answers.",cols:["#687888","#8090A8","#5A5048","#E0E8F0"]},
+{t:"The Collector's Eye",x:"She could spot a fake across a crowded room. Tonight she wore aubergine to an auction of dubious provenance, her silence more damning than speech.",cols:["#3A2848","#B8A070","#F0EAE0","#703848"]},
+{t:"Coastal Inventory",x:"Every shell, every stone, catalogued by color. Her field notebooks filled with wisteria and seafoam swatches while the lighthouse keeper watched from above.",cols:["#B8A8C8","#7A9880","#E0E8F0","#A89888"]},
+{t:"The Last Lecture",x:"She delivered it in hunter soft and champagne, the colors of old photographs and older memories. The auditorium held its breath.",cols:["#3A5040","#E8DCC0","#887870","#2A2828"]},
+{t:"Provenance Unknown",x:"The painting arrived wrapped in linen the color of oyster shells. She hung it in a room dressed in mauve and amber earth, and waited for it to speak.",cols:["#E0D8D0","#B08888","#785830","#D8D0E0"]}
+];
+
+var HARMONY=[
+{n:"Blush Whisper",h:"#E8D0D0"},
+{n:"Dusty Rose",h:"#C89898"},
+{n:"Antique Brass",h:"#B8A070"},
+{n:"Sage Mist",h:"#B8C8B0"},
+{n:"Deep Moss",h:"#4A6048"},
+{n:"Eucalyptus",h:"#8AA888"},
+{n:"Steel Blue",h:"#8090A8"},
+{n:"Lavender Grey",h:"#9888A8"},
+{n:"Wine",h:"#703848"},
+{n:"Berry Dust",h:"#906070"},
+{n:"Rose Taupe",h:"#987878"},
+{n:"Pearl Blush",h:"#E0D8D0"}
+];
+
+var favs={};
+try{var stored=localStorage.getItem("serpentineFavs");if(stored)favs=JSON.parse(stored);}catch(e){favs={};}
+if(typeof favs!=="object"||favs===null)favs={};
+
+var alchCols=[null,null,null],alchOn=null;
+var cmp1=null,cmp2=null,cmpOn=null;
+var oracleCtx=null,oracleData=null;
+
+function $(s){return document.querySelector(s)}
+function $$(s){return document.querySelectorAll(s)}
+
+function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2000)}
+function saveFavs(){localStorage.setItem("serpentineFavs",JSON.stringify(favs))}
+function copy(h){navigator.clipboard.writeText(h).then(function(){toast("Copied: "+h)})}
+function togFav(h,n){if(favs[h])delete favs[h];else favs[h]=n;saveFavs();renderFavs();markFavs();toast(favs[h]?"Treasured: "+n:"Removed")}
+function markFavs(){$$("[data-h]").forEach(function(e){e.classList.toggle("fav",!!favs[e.dataset.h])})}
+function hex2rgb(h){var r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null}
+function rgb2hex(r,g,b){return"#"+[r,g,b].map(function(x){return x.toString(16).padStart(2,"0")}).join("").toUpperCase()}
+function hsl(h){var rgb=hex2rgb(h);if(!rgb)return null;var r=rgb.r/255,g=rgb.g/255,b=rgb.b/255;var mx=Math.max(r,g,b),mn=Math.min(r,g,b);var hue,sat,lum=(mx+mn)/2;if(mx===mn){hue=sat=0}else{var d=mx-mn;sat=lum>.5?d/(2-mx-mn):d/(mx+mn);switch(mx){case r:hue=((g-b)/d+(g<b?6:0))/6;break;case g:hue=((b-r)/d+2)/6;break;case b:hue=((r-g)/d+4)/6;break}}return{h:hue*360,s:sat*100,l:lum*100}}
+
+function analyze(hex){var p=hsl(hex);if(!p)return{sym:"?",title:"Invalid",text:"Could not parse."};var h=p.h,s=p.s,l=p.l;var sc=0,notes=[];if(s<=55){sc+=2;notes.push("saturation in your muted range")}else if(s<=70){sc+=1;notes.push("slightly saturated - use as accent")}else{notes.push("too vivid for your softness")}var cool=(h>=150&&h<=300);if(cool){sc+=2;notes.push("cool undertone harmonizes")}else if(h>=50&&h<150){sc+=1.5;notes.push("warm but within your golden range")}else{sc+=1;notes.push("neutral ground")}if(l>=25&&l<=70){sc+=1.5;notes.push("perfect depth")}else if(l<25){sc+=1;notes.push("quite dark - evening/accent")}else{sc+=1;notes.push("quite light - near face")}if((h>=80&&h<=160)&&s<=50){sc+=.5;notes.push("green family - your territory")}if((h>=320||h<=20)&&s<=50){sc+=.5;notes.push("rose family - echoes your flush")}var sym,title;if(sc>=5){sym="\u2726\u2726";title="Perfect Harmony"}else if(sc>=4){sym="\u2726";title="Strong Match"}else if(sc>=3){sym="\u223C";title="Proceed with Care"}else{sym="\u2717";title="Not Your Color"}return{sym:sym,title:title,text:notes.join("; ")+"."}}
+
+function closest(hex){var t=hex2rgb(hex);if(!t)return[];var all=[];SRC.forEach(function(p){all.push(p.h)});Object.values(PAL).forEach(function(g){g.forEach(function(c){all.push(c.h)})});var d=all.map(function(h){var c=hex2rgb(h);return{h:h,d:Math.sqrt(Math.pow(t.r-c.r,2)+Math.pow(t.g-c.g,2)+Math.pow(t.b-c.b,2))}});d.sort(function(a,b){return a.d-b.d});return d.slice(0,3).map(function(x){return x.h})}
+
+function cmpColors(h1,h2){var p1=hsl(h1),p2=hsl(h2);if(!p1||!p2)return"Unable to analyze.";var hd=Math.abs(p1.h-p2.h),ld=Math.abs(p1.l-p2.l);var r="";if(hd<30||hd>330){r=ld>20?"Tonal siblings - same family, different depths. Elegant for monochrome.":"Very close relatives. One should dominate."}else if(hd>150&&hd<210){r="Complementary opposites. They electrify each other - hero and accent."}else if((hd>90&&hd<150)||(hd>210&&hd<270)){r="Triadic tension. Visual interest without stark contrast."}else{r="Analogous neighbors. Effortless harmony."}if(ld>30){r+=" Strong value contrast creates structure."}return r}
+
+function blend(){var valid=alchCols.filter(function(h){return h}).map(function(h){return hex2rgb(h)}).filter(function(c){return c});if(!valid.length)return null;var r=Math.round(valid.reduce(function(s,c){return s+c.r},0)/valid.length);var g=Math.round(valid.reduce(function(s,c){return s+c.g},0)/valid.length);var b=Math.round(valid.reduce(function(s,c){return s+c.b},0)/valid.length);return rgb2hex(r,g,b)}
+
+function nameBlend(hex){var p=hsl(hex);if(!p)return"Unknown";var h=p.h,s=p.s,l=p.l;var hue="";if(h<30||h>=330){hue="Rose"}else if(h<60){hue="Amber"}else if(h<90){hue="Gold"}else if(h<150){hue="Sage"}else if(h<210){hue="Teal"}else if(h<270){hue="Violet"}else{hue="Berry"}var val="";if(l<30){val="Deep "}else if(l<50){val="Shadow "}else if(l>70){val="Pale "}return val+hue}
+
+function handleSelect(h,n){if(alchOn!==null){alchCols[alchOn]=h;var sl=$$(".alch-slot")[alchOn];sl.style.background=h;sl.textContent="";sl.classList.add("filled");sl.classList.remove("on");alchOn=null;renderAlch();return}if(cmpOn){if(cmpOn===1){cmp1={h:h,n:n};$("#cmpSlot1").style.background=h;$("#cmpSlot1").textContent="";$("#cmpSlot1").classList.add("filled");$("#cmpSlot1").classList.remove("on")}else{cmp2={h:h,n:n};$("#cmpSlot2").style.background=h;$("#cmpSlot2").textContent="";$("#cmpSlot2").classList.add("filled");$("#cmpSlot2").classList.remove("on")}cmpOn=null;if(cmp1&&cmp2){$("#cmpText").textContent=cmpColors(cmp1.h,cmp2.h)}return}}
+
+function renderPig(){var g=$("#pigGrid");g.innerHTML="";SRC.forEach(function(p){var c=document.createElement("div");c.className="pig-card";c.innerHTML='<div class="pig-swatch'+(favs[p.h]?" fav":"")+'" style="background:'+p.h+'" data-h="'+p.h+'" data-n="'+p.n+'"></div><div class="pig-origin">'+p.n+'</div><div class="pig-hex">'+p.h+'</div><div class="pig-desc">'+p.d+'</div>';var sw=c.querySelector(".pig-swatch");sw.onclick=function(){sw.classList.add("flash");setTimeout(function(){sw.classList.remove("flash")},300);copy(p.h);handleSelect(p.h,p.n)};sw.ondblclick=function(e){e.preventDefault();togFav(p.h,p.n)};g.appendChild(c)})}
+
+function renderPal(){var box=$("#palGroups");box.innerHTML="";Object.keys(PAL).forEach(function(gn){var cols=PAL[gn];var grp=document.createElement("div");grp.className="pal-group";grp.innerHTML='<div class="group-title">'+gn+'</div><div class="gem-grid"></div>';var grid=grp.querySelector(".gem-grid");cols.forEach(function(c){var gem=document.createElement("div");gem.className="gem"+(favs[c.h]?" fav":"");gem.style.background=c.h;gem.dataset.h=c.h;gem.dataset.n=c.n;gem.innerHTML='<div class="gem-tip">'+c.n+" "+c.h+"</div>";gem.onclick=function(){gem.classList.add("flash");setTimeout(function(){gem.classList.remove("flash")},300);copy(c.h);handleSelect(c.h,c.n)};gem.ondblclick=function(e){e.preventDefault();togFav(c.h,c.n)};grid.appendChild(gem)});box.appendChild(grp)})}
+
+function renderLooks(){var box=$("#looksBox");box.innerHTML="";LOOKS.forEach(function(lk){var el=document.createElement("div");el.className="look";el.innerHTML='<div class="look-head"><div class="look-name">'+lk.t+'</div><div class="look-ctx">'+lk.c+'</div></div><div class="look-gems">'+lk.cols.map(function(h){return'<div class="look-gem" style="background:'+h+'" data-h="'+h+'"></div>'}).join("")+'</div><div class="look-text">'+lk.txt+'</div>';el.querySelectorAll(".look-gem").forEach(function(g){g.onclick=function(){copy(g.dataset.h);toast("Copied: "+g.dataset.h)}});box.appendChild(el)})}
+
+function renderTime(t){var d=TIME[t];$("#timeGems").innerHTML=d.cols.map(function(h){return'<div class="time-gem" style="background:'+h+'" data-h="'+h+'"></div>'}).join("");$("#timeWisdom").textContent=d.w;$$(".time-gem").forEach(function(g){g.onclick=function(){copy(g.dataset.h);toast("Copied: "+g.dataset.h)}})}
+
+function renderWard(w){var d=WARD[w];$("#wardDisplay").innerHTML='<div class="ward-title">'+d.t+'</div><div class="ward-gems">'+d.cols.map(function(h){return'<div class="ward-gem" style="background:'+h+'" data-h="'+h+'"></div>'}).join("")+'</div><div class="ward-note">'+d.n+'</div>';$$(".ward-gem").forEach(function(g){g.onclick=function(){copy(g.dataset.h);toast("Copied: "+g.dataset.h)}})}
+
+function renderAlch(){var b=blend();if(b){$("#alchBlend").style.background=b;$("#alchName").textContent=nameBlend(b);$("#alchHex").textContent=b;var a=analyze(b);$("#alchAdvice").textContent=a.title==="Perfect Harmony"||a.title==="Strong Match"?"This blend harmonizes beautifully. Seek it out.":a.title==="Proceed with Care"?"Wearable but not optimal. Consider for accessories.":"Strays from your harmony. Interesting but not for wardrobe."}else{$("#alchBlend").style.background="transparent";$("#alchName").textContent="Select colors to blend";$("#alchHex").textContent="";$("#alchAdvice").textContent=""}}
+
+function renderStory(){var s=STORIES[Math.floor(Math.random()*STORIES.length)];$("#storyBox").innerHTML='<div class="story-title">'+s.t+'</div><div class="story-text">'+s.x+'</div><div class="story-gems">'+s.cols.map(function(h){return'<div class="story-gem" style="background:'+h+'"></div>'}).join("")+'</div>'}
+
+function renderFavs(){var box=$("#favBox");var ent=Object.entries(favs);if(!ent.length){box.innerHTML='<div class="fav-empty"><div class="fav-empty-icon">&diams;</div><div class="fav-empty-text">Double-tap any swatch to treasure it.<br>Your collection appears here.</div></div>';return}box.innerHTML='<div class="fav-grid">'+ent.map(function(e){var h=e[0],n=e[1];return'<div class="fav-item"><div class="fav-gem" style="background:'+h+'" data-h="'+h+'" data-n="'+n+'"></div><div class="fav-name">'+n+'</div></div>'}).join("")+'</div>';$$(".fav-gem").forEach(function(g){g.onclick=function(){copy(g.dataset.h);toast("Copied: "+g.dataset.h)};g.ondblclick=function(){togFav(g.dataset.h,g.dataset.n)}})}
+
+function renderHarmony(){var wheel=$("#harmonyWheel");var legend=$("#harmonyLegend");var segAngle=360/HARMONY.length;var wheelHTML="";HARMONY.forEach(function(c,i){var rot=i*segAngle;wheelHTML+='<div style="position:absolute;width:100%;height:100%;clip-path:polygon(50% 50%,50% 0%,'+(50+50*Math.tan(segAngle*Math.PI/360))+'% 0%);transform:rotate('+rot+'deg);background:'+c.h+';transform-origin:center;"></div>'});wheel.innerHTML=wheelHTML;legend.innerHTML=HARMONY.map(function(c){return'<div class="harmony-item"><div class="harmony-dot" style="background:'+c.h+'"></div>'+c.n+'</div>'}).join("")}
+
+function showVerdict(hex){var r=analyze(hex);var m=closest(hex);$("#oracleVerdict").innerHTML='<div class="verdict-sym">'+r.sym+'</div><div class="verdict-title">'+r.title+'</div><div class="verdict-text">'+r.text+'</div><div class="verdict-matches">'+m.map(function(h){return'<div class="verdict-match" style="background:'+h+'"></div>'}).join("")+'</div>'}
+
+function setupOracle(){var upload=$("#oracleUpload"),file=$("#oracleFile"),canvas=$("#oracleCanvas"),wrap=$("#oracleCanvasWrap"),picked=$("#oraclePicked"),swatch=$("#oraclePickedSwatch"),hexEl=$("#oraclePickedHex");oracleCtx=canvas.getContext("2d",{willReadFrequently:true});upload.ondragover=function(e){e.preventDefault();upload.classList.add("drag")};upload.ondragleave=function(){upload.classList.remove("drag")};upload.ondrop=function(e){e.preventDefault();upload.classList.remove("drag");if(e.dataTransfer.files[0])loadImg(e.dataTransfer.files[0])};file.onchange=function(){if(file.files[0])loadImg(file.files[0])};function loadImg(f){var rd=new FileReader();rd.onload=function(e){var img=new Image();img.onload=function(){var maxW=wrap.offsetWidth||350,maxH=300;var w=img.width,h=img.height;if(w>maxW){h*=maxW/w;w=maxW}if(h>maxH){w*=maxH/h;h=maxH}canvas.width=w;canvas.height=h;oracleCtx.drawImage(img,0,0,w,h);oracleData=oracleCtx.getImageData(0,0,w,h);wrap.classList.add("on");upload.style.display="none"};img.src=e.target.result};rd.readAsDataURL(f)}canvas.onclick=function(e){if(!oracleData)return;var rect=canvas.getBoundingClientRect();var sx=canvas.width/rect.width,sy=canvas.height/rect.height;var x=Math.floor((e.clientX-rect.left)*sx),y=Math.floor((e.clientY-rect.top)*sy);var i=(y*canvas.width+x)*4;var hex=rgb2hex(oracleData.data[i],oracleData.data[i+1],oracleData.data[i+2]);swatch.style.background=hex;hexEl.textContent=hex;picked.classList.add("on");showVerdict(hex)}}
+
+function getAllCols(){var all=[];SRC.forEach(function(p){all.push({n:p.n,h:p.h,cat:"Source"})});Object.keys(PAL).forEach(function(g){PAL[g].forEach(function(c){all.push({n:c.n,h:c.h,cat:g})})});return all}
+
+// Nav
+$$(".nav-btn").forEach(function(b){b.onclick=function(){$$(".nav-btn").forEach(function(x){x.classList.remove("on")});$$("section").forEach(function(x){x.classList.remove("on")});b.classList.add("on");$("#"+b.dataset.s).classList.add("on")}});
+
+// Time
+$$(".time-btn").forEach(function(b){b.onclick=function(){$$(".time-btn").forEach(function(x){x.classList.remove("on")});b.classList.add("on");renderTime(b.dataset.t)}});
+
+// Wardrobe
+$$(".ward-cat").forEach(function(b){b.onclick=function(){$$(".ward-cat").forEach(function(x){x.classList.remove("on")});b.classList.add("on");renderWard(b.dataset.w)}});
+
+// Oracle input
+$("#oracleInput").oninput=function(e){var v=e.target.value.trim();if(v&&!v.startsWith("#"))v="#"+v;if(/^#[0-9A-Fa-f]{6}$/i.test(v))showVerdict(v.toUpperCase())};
+
+// Alchemy
+$$(".alch-slot").forEach(function(s){s.onclick=function(){$$(".alch-slot").forEach(function(x){x.classList.remove("on")});s.classList.add("on");alchOn=parseInt(s.dataset.i);toast("Now tap any swatch")}});
+$("#alchClear").onclick=function(){alchCols=[null,null,null];alchOn=null;$$(".alch-slot").forEach(function(s){s.style.background="";s.textContent="+";s.classList.remove("filled","on")});renderAlch()};
+
+// Compare
+$$(".cmp-slot").forEach(function(s){s.onclick=function(){$$(".cmp-slot").forEach(function(x){x.classList.remove("on")});s.classList.add("on");cmpOn=parseInt(s.dataset.n);toast("Now tap any swatch")}});
+$("#cmpClear").onclick=function(){cmp1=cmp2=null;cmpOn=null;$$(".cmp-slot").forEach(function(s){s.style.background="";s.textContent="Tap to select";s.classList.remove("filled","on")});$("#cmpText").textContent="Select two colors to divine their relationship."};
+
+// Story
+$("#storyBtn").onclick=renderStory;
+
+// Export
+$("#expJson").onclick=function(){var d=getAllCols();var j=JSON.stringify(d,null,2);$("#expScroll").textContent=j;navigator.clipboard.writeText(j).then(function(){toast("Palette JSON copied!")})};
+$("#expFavJson").onclick=function(){var d=Object.entries(favs).map(function(e){return{n:e[1],h:e[0]}});var j=JSON.stringify(d,null,2);$("#expScroll").textContent=j;navigator.clipboard.writeText(j).then(function(){toast("Treasures JSON copied!")})};
+$("#expText").onclick=function(){var d=getAllCols();var t=d.map(function(c){return c.n+": "+c.h}).join("\n");$("#expScroll").textContent=t;navigator.clipboard.writeText(t).then(function(){toast("Palette text copied!")})};
+$("#expFavText").onclick=function(){var d=Object.entries(favs).map(function(e){return{n:e[1],h:e[0]}});var t=d.map(function(c){return c.n+": "+c.h}).join("\n");$("#expScroll").textContent=t;navigator.clipboard.writeText(t).then(function(){toast("Treasures text copied!")})};
+
+// Init
+renderPig();renderPal();renderLooks();renderTime("dawn");renderWard("coats");renderFavs();renderStory();renderAlch();renderHarmony();setupOracle();markFavs();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
