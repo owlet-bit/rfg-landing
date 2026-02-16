@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Fleur de Miel</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleur de Miel — A Color Portrait</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--parchment:#F9F6F0;--cream:#FFFDF7;--aged:#EDE6D6;--gold:#C7A855;--gold-dark:#A68B3D;
+--ink:#3D3628;--ink-light:#5C5346;--rose:#C9A095;--sage:#9BA58B;--shadow:rgba(61,54,40,.08);
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+html{font-size:17px}
+body{
+font-family:"Palatino Linotype","Book Antiqua",Palatino,Georgia,serif;
+background:var(--parchment);
+background-image:
+  radial-gradient(ellipse at 20% 0%,rgba(199,168,85,.08) 0%,transparent 50%),
+  radial-gradient(ellipse at 80% 100%,rgba(155,165,139,.1) 0%,transparent 50%);
+color:var(--ink);line-height:1.7;min-height:100vh;
+}
+
+::selection{background:var(--gold);color:var(--cream)}
+
+.journal{max-width:920px;margin:0 auto;padding:3rem 2rem 4rem}
+
+/* Header */
+header{text-align:center;padding:3rem 1rem 2.5rem;position:relative}
+header::before{
+content:"— № 1 —";display:block;font-size:.7rem;letter-spacing:.4em;color:var(--gold);
+margin-bottom:1.5rem;font-family:Garamond,"Times New Roman",serif;
+}
+.title{
+font-family:Garamond,"Times New Roman",serif;font-size:clamp(2.2rem,6vw,3.4rem);
+font-weight:300;letter-spacing:.08em;color:var(--ink);margin-bottom:.4rem;
+font-style:italic;
+}
+.subtitle{
+font-size:.95rem;color:var(--ink-light);font-weight:200;letter-spacing:.12em;
+font-style:italic;
+}
+.flourish{
+width:120px;height:1px;margin:1.8rem auto 0;
+background:linear-gradient(90deg,transparent,var(--gold),transparent);
+position:relative;
+}
+.flourish::before{
+content:"✽";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+background:var(--parchment);padding:0 .8rem;color:var(--gold);font-size:.9rem;
+}
+
+/* Analysis Section */
+.specimen-card{
+background:var(--cream);margin:2.5rem 0;padding:2.5rem;position:relative;
+border:1px solid var(--aged);
+box-shadow:0 2px 20px var(--shadow),inset 0 0 80px rgba(237,230,214,.5);
+}
+.specimen-card::before{
+content:"";position:absolute;top:8px;left:8px;right:8px;bottom:8px;
+border:1px solid var(--gold);opacity:.3;pointer-events:none;
+}
+.specimen-card::after{
+content:"SPECIMEN ANALYSIS";position:absolute;top:-10px;left:2rem;
+background:var(--parchment);padding:0 1rem;font-size:.65rem;letter-spacing:.3em;
+color:var(--gold);font-family:Garamond,"Times New Roman",serif;
+}
+.season-tag{
+display:inline-block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+color:var(--cream);background:var(--ink);padding:.4rem 1.2rem;margin-bottom:1.5rem;
+font-family:Garamond,"Times New Roman",serif;
+}
+.analysis-text{font-weight:300;text-align:justify;hyphens:auto}
+.analysis-text p{margin-bottom:1rem}
+.analysis-text p:last-child{margin-bottom:0}
+
+/* Section Headers */
+.section-header{
+display:flex;align-items:center;gap:1rem;margin:3rem 0 1.5rem;
+font-family:Garamond,"Times New Roman",serif;
+}
+.section-header h2{
+font-size:1.1rem;font-weight:400;letter-spacing:.15em;text-transform:uppercase;
+white-space:nowrap;
+}
+.section-line{flex:1;height:1px;background:linear-gradient(90deg,var(--gold),var(--aged))}
+.section-num{
+font-size:.7rem;color:var(--gold);letter-spacing:.1em;font-style:italic;
+}
+
+/* Pigments */
+.pigment-grid{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:1.2rem;
+}
+.pigment-vial{
+text-align:center;cursor:pointer;padding:1rem .5rem;
+background:linear-gradient(180deg,transparent 0%,rgba(255,253,247,.6) 100%);
+border:1px solid transparent;transition:all .3s ease;
+}
+.pigment-vial:hover{
+border-color:var(--gold);box-shadow:0 4px 20px var(--shadow);
+transform:translateY(-2px);
+}
+.vial-color{
+width:44px;height:44px;border-radius:50%;margin:0 auto .8rem;
+border:2px solid var(--cream);box-shadow:0 2px 8px var(--shadow),inset 0 -4px 8px rgba(0,0,0,.1);
+position:relative;
+}
+.vial-color::after{
+content:"";position:absolute;top:6px;left:8px;width:8px;height:8px;
+background:rgba(255,255,255,.4);border-radius:50%;
+}
+.vial-label{
+font-family:Garamond,"Times New Roman",serif;font-size:.75rem;font-weight:500;
+letter-spacing:.05em;color:var(--ink);margin-bottom:.2rem;
+}
+.vial-note{font-size:.65rem;color:var(--ink-light);font-style:italic}
+.vial-hex{font-family:monospace;font-size:.6rem;color:var(--sage);margin-top:.3rem}
+
+/* Palette Chapters */
+.chapter{margin:2rem 0;overflow:hidden}
+.chapter-cover{
+padding:1rem 1.5rem;cursor:pointer;display:flex;justify-content:space-between;
+align-items:center;background:var(--cream);border:1px solid var(--aged);
+transition:all .25s ease;position:relative;
+}
+.chapter-cover:hover{background:var(--aged)}
+.chapter-cover::before{
+content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+background:var(--gold);opacity:0;transition:opacity .25s;
+}
+.chapter.open .chapter-cover::before{opacity:1}
+.chapter-title{
+font-family:Garamond,"Times New Roman",serif;font-size:1rem;font-weight:400;
+letter-spacing:.1em;font-style:italic;
+}
+.chapter-toggle{
+font-size:.8rem;color:var(--gold);transition:transform .3s ease;
+}
+.chapter.open .chapter-toggle{transform:rotate(180deg)}
+.chapter-pages{
+display:none;padding:1.5rem;background:rgba(255,253,247,.5);
+border:1px solid var(--aged);border-top:none;
+}
+.chapter.open .chapter-pages{display:block}
+
+.swatch-collection{
+display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:.6rem;
+}
+.swatch{
+aspect-ratio:1;cursor:pointer;position:relative;transition:all .2s ease;
+box-shadow:0 1px 4px var(--shadow);
+}
+.swatch:hover{transform:scale(1.1);z-index:10;box-shadow:0 4px 16px var(--shadow)}
+.swatch.fav{outline:2px solid var(--gold);outline-offset:2px}
+.swatch.fav::before{
+content:"♥";position:absolute;top:2px;right:3px;color:var(--gold);
+font-size:.6rem;text-shadow:0 1px 2px rgba(0,0,0,.3);
+}
+.swatch-info{
+position:absolute;bottom:110%;left:50%;transform:translateX(-50%);
+background:var(--ink);color:var(--cream);padding:.4rem .7rem;
+font-size:.6rem;white-space:nowrap;opacity:0;pointer-events:none;
+transition:opacity .2s;z-index:100;font-family:Garamond,"Times New Roman",serif;
+letter-spacing:.05em;
+}
+.swatch-info::after{
+content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+border:5px solid transparent;border-top-color:var(--ink);
+}
+.swatch:hover .swatch-info{opacity:1}
+
+/* Workbench */
+.workbench{
+background:var(--aged);padding:2rem;margin:2.5rem 0;position:relative;
+border:1px solid #D4CCBA;
+}
+.workbench::before{
+content:"COMPARISON STUDY";position:absolute;top:-9px;left:2rem;
+background:var(--parchment);padding:0 .8rem;font-size:.6rem;letter-spacing:.25em;
+color:var(--ink-light);font-family:Garamond,"Times New Roman",serif;
+}
+.workbench-inner{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+.compare-vessel{
+width:80px;height:80px;background:var(--cream);border:2px dashed var(--gold);
+display:flex;align-items:center;justify-content:center;cursor:pointer;
+font-size:.6rem;color:var(--ink-light);text-align:center;padding:.5rem;
+font-style:italic;transition:all .25s ease;
+font-family:Garamond,"Times New Roman",serif;letter-spacing:.05em;
+}
+.compare-vessel:hover{border-style:solid}
+.compare-vessel.filled{border-style:solid;border-color:var(--ink)}
+.compare-vessel.active{box-shadow:0 0 0 3px rgba(199,168,85,.4)}
+.compare-vs{
+font-family:Garamond,"Times New Roman",serif;font-size:1.5rem;color:var(--gold);font-style:italic;
+}
+.verdict-parchment{
+background:var(--cream);border:1px solid #D4CCBA;padding:1.2rem 1.5rem;
+font-style:italic;color:var(--ink-light);font-size:.9rem;
+min-height:70px;position:relative;
+}
+.verdict-parchment::before{
+content:""";font-family:Garamond,"Times New Roman",serif;font-size:3rem;
+color:var(--aged);position:absolute;top:.2rem;left:.8rem;line-height:1;
+}
+
+/* Styled Looks */
+.looks-atelier{margin:2.5rem 0}
+.atelier-controls{display:flex;justify-content:flex-end;margin-bottom:1.2rem}
+.gen-btn{
+background:none;border:1px solid var(--ink);color:var(--ink);
+padding:.6rem 1.4rem;font-family:Garamond,"Times New Roman",serif;font-size:.8rem;
+letter-spacing:.15em;cursor:pointer;transition:all .25s ease;
+}
+.gen-btn:hover{background:var(--ink);color:var(--cream)}
+.looks-gallery{
+display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;
+}
+.look-plate{
+background:var(--cream);border:1px solid var(--aged);padding:1.5rem;
+position:relative;transition:box-shadow .3s ease;
+}
+.look-plate:hover{box-shadow:0 6px 24px var(--shadow)}
+.look-plate::before{
+content:"";position:absolute;top:0;left:0;right:0;height:3px;
+background:linear-gradient(90deg,var(--gold),var(--rose),var(--sage));
+}
+.look-name{
+font-family:Garamond,"Times New Roman",serif;font-size:1.05rem;font-weight:400;
+font-style:italic;margin-bottom:1rem;letter-spacing:.05em;
+}
+.look-swatches{display:flex;gap:.4rem;margin-bottom:1rem}
+.look-chip{
+width:36px;height:36px;cursor:pointer;transition:transform .2s;
+box-shadow:0 1px 4px var(--shadow);
+}
+.look-chip:hover{transform:scale(1.15)}
+.look-story{font-size:.8rem;color:var(--ink-light);line-height:1.6;font-style:italic}
+
+/* Favorites */
+.treasure-box{
+margin:2.5rem 0;padding:2rem;position:relative;
+background:linear-gradient(135deg,rgba(199,168,85,.08) 0%,rgba(255,253,247,.5) 100%);
+border:2px solid var(--gold);
+}
+.treasure-box::before{
+content:"COLLECTED FAVORITES";position:absolute;top:-9px;left:2rem;
+background:var(--parchment);padding:0 .8rem;font-size:.6rem;letter-spacing:.25em;
+color:var(--gold);font-family:Garamond,"Times New Roman",serif;
+}
+.treasure-grid{display:flex;flex-wrap:wrap;gap:1rem;min-height:60px}
+.treasure-empty{
+width:100%;text-align:center;color:var(--ink-light);font-style:italic;
+font-size:.85rem;padding:1rem;
+}
+.treasure-gem{text-align:center;cursor:pointer;transition:transform .2s}
+.treasure-gem:hover{transform:translateY(-3px)}
+.gem-color{
+width:50px;height:50px;border:2px solid var(--gold);margin-bottom:.4rem;
+box-shadow:0 2px 8px var(--shadow);
+}
+.gem-name{
+font-size:.6rem;color:var(--ink-light);max-width:60px;word-break:break-word;
+font-family:Garamond,"Times New Roman",serif;letter-spacing:.03em;
+}
+
+/* Export */
+.archive-drawer{
+background:var(--cream);border:1px solid var(--aged);padding:2rem;margin:2.5rem 0;
+}
+.archive-title{
+font-family:Garamond,"Times New Roman",serif;font-size:1rem;font-weight:400;
+letter-spacing:.1em;margin-bottom:1.2rem;font-style:italic;
+}
+.archive-btns{display:flex;gap:.8rem;flex-wrap:wrap}
+.archive-btn{
+background:var(--ink);color:var(--cream);border:none;
+padding:.7rem 1.4rem;font-family:Garamond,"Times New Roman",serif;font-size:.75rem;
+letter-spacing:.12em;cursor:pointer;transition:all .25s ease;
+}
+.archive-btn:hover{background:var(--gold);color:var(--ink)}
+.archive-output{
+margin-top:1.2rem;background:var(--parchment);border:1px solid var(--aged);
+padding:1rem;font-family:monospace;font-size:.65rem;max-height:180px;
+overflow-y:auto;white-space:pre-wrap;display:none;
+}
+.archive-output.show{display:block}
+
+/* Toast */
+.toast{
+position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+background:var(--ink);color:var(--cream);padding:.7rem 1.5rem;
+font-family:Garamond,"Times New Roman",serif;font-size:.85rem;letter-spacing:.08em;
+opacity:0;transition:opacity .3s ease;z-index:1000;
+box-shadow:0 4px 20px rgba(0,0,0,.2);
+}
+.toast.show{opacity:1}
+
+/* Footer */
+footer{
+text-align:center;padding:2.5rem 1rem;margin-top:2rem;
+border-top:1px solid var(--aged);position:relative;
+}
+footer::before{
+content:"❦";display:block;position:absolute;top:-10px;left:50%;
+transform:translateX(-50%);background:var(--parchment);padding:0 1rem;
+color:var(--gold);font-size:1rem;
+}
+.colophon{
+font-family:Garamond,"Times New Roman",serif;font-size:.8rem;color:var(--ink-light);
+font-style:italic;letter-spacing:.05em;
+}
+
+@media(max-width:600px){
+html{font-size:15px}
+.journal{padding:1.5rem 1rem}
+.specimen-card{padding:1.5rem}
+.workbench-inner{justify-content:center}
+}
+</style>
+</head>
+<body>
+
+<div class="journal">
+
+<header>
+<h1 class="title">Fleur de Miel</h1>
+<p class="subtitle">A Color Portrait for Lauren</p>
+<div class="flourish"></div>
+</header>
+
+<article class="specimen-card">
+<span class="season-tag">Soft Autumn · Light Influence</span>
+<div class="analysis-text">
+<p>Your coloring possesses the quality of late afternoon light in September — that particular amber glow that transforms ordinary landscapes into something gilt and softened. The warmth in your complexion is present but veiled, like honey held up to sunlight: never brassy, always luminous. Your skin carries the soft warmth of blanched almonds with peachy-rose undertones that surface beautifully at the cheeks, lending you a natural flush that cosmetics merely echo.</p>
+<p>Those remarkable eyes are a study in botanical complexity — sage and olive with flecks of true gold near the pupil, shifting between green and hazel depending on what colors surround them. They are your signature, made more striking by the contrast with your champagne-to-ash blonde hair, which moves through honey, wheat, and cool flax depending on the light. This interplay of warm and muted creates your particular magic.</p>
+<p>You belong to the Soft Autumn family with a Light influence — meaning you share Soft Autumn's muted, warm, and blended quality, but can also borrow from Light Spring's fresher, lighter offerings. Your colors should feel sun-faded, antique, and gently complex: the palette of pressed flowers, aged paper, and golden hour.</p>
+</div>
+</article>
+
+<div class="section-header">
+<span class="section-num">i.</span>
+<h2>Source Pigments</h2>
+<div class="section-line"></div>
+</div>
+
+<div class="pigment-grid" id="pigments"></div>
+
+<div class="section-header">
+<span class="section-num">ii.</span>
+<h2>Your Wearable Palette</h2>
+<div class="section-line"></div>
+</div>
+
+<div id="chapters"></div>
+
+<div class="section-header">
+<span class="section-num">iii.</span>
+<h2>Comparison Study</h2>
+<div class="section-line"></div>
+</div>
+
+<div class="workbench">
+<div class="workbench-inner">
+<div class="compare-vessel" id="vessel1">click to<br>select</div>
+<span class="compare-vs">&</span>
+<div class="compare-vessel" id="vessel2">click to<br>select</div>
+</div>
+<div class="verdict-parchment" id="verdict">Select two colors from your palette to receive a detailed comparison and styling verdict.</div>
+</div>
+
+<div class="section-header">
+<span class="section-num">iv.</span>
+<h2>Styled Looks</h2>
+<div class="section-line"></div>
+</div>
+
+<div class="looks-atelier">
+<div class="atelier-controls">
+<button class="gen-btn" id="regenLooks">Generate New</button>
+</div>
+<div class="looks-gallery" id="looksGallery"></div>
+</div>
+
+<div class="section-header">
+<span class="section-num">v.</span>
+<h2>Collected Favorites</h2>
+<div class="section-line"></div>
+</div>
+
+<div class="treasure-box">
+<div class="treasure-grid" id="treasures">
+<span class="treasure-empty">Double-click any swatch to add it to your collection</span>
+</div>
+</div>
+
+<div class="section-header">
+<span class="section-num">vi.</span>
+<h2>Archive & Export</h2>
+<div class="section-line"></div>
+</div>
+
+<div class="archive-drawer">
+<p class="archive-title">Preserve Your Palette</p>
+<div class="archive-btns">
+<button class="archive-btn" id="expJSON">Export JSON</button>
+<button class="archive-btn" id="expText">Copy Text List</button>
+<button class="archive-btn" id="expFavs">Favorites Only</button>
+</div>
+<pre class="archive-output" id="archiveOut"></pre>
+</div>
+
+<footer>
+<p class="colophon">Fleur de Miel — Pressed & Preserved for Lauren</p>
+</footer>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+var sourcePigments = [
+  {name:"Skin Base",hex:"#E6D5C5",note:"Blanched almond warmth"},
+  {name:"Cheek Flush",hex:"#D4A593",note:"Peachy-rose bloom"},
+  {name:"Eye Sage",hex:"#8B9A72",note:"Muted sage green"},
+  {name:"Eye Gold",hex:"#9A9060",note:"Golden inner ring"},
+  {name:"Eye Depth",hex:"#6A7855",note:"Olive outer edge"},
+  {name:"Hair Highlight",hex:"#D8CBA8",note:"Champagne blonde"},
+  {name:"Hair Midtone",hex:"#A89A78",note:"Wheat and honey"},
+  {name:"Hair Shadow",hex:"#7A7058",note:"Cool ash brown"},
+  {name:"Lip Natural",hex:"#C4A090",note:"Dusty rose nude"},
+  {name:"Vein Tone",hex:"#96AAA8",note:"Soft blue-green"}
+];
+
+var palette = {
+  "Parchment & Bone": [
+    {name:"Antique White",hex:"#F5ECD8"},{name:"Warm Ivory",hex:"#EDE4D0"},
+    {name:"Oat Milk",hex:"#E5DAC3"},{name:"Biscuit",hex:"#D9CCAF"},
+    {name:"Sandstone",hex:"#CFC0A0"},{name:"Doeskin",hex:"#C4B494"},
+    {name:"Camel",hex:"#B5A080"},{name:"Driftwood",hex:"#9A8A70"}
+  ],
+  "Honeyed Earth": [
+    {name:"Chamomile",hex:"#E8D8A8"},{name:"Wheat Field",hex:"#D8C890"},
+    {name:"Raw Honey",hex:"#CDB86A"},{name:"Amber Resin",hex:"#BCA050"},
+    {name:"Antique Gold",hex:"#A89040"},{name:"Bronze Leaf",hex:"#8A7530"},
+    {name:"Sienna Earth",hex:"#A87850"},{name:"Burnt Umber",hex:"#7A5840"}
+  ],
+  "Autumn Botanicals": [
+    {name:"Lichen",hex:"#C8D0B0"},{name:"Dried Sage",hex:"#A8B490"},
+    {name:"Meadow Grass",hex:"#8A9A70"},{name:"Olive Branch",hex:"#788858"},
+    {name:"Forest Floor",hex:"#606A48"},{name:"Moss Shadow",hex:"#4A5438"},
+    {name:"Eucalyptus",hex:"#8A9A8A"},{name:"Faded Fern",hex:"#6A7A68"}
+  ],
+  "Pressed Roses": [
+    {name:"Blush Veil",hex:"#EBDAD4"},{name:"Rose Water",hex:"#DCCAC4"},
+    {name:"Dusty Petal",hex:"#CDB4AA"},{name:"Mauve Mist",hex:"#BAA098"},
+    {name:"Dried Bloom",hex:"#A88A84"},{name:"Plum Ash",hex:"#8A7070"},
+    {name:"Mulberry",hex:"#7A5A60"},{name:"Wine Sediment",hex:"#684850"}
+  ],
+  "Quiet Waters": [
+    {name:"Morning Mist",hex:"#D8E0DC"},{name:"Sea Glass",hex:"#B8C8C4"},
+    {name:"Storm Whisper",hex:"#9AB0AC"},{name:"Dusk Teal",hex:"#7A9490"},
+    {name:"Deep Current",hex:"#5A7A78"},{name:"Midnight Tide",hex:"#4A6260"},
+    {name:"Weathered Slate",hex:"#8090A0"},{name:"Distant Thunder",hex:"#606878"}
+  ]
+};
+
+var allColors = [];
+Object.keys(palette).forEach(function(cat){
+  palette[cat].forEach(function(c){
+    allColors.push({name:c.name,hex:c.hex,category:cat});
+  });
+});
+
+var favorites = [];
+try{var s=localStorage.getItem("fleur_favs");if(s)favorites=JSON.parse(s);}catch(e){}
+
+function saveFavs(){try{localStorage.setItem("fleur_favs",JSON.stringify(favorites));}catch(e){}}
+function isFav(hex){return favorites.some(function(f){return f.hex===hex;});}
+function toggleFav(c){
+  var idx=favorites.findIndex(function(f){return f.hex===c.hex;});
+  if(idx>=0)favorites.splice(idx,1);else favorites.push({name:c.name,hex:c.hex});
+  saveFavs();renderChapters();renderTreasures();
+}
+
+function toast(msg){
+  var t=document.getElementById("toast");if(!t)return;
+  t.textContent=msg;t.classList.add("show");
+  setTimeout(function(){t.classList.remove("show");},1600);
+}
+function copyHex(hex){
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(hex).then(function(){toast("Copied: "+hex);});
+  }else{
+    var ta=document.createElement("textarea");ta.value=hex;
+    document.body.appendChild(ta);ta.select();document.execCommand("copy");
+    document.body.removeChild(ta);toast("Copied: "+hex);
+  }
+}
+
+function renderPigments(){
+  var el=document.getElementById("pigments");if(!el)return;
+  el.innerHTML="";
+  sourcePigments.forEach(function(p){
+    var v=document.createElement("div");v.className="pigment-vial";
+    v.innerHTML="<div class=\"vial-color\" style=\"background:"+p.hex+"\"></div>"+
+      "<div class=\"vial-label\">"+p.name+"</div>"+
+      "<div class=\"vial-note\">"+p.note+"</div>"+
+      "<div class=\"vial-hex\">"+p.hex+"</div>";
+    v.onclick=function(){copyHex(p.hex);};
+    el.appendChild(v);
+  });
+}
+
+function renderChapters(){
+  var el=document.getElementById("chapters");if(!el)return;
+  el.innerHTML="";
+  var cats=Object.keys(palette);
+  cats.forEach(function(cat,i){
+    var ch=document.createElement("div");
+    ch.className="chapter"+(i===0?" open":"");
+    var cover=document.createElement("div");cover.className="chapter-cover";
+    cover.innerHTML="<span class=\"chapter-title\">"+cat+"</span><span class=\"chapter-toggle\">▾</span>";
+    cover.onclick=function(){ch.classList.toggle("open");};
+    var pages=document.createElement("div");pages.className="chapter-pages";
+    var grid=document.createElement("div");grid.className="swatch-collection";
+    palette[cat].forEach(function(c){
+      var sw=document.createElement("div");
+      sw.className="swatch"+(isFav(c.hex)?" fav":"");
+      sw.style.background=c.hex;
+      sw.innerHTML="<span class=\"swatch-info\">"+c.name+" · "+c.hex+"</span>";
+      sw.onclick=function(){
+        if(activeVessel){selectVessel(c);}else{copyHex(c.hex);}
+      };
+      sw.ondblclick=function(){toggleFav(c);};
+      grid.appendChild(sw);
+    });
+    pages.appendChild(grid);
+    ch.appendChild(cover);ch.appendChild(pages);el.appendChild(ch);
+  });
+}
+
+var activeVessel=null;
+var compared=[null,null];
+
+function setupCompare(){
+  var v1=document.getElementById("vessel1");
+  var v2=document.getElementById("vessel2");
+  if(v1)v1.onclick=function(){
+    activeVessel=1;v1.classList.add("active");if(v2)v2.classList.remove("active");
+  };
+  if(v2)v2.onclick=function(){
+    activeVessel=2;v2.classList.add("active");if(v1)v1.classList.remove("active");
+  };
+}
+
+function selectVessel(c){
+  var v=document.getElementById("vessel"+activeVessel);
+  if(!v)return;
+  compared[activeVessel-1]=c;
+  v.style.background=c.hex;v.innerHTML="";v.classList.add("filled");
+  v.classList.remove("active");activeVessel=null;
+  if(compared[0]&&compared[1])renderVerdict();
+}
+
+function hexToHSL(hex){
+  var r=parseInt(hex.slice(1,3),16)/255;
+  var g=parseInt(hex.slice(3,5),16)/255;
+  var b=parseInt(hex.slice(5,7),16)/255;
+  var max=Math.max(r,g,b),min=Math.min(r,g,b);
+  var h,s,l=(max+min)/2;
+  if(max===min){h=s=0;}else{
+    var d=max-min;s=l>.5?d/(2-max-min):d/(max+min);
+    switch(max){
+      case r:h=((g-b)/d+(g<b?6:0))/6;break;
+      case g:h=((b-r)/d+2)/6;break;
+      case b:h=((r-g)/d+4)/6;break;
+    }
+  }
+  return{h:h*360,s:s*100,l:l*100};
+}
+
+function renderVerdict(){
+  var el=document.getElementById("verdict");if(!el||!compared[0]||!compared[1])return;
+  var h1=hexToHSL(compared[0].hex);
+  var h2=hexToHSL(compared[1].hex);
+  var hueDiff=Math.abs(h1.h-h2.h);if(hueDiff>180)hueDiff=360-hueDiff;
+  var lightDiff=Math.abs(h1.l-h2.l);
+  var satDiff=Math.abs(h1.s-h2.s);
+  
+  var relationship="";
+  if(hueDiff<20)relationship="These are monochromatic companions — different values of the same color family, creating effortless cohesion.";
+  else if(hueDiff<45)relationship="An analogous pairing — neighboring hues that flow naturally into one another like colors in a sunset.";
+  else if(hueDiff>150)relationship="Near-complementary opposites — they create vibrant visual dialogue when placed together.";
+  else relationship="A chromatic conversation — enough difference to interest the eye, enough harmony to feel intentional.";
+  
+  var usage="";
+  if(lightDiff>30)usage=" The strong value contrast makes this ideal for layering, or pairing a statement piece with a quieter base.";
+  else if(lightDiff>15)usage=" Moderate depth difference — perfect for building texture in an outfit without competing elements.";
+  else usage=" Similar lightness suggests wearing these side by side as equals, perhaps in a print or accessory combination.";
+  
+  var styling="";
+  if(compared[0].category===compared[1].category)styling=" Both drawn from the same family, this is a safe and sophisticated match.";
+  else styling=" Bridging two families, this combination adds dimension to your look.";
+  
+  el.innerHTML="<em>"+compared[0].name+"</em> meets <em>"+compared[1].name+"</em>: "+relationship+usage+styling;
+}
+
+var lookTemplates=[
+  {name:"September Morning",story:"Soft neutrals kissed with sage. Oat-toned knit, olive trousers, bare skin with peachy flush and dusty rose lip.",families:["Parchment & Bone","Autumn Botanicals","Pressed Roses"]},
+  {name:"Golden Hour",story:"Warm honey and amber glow. Champagne silk, antique gold jewelry, bronzed lids with nude-berry stain.",families:["Honeyed Earth","Parchment & Bone","Honeyed Earth"]},
+  {name:"Pressed Flower",story:"Romantic dusty pinks and mauves. Rose water blouse, taupe skirt, soft mauve eyeshadow and matching lip.",families:["Pressed Roses","Parchment & Bone","Pressed Roses"]},
+  {name:"Coastal Dusk",story:"Muted teals and sea glass tones. Storm blue dress, eucalyptus scarf, minimal makeup with nude pink lip.",families:["Quiet Waters","Autumn Botanicals","Pressed Roses"]},
+  {name:"Autumn Study",story:"Rich earth tones layered. Sienna sweater, olive corduroy, warm bronzer and terracotta blush.",families:["Honeyed Earth","Autumn Botanicals","Honeyed Earth"]},
+  {name:"Lichen & Lace",story:"Botanical greens with cream. Antique white linen, sage accessories, fresh bare skin with hint of rose.",families:["Autumn Botanicals","Parchment & Bone","Pressed Roses"]},
+  {name:"Wine Country",story:"Deep plums and warm neutrals. Mulberry wrap, camel coat, berry-stained lip and soft bronze eye.",families:["Pressed Roses","Parchment & Bone","Honeyed Earth"]}
+];
+
+function pickFrom(arr){return arr[Math.floor(Math.random()*arr.length)];}
+
+function generateLooks(){
+  var el=document.getElementById("looksGallery");if(!el)return;
+  el.innerHTML="";
+  var shuffled=lookTemplates.slice().sort(function(){return Math.random()-0.5;});
+  var selected=shuffled.slice(0,5);
+  selected.forEach(function(look){
+    var card=document.createElement("div");card.className="look-plate";
+    var colors=look.families.map(function(f){return pickFrom(palette[f]);});
+    var swatchesHTML="<div class=\"look-swatches\">";
+    colors.forEach(function(c){
+      swatchesHTML+="<div class=\"look-chip\" style=\"background:"+c.hex+"\" title=\""+c.name+"\"></div>";
+    });
+    swatchesHTML+="</div>";
+    card.innerHTML="<div class=\"look-name\">"+look.name+"</div>"+swatchesHTML+"<div class=\"look-story\">"+look.story+"</div>";
+    var chips=card.querySelectorAll(".look-chip");
+    chips.forEach(function(chip,i){
+      chip.onclick=function(){copyHex(colors[i].hex);};
+    });
+    el.appendChild(card);
+  });
+}
+
+function renderTreasures(){
+  var el=document.getElementById("treasures");if(!el)return;
+  if(favorites.length===0){
+    el.innerHTML="<span class=\"treasure-empty\">Double-click any swatch to add it to your collection</span>";
+    return;
+  }
+  el.innerHTML="";
+  favorites.forEach(function(f){
+    var gem=document.createElement("div");gem.className="treasure-gem";
+    gem.innerHTML="<div class=\"gem-color\" style=\"background:"+f.hex+"\"></div><div class=\"gem-name\">"+f.name+"</div>";
+    gem.onclick=function(){copyHex(f.hex);};
+    gem.ondblclick=function(){toggleFav(f);};
+    el.appendChild(gem);
+  });
+}
+
+function setupExport(){
+  var jsonBtn=document.getElementById("expJSON");
+  var textBtn=document.getElementById("expText");
+  var favBtn=document.getElementById("expFavs");
+  var output=document.getElementById("archiveOut");
+  
+  if(jsonBtn)jsonBtn.onclick=function(){
+    var data={
+      title:"Fleur de Miel",
+      season:"Soft Autumn · Light Influence",
+      sourcePigments:sourcePigments,
+      palette:palette,
+      favorites:favorites
+    };
+    var json=JSON.stringify(data,null,2);
+    if(output){output.textContent=json;output.classList.add("show");}
+    copyHex(json);
+  };
+  
+  if(textBtn)textBtn.onclick=function(){
+    var lines=["FLEUR DE MIEL — Color Portrait","Season: Soft Autumn · Light Influence","","SOURCE PIGMENTS:"];
+    sourcePigments.forEach(function(p){lines.push("  "+p.name+": "+p.hex+" ("+p.note+")");});
+    lines.push("");
+    Object.keys(palette).forEach(function(cat){
+      lines.push(cat.toUpperCase()+":");
+      palette[cat].forEach(function(c){lines.push("  "+c.name+": "+c.hex);});
+      lines.push("");
+    });
+    var text=lines.join("\n");
+    if(output){output.textContent=text;output.classList.add("show");}
+    if(navigator.clipboard)navigator.clipboard.writeText(text);
+    toast("Copied to clipboard");
+  };
+  
+  if(favBtn)favBtn.onclick=function(){
+    var data={title:"Fleur de Miel — Favorites",favorites:favorites};
+    var json=JSON.stringify(data,null,2);
+    if(output){output.textContent=json;output.classList.add("show");}
+    copyHex(json);
+  };
+}
+
+function init(){
+  renderPigments();
+  renderChapters();
+  setupCompare();
+  generateLooks();
+  renderTreasures();
+  setupExport();
+  var regenBtn=document.getElementById("regenLooks");
+  if(regenBtn)regenBtn.onclick=generateLooks;
+}
+
+if(document.readyState==="loading"){
+  document.addEventListener("DOMContentLoaded",init);
+}else{init();}
+
+})();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

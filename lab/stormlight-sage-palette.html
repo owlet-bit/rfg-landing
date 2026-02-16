@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Stormlight Sage Palette</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lauren’s Soft Summer Map (Deep-Leaning, Green-Hazel Variant)</title>
+  <style>
+    :root{
+      --bg:#0b0f16;
+      --panel:#111827;
+      --panel2:#0f172a;
+      --text:#e5e7eb;
+      --muted:#a7b0c0;
+      --line: rgba(255,255,255,.10);
+      --glow: rgba(164, 197, 255, .22);
+      --chipText:#0b0f16;
+      --good:#8ee3b3;
+      --warn:#ffd38a;
+      --bad:#ff9aa5;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 22px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    /* Day mode overrides */
+    body.day{
+      --bg:#f6f7fb;
+      --panel:#ffffff;
+      --panel2:#ffffff;
+      --text:#0b1020;
+      --muted:#4b5563;
+      --line: rgba(10,20,40,.12);
+      --glow: rgba(80,120,210,.14);
+      --shadow: 0 18px 50px rgba(15, 23, 42, .10);
+      --chipText:#0b1020;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 700px at 20% 0%, rgba(116, 142, 255, .20), transparent 60%),
+                  radial-gradient(900px 700px at 80% 10%, rgba(95, 210, 170, .18), transparent 55%),
+                  radial-gradient(700px 600px at 50% 85%, rgba(224, 154, 209, .16), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+      padding: 26px 18px 80px;
+    }
+
+    .wrap{max-width:1020px;margin:0 auto}
+    .topnote{
+      text-transform:uppercase;
+      letter-spacing:.22em;
+      font-size:12px;
+      color:var(--muted);
+      opacity:.9;
+      margin: 4px 0 12px;
+    }
+
+    header{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,0));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    header:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(700px 260px at 20% 0%, rgba(164,197,255,.25), transparent 60%),
+                  radial-gradient(700px 260px at 80% 0%, rgba(110,231,183,.16), transparent 60%);
+      pointer-events:none;
+      filter: blur(0px);
+      opacity:.9;
+    }
+    header > *{position:relative}
+    h1{
+      margin: 6px 0 8px;
+      font-size: clamp(30px, 5vw, 54px);
+      letter-spacing:-.02em;
+      line-height:1.05;
+    }
+    .sub{
+      color:var(--muted);
+      max-width: 76ch;
+      font-size: 15px;
+    }
+
+    /* NEW: Creative palette title styling */
+    .paletteTitle{
+      margin: 8px 0 10px;
+      font-size: clamp(18px, 2.2vw, 26px);
+      font-weight: 750;
+      letter-spacing: -.01em;
+      color: var(--text);
+      opacity: .95;
+    }
+    .paletteTitle .sigil{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      box-shadow: 0 0 0 6px rgba(164,197,255,.06);
+    }
+    .paletteTitle i{
+      font-style: normal;
+      color: rgba(164,197,255,.95);
+      text-shadow: 0 0 18px rgba(164,197,255,.18);
+    }
+
+    .badges{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin: 14px 0 0;
+    }
+    .badge{
+      font-size: 12px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      backdrop-filter: blur(10px);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    @media (max-width: 940px){
+      .grid{grid-template-columns: 1fr}
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 18px;
+    }
+    .card h2{
+      margin: 0 0 10px;
+      font-size: 20px;
+      letter-spacing: -.01em;
+    }
+    .card h3{
+      margin: 14px 0 8px;
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 650;
+      letter-spacing:.02em;
+      text-transform: uppercase;
+    }
+    .card p{margin: 8px 0;color: var(--text)}
+    .card .muted{color:var(--muted)}
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin: 14px 0 12px;
+      align-items:center;
+    }
+    button, .pill{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      cursor:pointer;
+      transition: transform .08s ease, background .18s ease, border-color .18s ease;
+    }
+    button:hover{transform: translateY(-1px); background: rgba(255,255,255,.08)}
+    button:active{transform: translateY(0px) scale(.99)}
+    button.primary{
+      border-color: rgba(164,197,255,.38);
+      background: rgba(164,197,255,.12);
+      box-shadow: 0 0 0 6px rgba(164,197,255,.08);
+    }
+    .pill.active{
+      border-color: rgba(110,231,183,.45);
+      background: rgba(110,231,183,.10);
+    }
+
+    .row{
+      display:flex; gap:12px; flex-wrap:wrap; align-items:center;
+    }
+    .search{
+      flex:1;
+      min-width: 240px;
+      border-radius: 999px;
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      outline:none;
+    }
+    .search::placeholder{color: rgba(167,176,192,.85)}
+
+    .swatchGrid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 820px){ .swatchGrid{grid-template-columns: repeat(3, 1fr);} }
+    @media (max-width: 420px){ .swatchGrid{grid-template-columns: repeat(2, 1fr);} }
+
+    .swatch{
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+      position:relative;
+      cursor:pointer;
+      transition: transform .10s ease, border-color .18s ease;
+      min-height: 86px;
+    }
+    .swatch:hover{transform: translateY(-2px); border-color: rgba(164,197,255,.35)}
+    .swatchTop{
+      height: 46px;
+      width: 100%;
+    }
+    .swatchBody{
+      padding: 10px 10px 11px;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+    .swatchName{
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .01em;
+      color: var(--text);
+    }
+    .swatchMeta{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      display:flex;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .tag{
+      font-size: 10px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      opacity:.95;
+    }
+
+    /* NEW: body color swatches styling */
+    .bodyGrid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    @media (max-width: 820px){ .bodyGrid{grid-template-columns: repeat(2, 1fr);} }
+    @media (max-width: 420px){ .bodyGrid{grid-template-columns: 1fr;} }
+
+    .bodySwatch{
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+      box-shadow: 0 12px 40px rgba(0,0,0,.20);
+      cursor:pointer;
+      transition: transform .10s ease, border-color .18s ease;
+      min-height: 96px;
+    }
+    .bodySwatch:hover{transform: translateY(-2px); border-color: rgba(110,231,183,.35)}
+    .bodyTop{height: 54px; width:100%;}
+    .bodyBody{
+      padding: 10px 12px 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+    .bodyLabel{
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing:.10em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .bodyName{
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: -.01em;
+      color: var(--text);
+    }
+    .bodyMeta{
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      display:flex;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .bodyDesc{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 18px;
+      background: rgba(17,24,39,.92);
+      color: #e5e7eb;
+      border: 1px solid rgba(255,255,255,.12);
+      padding: 10px 14px;
+      border-radius: 999px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      backdrop-filter: blur(10px);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .22s ease, transform .22s ease;
+      font-size: 13px;
+    }
+    body.day .toast{
+      background: rgba(255,255,255,.92);
+      color: #0b1020;
+      border-color: rgba(10,20,40,.12);
+    }
+    .toast.show{
+      opacity:1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+
+    .mini{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    @media (max-width: 820px){ .mini{grid-template-columns: 1fr} }
+
+    .formula{
+      border:1px dashed var(--line);
+      border-radius: 18px;
+      padding: 14px;
+      background: rgba(255,255,255,.03);
+    }
+    .formulaTitle{
+      font-size: 12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .chips{display:flex; gap:8px; flex-wrap:wrap}
+    .chip{
+      display:flex; align-items:center; gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      cursor:pointer;
+      user-select:none;
+    }
+    .dot{
+      width: 14px; height: 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+    }
+    .chip span{font-size: 12px; color: var(--text)}
+    .chip small{font-family: var(--mono); color: var(--muted); font-size: 11px}
+
+    .split{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 10px;
+      align-items: center;
+    }
+    .meter{
+      flex:1; min-width: 220px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.03);
+      padding: 12px;
+    }
+    .bar{
+      height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(90deg,
+        rgba(110,231,183,.22),
+        rgba(164,197,255,.25),
+        rgba(224,154,209,.22)
+      );
+      border: 1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .barFill{
+      height:100%;
+      width: 0%;
+      background: rgba(255,255,255,.22);
+      border-right: 2px solid rgba(255,255,255,.45);
+      transition: width .35s ease;
+    }
+    .meterLabel{
+      display:flex; justify-content:space-between;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .legend{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .legend b{color: var(--text)}
+    .hr{height:1px;background:var(--line); margin: 14px 0}
+
+    .kicker{
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 14px;
+    }
+    a{color: rgba(164,197,255,.9); text-decoration:none}
+    a:hover{text-decoration:underline}
+  </style>
+</head>
+
+<body class="night">
+  <div class="wrap">
+    <div class="topnote">Bespoke color analysis • built from your natural pigments</div>
+
+    <header>
+      <h1>Lauren’s Soft Summer Map<br><span style="opacity:.85">(Deep-Leaning, Green-Hazel Variant)</span></h1>
+
+      <!-- NEW: Creative, beautiful title for your unique palette -->
+      <div class="paletteTitle">
+        <span class="sigil">✦ <i>The Stormlight Sage Palette</i> — muted gemstone color for a green-hazel gaze</span>
+      </div>
+
+      <div class="sub">
+        Your coloring reads <b>cool-neutral + muted</b> with a softly smoky value range:
+        hair shows as <b>ashen dark-blonde / light brown</b> with beige-taupe highlights; skin is <b>fair neutral-cool</b> with a <b>rose-peach flush</b>;
+        veins read <b>blue-teal</b>; lips are a <b>cool rose-mauve</b>;
+        and your eyes are the star: <b>green-hazel</b> with an <b>olive-gold inner ring</b>, a <b>sage/khaki iris field</b>, and a <b>soft slate-grey outer rim</b>—a literal <i>storm-light</i> gaze.
+      </div>
+
+      <div class="badges">
+        <div class="badge"><b>Season:</b> Soft Summer (Muted Summer)</div>
+        <div class="badge"><b>Value:</b> light-medium → medium</div>
+        <div class="badge"><b>Chroma:</b> muted / greyed</div>
+        <div class="badge"><b>Undertone:</b> cool-neutral</div>
+        <div class="badge"><b>Best contrast:</b> soft, not hard</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Season Verdict</h2>
+        <p class="muted">
+          <b>Soft Summer (Muted Summer), deep-leaning.</b> Your best colors are cool-neutral, softly greyed, medium depth.
+          They echo your eye’s sage/olive + slate rim and keep your skin looking even instead of pink-blotchy or sallow.
+        </p>
+
+        <div class="controls">
+          <button id="toggleMood" class="primary">Toggle Page Mood (Night ↔ Day)</button>
+          <button id="shufflePreview">Shuffle Color Preview</button>
+          <button id="genOutfit">Generate Outfit Formula</button>
+        </div>
+
+        <div class="mini">
+          <div class="formula">
+            <div class="formulaTitle">Lighting Reality Check (toggle chips)</div>
+            <div class="chips" id="lightingChips"></div>
+            <div class="kicker">Tap chips to copy hex. These simulate what “soft + cool” looks like near your face.</div>
+          </div>
+
+          <div class="meter">
+            <div class="formulaTitle">Your Sweet Spot Meter</div>
+            <div class="muted" style="margin-bottom:8px">
+              This is not mystical. It’s pigment math: <b>cool-neutral</b> + <b>muted chroma</b> + <b>medium value</b>.
+            </div>
+            <div class="bar"><div class="barFill" id="barFill"></div></div>
+            <div class="meterLabel">
+              <span>Mutedness ↑</span><span id="meterReadout">—</span><span>Brightness ↑</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <!-- NEW: Body Colors section with swatches -->
+        <h2>Your Natural Body Colors (tap to copy)</h2>
+        <p class="muted">
+          These are your *native pigments* translated into hex. They’re deliberately soft, cool-neutral, and greyed to match what you read as in daylight.
+        </p>
+        <div class="bodyGrid" id="bodyGrid"></div>
+
+        <div class="hr"></div>
+
+        <h2>Why these colors work (science, not vibes)</h2>
+        <p>
+          <b>1) Undertone harmony:</b> your skin reads cool-neutral (blue-teal veins, pink-mauve lip base). Cool-neutral pigments look clean on you;
+          strong warm orange/yellow pigments can pull “ruddy” or “tired.”
+        </p>
+        <p>
+          <b>2) Chroma match:</b> your features are naturally muted (no extreme contrast). High-chroma brights overpower; greyed tones integrate.
+        </p>
+        <p>
+          <b>3) Value range:</b> you sit in a medium value band. Extremes (optic white, ink black) create hard edges;
+          <b>soft navy + charcoal</b> give drama without theft.
+        </p>
+        <p>
+          <b>4) Eye echo:</b> your iris contains <b>sage/olive, slate, and a muted gold flare</b>.
+          Best colors repeat those wavelengths: green-greys, blue-greys, smoky plums.
+        </p>
+
+        <div class="legend">
+          <span><b>Rule:</b> “Smoked gemstone” beats “fresh candy.”</span>
+          <span>•</span>
+          <span><b>Best white:</b> soft white, oyster, mist.</span>
+          <span>•</span>
+          <span><b>Best black:</b> don’t. Use charcoal, ink-navy, graphite.</span>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Makeup Map</h2>
+        <p class="muted">Your face loves <b>cool rose, taupe, grey-brown, muted plum</b>. Avoid strongly warm bronzes/oranges unless heavily toned down (think “antique,” not “sunset”).</p>
+
+        <h3>Base</h3>
+        <p class="muted">Neutral-cool foundations (avoid yellow bases). Concealer slightly peach-neutral, not golden.</p>
+
+        <h3>Blush</h3>
+        <p class="muted">Dusty rose, mauve-rose, muted berry. (Anything coral-orange will fight your undertone.)</p>
+
+        <h3>Eyes</h3>
+        <p class="muted">Taupe, mushroom, slate, pewter, cool olive-grey. Liner in charcoal or soft navy. Mascara: brown-black or soft black.</p>
+
+        <h3>Lips</h3>
+        <p class="muted">Rose-mauve, blotted berry, cool cocoa-rose. Glossy “pink-taupe” is your nude.</p>
+
+        <div class="hr"></div>
+
+        <h2>Style Elements (based on your features)</h2>
+        <p class="muted">
+          Your face reads <b>refined + slightly sharp</b> (defined brows, clear eye structure) with a soft, misty palette.
+          Best style: <b>structured lines in softened materials/colors</b>.
+        </p>
+        <ul class="muted" style="margin:10px 0 0 18px">
+          <li><b>Necklines:</b> open & clean — scoop, soft V, wide boat; avoid tiny busy necklines.</li>
+          <li><b>Buttons/Hardware:</b> matte or brushed; smoked metal; minimal shine.</li>
+          <li><b>Jewelry shapes:</b> elongated + sculptural (teardrops, sleek ovals) over tiny sparkly clusters.</li>
+          <li><b>Prints:</b> watercolors, blurred florals, heathered plaids; nothing high-contrast comic-book.</li>
+          <li><b>Textures:</b> suede, cashmere, brushed wool, washed silk, matte leather.</li>
+          <li><b>Frames:</b> smoky crystal, soft tortoise (cool-brown), pewter metal.</li>
+        </ul>
+
+        <h3>Best Metals</h3>
+        <p class="muted">
+          <b>Brushed silver, pewter, white gold, platinum.</b>
+          If gold: choose <b>antique/champagne</b> (muted), not bright yellow.
+        </p>
+      </aside>
+    </div>
+
+    <section class="card" style="margin-top:16px">
+      <h2>Palette — tap any swatch to copy its hex</h2>
+
+      <div class="controls" style="justify-content:space-between">
+        <div class="row">
+          <span class="pill active" data-filter="all">Show all</span>
+          <span class="pill" data-filter="top10">Top 10</span>
+          <span class="pill" data-filter="neutrals">Power neutrals</span>
+          <span class="pill" data-filter="reds">Reds & berries</span>
+          <span class="pill" data-filter="blues">Blues</span>
+          <span class="pill" data-filter="greens">Greens</span>
+          <span class="pill" data-filter="purples">Purples</span>
+          <span class="pill" data-filter="lights">Icy lights</span>
+          <span class="pill" data-filter="makeup">Makeup</span>
+        </div>
+        <input id="search" class="search" placeholder="Search a color name (e.g., “slate”, “sage”, “mauve”)" />
+      </div>
+
+      <div class="swatchGrid" id="swatchGrid"></div>
+
+      <div class="hr"></div>
+
+      <h2>Outfit Generator (because your brain deserves a break)</h2>
+      <p class="muted">
+        Click <b>Generate Outfit Formula</b> above. It will pick: one power neutral + one main color + one soft light.
+        Tap any chip to copy. Repeat until you feel like a beautifully haunted museum director.
+      </p>
+
+      <div class="formula" id="outfitBox">
+        <div class="formulaTitle">Your current outfit formula</div>
+        <div class="chips" id="outfitChips"></div>
+        <div class="kicker" id="outfitNote">—</div>
+      </div>
+
+      <div class="kicker">
+        Built for Lauren • Soft Summer (Deep-Leaning). Note: photos in bright natural light vary. For final confirmation,
+        drape in indirect daylight with no makeup + hair pulled back.
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast">Copied.</div>
+
+  <script>
+    // ---------- DATA ----------
+    // Palette logic: Soft Summer deep-leaning (cool-neutral, greyed, medium value; greens/blue-greys/berries/plums)
+    const COLORS = [
+      // --- TOP 10 (best-of best) ---
+      {name:"Storm-Sage", hex:"#6F8277", cat:["top10","greens"], note:"Echoes iris sage/khaki field."},
+      {name:"Olive-Glass", hex:"#66705F", cat:["top10","greens"], note:"Muted olive that reads cool-neutral."},
+      {name:"Slate-Rim", hex:"#6E7886", cat:["top10","blues"], note:"Matches your outer iris slate-grey rim."},
+      {name:"Blue Smoke Velvet", hex:"#55647A", cat:["top10","blues"], note:"Soft navy cousin; drama without harshness."},
+      {name:"Mauve-Shadow Rose", hex:"#8C6F7A", cat:["top10","purples","reds"], note:"Your lips’ cool rose-mauve translated to fabric."},
+      {name:"Smoked Berry Ink", hex:"#6B3F52", cat:["top10","reds","purples"], note:"Muted berry that lifts eyes, not skin redness."},
+      {name:"Pewter Orchid", hex:"#7C6F86", cat:["top10","purples"], note:"Greyed purple = Soft Summer royalty."},
+      {name:"Graphite Taupe", hex:"#6C6764", cat:["top10","neutrals"], note:"Perfect neutral near your hair roots."},
+      {name:"Charcoal Lilac", hex:"#4F4A57", cat:["top10","neutrals","purples"], note:"“Not black” black with a violet undertone."},
+      {name:"Misted Oyster", hex:"#E6E1DE", cat:["top10","lights","neutrals"], note:"Your best ‘white’: soft, not optic."},
+
+      // --- POWER NEUTRALS ---
+      {name:"Soft Charcoal", hex:"#3F424A", cat:["neutrals"], note:"Use instead of black."},
+      {name:"Ink Navy", hex:"#242E3D", cat:["neutrals","blues"], note:"Your strongest dark."},
+      {name:"Fog Greige", hex:"#B8B0AA", cat:["neutrals","lights"], note:"Makeup-friendly neutral."},
+      {name:"Mushroom Suede", hex:"#8B827B", cat:["neutrals"], note:"Taupe that loves your undertone."},
+      {name:"Cool Cocoa", hex:"#6B5B57", cat:["neutrals","makeup"], note:"For lips/knits/leather."},
+      {name:"Pewter Sheet", hex:"#8E949C", cat:["neutrals","blues"], note:"Metallic-adjacent neutral."},
+      {name:"Smoke Quartz", hex:"#A6A0A6", cat:["neutrals","purples"], note:"Greyed lavender neutral."},
+      {name:"Soft Stone", hex:"#C9C6C8", cat:["neutrals","lights"], note:"Brightens without bleaching you."},
+
+      // --- REDS & BERRIES (cool + muted) ---
+      {name:"Dust Rose", hex:"#B58A95", cat:["reds","makeup"], note:"Your blush in cloth form."},
+      {name:"Antique Cranberry", hex:"#7D3A4A", cat:["reds"], note:"Depth without warmth."},
+      {name:"Mulberry Veil", hex:"#7A4B67", cat:["reds","purples"], note:"Soft mulberry (not bright fuchsia)."},
+      {name:"Plum Wine", hex:"#5F3246", cat:["reds","purples"], note:"A night color for you."},
+      {name:"Cool Raspberry Smoke", hex:"#965063", cat:["reds"], note:"Muted raspberry, not neon."},
+      {name:"Rosewood Ash", hex:"#855E66", cat:["reds","neutrals"], note:"Rose-brown that stays cool-neutral."},
+
+      // --- BLUES (blue-greys, slate, softened navies) ---
+      {name:"Harbor Slate", hex:"#4F5E6B", cat:["blues"], note:"Blue-grey: your natural contrast."},
+      {name:"Raincoat Blue", hex:"#5C6F82", cat:["blues"], note:"Soft denim cousin."},
+      {name:"Blue-Grey Mist", hex:"#7F8FA1", cat:["blues","lights"], note:"A light that still reads ‘you’."},
+      {name:"Quiet Teal-Navy", hex:"#2F4E57", cat:["blues","greens"], note:"Teal that leans smoky, not tropical."},
+      {name:"Worn Periwinkle", hex:"#7C86A1", cat:["blues","purples"], note:"Greyed periwinkle is very Soft Summer."},
+
+      // --- GREENS (sage/olive/grey-green) ---
+      {name:"Eucalyptus Haze", hex:"#7B8F84", cat:["greens"], note:"Eye-echo green."},
+      {name:"Willow Smoke", hex:"#8B9A8E", cat:["greens","lights"], note:"Soft, airy but not pastel-baby."},
+      {name:"Lichen Grey-Green", hex:"#5E6C62", cat:["greens"], note:"Grounded, elegant, slightly moody."},
+      {name:"Juniper Shadow", hex:"#3E5A52", cat:["greens"], note:"A dark green that behaves like a neutral."},
+      {name:"Muted Khaki Pearl", hex:"#A3A08A", cat:["greens","lights"], note:"Your warm-ish that still works (because muted)."},
+      {name:"Olive Silt", hex:"#6D6A54", cat:["greens","neutrals"], note:"Olive that stays dusty, not golden."},
+
+      // --- PURPLES (greyed plums, orchids) ---
+      {name:"Smoky Lilac", hex:"#9B8DA1", cat:["purples","lights"], note:"Soft purple highlight shade."},
+      {name:"Wisteria Ash", hex:"#7A6C7D", cat:["purples"], note:"Muted wisteria for knits/silks."},
+      {name:"Plum Fog", hex:"#6B5567", cat:["purples"], note:"Perfect ‘soft drama’ shade."},
+      {name:"Bruised Orchid", hex:"#805A74", cat:["purples","reds"], note:"Romantic, not candy."},
+      {name:"Pewter Violet", hex:"#5D5564", cat:["purples","neutrals"], note:"A neutral purple for jackets."},
+
+      // --- ICY LIGHTS (your best “light” range) ---
+      {name:"Soft White Mist", hex:"#F1EFEF", cat:["lights","neutrals"], note:"Best bright for you."},
+      {name:"Pearl Grey", hex:"#D9D6DA", cat:["lights","neutrals"], note:"Clean, cool, expensive."},
+      {name:"Oyster Silk", hex:"#E7E0DB", cat:["lights","neutrals"], note:"Cream, but cool-neutral."},
+      {name:"Powder Blue Haze", hex:"#C9D4E2", cat:["lights","blues"], note:"Eye-whites look clearer."},
+      {name:"Sage Milk", hex:"#D1DAD4", cat:["lights","greens"], note:"A light green that won’t yellow you."},
+
+      // --- MAKEUP SWATCHES (useful approximations) ---
+      {name:"Lip: Pink-Taupe Nude", hex:"#A47C83", cat:["makeup"], note:"Your glossy nude lane."},
+      {name:"Lip: Cool Cocoa-Rose", hex:"#7A5A5F", cat:["makeup"], note:"Everyday ‘serious’ lip."},
+      {name:"Lip: Blotted Berry", hex:"#6E3E52", cat:["makeup"], note:"Your ‘night’ stain."},
+      {name:"Blush: Dusty Mauve-Rose", hex:"#B07C86", cat:["makeup"], note:"Flush harmony."},
+      {name:"Shadow: Mushroom Taupe", hex:"#7B6F6A", cat:["makeup","neutrals"], note:"Crease + contour."},
+      {name:"Shadow: Pewter Slate", hex:"#6A707A", cat:["makeup","blues"], note:"Smoky liner/outer corner."},
+      {name:"Shadow: Cool Olive-Grey", hex:"#5F6A62", cat:["makeup","greens"], note:"Your eye color in shadow form."}
+    ];
+
+    const METALS = [
+      {name:"Brushed Silver", hex:"#C7CDD6"},
+      {name:"Pewter", hex:"#9AA3AD"},
+      {name:"White Gold", hex:"#D7DCE5"},
+      {name:"Platinum", hex:"#BFC6D1"},
+      {name:"Champagne Antique Gold", hex:"#C7B38A"}
+    ];
+
+    // NEW: Body colors (swatches for hair, skintone, eye colors, flush, lip color, vein color)
+    // Vein color is explicitly BLUE-GREEN (not blue-purple).
+    const BODY_COLORS = [
+      {label:"Hair", name:"Ashen Dark-Blonde Root", hex:"#6B655E", desc:"Cool-beige brown with ash cast; no gold."},
+      {label:"Skin", name:"Fair Neutral-Cool Porcelain", hex:"#F0DAD6", desc:"Neutral-cool base with soft pink-beige veil."},
+      {label:"Flush", name:"Rose-Peach Bloom", hex:"#D9A2A2", desc:"Warmth shows as peach-rose, not orange."},
+      {label:"Lips", name:"Cool Rose-Mauve", hex:"#9A6A78", desc:"Your natural lip reads mauve-rose (cool)."},
+      {label:"Veins", name:"Blue-Green Vein Teal", hex:"#2C8C8D", desc:"True blue-green/teal (not violet-blue)."},
+      {label:"Eyes", name:"Inner Ring: Muted Olive-Gold", hex:"#8A8458", desc:"That soft gold flare—muted, not bright."},
+      {label:"Eyes", name:"Iris Field: Sage/Khaki Hazel", hex:"#6F7A5B", desc:"Sage-leaning hazel—greyed, natural."},
+      {label:"Eyes", name:"Outer Rim: Slate-Grey Halo", hex:"#6B7481", desc:"Stormy slate rim that adds ‘focus’ to your gaze."}
+    ];
+
+    // ---------- HELPERS ----------
+    const $ = (s)=>document.querySelector(s);
+    const $$ = (s)=>document.querySelectorAll(s);
+
+    function toast(msg){
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(()=>t.classList.remove("show"), 1050);
+    }
+
+    async function copyText(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast(`Copied ${text}`);
+      }catch(e){
+        // fallback
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast(`Copied ${text}`);
+      }
+    }
+
+    function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+    function renderSwatches(list){
+      const grid = $("#swatchGrid");
+      grid.innerHTML = "";
+      list.forEach(c=>{
+        const el = document.createElement("div");
+        el.className = "swatch";
+        el.dataset.name = c.name.toLowerCase();
+        el.dataset.cats = (c.cat||[]).join(",");
+        el.innerHTML = `
+          <div class="swatchTop" style="background:${c.hex}"></div>
+          <div class="swatchBody">
+            <div class="swatchName">${c.name}</div>
+            <div class="swatchMeta">
+              <span>${c.hex}</span>
+              <span class="tag">${(c.cat||[])[0] ? (c.cat||[])[0].toUpperCase() : ""}</span>
+            </div>
+          </div>
+        `;
+        el.addEventListener("click", ()=>copyText(c.hex));
+        el.addEventListener("contextmenu", (e)=>{
+          e.preventDefault();
+          copyText(`${c.name} — ${c.hex}`);
+        });
+        grid.appendChild(el);
+      });
+    }
+
+    // NEW: render body swatches
+    function renderBodySwatches(){
+      const grid = $("#bodyGrid");
+      if(!grid) return;
+      grid.innerHTML = "";
+      BODY_COLORS.forEach(c=>{
+        const el = document.createElement("div");
+        el.className = "bodySwatch";
+        el.innerHTML = `
+          <div class="bodyTop" style="background:${c.hex}"></div>
+          <div class="bodyBody">
+            <div class="bodyLabel">${c.label}</div>
+            <div class="bodyName">${c.name}</div>
+            <div class="bodyMeta">
+              <span>${c.hex}</span>
+              <span>tap to copy</span>
+            </div>
+            <div class="bodyDesc">${c.desc}</div>
+          </div>
+        `;
+        el.addEventListener("click", ()=>copyText(c.hex));
+        el.addEventListener("contextmenu", (e)=>{
+          e.preventDefault();
+          copyText(`${c.label}: ${c.name} — ${c.hex}`);
+        });
+        grid.appendChild(el);
+      });
+    }
+
+    function applyFilters(){
+      const active = $(".pill.active")?.dataset.filter || "all";
+      const q = ($("#search").value || "").trim().toLowerCase();
+
+      let list = COLORS.slice();
+
+      if(active !== "all"){
+        list = list.filter(c => (c.cat||[]).includes(active));
+      }
+      if(q){
+        list = list.filter(c => c.name.toLowerCase().includes(q) || (c.note||"").toLowerCase().includes(q));
+      }
+      renderSwatches(list);
+    }
+
+    // ---------- INTERACTIONS (3+ JS elements) ----------
+    // 1) Filter pills + search
+    $$(".pill").forEach(p=>{
+      p.addEventListener("click", ()=>{
+        $$(".pill").forEach(x=>x.classList.remove("active"));
+        p.classList.add("active");
+        applyFilters();
+      });
+    });
+    $("#search").addEventListener("input", applyFilters);
+
+    // 2) Night/Day toggle
+    $("#toggleMood").addEventListener("click", ()=>{
+      document.body.classList.toggle("day");
+      const isDay = document.body.classList.contains("day");
+      toast(isDay ? "Day mode on" : "Night mode on");
+    });
+
+    // 3) Shuffle preview (lighting chips)
+    const lightingPresets = [
+      {name:"Soft contrast", hex:"#6E7886"},
+      {name:"Hard contrast", hex:"#000000"},
+      {name:"Soft white", hex:"#E7E0DB"},
+      {name:"Optic white", hex:"#FFFFFF"},
+      {name:"Soft navy", hex:"#242E3D"},
+      {name:"Neon bright", hex:"#00FF80"}
+    ];
+
+    function renderLightingChips(){
+      const box = $("#lightingChips");
+      box.innerHTML = "";
+      lightingPresets.forEach(p=>{
+        const chip = document.createElement("div");
+        chip.className="chip";
+        chip.innerHTML = `
+          <div class="dot" style="background:${p.hex}"></div>
+          <span>${p.name}</span>
+          <small>${p.hex}</small>
+        `;
+        chip.addEventListener("click", ()=>copyText(p.hex));
+        box.appendChild(chip);
+      });
+    }
+
+    $("#shufflePreview").addEventListener("click", ()=>{
+      // shuffle a “preview” by randomizing which palette colors occupy the first 3 presets (soft contrast etc.)
+      const soft = pick(COLORS.filter(c=>c.cat.includes("neutrals") || c.cat.includes("blues")));
+      const light = pick(COLORS.filter(c=>c.cat.includes("lights")));
+      const green = pick(COLORS.filter(c=>c.cat.includes("greens")));
+      lightingPresets[0].hex = soft.hex; lightingPresets[0].name = "Soft contrast (you)";
+      lightingPresets[2].hex = light.hex; lightingPresets[2].name = "Soft light (you)";
+      lightingPresets[4].hex = green.hex; lightingPresets[4].name = "Eye-echo deep (you)";
+      renderLightingChips();
+      toast("Preview shuffled");
+    });
+
+    // 4) Outfit generator
+    function renderOutfit(){
+      const neutrals = COLORS.filter(c=>c.cat.includes("neutrals"));
+      const mains = COLORS.filter(c=>["greens","blues","purples","reds"].some(k=>c.cat.includes(k)) && !c.cat.includes("makeup"));
+      const lights = COLORS.filter(c=>c.cat.includes("lights"));
+
+      const n = pick(neutrals);
+      const m = pick(mains);
+      const l = pick(lights);
+
+      const chips = [
+        {role:"Power Neutral", ...n},
+        {role:"Main Color", ...m},
+        {role:"Soft Light", ...l}
+      ];
+
+      const box = $("#outfitChips");
+      box.innerHTML = "";
+      chips.forEach(c=>{
+        const chip = document.createElement("div");
+        chip.className="chip";
+        chip.innerHTML = `
+          <div class="dot" style="background:${c.hex}"></div>
+          <span>${c.role}: <b>${c.name}</b></span>
+          <small>${c.hex}</small>
+        `;
+        chip.addEventListener("click", ()=>copyText(c.hex));
+        box.appendChild(chip);
+      });
+
+      const note = `Formula: ${n.name} + ${m.name} + ${l.name}. Keep finish matte/soft. Hardware in pewter/silver.`;
+      $("#outfitNote").textContent = note;
+
+      // update meter (mutedness vs brightness) — simple proxy:
+      // if more lights picked -> “brighter”; if more slate/charcoal picked -> “muted”
+      const mutedWeight = [n,m,l].reduce((acc,c)=>{
+        const h = c.hex.toUpperCase();
+        if(["#3F424A","#242E3D","#4F5E6B","#5E6C62","#4F4A57"].includes(h)) return acc+1;
+        return acc+.5;
+      },0);
+      const pct = Math.max(10, Math.min(90, Math.round((mutedWeight/3)*55)));
+      $("#barFill").style.width = pct + "%";
+      $("#meterReadout").textContent = `${pct}% muted`;
+    }
+
+    $("#genOutfit").addEventListener("click", ()=>{
+      renderOutfit();
+      toast("Outfit generated");
+    });
+
+    // ---------- INIT ----------
+    renderLightingChips();
+    renderBodySwatches();  // NEW
+    renderSwatches(COLORS);
+    renderOutfit(); // start with one outfit
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Moonstone Hazel &amp; Sea-Glass Rose</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Moonstone Hazel & Sea-Glass Rose — Interactive Color Atlas</title>
+  <meta name="theme-color" content="#0b0f16" />
+  <style>
+    :root{
+      --bg0:#070a10;
+      --bg1:#0a1020;
+      --ink:#e9f0ff;
+      --muted:#b8c3dd;
+      --faint:#7e8bb0;
+
+      --card: rgba(18,26,40,.78);
+      --card2: rgba(12,18,30,.78);
+      --border: rgba(140,170,230,.18);
+      --border2: rgba(255,255,255,.08);
+
+      --shadow: 0 22px 70px rgba(0,0,0,.45);
+      --shadow2: 0 10px 26px rgba(0,0,0,.35);
+
+      --accent:#86b2ff;
+      --accent2:#ffb7c8;
+      --good:#8ff0c8;
+      --warn:#ffd38a;
+      --bad:#ff7a90;
+
+      --radius: 18px;
+      --radius2: 26px;
+
+      --grid-gap: 14px;
+      --sw: 56px; /* swatch size */
+    }
+
+    /* ✦ aurora background */
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 900px at 12% 8%, rgba(122,168,255,.22), transparent 55%),
+        radial-gradient(900px 700px at 88% 12%, rgba(255,183,200,.18), transparent 60%),
+        radial-gradient(900px 900px at 60% 85%, rgba(143,240,200,.14), transparent 58%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+      min-height:100vh;
+    }
+
+    /* animated “mist ribbons” */
+    .mist{
+      position:fixed; inset:-20% -20%;
+      background:
+        radial-gradient(900px 400px at 20% 30%, rgba(134,178,255,.14), transparent 60%),
+        radial-gradient(700px 500px at 70% 40%, rgba(255,183,200,.12), transparent 62%),
+        radial-gradient(900px 700px at 55% 75%, rgba(143,240,200,.10), transparent 62%);
+      filter: blur(20px) saturate(1.15);
+      opacity:.85;
+      animation: drift 18s ease-in-out infinite alternate;
+      pointer-events:none;
+      z-index:0;
+    }
+    @keyframes drift{
+      0%{ transform: translate3d(-2%, -1%, 0) scale(1.02) rotate(-.6deg); }
+      100%{ transform: translate3d(2.5%, 1.8%, 0) scale(1.06) rotate(.8deg); }
+    }
+
+    /* starfield canvas */
+    canvas#stars{
+      position:fixed; inset:0;
+      z-index:0;
+      pointer-events:none;
+      opacity:.9;
+      mix-blend-mode: screen;
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width: 1200px;
+      margin: 28px auto 90px;
+      padding: 0 18px;
+    }
+
+    header{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 14px;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .title{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      max-width: 720px;
+    }
+    .title h1{
+      margin:0;
+      font-size: 24px;
+      letter-spacing:.2px;
+      font-weight: 740;
+      line-height: 1.1;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size: 13.5px;
+      line-height: 1.4;
+    }
+    .pillrow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top: 6px;
+    }
+    .pill{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      color: var(--muted);
+      backdrop-filter: blur(10px);
+    }
+    .pill strong{ color: var(--ink); font-weight: 700; }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--ink);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      box-shadow: var(--shadow2);
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      user-select:none;
+      font-weight:650;
+      font-size: 12.5px;
+      letter-spacing:.2px;
+    }
+    .btn:hover{ transform: translateY(-1px); border-color: rgba(134,178,255,.35); background: rgba(255,255,255,.075); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+
+    .btn.primary{
+      border-color: rgba(134,178,255,.45);
+      background: linear-gradient(180deg, rgba(134,178,255,.18), rgba(255,255,255,.06));
+    }
+    .btn.ghost{
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 16px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .controls{ justify-content:flex-start; }
+    }
+
+    .card{
+      border:1px solid var(--border);
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, var(--card), var(--card2));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      backdrop-filter: blur(14px);
+    }
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background:
+        radial-gradient(600px 260px at 12% 10%, rgba(134,178,255,.18), transparent 55%),
+        radial-gradient(520px 260px at 82% 18%, rgba(255,183,200,.14), transparent 60%),
+        radial-gradient(720px 340px at 45% 95%, rgba(143,240,200,.10), transparent 60%);
+      pointer-events:none;
+      opacity:.9;
+      mix-blend-mode: screen;
+    }
+    .card > *{ position:relative; z-index:1; }
+
+    .section{
+      padding: 18px 18px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .section:last-child{ border-bottom:0; }
+
+    .h2{
+      margin:0 0 6px;
+      font-size: 14px;
+      letter-spacing:.25px;
+      font-weight: 800;
+      color: var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .hint{
+      margin:0;
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height:1.5;
+    }
+
+   /* BODY COLORS orbit */
+.orbit{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+  align-items: start;
+}
+
+/* Stack LEFT column cards; keep EYES on the RIGHT spanning rows */
+.orbit > .halo:nth-child(1),
+.orbit > .halo:nth-child(3),
+.orbit > .halo:nth-child(4),
+.orbit > .halo:nth-child(5){
+  grid-column: 1;
+}
+
+.orbit > .halo:nth-child(2){
+  grid-column: 2;
+  grid-row: 1 / span 4; /* make eyes occupy the whole right side */
+}
+
+/* mobile: go back to normal single-column flow */
+@media (max-width: 620px){
+  .orbit{ grid-template-columns: 1fr; }
+  .orbit > .halo{ grid-column:auto; grid-row:auto; }
+}
+
+
+    .halo{
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 18px;
+      background: rgba(255,255,255,.03);
+      padding: 14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .halo .label{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .halo .label span{
+      font-size: 12px;
+      letter-spacing:.2px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+padding-right: 46px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.09);
+      background: rgba(0,0,0,.15);
+      font-size: 12px;
+      color: var(--muted);
+      cursor: pointer;
+      user-select:none;
+position: relative;
+    }
+/* add inside your existing .chip { ... } */
+.chip{
+  position:relative;
+  padding-right:46px; /* room for the star */
+}
+
+/* star button that lives inside each chip */
+.chip .chipStar{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:28px;
+  height:28px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(231,238,252,.70);
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .12s ease, background .12s ease, color .12s ease, border-color .12s ease;
+}
+
+.chip .chipStar:hover{ transform:translateY(-50%) scale(1.04); }
+
+.chip .chipStar.on{
+  color: rgba(255,211,138,1);
+  border-color: rgba(255,211,138,.35);
+  background: rgba(255,211,138,.10);
+}
+/* chips with data-copy also need room for the star */
+[data-copy]{ position:relative; padding-right:46px; }
+
+/* star styling applies the same */
+[data-copy] .chipStar{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:28px;
+  height:28px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(231,238,252,.70);
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-copy] .chipStar.on{
+  color: rgba(255,211,138,1);
+  border-color: rgba(255,211,138,.35);
+  background: rgba(255,211,138,.10);
+}
+
+
+    .chip b{ color: var(--ink); font-weight: 800; }
+    .mini{
+      width: 14px; height: 14px; border-radius: 4px;
+      border:1px solid rgba(255,255,255,.15);
+      box-shadow: 0 4px 10px rgba(0,0,0,.25);
+    }
+
+/* any element with data-color can host a star */
+[data-color]{ position:relative; padding-right:46px; }
+
+[data-color] .chipStar{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  width:28px;
+  height:28px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+  color:rgba(231,238,252,.70);
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+[data-color] .chipStar.on{
+  color: rgba(255,211,138,1);
+  border-color: rgba(255,211,138,.35);
+  background: rgba(255,211,138,.10);
+}
+/* make sure overlays never steal taps */
+.chip::before, .chip::after,
+.sw .color::after{
+  pointer-events: none;
+}
+
+/* star must sit above everything and be clickable */
+[data-color], [data-copy]{ position:relative; }
+.chipStar{
+  position:absolute;
+  right:10px;
+  top:50%;
+  transform:translateY(-50%);
+  z-index: 50;
+  pointer-events: auto;
+}
+
+
+
+    .ring{
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.06), rgba(0,0,0,.08));
+      position:relative;
+      overflow:hidden;
+    }
+    .ring svg{ position:absolute; inset: 0; width:100%; height:100%; }
+    .ringcap{
+  margin-top: 10px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.35;
+}
+.ringcap b{ color: var(--ink); font-weight: 800; }
+
+
+    /* swatch grid */
+    .swatchbar{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .field{
+      flex: 1 1 210px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+    }
+    .field input{
+      width:100%;
+      background: transparent;
+      border:0;
+      outline: none;
+      color: var(--ink);
+      font-size: 13px;
+    }
+    .field small{ color: var(--faint); }
+    .slider{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      border:1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.12);
+      border-radius: 14px;
+      padding: 10px 12px;
+      flex: 1 1 260px;
+    }
+    .slider label{
+      color: var(--muted);
+      font-weight: 750;
+      font-size: 12px;
+      white-space:nowrap;
+    }
+    .slider input[type="range"]{ width: 100%; }
+
+    .swatches{
+      display:grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: var(--grid-gap);
+      margin-top: 14px;
+    }
+    @media (max-width: 980px){ .swatches{ grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+    @media (max-width: 720px){ .swatches{ grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    @media (max-width: 460px){ .swatches{ grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+    .sw{
+      border-radius: 16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      cursor:pointer;
+      user-select:none;
+      position:relative;
+      min-height: 86px;
+      box-shadow: 0 14px 40px rgba(0,0,0,.25);
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .sw:hover{ transform: translateY(-2px); border-color: rgba(134,178,255,.40); }
+    .sw:active{ transform: translateY(-1px) scale(.995); }
+
+    .sw .color{
+      height: var(--sw);
+      width:100%;
+      position:relative;
+z-index: 1;
+
+    }
+    .sw .color::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(120px 70px at 15% 20%, rgba(255,255,255,.22), transparent 55%),
+        radial-gradient(120px 70px at 80% 35%, rgba(0,0,0,.18), transparent 62%);
+      mix-blend-mode: overlay;
+      opacity:.75;
+    }
+    .sw .meta{
+      padding: 10px 10px 11px;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+    .sw .name{
+      font-weight: 820;
+      letter-spacing:.2px;
+      font-size: 12px;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .sw .hex{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tagrow{
+      display:flex;
+      gap: 6px;
+      flex-wrap:wrap;
+      margin-top: 3px;
+    }
+    .tag{
+      font-size: 10.5px;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,.09);
+      background: rgba(0,0,0,.12);
+      padding: 4px 7px;
+      border-radius: 999px;
+    }
+
+    .fav{
+      position:absolute;
+      top: 8px;
+      right: 8px;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.18);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      backdrop-filter: blur(8px);
+      transition: transform .12s ease, background .12s ease;
+z-index: 10;
+pointer-events: auto;
+
+    }
+    .sw:hover .fav{ transform: scale(1.02); }
+    .fav svg{ opacity:.9; }
+    .fav.on{
+      border-color: rgba(255,183,200,.55);
+      background: rgba(255,183,200,.14);
+    }
+    /* Favorites gallery grid (right column) */
+    .favgrid{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    @media (max-width: 980px){
+      .favgrid{ grid-template-columns: repeat(4, minmax(0,1fr)); }
+    }
+    @media (max-width: 520px){
+      .favgrid{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    }
+
+    .favsw{
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      cursor:pointer;
+      user-select:none;
+      min-height: 86px;
+      box-shadow: 0 12px 34px rgba(0,0,0,.22);
+      position:relative;
+      transition: transform .12s ease, border-color .12s ease;
+    }
+    .favsw:hover{ transform: translateY(-2px); border-color: rgba(255,183,200,.30); }
+
+    .favsw .color{
+      height: 56px;
+      width: 100%;
+      position:relative;
+    }
+    .favsw .meta{
+      padding: 10px 10px 11px;
+      display:flex;
+      flex-direction:column;
+      gap: 4px;
+    }
+    .favsw .name{
+      font-weight: 820;
+      letter-spacing:.2px;
+      font-size: 12px;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+    .favsw .hex{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+
+    /* right column tools */
+    .toolgrid{
+      display:grid;
+      gap: 16px;
+    }
+
+    .outfit{
+      display:grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .look{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .look .tile{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      overflow:hidden;
+      background: rgba(0,0,0,.12);
+      box-shadow: 0 10px 24px rgba(0,0,0,.22);
+      position:relative;
+    }
+    .tile .paint{ height: 62px; }
+    .tile .desc{
+      padding: 10px 10px 11px;
+      display:flex; flex-direction:column; gap:4px;
+    }
+    .tile .desc b{ font-size: 12px; letter-spacing:.2px; }
+    .tile .desc span{ font-size: 11px; color: var(--muted); font-family: ui-monospace, Menlo, Monaco, Consolas, monospace; }
+    .rowbtns{ display:flex; flex-wrap:wrap; gap:10px; }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(10,14,24,.86);
+      border: 1px solid rgba(255,255,255,.12);
+      color: var(--ink);
+      padding: 10px 12px;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      display:none;
+      z-index: 20;
+      backdrop-filter: blur(14px);
+      font-size: 13px;
+      max-width: min(92vw, 620px);
+    }
+
+    .smallprint{
+      color: var(--faint);
+      font-size: 11.5px;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.06);
+      margin: 12px 0;
+    }
+
+    /* “drape” lighting modes */
+    body[data-world="day"]{
+      background:
+        radial-gradient(1200px 900px at 12% 8%, rgba(122,168,255,.18), transparent 55%),
+        radial-gradient(900px 700px at 88% 12%, rgba(255,183,200,.12), transparent 60%),
+        radial-gradient(900px 900px at 60% 85%, rgba(143,240,200,.10), transparent 58%),
+        linear-gradient(180deg, #0a1020, #071022);
+    }
+    body[data-world="gold"]{
+      background:
+        radial-gradient(1200px 900px at 12% 8%, rgba(255,211,138,.18), transparent 55%),
+        radial-gradient(900px 700px at 82% 16%, rgba(255,183,200,.10), transparent 60%),
+        radial-gradient(900px 900px at 60% 85%, rgba(143,240,200,.08), transparent 58%),
+        linear-gradient(180deg, #0a0b10, #120f1d);
+    }
+    body[data-world="neon"]{
+      background:
+        radial-gradient(1200px 900px at 12% 8%, rgba(0,255,200,.18), transparent 55%),
+        radial-gradient(900px 700px at 88% 12%, rgba(255,0,140,.14), transparent 60%),
+        radial-gradient(900px 900px at 60% 85%, rgba(122,168,255,.14), transparent 58%),
+        linear-gradient(180deg, #070a10, #070a18);
+    }
+
+    /* accessibility */
+    .sr{ position:absolute; left:-9999px; }
+    a{ color: inherit; }
+  </style>
+</head>
+
+<body data-world="night">
+  <div class="mist" aria-hidden="true"></div>
+  <canvas id="stars" aria-hidden="true"></canvas>
+
+  <div class="wrap">
+    <header>
+      <div class="title">
+        <h1>Moonstone Hazel & Sea-Glass Rose</h1>
+        <div class="subtitle">
+          A personal color atlas calibrated to: <b>cool-neutral skin</b> (rosy bloom), <b>ash-taupe blonde</b> depth, and <b>hazel green-gray</b> eyes with bronze fire.
+          <br/>
+          <span style="color:var(--faint)">Destination:</span> <b>Soft Summer (cool-leaning) / Muted Summer</b> • best in <b>smoky jewel tones</b>, <b>misty neutrals</b>, <b>plum-rose lips</b>, <b>old-silver metals</b>.
+        </div>
+        <div class="pillrow">
+          <div class="pill"><strong>Power neutrals:</strong> storm navy • pewter • oyster • mushroom taupe</div>
+          <div class="pill"><strong>Signature colors:</strong> sea-glass • winter rose • iris smoke • pine-teal</div>
+          <div class="pill"><strong>Avoid:</strong> neon brights • hard orange • stark black-white contrast</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button class="btn ghost" id="worldBtn" title="Change lighting / drape world">Drape: <span id="worldName">Night</span></button>
+        <button class="btn" id="onlyFavBtn" title="Show only favorites">★ Favorites</button>
+        <button class="btn primary" id="randomLookBtn" title="Generate an outfit + makeup look from your palette">Generate a Look</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- LEFT: Palette -->
+      <section class="card">
+        <div class="section">
+          <div class="h2">
+            <span>Your body colors (calibrated anchors)</span>
+            <span class="chip" id="copyAllBtn" title="Copy a mini palette to clipboard">
+              <span class="mini" style="background:#a6877a"></span>
+              <b>Copy</b> mini set
+            </span>
+          </div>
+          <p class="hint">Tap any swatch to copy hex + name. Star to save. Use the warmth slider to “nudge” colors warmer/cooler while staying in-range.</p>
+
+          <div class="orbit">
+            <div class="halo">
+              <div class="label">
+                <span>SKIN / LUMINOSITY RANGE</span>
+                <span class="chip" data-copy="#ead8d2,#d3b4a6,#a6877a" title="Copy skin range">
+                  <span class="mini" style="background:#ead8d2"></span><b>Copy</b>
+                </span>
+              </div>
+              <div class="swatchbar">
+                <span class="chip" data-color="#ead8d2" data-name="Moonmilk Porcelain"> <span class="mini" style="background:#ead8d2"></span> <b>#ead8d2</b> highlight</span>
+                <span class="chip" data-color="#d3b4a6" data-name="Oyster Rose"> <span class="mini" style="background:#d3b4a6"></span> <b>#d3b4a6</b> base</span>
+                <span class="chip" data-color="#a6877a" data-name="Antique Blush Shadow"> <span class="mini" style="background:#a6877a"></span> <b>#a6877a</b> contour</span>
+              </div>
+              <div class="smallprint">You glow in colors that behave like <b>light through fog</b>: softened edges, no harsh saturation, no hard contrast.</div>
+            </div>
+
+            <div class="halo">
+              <div class="label">
+                <span>EYES / HAZEL-GRAY WITH BRONZE FLECKS</span>
+                <span class="chip" data-copy="#7b7c74,#8b786f,#2f3136" title="Copy eye trio">
+                  <span class="mini" style="background:#7b7c74"></span><b>Copy</b>
+                </span>
+              </div>
+
+              <div class="ring" aria-label="Eye ring visualization">
+                <svg viewBox="0 0 100 100" role="img" aria-label="Eye color ring">
+                  <defs>
+                    <radialGradient id="irisGrad" cx="40%" cy="35%" r="70%">
+                      <stop offset="0%" stop-color="#8b786f"/>
+                      <stop offset="40%" stop-color="#7b7c74"/>
+                      <stop offset="78%" stop-color="#566066"/>
+                      <stop offset="100%" stop-color="#2f3136"/>
+                    </radialGradient>
+                    <radialGradient id="spark" cx="30%" cy="25%" r="70%">
+                      <stop offset="0%" stop-color="rgba(255,255,255,.35)"/>
+                      <stop offset="65%" stop-color="rgba(255,255,255,0)"/>
+                    </radialGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="46" fill="url(#irisGrad)" stroke="rgba(255,255,255,.18)" stroke-width="1"/>
+                  <circle cx="50" cy="50" r="24" fill="rgba(0,0,0,.18)" stroke="rgba(255,255,255,.10)" stroke-width="1"/>
+                  <circle cx="50" cy="50" r="12" fill="#1b1d22"/>
+                  <circle cx="38" cy="34" r="22" fill="url(#spark)" opacity=".9"/>
+                </svg>
+              </div>
+<div class="ringcap">
+                  <div>
+                    <b style="color:var(--ink)">Hazel-Gray Iris</b><br/>
+                    sea-glass ring • bronze ember • slate pupil
+                  </div>
+                </div>
+
+              <div class="swatchbar" style="margin-top:12px;">
+                <span class="chip" data-color="#7b7c74" data-name="Sea-Glass Ring"><span class="mini" style="background:#7b7c74"></span> <b>#7b7c74</b></span>
+                <span class="chip" data-color="#8b786f" data-name="Bronze Hazel Spark"><span class="mini" style="background:#8b786f"></span> <b>#8b786f</b></span>
+                <span class="chip" data-color="#566066" data-name="Storm Iris Smoke"><span class="mini" style="background:#566066"></span> <b>#566066</b></span>
+              </div>
+            </div>
+
+            <div class="halo">
+              <div class="label">
+                <span>HAIR / ASH-TAUPE BLONDE DEPTH</span>
+                <span class="chip" data-copy="#c9b08f,#6f6558,#5e4e3b" title="Copy hair trio">
+                  <span class="mini" style="background:#c9b08f"></span><b>Copy</b>
+                </span>
+              </div>
+              <div class="swatchbar">
+                <span class="chip" data-color="#c9b08f" data-name="Ash Wheat Highlight"><span class="mini" style="background:#c9b08f"></span> <b>#c9b08f</b></span>
+                <span class="chip" data-color="#6f6558" data-name="Mushroom Root"><span class="mini" style="background:#6f6558"></span> <b>#6f6558</b></span>
+                <span class="chip" data-color="#5e4e3b" data-name="Taupe Espresso Depth"><span class="mini" style="background:#5e4e3b"></span> <b>#5e4e3b</b></span>
+              </div>
+              <div class="smallprint">Best metal: <b>old silver / pewter / white gold</b>. If gold: keep it <b>champagne</b>, never bright yellow.</div>
+            </div>
+
+            <div class="halo">
+              <div class="label">
+                <span>FLUSH + LIPS / ROSE-PLUM FAMILY</span>
+                <span class="chip" data-copy="#c77a86,#8a4f62,#9a6678" title="Copy flush/lip trio">
+                  <span class="mini" style="background:#c77a86"></span><b>Copy</b>
+                </span>
+              </div>
+              <div class="swatchbar">
+          <span class="chip" data-color="#c77a86" data-name="Sea Rose Flush"><span class="mini" style="background:#c77a86"></span> <b>#c77a86</b></span>
+                <span class="chip" data-color="#8a4f62" data-name="Rose-Plum Lip"><span class="mini" style="background:#8a4f62"></span> <b>#8a4f62</b></span>
+                <span class="chip" data-color="#9a6678" data-name="Dusty Berry Nude"><span class="mini" style="background:#9a6678"></span> <b>#9a6678</b></span>
+              </div>
+              <div class="smallprint">Your “nude” is not beige. Your nude is <b>mauve-rose</b>.</div>
+            </div>
+
+            <div class="halo">
+              <div class="label">
+                <span>VEIN IMPRESSION / BLUE-GRAY MIST</span>
+                <span class="chip" data-copy="#959ea3,#7b8a95,#5b6b75" title="Copy vein trio">
+                  <span class="mini" style="background:#959ea3"></span><b>Copy</b>
+                </span>
+              </div>
+              <div class="swatchbar">
+                <span class="chip" data-color="#959ea3" data-name="Vein Mist"><span class="mini" style="background:#959ea3"></span> <b>#959ea3</b></span>
+                <span class="chip" data-color="#7b8a95" data-name="Blue Slate Vein"><span class="mini" style="background:#7b8a95"></span> <b>#7b8a95</b></span>
+                <span class="chip" data-color="#5b6b75" data-name="Deep Harbor Vein"><span class="mini" style="background:#5b6b75"></span> <b>#5b6b75</b></span>
+              </div>
+              <div class="smallprint">This is why <b>icy brights</b> can look separate from you, but <b>smoke-jewels</b> look inevitable.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="h2">
+            <span>The Dream Palette</span>
+            <span class="chip" id="copyFavsBtn" title="Copy all favorite hexes">
+              <span class="mini" style="background:linear-gradient(90deg,#86b2ff,#ffb7c8)"></span>
+              <b>Copy</b> favorites
+            </span>
+          </div>
+
+          <div class="swatchbar">
+            <div class="field" title="Filter by name, tag, or hex">
+              <small>Search</small>
+              <input id="search" placeholder="Try: navy, rose, #7b7c74, neutral, power..." />
+            </div>
+
+            <div class="slider" title="Warmth shift (stays in-range)">
+              <label>Warmth</label>
+              <input id="warmth" type="range" min="-14" max="14" value="0" />
+              <span id="warmthVal" style="color:var(--muted); font-family: ui-monospace, Menlo, Monaco, Consolas, monospace; font-size:12px;">0</span>
+            </div>
+          </div>
+
+          <div class="swatches" id="swatches" aria-label="Color swatches grid"></div>
+
+          <div class="smallprint">
+            Rule of thumb: you’re at your most dangerous when your outfit says <b>“storm + rose”</b> (a smoky neutral + one bruised romantic color).
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Tools -->
+      <aside class="toolgrid">
+        <section class="card">
+          <div class="section">
+            <div class="h2">Look Generator</div>
+            <p class="hint">One click → outfit + makeup pulled from your best harmonies. Tap tiles to copy.</p>
+
+            <div class="outfit" id="lookArea">
+              <div class="look">
+                <div class="tile" data-role="top">
+                  <div class="paint" id="topPaint"></div>
+                  <div class="desc"><b>Top</b><span id="topHex">—</span></div>
+                </div>
+                <div class="tile" data-role="bottom">
+                  <div class="paint" id="bottomPaint"></div>
+                  <div class="desc"><b>Bottom</b><span id="bottomHex">—</span></div>
+                </div>
+                <div class="tile" data-role="outerwear">
+                  <div class="paint" id="outerPaint"></div>
+                  <div class="desc"><b>Outerwear</b><span id="outerHex">—</span></div>
+                </div>
+                <div class="tile" data-role="accent">
+                  <div class="paint" id="accentPaint"></div>
+                  <div class="desc"><b>Accent</b><span id="accentHex">—</span></div>
+                </div>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="look">
+                <div class="tile" data-role="lip">
+                  <div class="paint" id="lipPaint"></div>
+                  <div class="desc"><b>Lip</b><span id="lipHex">—</span></div>
+                </div>
+                <div class="tile" data-role="blush">
+                  <div class="paint" id="blushPaint"></div>
+                  <div class="desc"><b>Blush</b><span id="blushHex">—</span></div>
+                </div>
+                <div class="tile" data-role="eye">
+                  <div class="paint" id="eyePaint"></div>
+                  <div class="desc"><b>Eye</b><span id="eyeHex">—</span></div>
+                </div>
+                <div class="tile" data-role="metal">
+                  <div class="paint" id="metalPaint"></div>
+                  <div class="desc"><b>Metal</b><span id="metalHex">—</span></div>
+                </div>
+              </div>
+
+              <div class="rowbtns">
+                <button class="btn primary" id="regenBtn">Regenerate Look</button>
+                <button class="btn" id="pinBtn" title="Pin this look to favorites">Pin swatches ★</button>
+                <button class="btn" id="harmonyBtn" title="Generate harmony from the accent">Harmony from Accent</button>
+              </div>
+
+              <div class="smallprint" id="lookNote"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section">
+            <div class="h2">Harmony Lab</div>
+            <p class="hint">Pick any swatch → get a complement, analogous pair, and triad. This is how you build outfits that feel *fated*, not random.</p>
+
+            <div class="look" style="margin-top:12px;">
+              <div class="tile">
+                <div class="paint" id="basePaint"></div>
+                <div class="desc"><b>Base</b><span id="baseHex">Tap any swatch</span></div>
+              </div>
+              <div class="tile">
+                <div class="paint" id="compPaint"></div>
+                <div class="desc"><b>Complement</b><span id="compHex">—</span></div>
+              </div>
+              <div class="tile">
+                <div class="paint" id="anaPaint"></div>
+                <div class="desc"><b>Analogous</b><span id="anaHex">—</span></div>
+              </div>
+              <div class="tile">
+                <div class="paint" id="triPaint"></div>
+                <div class="desc"><b>Triad</b><span id="triHex">—</span></div>
+              </div>
+            </div>
+
+            <div class="smallprint">
+              Your most flattering “contrast” is <b>value contrast</b> (light vs deep) more than <b>saturation contrast</b> (neon vs dull).
+            </div>
+          </div>
+        </section>
+        <!-- FAVORITES GALLERY -->
+        <section class="card" id="favGallery">
+          <div class="section">
+            <div class="h2">
+              <span>Favorites Gallery</span>
+              <span class="chip" id="clearFavsBtn" title="Clear favorites">
+                <span class="mini" style="background:rgba(255,255,255,.12)"></span>
+                <b>Clear</b>
+              </span>
+            </div>
+
+            <p class="hint">Your starred swatches live here. Tap to copy. Tap the star again in the main grid to remove.</p>
+
+            <div class="favgrid" id="favGrid" aria-label="Favorites grid"></div>
+
+            <div class="smallprint" id="favEmpty" style="display:none;">
+              No favorites yet. Star a swatch in “The Dream Palette” and it will appear here.
+            </div>
+          </div>
+        </section>
+
+      </aside>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* ──────────────────────────────────────────────────────────────
+      MOONSTONE HAZEL & SEA-GLASS ROSE
+      Interactive palette:
+      - click swatch to copy
+      - favorites saved to localStorage
+      - warmth slider shifts colors within palette range
+      - outfit generator + harmony lab
+      - drape lighting worlds
+    ────────────────────────────────────────────────────────────── */
+
+    const PALETTE = [
+      // NEUTRALS (your kingdom)
+      {name:"Storm Navy", hex:"#2a344a", tags:["neutral","power","navy","outerwear"]},
+      {name:"Ink-Blue Slate", hex:"#3a465f", tags:["neutral","denim","smoke"]},
+      {name:"Deep Harbor", hex:"#2a3c43", tags:["neutral","teal","outerwear"]},
+      {name:"Pewter Mist", hex:"#8c98a8", tags:["neutral","silver","soft"]},
+      {name:"Blue-Gray Veil", hex:"#707f91", tags:["neutral","veil","work"]},
+      {name:"Mushroom Taupe", hex:"#786d63", tags:["neutral","taupe","soft"]},
+      {name:"Stone Oat", hex:"#a99b8f", tags:["neutral","oyster","soft"]},
+      {name:"Oyster Rose", hex:"#d3b4a6", tags:["neutral","skin","base"]},
+      {name:"Moonmilk Porcelain", hex:"#ead8d2", tags:["neutral","skin","highlight"]},
+      {name:"Charcoal Plum", hex:"#2d2a34", tags:["neutral","night","deep"]},
+
+      // BLUES (you look expensive in these)
+      {name:"Sea-Glass Blue", hex:"#6ea6b8", tags:["blue","sea-glass","signature"]},
+      {name:"Winter Sky", hex:"#8ab6e0", tags:["blue","cool","light"]},
+      {name:"Iris Smoke", hex:"#5b6488", tags:["blue","purple","smoke"]},
+      {name:"Dusk Periwinkle", hex:"#7b86c7", tags:["blue","periwinkle","statement"]},
+      {name:"Bluebell Shadow", hex:"#46507a", tags:["blue","deep","power"]},
+
+      // GREENS / TEALS (your eyes start talking)
+      {name:"Hazel-Sage", hex:"#7f8f83", tags:["green","sage","eye"]},
+      {name:"Sea-Glass Green", hex:"#76b7ad", tags:["green","teal","signature"]},
+      {name:"Pine-Teal", hex:"#2e6f72", tags:["green","teal","power","outerwear"]},
+      {name:"Juniper Smoke", hex:"#3f6a63", tags:["green","smoke","work"]},
+      {name:"Eucalyptus Ash", hex:"#9ab2a6", tags:["green","soft","light"]},
+
+      // ROSES / BERRIES (your blush family)
+      {name:"Sea-Rose Flush", hex:"#c77a86", tags:["rose","blush","makeup"]},
+      {name:"Dusty Berry Nude", hex:"#9a6678", tags:["berry","nude","lip"]},
+      {name:"Winter Rose", hex:"#b25f78", tags:["rose","berry","statement"]},
+      {name:"Mulled Raspberry", hex:"#8b3f59", tags:["berry","deep","lip"]},
+      {name:"Orchid Bruise", hex:"#7a4a76", tags:["purple","berry","night"]},
+
+      // PURPLES (Soft Dramatic-friendly, but smoked)
+      {name:"Amethyst Fog", hex:"#8e7aa6", tags:["purple","soft","romantic"]},
+      {name:"Plum Velvet", hex:"#4b2e44", tags:["purple","deep","night"]},
+      {name:"Wisteria Shadow", hex:"#6d5f86", tags:["purple","smoke","work"]},
+
+      // METALS (best on you)
+      {name:"Old Silver", hex:"#b8c0cc", tags:["metal","silver","jewelry"]},
+      {name:"Pewter", hex:"#9aa4b0", tags:["metal","silver","jewelry"]},
+      {name:"Champagne Mist", hex:"#d7c7a6", tags:["metal","gold","soft"]},
+
+      // “POWER POPS” (still within your world)
+      {name:"Glacier Cobalt (Smoked)", hex:"#3f6fb2", tags:["power","blue","pop"]},
+      {name:"Merlot Smoke", hex:"#5b2236", tags:["power","berry","night"]},
+      {name:"Teal Signal", hex:"#2b8a92", tags:["power","teal","pop"]},
+    ];
+
+    // Body anchors (for generator + story)
+    const BODY = {
+      skin: ["#ead8d2","#d3b4a6","#a6877a"],
+      hair: ["#c9b08f","#6f6558","#5e4e3b"],
+      eyes: ["#7b7c74","#8b786f","#566066"],
+      lips:  ["#9a6678","#8a4f62","#7b3d53"],
+      blush: ["#c77a86","#b46174","#8d3f57"],
+      veins:["#959ea3","#7b8a95","#5b6b75"],
+      metals:["#b8c0cc","#9aa4b0","#d7c7a6"]
+    };
+
+    const $ = (s)=>document.querySelector(s);
+    const swatchesEl = $("#swatches");
+    const searchEl = $("#search");
+    const warmthEl = $("#warmth");
+    const warmthVal = $("#warmthVal");
+    const toastEl = $("#toast");
+
+    const onlyFavBtn = $("#onlyFavBtn");
+    const copyAllBtn = $("#copyAllBtn");
+    const copyFavsBtn = $("#copyFavsBtn");
+   const randomLookBtn = $("#randomLookBtn");
+    const favGrid = $("#favGrid");
+    const favEmpty = $("#favEmpty");
+    const clearFavsBtn = $("#clearFavsBtn");
+    const regenBtn = $("#regenBtn");
+    const pinBtn = $("#pinBtn");
+    const harmonyBtn = $("#harmonyBtn");
+    const worldBtn = $("#worldBtn");
+    const worldName = $("#worldName");
+
+    const WORLDS = [
+      {key:"night", label:"Night"},
+      {key:"day", label:"Daylight"},
+      {key:"gold", label:"Golden Hour"},
+      {key:"neon", label:"Neon City"}
+    ];
+    let worldIdx = 0;
+
+    // favorites persistence
+    const FAV_KEY = "moonstone_favs_v1";
+    const getFavs = ()=> {
+      try{ return new Set(JSON.parse(localStorage.getItem(FAV_KEY)||"[]")); }
+      catch{ return new Set(); }
+    };
+    const setFavs = (set)=>{
+      localStorage.setItem(FAV_KEY, JSON.stringify([...set]));
+    };
+    let favs = getFavs();
+    let showOnlyFavs = false;
+
+
+    // utility
+    const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
+    function hexToRgb(hex){
+      const h=hex.replace("#","").trim();
+      return {
+        r: parseInt(h.slice(0,2),16),
+        g: parseInt(h.slice(2,4),16),
+        b: parseInt(h.slice(4,6),16),
+      };
+    }
+    function rgbToHex(r,g,b){
+      const to=(v)=>v.toString(16).padStart(2,"0");
+      return `#${to(r)}${to(g)}${to(b)}`;
+    }
+
+    // warmth shift: add to R, subtract from B (very gentle), tiny G adjustment
+    function warmShift(hex, amt){
+      const {r,g,b}=hexToRgb(hex);
+      const nr = clamp(r + amt, 0, 255);
+      const nb = clamp(b - amt, 0, 255);
+      const ng = clamp(g + Math.round(amt*0.18), 0, 255);
+      return rgbToHex(nr,ng,nb);
+    }
+
+    function toast(msg){
+      toastEl.textContent = msg;
+      toastEl.style.display="block";
+      clearTimeout(toastEl._t);
+      toastEl._t = setTimeout(()=>toastEl.style.display="none", 1700);
+    }
+
+    async function copy(text){
+      try{
+        await navigator.clipboard.writeText(text);
+        toast(`Copied: ${text}`);
+      }catch(e){
+        // fallback
+        const ta=document.createElement("textarea");
+        ta.value=text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        toast(`Copied: ${text}`);
+      }
+    }
+
+    function renderSwatches(){
+      const q = (searchEl.value||"").toLowerCase().trim();
+      const warmth = parseInt(warmthEl.value, 10) || 0;
+      warmthVal.textContent = warmth;
+
+      const list = PALETTE.filter(c=>{
+        const hay = `${c.name} ${c.hex} ${(c.tags||[]).join(" ")}`.toLowerCase();
+        const matches = !q || hay.includes(q);
+        const favOk = !showOnlyFavs || favs.has(c.hex.toLowerCase());
+        return matches && favOk;
+      });
+
+      swatchesEl.innerHTML = "";
+      list.forEach(c=>{
+        const sw = document.createElement("div");
+        sw.className = "sw";
+        const shifted = warmShift(c.hex, warmth);
+
+        sw.innerHTML = `
+          <div class="fav ${favs.has(c.hex.toLowerCase()) ? "on":""}" title="Toggle favorite">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 17.3l-6.2 3.4 1.2-7.1L1.9 8.6l7.2-1L12 1l2.9 6.6 7.2 1-5.1 4.9 1.2 7.1L12 17.3z"
+                fill="currentColor" opacity=".9"/>
+            </svg>
+          </div>
+          <div class="color" style="background:${shifted}"></div>
+          <div class="meta">
+            <div class="name">${c.name}</div>
+            <div class="hex">${shifted.toUpperCase()} <span style="color:var(--faint)">(${c.hex.toUpperCase()})</span></div>
+            <div class="tagrow">${(c.tags||[]).slice(0,3).map(t=>`<span class="tag">${t}</span>`).join("")}</div>
+          </div>
+        `;
+
+        // click: copy
+        sw.addEventListener("click", (e)=>{
+          const isFav = e.target.closest(".fav");
+         if (isFav) {
+  const key = c.hex.toLowerCase();
+  if (favs.has(key)) favs.delete(key);
+  else favs.add(key);
+
+  setFavs(favs);
+  renderSwatches();
+  renderFavorites();
+  toast(favs.has(key) ? "Saved to favorites ★" : "Removed from favorites");
+  return;
+}
+          const txt = `${c.name} ${shifted.toUpperCase()} (base ${c.hex.toUpperCase()})`;
+          copy(txt);
+          setHarmony(shifted);
+        });
+
+        swatchesEl.appendChild(sw);
+      });
+    }
+// hex -> display name for anything on the page with data-name
+let NAME_INDEX = Object.create(null);
+
+function rebuildNameIndex(){
+  const map = Object.create(null);
+
+  // 1) From PALETTE (your main named colors)
+  if (typeof PALETTE !== "undefined" && Array.isArray(PALETTE)) {
+    PALETTE.forEach(c => {
+      if (!c || !c.hex) return;
+      map[c.hex.toLowerCase()] = c.name || map[c.hex.toLowerCase()];
+    });
+  }
+
+  // 2) From DOM chips (body chips, outfit chips, any element with data-color + data-name)
+  document.querySelectorAll("[data-color][data-name]").forEach(el => {
+    const hex = (el.getAttribute("data-color") || "").trim().toLowerCase();
+    const name = (el.getAttribute("data-name") || "").trim();
+    if (hex && name) map[hex] = name;
+  });
+
+  NAME_INDEX = map;
+
+}
+function nameForHex(hex){
+  const key = (hex || "").trim().toLowerCase();
+  return NAME_INDEX[key] || "Favorited Color";
+}
+
+
+    function renderFavorites(){
+      if(!favGrid) return;
+
+      const warmth = parseInt(warmthEl.value, 10) || 0;
+      const favArr = [...favs];
+
+      favGrid.innerHTML = "";
+
+      if(!favArr.length){
+        if(favEmpty) favEmpty.style.display = "block";
+        return;
+      }
+      if(favEmpty) favEmpty.style.display = "none";
+
+      favArr.forEach(baseHex=>{
+        // Try to find the palette object for name/tags
+      const key = baseHex.toLowerCase();
+const name = nameForHex(baseHex);
+        const shifted = warmShift(baseHex, warmth);
+
+        const card = document.createElement("div");
+        card.className = "favsw";
+        card.innerHTML = `
+          <div class="color" style="background:${shifted}"></div>
+          <div class="meta">
+            <div class="name">${name}</div>
+            <div class="hex">${shifted.toUpperCase()} <span style="color:var(--faint)">(${baseHex.toUpperCase()})</span></div>
+          </div>
+        `;
+
+        // Click copies and updates harmony
+        card.addEventListener("click", ()=>{
+          copy(`${name} ${shifted.toUpperCase()} (base ${baseHex.toUpperCase()})`);
+          setHarmony(shifted);
+        });
+
+        favGrid.appendChild(card);
+      });
+    }
+
+
+
+// Star + click behavior for chips that carry color info
+function decorateAllChips(){
+  document.querySelectorAll("[data-color], [data-copy]").forEach(el=>{
+    // Determine what hex this chip represents
+    let hex = (el.getAttribute("data-color") || "").trim().toLowerCase();
+
+    if(!hex){
+      const copyList = (el.getAttribute("data-copy") || "").trim();
+      if(copyList){
+        hex = copyList.split(",")[0].trim().toLowerCase(); // first color in the copy set
+      }
+    }
+
+// keep chip-star UI in sync with the favs Set
+function syncChipStars(){
+  document.querySelectorAll("[data-color], [data-copy]").forEach(el=>{
+    const star = el.querySelector(".chipStar");
+    if(!star) return;
+
+    let hex = (el.getAttribute("data-color") || "").trim().toLowerCase();
+    if(!hex){
+      const copyList = (el.getAttribute("data-copy") || "").trim();
+      if(copyList) hex = copyList.split(",")[0].trim().toLowerCase();
+    }
+    if(!hex || !hex.startsWith("#")) return;
+
+    star.classList.toggle("on", favs.has(hex));
+  });
+}
+
+
+    if(!hex || !hex.startsWith("#")) return;
+
+    // inject star once
+    if(!el.querySelector(".chipStar")){
+      const star = document.createElement("span");
+      star.className = "chipStar" + (favs.has(hex) ? " on" : "");
+      star.textContent = "★";
+      star.title = "Toggle favorite";
+      el.appendChild(star);
+
+      star.addEventListener("click", (e)=>{
+        e.preventDefault();
+        e.stopPropagation();
+
+        if(favs.has(hex)) favs.delete(hex);
+        else favs.add(hex);
+
+        setFavs(favs);
+        star.classList.toggle("on", favs.has(hex));
+        renderFavorites();
+        renderSwatches();
+      });
+    }
+
+    // For data-color chips, keep your copy + harmony behavior
+    if(el.hasAttribute("data-color") && !el.dataset.boundCopy){
+      el.dataset.boundCopy = "1";
+      el.addEventListener("click", (e)=>{
+        if(e.target.closest(".chipStar")) return;
+        const name = el.getAttribute("data-name") || "Color";
+        copy(`${name} ${hex.toUpperCase()}`);
+        setHarmony(hex);
+      });
+    }
+  });
+}
+
+
+    // mini copy set
+    copyAllBtn.addEventListener("click", ()=>{
+      const mini = [
+        BODY.skin[1], BODY.hair[1], BODY.eyes[0],
+        BODY.lips[1], BODY.veins[0], "#2a344a", "#76b7ad"
+      ];
+      copy(mini.map(x=>x.toUpperCase()).join("  "));
+    });
+
+    copyFavsBtn.addEventListener("click", ()=>{
+      const arr = [...favs].map(x=>x.toUpperCase());
+      if(!arr.length){ toast("No favorites yet — star some swatches."); return; }
+      copy(arr.join("  "));
+    });
+
+    // favorites toggle
+   onlyFavBtn.addEventListener("click", ()=>{
+  showOnlyFavs = !showOnlyFavs;
+  onlyFavBtn.textContent = showOnlyFavs ? "★ Favorites (On)" : "★ Favorites";
+  renderSwatches();
+  renderFavorites();
+});
+
+clearFavsBtn?.addEventListener("click", ()=>{
+  // 1) clear state
+  favs = new Set();
+  setFavs(favs);
+
+  // 2) force-clear ALL visible stars (body chips included)
+  document.querySelectorAll(".chipStar.on").forEach(star=>{
+    star.classList.remove("on");
+  });
+
+  // 3) re-render dependent UI
+  renderFavorites();
+
+  toast("Favorites cleared.");
+});
+
+
+
+rebuildNameIndex();
+
+
+    // search + warmth
+    searchEl.addEventListener("input", renderSwatches);
+  warmthEl.addEventListener("input", ()=>{ renderSwatches(); renderFavorites(); });
+
+
+    // LOOK GENERATOR
+    const pick = (arr)=> arr[Math.floor(Math.random()*arr.length)];
+    const findByTag = (tag)=> PALETTE.filter(c=>(c.tags||[]).includes(tag));
+    const findByAny = (tags)=> PALETTE.filter(c=> tags.some(t=>(c.tags||[]).includes(t)));
+
+    const dom = {
+      topPaint: $("#topPaint"), bottomPaint: $("#bottomPaint"), outerPaint: $("#outerPaint"), accentPaint: $("#accentPaint"),
+      topHex: $("#topHex"), bottomHex: $("#bottomHex"), outerHex: $("#outerHex"), accentHex: $("#accentHex"),
+      lipPaint: $("#lipPaint"), blushPaint: $("#blushPaint"), eyePaint: $("#eyePaint"), metalPaint: $("#metalPaint"),
+      lipHex: $("#lipHex"), blushHex: $("#blushHex"), eyeHex: $("#eyeHex"), metalHex: $("#metalHex"),
+      lookNote: $("#lookNote")
+    };
+
+    let currentLook = null;
+
+    function setTile(paintEl, textEl, colorObj, warmth){
+      const shown = warmShift(colorObj.hex, warmth);
+      paintEl.style.background = shown;
+      textEl.textContent = shown.toUpperCase();
+      paintEl.parentElement.dataset.hex = shown;
+      paintEl.parentElement.dataset.name = colorObj.name;
+    }
+
+    function generateLook(){
+      const warmth = parseInt(warmthEl.value, 10) || 0;
+
+      // Strategy:
+      // - base = storm/pewter/mushroom
+      // - one “story color” (sea-glass, winter rose, iris smoke)
+      // - keep it smoky, avoid neon tags
+      const neutrals = findByAny(["neutral"]);
+      const tops = PALETTE.filter(c=> (c.tags||[]).includes("signature") || (c.tags||[]).includes("blue") || (c.tags||[]).includes("green") || (c.tags||[]).includes("rose"));
+      const outerwear = findByAny(["outerwear","power","neutral"]);
+      const accents = findByAny(["signature","power","statement","pop"]);
+
+      const top = pick(tops);
+      const bottom = pick(neutrals);
+      const outer = pick(outerwear);
+      const accent = pick(accents);
+
+      const lip = {name:"Rose-Plum Lip", hex: pick(BODY.lips)};
+      const blush = {name:"Sea-Rose Blush", hex: pick(BODY.blush)};
+      const eye = {name:"Hazel-Sage Smoke", hex: pick(["#7f8f83","#566066","#5b6488","#46507a"])};
+      const metal = {name:"Old Silver", hex: pick(BODY.metals)};
+
+      currentLook = {top,bottom,outer,accent,lip,blush,eye,metal};
+
+      setTile(dom.topPaint, dom.topHex, top, warmth);
+      setTile(dom.bottomPaint, dom.bottomHex, bottom, warmth);
+      setTile(dom.outerPaint, dom.outerHex, outer, warmth);
+      setTile(dom.accentPaint, dom.accentHex, accent, warmth);
+
+      setTile(dom.lipPaint, dom.lipHex, lip, warmth);
+      setTile(dom.blushPaint, dom.blushHex, blush, warmth);
+      setTile(dom.eyePaint, dom.eyeHex, eye, warmth);
+      setTile(dom.metalPaint, dom.metalHex, metal, warmth);
+
+      dom.lookNote.innerHTML =
+        `This look is built for <b>Soft Summer (cool-leaning)</b>: one smoky neutral backbone + one romantic/sea-glass note.
+         If you want it sharper (Soft Dramatic energy), deepen the outerwear to <b>Storm Navy</b> or <b>Plum Velvet</b>.`;
+rebuildNameIndex();
+renderFavorites();
+
+    }
+
+   function pinLook(){
+  if(!currentLook){ toast("Generate a look first."); return; }
+
+  const hexes = [
+    currentLook.top.hex,
+    currentLook.bottom.hex,
+    currentLook.outer.hex,
+    currentLook.accent.hex,
+  ].map(h => h.toLowerCase());
+
+  hexes.forEach(h => favs.add(h));
+  setFavs(favs);
+  renderSwatches();
+  renderFavorites();
+  toast("Pinned look swatches to favorites ★");
+}
+
+
+    // tile copy
+    document.querySelectorAll(".tile").forEach(tile=>{
+      tile.addEventListener("click", ()=>{
+        const hex = tile.dataset.hex;
+        const name = tile.dataset.name || tile.querySelector("b")?.textContent || "Color";
+        if(hex) copy(`${name} ${hex.toUpperCase()}`);
+      });
+    });
+
+    randomLookBtn.addEventListener("click", generateLook);
+    regenBtn.addEventListener("click", generateLook);
+    pinBtn.addEventListener("click", pinLook);
+
+    // HARMONY LAB
+    const basePaint = $("#basePaint"), compPaint = $("#compPaint"), anaPaint = $("#anaPaint"), triPaint = $("#triPaint");
+    const baseHex = $("#baseHex"), compHex = $("#compHex"), anaHex = $("#anaHex"), triHex = $("#triHex");
+
+    function rgbToHsl(r, g, b){
+      r/=255; g/=255; b/=255;
+      const max=Math.max(r,g,b), min=Math.min(r,g,b);
+      let h, s, l=(max+min)/2;
+      if(max===min){ h=s=0; }
+      else{
+        const d=max-min;
+        s = l>0.5 ? d/(2-max-min) : d/(max+min);
+        switch(max){
+          case r: h=(g-b)/d + (g<b?6:0); break;
+          case g: h=(b-r)/d + 2; break;
+          case b: h=(r-g)/d + 4; break;
+        }
+        h*=60;
+      }
+      return {h,s,l};
+    }
+    function hslToRgb(h, s, l){
+      h/=360;
+      let r,g,b;
+      if(s===0){ r=g=b=l; }
+      else{
+        const hue2rgb=(p,q,t)=>{
+          if(t<0) t+=1;
+          if(t>1) t-=1;
+          if(t<1/6) return p+(q-p)*6*t;
+          if(t<1/2) return q;
+          if(t<2/3) return p+(q-p)*(2/3-t)*6;
+          return p;
+        };
+        const q = l<0.5 ? l*(1+s) : l+s-l*s;
+        const p = 2*l-q;
+        r = hue2rgb(p,q,h+1/3);
+        g = hue2rgb(p,q,h);
+        b = hue2rgb(p,q,h-1/3);
+      }
+      return {r:Math.round(r*255), g:Math.round(g*255), b:Math.round(b*255)};
+    }
+
+    function setHarmony(hex){
+      const {r,g,b}=hexToRgb(hex);
+      const hsl=rgbToHsl(r,g,b);
+
+      const comp = (hsl.h + 180) % 360;
+      const ana = (hsl.h + 28) % 360;
+      const tri = (hsl.h + 120) % 360;
+
+      // keep saturation moderated (your palette sweet spot)
+      const s = clamp(hsl.s*0.85, 0.18, 0.52);
+      const l = clamp(hsl.l, 0.22, 0.74);
+
+      const c1 = hslToRgb(comp, s, l);
+      const c2 = hslToRgb(ana, s, l);
+      const c3 = hslToRgb(tri, s, l);
+
+      const hxBase = warmShift(hex, parseInt(warmthEl.value,10)||0);
+      const hxComp = rgbToHex(c1.r,c1.g,c1.b);
+      const hxAna  = rgbToHex(c2.r,c2.g,c2.b);
+      const hxTri  = rgbToHex(c3.r,c3.g,c3.b);
+
+      basePaint.style.background = hxBase;
+      compPaint.style.background = hxComp;
+      anaPaint.style.background = hxAna;
+      triPaint.style.background = hxTri;
+
+      baseHex.textContent = hxBase.toUpperCase();
+      compHex.textContent = hxComp.toUpperCase();
+      anaHex.textContent = hxAna.toUpperCase();
+      triHex.textContent = hxTri.toUpperCase();
+
+      basePaint.parentElement.dataset.hex = hxBase;
+      compPaint.parentElement.dataset.hex = hxComp;
+      anaPaint.parentElement.dataset.hex = hxAna;
+      triPaint.parentElement.dataset.hex = hxTri;
+
+      basePaint.parentElement.dataset.name = "Base";
+      compPaint.parentElement.dataset.name = "Complement";
+      anaPaint.parentElement.dataset.name  = "Analogous";
+      triPaint.parentElement.dataset.name  = "Triad";
+    }
+
+    harmonyBtn.addEventListener("click", ()=>{
+      if(!currentLook){ toast("Generate a look first."); return; }
+      const warmth = parseInt(warmthEl.value, 10) || 0;
+      const accent = warmShift(currentLook.accent.hex, warmth);
+      setHarmony(accent);
+      toast("Harmony built from your Accent color.");
+    });
+
+    // drape worlds
+    worldBtn.addEventListener("click", ()=>{
+      worldIdx = (worldIdx + 1) % WORLDS.length;
+      const w = WORLDS[worldIdx];
+      document.body.setAttribute("data-world", w.key);
+      worldName.textContent = w.label;
+      toast(`Drape: ${w.label}`);
+    });
+
+    // Stars canvas
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let W,H,stars=[];
+    function resize(){
+      W = canvas.width = window.innerWidth * devicePixelRatio;
+      H = canvas.height = window.innerHeight * devicePixelRatio;
+      canvas.style.width = window.innerWidth+"px";
+      canvas.style.height = window.innerHeight+"px";
+      stars = Array.from({length: Math.floor((window.innerWidth*window.innerHeight)/18000)}, ()=>({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: (Math.random()*1.2+0.3)*devicePixelRatio,
+        a: Math.random()*0.55+0.12,
+        tw: Math.random()*0.018+0.004
+      }));
+    }
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      ctx.save();
+      ctx.globalCompositeOperation = "lighter";
+      stars.forEach(s=>{
+        s.a += (Math.random()-0.5)*s.tw;
+        s.a = clamp(s.a, 0.06, 0.62);
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(180,210,255,${s.a})`;
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+        ctx.fill();
+      });
+      ctx.restore();
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener("resize", resize);
+
+// init
+resize(); draw();
+
+// Build the palette UI first
+renderSwatches();
+renderFavorites();
+
+// If you’re decorating chips with stars/copy handlers, do it AFTER swatches exist
+decorateAllChips?.();
+
+// Start harmony with your eye ring
+setHarmony(BODY.eyes[0]);
+
+// ✅ Delay look generation by 1 tick so tiles are guaranteed ready
+setTimeout(() => {
+  try { generateLook(); }
+  catch (e) { console.error("generateLook failed on init:", e); }
+}, 0);
+
+
+    // keyboard nicety: "/" focuses search
+    window.addEventListener("keydown",(e)=>{
+      if(e.key==="/" && document.activeElement !== searchEl){
+        e.preventDefault(); searchEl.focus();
+      }
+    });
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

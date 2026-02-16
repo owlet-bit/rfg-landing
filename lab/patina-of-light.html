@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Patina of Light</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patina of Light — Lauren's Color Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Core palette - derived from your actual coloring */
+      --skin-highlight: #f0ddd6;
+      --skin-base: #dfc4b8;
+      --skin-shadow: #b89a8c;
+      
+      --hair-light: #c4a882;
+      --hair-mid: #8a7560;
+      --hair-depth: #5c4a3a;
+      
+      --eye-outer: #7a9088;
+      --eye-mid: #8b8a72;
+      --eye-spark: #a68b5c;
+      --eye-depth: #4a524e;
+      
+      --lip-natural: #b8888a;
+      --flush-rose: #d4a0a0;
+      --flush-deep: #b07070;
+      
+      --vein-blue: #8a9caa;
+      --vein-teal: #7a9a98;
+      --vein-violet: #9a8aaa;
+      
+      /* UI colors */
+      --bg-deep: #0c1018;
+      --bg-mid: #141c28;
+      --bg-card: rgba(20, 32, 48, 0.85);
+      --text-bright: #f4f0ec;
+      --text-soft: #b8c4d0;
+      --text-muted: #7a8a9a;
+      --border-subtle: rgba(180, 200, 220, 0.12);
+      --border-glow: rgba(122, 144, 136, 0.35);
+      
+      /* Accent colors */
+      --accent-sage: #7a9088;
+      --accent-rose: #c4888c;
+      --accent-gold: #d4b896;
+      --accent-storm: #5a6878;
+      
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 32px;
+      
+      --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --shadow-glow: 0 0 60px rgba(122, 144, 136, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text-bright);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Atmospheric background */
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 120% 80% at 20% 10%, rgba(122, 144, 136, 0.18), transparent 50%),
+        radial-gradient(ellipse 100% 90% at 80% 20%, rgba(196, 136, 140, 0.12), transparent 45%),
+        radial-gradient(ellipse 140% 100% at 50% 90%, rgba(212, 184, 150, 0.08), transparent 50%),
+        radial-gradient(ellipse 80% 60% at 90% 70%, rgba(138, 156, 170, 0.10), transparent 40%);
+    }
+
+    .atmosphere::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.025;
+      mix-blend-mode: overlay;
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: radial-gradient(circle, rgba(255,255,255,0.6), transparent);
+      border-radius: 50%;
+      animation: float linear infinite;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Main container */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      animation: fadeInDown 1s ease-out;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .palette-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 8vw, 5rem);
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      background: linear-gradient(135deg, var(--accent-sage), var(--text-bright), var(--accent-rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .palette-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-soft);
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .season-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, rgba(122, 144, 136, 0.15), rgba(196, 136, 140, 0.10));
+      border: 1px solid var(--border-glow);
+      border-radius: 100px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--text-bright);
+      backdrop-filter: blur(10px);
+    }
+
+    .season-badge::before {
+      content: '✦';
+      color: var(--accent-sage);
+    }
+
+    /* Navigation pills */
+    .nav-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 32px;
+    }
+
+    .nav-pill {
+      padding: 10px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: 100px;
+      color: var(--text-soft);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .nav-pill:hover {
+      background: rgba(122, 144, 136, 0.15);
+      border-color: var(--border-glow);
+      color: var(--text-bright);
+      transform: translateY(-2px);
+    }
+
+    .nav-pill.active {
+      background: linear-gradient(135deg, rgba(122, 144, 136, 0.25), rgba(196, 136, 140, 0.15));
+      border-color: var(--accent-sage);
+      color: var(--text-bright);
+    }
+
+    /* Section styling */
+    section {
+      margin-bottom: 64px;
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--text-bright);
+    }
+
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-glow), transparent);
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 700px;
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    }
+
+    /* Body colors grid */
+    .body-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .body-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      transition: all 0.4s ease;
+    }
+
+    .body-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .body-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .body-card-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .copy-btn {
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .copy-btn:hover {
+      background: rgba(122, 144, 136, 0.15);
+      border-color: var(--accent-sage);
+      color: var(--text-bright);
+    }
+
+    .body-swatches {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .body-swatch {
+      flex: 1;
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .body-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent 50%, rgba(0,0,0,0.1));
+      pointer-events: none;
+    }
+
+    .body-swatch:hover {
+      transform: scale(1.08);
+      border-color: rgba(255, 255, 255, 0.3);
+      z-index: 2;
+    }
+
+    .body-swatch.starred {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 20px rgba(212, 184, 150, 0.3);
+    }
+
+    .body-swatch-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .swatch-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .swatch-hex {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .body-card-note {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* Eye visualization */
+    .eye-viz {
+      width: 100%;
+      max-width: 200px;
+      aspect-ratio: 1;
+      margin: 0 auto 20px;
+      position: relative;
+    }
+
+    .eye-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        var(--eye-outer) 0deg,
+        var(--eye-mid) 90deg,
+        var(--eye-spark) 180deg,
+        var(--eye-mid) 270deg,
+        var(--eye-outer) 360deg
+      );
+      position: relative;
+      box-shadow: 
+        inset 0 0 30px rgba(0,0,0,0.3),
+        0 0 40px rgba(122, 144, 136, 0.2);
+    }
+
+    .eye-ring::before {
+      content: '';
+      position: absolute;
+      inset: 25%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, 
+        rgba(74, 82, 78, 0.9),
+        var(--eye-depth)
+      );
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .eye-ring::after {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 20%;
+      width: 25%;
+      height: 35%;
+      background: radial-gradient(ellipse, rgba(255,255,255,0.4), transparent);
+      border-radius: 50%;
+      transform: rotate(-30deg);
+    }
+
+    /* Dream palette swatches */
+    .palette-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+      align-items: center;
+    }
+
+    .search-field {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      transition: all 0.3s ease;
+    }
+
+    .search-field:focus-within {
+      border-color: var(--accent-sage);
+      background: rgba(122, 144, 136, 0.08);
+    }
+
+    .search-field input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-bright);
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+
+    .search-field input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .search-icon {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .warmth-slider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+
+    .warmth-slider label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .warmth-slider input[type="range"] {
+      width: 120px;
+      accent-color: var(--accent-sage);
+    }
+
+    .warmth-value {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      min-width: 30px;
+    }
+
+    .filter-btn {
+      padding: 12px 20px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-btn:hover {
+      background: rgba(122, 144, 136, 0.15);
+      border-color: var(--border-glow);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, rgba(212, 184, 150, 0.2), rgba(196, 136, 140, 0.15));
+      border-color: var(--accent-gold);
+      color: var(--text-bright);
+    }
+
+    /* Swatch grid */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .swatch {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+
+    .swatch:hover {
+      transform: translateY(-6px) scale(1.02);
+      border-color: var(--border-glow);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .swatch-color {
+      height: 80px;
+      position: relative;
+    }
+
+    .swatch-color::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%, rgba(0,0,0,0.08) 100%);
+      pointer-events: none;
+    }
+
+    .swatch-star {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 28px;
+      height: 28px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(4px);
+      z-index: 2;
+    }
+
+    .swatch-star:hover {
+      background: rgba(212, 184, 150, 0.3);
+      color: var(--accent-gold);
+    }
+
+    .swatch-star.active {
+      background: rgba(212, 184, 150, 0.4);
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .swatch-info {
+      padding: 14px;
+    }
+
+    .swatch-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+
+    .swatch-hex {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .swatch-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    .swatch-tag {
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Look generator */
+    .look-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .look-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .look-tile {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .look-tile:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-2px);
+    }
+
+    .look-color {
+      height: 70px;
+      position: relative;
+    }
+
+    .look-color::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 50%);
+    }
+
+    .look-info {
+      padding: 12px;
+    }
+
+    .look-role {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .look-hex {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+
+    .look-divider {
+      grid-column: 1 / -1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+      margin: 8px 0;
+    }
+
+    .look-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .look-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, rgba(122, 144, 136, 0.2), rgba(122, 144, 136, 0.1));
+      border: 1px solid var(--accent-sage);
+      border-radius: var(--radius-sm);
+      color: var(--text-bright);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .look-btn:hover {
+      background: linear-gradient(135deg, rgba(122, 144, 136, 0.3), rgba(122, 144, 136, 0.2));
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(122, 144, 136, 0.2);
+    }
+
+    .look-btn.secondary {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--border-subtle);
+    }
+
+    .look-btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--border-glow);
+    }
+
+    .look-note {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(122, 144, 136, 0.08);
+      border-left: 3px solid var(--accent-sage);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    /* Harmony lab */
+    .harmony-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 700px) {
+      .harmony-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .harmony-tile {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .harmony-tile:hover {
+      border-color: var(--border-glow);
+    }
+
+    .harmony-color {
+      height: 80px;
+      position: relative;
+    }
+
+    .harmony-info {
+      padding: 12px;
+    }
+
+    .harmony-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .harmony-hex {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    /* Favorites gallery */
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 12px;
+    }
+
+    .fav-swatch {
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+
+    .fav-swatch:hover {
+      transform: scale(1.08);
+      border-color: var(--accent-gold);
+    }
+
+    .fav-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+    }
+
+    .fav-tooltip {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px;
+      background: rgba(0, 0, 0, 0.7);
+      font-size: 0.65rem;
+      text-align: center;
+      color: var(--text-bright);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .fav-swatch:hover .fav-tooltip {
+      opacity: 1;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Drape selector */
+    .drape-selector {
+      display: flex;
+      gap: 8px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+
+    .drape-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .drape-btn:hover {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-soft);
+    }
+
+    .drape-btn.active {
+      background: rgba(122, 144, 136, 0.2);
+      color: var(--text-bright);
+    }
+
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      padding: 14px 24px;
+      background: rgba(20, 32, 48, 0.95);
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-sm);
+      color: var(--text-bright);
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-soft);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .toast.visible {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    /* Color analysis card */
+    .analysis-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 800px) {
+      .analysis-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .analysis-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--text-bright);
+      margin-bottom: 16px;
+    }
+
+    .analysis-text p {
+      color: var(--text-soft);
+      margin-bottom: 16px;
+      line-height: 1.8;
+    }
+
+    .analysis-list {
+      list-style: none;
+      margin-top: 20px;
+    }
+
+    .analysis-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-soft);
+    }
+
+    .analysis-list li::before {
+      content: '◆';
+      color: var(--accent-sage);
+      font-size: 0.6rem;
+    }
+
+    .analysis-list strong {
+      color: var(--text-bright);
+    }
+
+    .analysis-visual {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .color-wheel {
+      width: 100%;
+      max-width: 280px;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        #7a9088 0deg 30deg,
+        #8a9c88 30deg 60deg,
+        #9aa882 60deg 90deg,
+        #b8a87a 90deg 120deg,
+        #c4a07a 120deg 150deg,
+        #c4907a 150deg 180deg,
+        #c4888c 180deg 210deg,
+        #b8889a 210deg 240deg,
+        #a088a8 240deg 270deg,
+        #8890b0 270deg 300deg,
+        #7a98a8 300deg 330deg,
+        #7a9898 330deg 360deg
+      );
+      position: relative;
+      box-shadow: 
+        0 0 60px rgba(122, 144, 136, 0.2),
+        inset 0 0 40px rgba(0,0,0,0.3);
+    }
+
+    .color-wheel::before {
+      content: '';
+      position: absolute;
+      inset: 30%;
+      background: var(--bg-deep);
+      border-radius: 50%;
+      box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+    }
+
+    .color-wheel::after {
+      content: 'Your\ARange';
+      white-space: pre;
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .container {
+        padding: 24px 16px 60px;
+      }
+
+      .palette-name {
+        font-size: 2.2rem;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .swatch-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+      }
+    }
+
+    /* Drape modes */
+    body.drape-golden .atmosphere {
+      background:
+        radial-gradient(ellipse 120% 80% at 20% 10%, rgba(212, 184, 150, 0.25), transparent 50%),
+        radial-gradient(ellipse 100% 90% at 80% 20%, rgba(196, 160, 120, 0.18), transparent 45%),
+        radial-gradient(ellipse 140% 100% at 50% 90%, rgba(180, 140, 100, 0.12), transparent 50%);
+    }
+
+    body.drape-cool .atmosphere {
+      background:
+        radial-gradient(ellipse 120% 80% at 20% 10%, rgba(138, 156, 180, 0.22), transparent 50%),
+        radial-gradient(ellipse 100% 90% at 80% 20%, rgba(160, 140, 180, 0.15), transparent 45%),
+        radial-gradient(ellipse 140% 100% at 50% 90%, rgba(140, 160, 170, 0.12), transparent 50%);
+    }
+
+    body.drape-rose .atmosphere {
+      background:
+        radial-gradient(ellipse 120% 80% at 20% 10%, rgba(196, 136, 140, 0.22), transparent 50%),
+        radial-gradient(ellipse 100% 90% at 80% 20%, rgba(180, 140, 150, 0.18), transparent 45%),
+        radial-gradient(ellipse 140% 100% at 50% 90%, rgba(160, 130, 140, 0.12), transparent 50%);
+    }
+  </style>
+</head>
+<body>
+  <div class="atmosphere"></div>
+  <div class="particles" id="particles"></div>
+
+  <div class="container">
+    <header>
+      <h1 class="palette-name">Patina of Light</h1>
+      <p class="palette-subtitle">A Personal Color Atlas for Lauren</p>
+      <div class="season-badge">Soft Summer · True Neutral-Cool · Muted Jewel</div>
+      
+      <nav class="nav-pills">
+        <button class="nav-pill active" data-section="body">Body Colors</button>
+        <button class="nav-pill" data-section="analysis">Analysis</button>
+        <button class="nav-pill" data-section="palette">Dream Palette</button>
+        <button class="nav-pill" data-section="looks">Look Generator</button>
+        <button class="nav-pill" data-section="harmony">Harmony Lab</button>
+        <button class="nav-pill" data-section="favorites">Favorites</button>
+      </nav>
+    </header>
+
+    <!-- Body Colors Section -->
+    <section id="section-body">
+      <div class="section-header">
+        <h2 class="section-title">Your Body Colors</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-desc">
+        These are the colors calibrated directly from your skin, hair, eyes, and natural flush. 
+        They form the anchors of your palette — every other color should harmonize with these.
+      </p>
+
+      <div class="card">
+        <div class="body-grid">
+          <!-- Skin -->
+          <div class="body-card">
+            <div class="body-card-header">
+              <span class="body-card-title">Skin · Luminosity Range</span>
+              <button class="copy-btn" data-copy="#f0ddd6,#dfc4b8,#b89a8c">Copy</button>
+            </div>
+            <div class="body-swatches">
+              <div class="body-swatch" style="background: #f0ddd6" data-hex="#f0ddd6" data-name="Moonlit Porcelain" title="Highlight"></div>
+              <div class="body-swatch" style="background: #dfc4b8" data-hex="#dfc4b8" data-name="Rose Quartz Base" title="Base"></div>
+              <div class="body-swatch" style="background: #b89a8c" data-hex="#b89a8c" data-name="Antique Blush" title="Shadow"></div>
+            </div>
+            <div class="body-swatch-info">
+              <span class="swatch-label">Cool-neutral with visible rose undertone. Translucent quality that reflects environment.</span>
+            </div>
+            <p class="body-card-note">Your skin has a "lit from within" quality — colors that are too opaque or flat will fight this luminosity.</p>
+          </div>
+
+          <!-- Eyes -->
+          <div class="body-card">
+            <div class="body-card-header">
+              <span class="body-card-title">Eyes · Hazel-Green with Bronze Fire</span>
+              <button class="copy-btn" data-copy="#7a9088,#8b8a72,#a68b5c,#4a524e">Copy</button>
+            </div>
+            <div class="eye-viz">
+              <div class="eye-ring"></div>
+            </div>
+            <div class="body-swatches">
+              <div class="body-swatch" style="background: #7a9088" data-hex="#7a9088" data-name="Sea-Glass Outer Ring" title="Outer ring"></div>
+              <div class="body-swatch" style="background: #8b8a72" data-hex="#8b8a72" data-name="Moss Mid-Tone" title="Mid-tone"></div>
+              <div class="body-swatch" style="background: #a68b5c" data-hex="#a68b5c" data-name="Bronze Spark" title="Inner spark"></div>
+              <div class="body-swatch" style="background: #4a524e" data-hex="#4a524e" data-name="Storm Depth" title="Depth"></div>
+            </div>
+            <p class="body-card-note">Your eyes are chameleons — they shift from sea-glass to bronze depending on what you wear. This is your secret weapon.</p>
+          </div>
+
+          <!-- Hair -->
+          <div class="body-card">
+            <div class="body-card-header">
+              <span class="body-card-title">Hair · Ash-Taupe to Butter Blonde</span>
+              <button class="copy-btn" data-copy="#c4a882,#8a7560,#5c4a3a">Copy</button>
+            </div>
+            <div class="body-swatches">
+              <div class="body-swatch" style="background: #c4a882" data-hex="#c4a882" data-name="Wheat Highlight" title="Highlight"></div>
+              <div class="body-swatch" style="background: #8a7560" data-hex="#8a7560" data-name="Mushroom Root" title="Mid-tone"></div>
+              <div class="body-swatch" style="background: #5c4a3a" data-hex="#5c4a3a" data-name="Espresso Depth" title="Depth"></div>
+            </div>
+            <p class="body-card-note">Natural ash-taupe roots with sunlit ends. Best metals: old silver, pewter, white gold. If gold: champagne only, never bright yellow.</p>
+          </div>
+
+          <!-- Flush & Lips -->
+          <div class="body-card">
+            <div class="body-card-header">
+              <span class="body-card-title">Flush & Lips · Rose-Mauve Family</span>
+              <button class="copy-btn" data-copy="#d4a0a0,#b8888a,#b07070">Copy</button>
+            </div>
+            <div class="body-swatches">
+              <div class="body-swatch" style="background: #d4a0a0" data-hex="#d4a0a0" data-name="Petal Flush" title="Light flush"></div>
+              <div class="body-swatch" style="background: #b8888a" data-hex="#b8888a" data-name="Natural Lip" title="Natural lip"></div>
+              <div class="body-swatch" style="background: #b07070" data-hex="#b07070" data-name="Deep Rose" title="Deep flush"></div>
+            </div>
+            <p class="body-card-note">Your "nude" is not beige — it's dusty rose. Warm peachy nudes will look orange on you.</p>
+          </div>
+
+          <!-- Veins -->
+          <div class="body-card">
+            <div class="body-card-header">
+              <span class="body-card-title">Veins · Cool Blue-Violet</span>
+              <button class="copy-btn" data-copy="#8a9caa,#7a9a98,#9a8aaa">Copy</button>
+            </div>
+            <div class="body-swatches">
+              <div class="body-swatch" style="background: #8a9caa" data-hex="#8a9caa" data-name="Slate Vein" title="Blue-gray"></div>
+              <div class="body-swatch" style="background: #7a9a98" data-hex="#7a9a98" data-name="Teal Thread" title="Teal-green"></div>
+              <div class="body-swatch" style="background: #9a8aaa" data-hex="#9a8aaa" data-name="Violet Mist" title="Violet"></div>
+            </div>
+            <p class="body-card-note">Predominantly blue-violet with some teal threads. This confirms your cool-neutral undertone.</p>
+          </div>
+
+          <!-- Best Metals -->
+          <div class="body-card">
+            <div class="body-card-header">
+              <span class="body-card-title">Metals · Your Metallics</span>
+              <button class="copy-btn" data-copy="#c8ccd4,#a8b0b8,#d4c8a8">Copy</button>
+            </div>
+            <div class="body-swatches">
+              <div class="body-swatch" style="background: #c8ccd4" data-hex="#c8ccd4" data-name="Old Silver" title="Best"></div>
+              <div class="body-swatch" style="background: #a8b0b8" data-hex="#a8b0b8" data-name="Pewter" title="Great"></div>
+              <div class="body-swatch" style="background: #d4c8a8" data-hex="#d4c8a8" data-name="Champagne" title="If gold"></div>
+            </div>
+            <p class="body-card-note">Silver family wins. Rose gold is fine. Yellow gold only in champagne/antique tones, never bright.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analysis Section -->
+    <section id="section-analysis" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Your Color Story</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="card">
+        <div class="analysis-card">
+          <div class="analysis-text">
+            <h3>Soft Summer · True Neutral-Cool</h3>
+            <p>
+              You live in the intersection of mist and twilight. Your coloring has that rare quality of 
+              appearing different in every light — not because you're inconsistent, but because you have 
+              genuine complexity. The hazel eyes with their sea-glass green outer ring and bronze inner fire 
+              are the signature: they telegraph both coolness and warmth depending on what you feed them.
+            </p>
+            <p>
+              Your skin is cool-neutral with visible rose undertones and a luminous, translucent quality. 
+              This is why you look extraordinary in colors that have depth but also "breathe" — smoky, 
+              softened, with enough gray or muting to feel effortless rather than stark.
+            </p>
+            <p>
+              The diagnostic tells: your veins read predominantly blue-violet, your natural flush is 
+              pink-rose rather than peach-coral, and your lips are naturally mauve rather than salmon. 
+              But you're not an icy Winter — you have too much softness, too much of that bronze fire 
+              in the eyes. You're the cool-leaning center of the Soft Summer world.
+            </p>
+
+            <ul class="analysis-list">
+              <li><strong>Season:</strong> Soft Summer (cool-leaning neutral)</li>
+              <li><strong>Contrast Level:</strong> Low-medium (avoid stark black/white)</li>
+              <li><strong>Best Value:</strong> Medium — not too light, not too dark</li>
+              <li><strong>Saturation Sweet Spot:</strong> Muted to moderate — no neons</li>
+              <li><strong>Temperature:</strong> Cool-neutral (can borrow from True Summer)</li>
+              <li><strong>Signature Move:</strong> Storm + Rose — one smoky neutral + one bruised romantic</li>
+            </ul>
+          </div>
+
+          <div class="analysis-visual">
+            <div class="color-wheel"></div>
+            <div style="text-align: center; margin-top: 20px;">
+              <p style="color: var(--text-muted); font-size: 0.9rem; font-style: italic;">
+                Your optimal range: the soft, muted segment<br>
+                from sage through dusty rose to storm blue
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dream Palette Section -->
+    <section id="section-palette" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">The Dream Palette</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-desc">
+        36 colors calibrated to your exact coloring. Click any swatch to copy. Star to save favorites.
+        Use the warmth slider to nudge colors warmer or cooler while staying in your range.
+      </p>
+
+      <div class="card">
+        <div class="palette-controls">
+          <div class="search-field">
+            <span class="search-icon">◎</span>
+            <input type="text" id="search" placeholder="Search: navy, rose, neutral, power...">
+          </div>
+          <div class="warmth-slider">
+            <label>Warmth</label>
+            <input type="range" id="warmth" min="-12" max="12" value="0">
+            <span class="warmth-value" id="warmth-val">0</span>
+          </div>
+          <button class="filter-btn" id="fav-filter">★ Favorites Only</button>
+          <div class="drape-selector">
+            <button class="drape-btn active" data-drape="neutral">Neutral</button>
+            <button class="drape-btn" data-drape="golden">Golden</button>
+            <button class="drape-btn" data-drape="cool">Cool</button>
+            <button class="drape-btn" data-drape="rose">Rose</button>
+          </div>
+        </div>
+
+        <div class="swatch-grid" id="swatch-grid"></div>
+      </div>
+    </section>
+
+    <!-- Look Generator Section -->
+    <section id="section-looks" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Look Generator</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-desc">
+        One click generates a complete outfit + makeup palette pulled from your best harmonies. 
+        Every look follows your "storm + rose" signature.
+      </p>
+
+      <div class="card">
+        <div class="look-grid" id="look-grid">
+          <div class="look-tile" data-role="top">
+            <div class="look-color" id="look-top"></div>
+            <div class="look-info">
+              <div class="look-role">Top</div>
+              <div class="look-hex" id="look-top-hex">—</div>
+            </div>
+          </div>
+          <div class="look-tile" data-role="bottom">
+            <div class="look-color" id="look-bottom"></div>
+            <div class="look-info">
+              <div class="look-role">Bottom</div>
+              <div class="look-hex" id="look-bottom-hex">—</div>
+            </div>
+          </div>
+          <div class="look-tile" data-role="outer">
+            <div class="look-color" id="look-outer"></div>
+            <div class="look-info">
+              <div class="look-role">Outerwear</div>
+              <div class="look-hex" id="look-outer-hex">—</div>
+            </div>
+          </div>
+          <div class="look-tile" data-role="accent">
+            <div class="look-color" id="look-accent"></div>
+            <div class="look-info">
+              <div class="look-role">Accent</div>
+              <div class="look-hex" id="look-accent-hex">—</div>
+            </div>
+          </div>
+
+          <div class="look-divider"></div>
+
+          <div class="look-tile" data-role="lip">
+            <div class="look-color" id="look-lip"></div>
+            <div class="look-info">
+              <div class="look-role">Lip</div>
+              <div class="look-hex" id="look-lip-hex">—</div>
+            </div>
+          </div>
+          <div class="look-tile" data-role="blush">
+            <div class="look-color" id="look-blush"></div>
+            <div class="look-info">
+              <div class="look-role">Blush</div>
+              <div class="look-hex" id="look-blush-hex">—</div>
+            </div>
+          </div>
+          <div class="look-tile" data-role="eye">
+            <div class="look-color" id="look-eye"></div>
+            <div class="look-info">
+              <div class="look-role">Eye Shadow</div>
+              <div class="look-hex" id="look-eye-hex">—</div>
+            </div>
+          </div>
+          <div class="look-tile" data-role="metal">
+            <div class="look-color" id="look-metal"></div>
+            <div class="look-info">
+              <div class="look-role">Metal</div>
+              <div class="look-hex" id="look-metal-hex">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="look-actions">
+          <button class="look-btn" id="generate-look">✦ Generate New Look</button>
+          <button class="look-btn secondary" id="pin-look">★ Pin to Favorites</button>
+          <button class="look-btn secondary" id="copy-look">Copy All Hexes</button>
+        </div>
+
+        <div class="look-note" id="look-note">
+          Click "Generate New Look" to create your first outfit + makeup combination.
+        </div>
+      </div>
+    </section>
+
+    <!-- Harmony Lab Section -->
+    <section id="section-harmony" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Harmony Lab</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-desc">
+        Select a base color to see its complement, analogous pair, and triad — 
+        all muted to stay within your world. This is how you build outfits that feel fated.
+      </p>
+
+      <div class="card">
+        <!-- Quick color selector -->
+        <div style="margin-bottom: 24px;">
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 16px;">
+            <span style="font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted);">Select Base Color:</span>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <input type="color" id="harmony-picker" value="#7a9088" style="width: 48px; height: 36px; border: 1px solid var(--border-subtle); border-radius: 8px; background: transparent; cursor: pointer;">
+              <span style="font-family: monospace; font-size: 0.85rem; color: var(--text-soft);" id="harmony-picker-val">#7A9088</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;" id="harmony-quick-swatches">
+            <!-- Quick swatches will be injected here -->
+          </div>
+        </div>
+
+        <div class="harmony-grid">
+          <div class="harmony-tile" data-role="base">
+            <div class="harmony-color" id="harmony-base"></div>
+            <div class="harmony-info">
+              <div class="harmony-label">Base</div>
+              <div class="harmony-hex" id="harmony-base-hex">#7A9088</div>
+            </div>
+          </div>
+          <div class="harmony-tile" data-role="comp">
+            <div class="harmony-color" id="harmony-comp"></div>
+            <div class="harmony-info">
+              <div class="harmony-label">Complement</div>
+              <div class="harmony-hex" id="harmony-comp-hex">—</div>
+            </div>
+          </div>
+          <div class="harmony-tile" data-role="ana">
+            <div class="harmony-color" id="harmony-ana"></div>
+            <div class="harmony-info">
+              <div class="harmony-label">Analogous</div>
+              <div class="harmony-hex" id="harmony-ana-hex">—</div>
+            </div>
+          </div>
+          <div class="harmony-tile" data-role="tri">
+            <div class="harmony-color" id="harmony-tri"></div>
+            <div class="harmony-info">
+              <div class="harmony-label">Triad</div>
+              <div class="harmony-hex" id="harmony-tri-hex">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="look-btn secondary" id="copy-harmony">Copy All Harmony Hexes</button>
+          <button class="look-btn secondary" id="add-harmony-favs">★ Add All to Favorites</button>
+        </div>
+
+        <p style="margin-top: 24px; color: var(--text-muted); font-size: 0.9rem; font-style: italic;">
+          Your most flattering contrast is <strong style="color: var(--text-soft)">value contrast</strong> 
+          (light vs. deep) more than saturation contrast (bright vs. dull). Build drama through depth, not intensity.
+        </p>
+      </div>
+    </section>
+
+    <!-- Favorites Section -->
+    <section id="section-favorites" style="display: none;">
+      <div class="section-header">
+        <h2 class="section-title">Your Favorites</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-desc">
+        Your starred colors live here. Click to copy, or use them as the foundation for building looks.
+      </p>
+
+      <div class="card">
+        <div class="favorites-grid" id="favorites-grid">
+          <div class="empty-state">No favorites yet. Star some swatches in the Dream Palette.</div>
+        </div>
+        <button class="look-btn secondary" id="clear-favs" style="margin-top: 20px; display: none;">Clear All Favorites</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════════
+    // PATINA OF LIGHT — Lauren's Personal Color Atlas
+    // ═══════════════════════════════════════════════════════════════
+
+    const PALETTE = [
+      // POWER NEUTRALS
+      { name: "Storm Navy", hex: "#3a4454", tags: ["neutral", "power", "navy", "outerwear"] },
+      { name: "Ink Slate", hex: "#4a5464", tags: ["neutral", "smoke", "work"] },
+      { name: "Deep Harbor", hex: "#3a4a50", tags: ["neutral", "teal", "outerwear"] },
+      { name: "Charcoal Plum", hex: "#3a3440", tags: ["neutral", "night", "deep"] },
+      { name: "Pewter Mist", hex: "#9ca4ac", tags: ["neutral", "silver", "soft"] },
+      { name: "Blue-Gray Veil", hex: "#7a8898", tags: ["neutral", "veil", "work"] },
+      { name: "Mushroom Taupe", hex: "#8a7a70", tags: ["neutral", "taupe", "soft"] },
+      { name: "Stone Oat", hex: "#b8a898", tags: ["neutral", "oyster", "soft"] },
+      { name: "Oyster Blush", hex: "#d8c4b8", tags: ["neutral", "skin", "base"] },
+      { name: "Cloud Porcelain", hex: "#e8dcd4", tags: ["neutral", "light", "highlight"] },
+
+      // BLUES — where you look expensive
+      { name: "Sea-Glass Blue", hex: "#6a9aa8", tags: ["blue", "sea-glass", "signature", "power"] },
+      { name: "Winter Sky", hex: "#8ab0c8", tags: ["blue", "cool", "light"] },
+      { name: "Iris Smoke", hex: "#6a7090", tags: ["blue", "purple", "smoke", "signature"] },
+      { name: "Dusk Periwinkle", hex: "#8088b0", tags: ["blue", "periwinkle", "statement"] },
+      { name: "Bluebell Shadow", hex: "#5a6080", tags: ["blue", "deep", "power"] },
+      { name: "Glacier Cobalt", hex: "#5080a0", tags: ["blue", "pop", "power"] },
+
+      // GREENS & TEALS — your eyes start talking
+      { name: "Sage Whisper", hex: "#8a9a88", tags: ["green", "sage", "eye", "signature"] },
+      { name: "Sea-Glass Green", hex: "#70a8a0", tags: ["green", "teal", "signature", "power"] },
+      { name: "Pine-Teal", hex: "#4a7878", tags: ["green", "teal", "power", "outerwear"] },
+      { name: "Juniper Smoke", hex: "#5a7a70", tags: ["green", "smoke", "work"] },
+      { name: "Eucalyptus Mist", hex: "#98b0a0", tags: ["green", "soft", "light"] },
+      { name: "Moss Depth", hex: "#5a6a58", tags: ["green", "deep", "earth"] },
+
+      // ROSES & BERRIES — your blush family
+      { name: "Sea-Rose Flush", hex: "#c88890", tags: ["rose", "blush", "makeup", "signature"] },
+      { name: "Dusty Berry Nude", hex: "#a87880", tags: ["berry", "nude", "lip"] },
+      { name: "Winter Rose", hex: "#b06878", tags: ["rose", "berry", "statement", "power"] },
+      { name: "Mulled Raspberry", hex: "#904860", tags: ["berry", "deep", "lip", "night"] },
+      { name: "Orchid Bruise", hex: "#805878", tags: ["purple", "berry", "night"] },
+      { name: "Petal Pink", hex: "#d0a0a0", tags: ["rose", "soft", "light"] },
+
+      // PURPLES — smoked for you
+      { name: "Amethyst Fog", hex: "#9080a0", tags: ["purple", "soft", "romantic"] },
+      { name: "Plum Velvet", hex: "#503848", tags: ["purple", "deep", "night", "power"] },
+      { name: "Wisteria Shadow", hex: "#787090", tags: ["purple", "smoke", "work"] },
+      { name: "Lavender Haze", hex: "#a898b0", tags: ["purple", "light", "soft"] },
+
+      // METALS
+      { name: "Old Silver", hex: "#c0c8d0", tags: ["metal", "silver", "jewelry"] },
+      { name: "Pewter", hex: "#a0a8b0", tags: ["metal", "silver", "jewelry"] },
+      { name: "Champagne Mist", hex: "#d8c8a8", tags: ["metal", "gold", "soft"] },
+      { name: "Rose Gold Blush", hex: "#c8a8a0", tags: ["metal", "rose", "jewelry"] },
+    ];
+
+    const BODY_COLORS = {
+      skin: ["#f0ddd6", "#dfc4b8", "#b89a8c"],
+      hair: ["#c4a882", "#8a7560", "#5c4a3a"],
+      eyes: ["#7a9088", "#8b8a72", "#a68b5c", "#4a524e"],
+      lips: ["#b8888a", "#a07078", "#904860"],
+      blush: ["#d4a0a0", "#c88890", "#b07070"],
+      metals: ["#c0c8d0", "#a0a8b0", "#d8c8a8"]
+    };
+
+    // State
+    let favorites = new Set(JSON.parse(localStorage.getItem('patina_favs') || '[]'));
+    let currentLook = null;
+    let showFavsOnly = false;
+
+    // DOM
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+
+    // Utilities
+    const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+    const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+    function hexToRgb(hex) {
+      const h = hex.replace('#', '');
+      return {
+        r: parseInt(h.slice(0, 2), 16),
+        g: parseInt(h.slice(2, 4), 16),
+        b: parseInt(h.slice(4, 6), 16)
+      };
+    }
+
+    function rgbToHex(r, g, b) {
+      const toHex = v => v.toString(16).padStart(2, '0');
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
+
+    function rgbToHsl(r, g, b) {
+      r /= 255; g /= 255; b /= 255;
+      const max = Math.max(r, g, b), min = Math.min(r, g, b);
+      let h, s, l = (max + min) / 2;
+      if (max === min) {
+        h = s = 0;
+      } else {
+        const d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r: h = ((g - b) / d + (g < b ? 6 : 0)) * 60; break;
+          case g: h = ((b - r) / d + 2) * 60; break;
+          case b: h = ((r - g) / d + 4) * 60; break;
+        }
+      }
+      return { h, s, l };
+    }
+
+    function hslToRgb(h, s, l) {
+      h /= 360;
+      let r, g, b;
+      if (s === 0) {
+        r = g = b = l;
+      } else {
+        const hue2rgb = (p, q, t) => {
+          if (t < 0) t += 1;
+          if (t > 1) t -= 1;
+          if (t < 1/6) return p + (q - p) * 6 * t;
+          if (t < 1/2) return q;
+          if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+          return p;
+        };
+        const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+        const p = 2 * l - q;
+        r = hue2rgb(p, q, h + 1/3);
+        g = hue2rgb(p, q, h);
+        b = hue2rgb(p, q, h - 1/3);
+      }
+      return {
+        r: Math.round(r * 255),
+        g: Math.round(g * 255),
+        b: Math.round(b * 255)
+      };
+    }
+
+    function warmShift(hex, amount) {
+      const { r, g, b } = hexToRgb(hex);
+      return rgbToHex(
+        clamp(r + amount, 0, 255),
+        clamp(g + Math.round(amount * 0.15), 0, 255),
+        clamp(b - amount, 0, 255)
+      );
+    }
+
+    function saveFavorites() {
+      localStorage.setItem('patina_favs', JSON.stringify([...favorites]));
+    }
+
+    function toast(message) {
+      const t = $('#toast');
+      t.textContent = message;
+      t.classList.add('visible');
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.classList.remove('visible'), 2000);
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        toast(`Copied: ${text}`);
+      } catch {
+        toast('Copy failed');
+      }
+    }
+
+    // Particles
+    function createParticles() {
+      const container = $('#particles');
+      for (let i = 0; i < 30; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = `${Math.random() * 100}%`;
+        p.style.animationDuration = `${15 + Math.random() * 20}s`;
+        p.style.animationDelay = `${Math.random() * 15}s`;
+        p.style.opacity = Math.random() * 0.5 + 0.2;
+        container.appendChild(p);
+      }
+    }
+
+    // Navigation
+    function initNavigation() {
+      $$('.nav-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          $$('.nav-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          
+          const section = pill.dataset.section;
+          $$('section').forEach(s => s.style.display = 'none');
+          $(`#section-${section}`).style.display = 'block';
+        });
+      });
+    }
+
+    // Render swatches
+    function renderSwatches() {
+      const grid = $('#swatch-grid');
+      const search = ($('#search').value || '').toLowerCase();
+      const warmth = parseInt($('#warmth').value) || 0;
+      $('#warmth-val').textContent = warmth;
+
+      const filtered = PALETTE.filter(c => {
+        const hay = `${c.name} ${c.hex} ${c.tags.join(' ')}`.toLowerCase();
+        const matchesSearch = !search || hay.includes(search);
+        const matchesFav = !showFavsOnly || favorites.has(c.hex.toLowerCase());
+        return matchesSearch && matchesFav;
+      });
+
+      grid.innerHTML = filtered.map(c => {
+        const shifted = warmShift(c.hex, warmth);
+        const isFav = favorites.has(c.hex.toLowerCase());
+        return `
+          <div class="swatch" data-hex="${c.hex}" data-name="${c.name}">
+            <div class="swatch-color" style="background: ${shifted}">
+              <div class="swatch-star ${isFav ? 'active' : ''}" data-hex="${c.hex}">★</div>
+            </div>
+            <div class="swatch-info">
+              <div class="swatch-name">${c.name}</div>
+              <div class="swatch-hex">${shifted.toUpperCase()}</div>
+              <div class="swatch-tags">
+                ${c.tags.slice(0, 3).map(t => `<span class="swatch-tag">${t}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Event listeners
+      $$('.swatch').forEach(swatch => {
+        swatch.addEventListener('click', e => {
+          if (e.target.classList.contains('swatch-star')) return;
+          const hex = warmShift(swatch.dataset.hex, warmth);
+          const name = swatch.dataset.name;
+          copyText(`${name} ${hex.toUpperCase()}`);
+          updateHarmony(hex);
+        });
+      });
+
+      $$('.swatch-star').forEach(star => {
+        star.addEventListener('click', e => {
+          e.stopPropagation();
+          const hex = star.dataset.hex.toLowerCase();
+          if (favorites.has(hex)) {
+            favorites.delete(hex);
+            star.classList.remove('active');
+            toast('Removed from favorites');
+          } else {
+            favorites.add(hex);
+            star.classList.add('active');
+            toast('Added to favorites ★');
+          }
+          saveFavorites();
+          renderFavorites();
+        });
+      });
+    }
+
+    // Render favorites
+    function renderFavorites() {
+      const grid = $('#favorites-grid');
+      const clearBtn = $('#clear-favs');
+      const warmth = parseInt($('#warmth')?.value) || 0;
+
+      if (favorites.size === 0) {
+        grid.innerHTML = '<div class="empty-state">No favorites yet. Star some swatches in the Dream Palette.</div>';
+        clearBtn.style.display = 'none';
+        return;
+      }
+
+      clearBtn.style.display = 'block';
+      
+      grid.innerHTML = [...favorites].map(hex => {
+        const shifted = warmShift(hex, warmth);
+        const color = PALETTE.find(c => c.hex.toLowerCase() === hex) || { name: 'Custom' };
+        return `
+          <div class="fav-swatch" style="background: ${shifted}" data-hex="${hex}" data-name="${color.name}">
+            <div class="fav-tooltip">${color.name}<br>${shifted.toUpperCase()}</div>
+          </div>
+        `;
+      }).join('');
+
+      $$('.fav-swatch').forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          const hex = warmShift(swatch.dataset.hex, warmth);
+          copyText(`${swatch.dataset.name} ${hex.toUpperCase()}`);
+          updateHarmony(hex);
+        });
+      });
+    }
+
+    // Harmony calculations
+    function updateHarmony(hex) {
+      const { r, g, b } = hexToRgb(hex);
+      const hsl = rgbToHsl(r, g, b);
+
+      // Mute the saturation to stay in Soft Summer range
+      const s = clamp(hsl.s * 0.75, 0.15, 0.45);
+      const l = clamp(hsl.l, 0.25, 0.70);
+
+      const comp = hslToRgb((hsl.h + 180) % 360, s, l);
+      const ana = hslToRgb((hsl.h + 30) % 360, s, l);
+      const tri = hslToRgb((hsl.h + 120) % 360, s, l);
+
+      const hexComp = rgbToHex(comp.r, comp.g, comp.b);
+      const hexAna = rgbToHex(ana.r, ana.g, ana.b);
+      const hexTri = rgbToHex(tri.r, tri.g, tri.b);
+
+      $('#harmony-base').style.background = hex;
+      $('#harmony-comp').style.background = hexComp;
+      $('#harmony-ana').style.background = hexAna;
+      $('#harmony-tri').style.background = hexTri;
+
+      $('#harmony-base-hex').textContent = hex.toUpperCase();
+      $('#harmony-comp-hex').textContent = hexComp.toUpperCase();
+      $('#harmony-ana-hex').textContent = hexAna.toUpperCase();
+      $('#harmony-tri-hex').textContent = hexTri.toUpperCase();
+
+      // Update the color picker too
+      const picker = $('#harmony-picker');
+      if (picker) {
+        picker.value = hex;
+        $('#harmony-picker-val').textContent = hex.toUpperCase();
+      }
+
+      // Store current harmony for copy/fav functions
+      window.currentHarmony = { base: hex, comp: hexComp, ana: hexAna, tri: hexTri };
+    }
+
+    // Initialize harmony quick swatches
+    function initHarmonySwatches() {
+      const container = $('#harmony-quick-swatches');
+      if (!container) return;
+
+      // Use a selection of palette colors for quick access
+      const quickColors = PALETTE.filter(c => 
+        c.tags.includes('signature') || c.tags.includes('power') || c.tags.includes('neutral')
+      ).slice(0, 16);
+
+      container.innerHTML = quickColors.map(c => `
+        <div class="harmony-quick-swatch" 
+             style="width: 32px; height: 32px; background: ${c.hex}; border-radius: 6px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease;"
+             data-hex="${c.hex}"
+             title="${c.name}">
+        </div>
+      `).join('');
+
+      // Add click handlers
+      container.querySelectorAll('.harmony-quick-swatch').forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          updateHarmony(swatch.dataset.hex);
+          // Visual feedback
+          container.querySelectorAll('.harmony-quick-swatch').forEach(s => s.style.borderColor = 'transparent');
+          swatch.style.borderColor = 'var(--accent-sage)';
+        });
+        swatch.addEventListener('mouseenter', () => {
+          swatch.style.transform = 'scale(1.1)';
+        });
+        swatch.addEventListener('mouseleave', () => {
+          swatch.style.transform = 'scale(1)';
+        });
+      });
+    }
+
+    // Look generator
+    function generateLook() {
+      const warmth = parseInt($('#warmth')?.value) || 0;
+      
+      const neutrals = PALETTE.filter(c => c.tags.includes('neutral'));
+      const signatures = PALETTE.filter(c => c.tags.includes('signature') || c.tags.includes('power'));
+      const outerwear = PALETTE.filter(c => c.tags.includes('outerwear') || c.tags.includes('deep'));
+
+      currentLook = {
+        top: pick(signatures),
+        bottom: pick(neutrals),
+        outer: pick(outerwear),
+        accent: pick(signatures.filter(c => c.tags.includes('signature'))),
+        lip: { name: 'Dusty Berry', hex: pick(BODY_COLORS.lips) },
+        blush: { name: 'Sea-Rose', hex: pick(BODY_COLORS.blush) },
+        eye: pick(PALETTE.filter(c => c.tags.includes('smoke') || c.tags.includes('soft'))),
+        metal: { name: 'Old Silver', hex: pick(BODY_COLORS.metals) }
+      };
+
+      const roles = ['top', 'bottom', 'outer', 'accent', 'lip', 'blush', 'eye', 'metal'];
+      roles.forEach(role => {
+        const color = currentLook[role];
+        const shifted = warmShift(color.hex, warmth);
+        $(`#look-${role}`).style.background = shifted;
+        $(`#look-${role}-hex`).textContent = shifted.toUpperCase();
+      });
+
+      const notes = [
+        `This look follows your "storm + rose" signature: a smoky neutral backbone with one romantic color note.`,
+        `Built for Soft Summer cool-leaning: muted saturation, medium value contrast, no stark extremes.`,
+        `To sharpen for Soft Dramatic energy, swap outerwear to Storm Navy or Plum Velvet.`,
+        `Your metals stay in the silver family — old silver, pewter, or champagne if you need warmth.`
+      ];
+      $('#look-note').innerHTML = `<strong>Stylist note:</strong> ${pick(notes)}`;
+    }
+
+    // Event listeners
+    function initEvents() {
+      // Search and warmth
+      $('#search').addEventListener('input', renderSwatches);
+      $('#warmth').addEventListener('input', () => {
+        renderSwatches();
+        renderFavorites();
+      });
+
+      // Favorites filter
+      $('#fav-filter').addEventListener('click', () => {
+        showFavsOnly = !showFavsOnly;
+        $('#fav-filter').classList.toggle('active', showFavsOnly);
+        renderSwatches();
+      });
+
+      // Drape selector
+      $$('.drape-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          $$('.drape-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          document.body.className = btn.dataset.drape === 'neutral' ? '' : `drape-${btn.dataset.drape}`;
+        });
+      });
+
+      // Look generator
+      $('#generate-look').addEventListener('click', generateLook);
+      
+      $('#pin-look').addEventListener('click', () => {
+        if (!currentLook) {
+          toast('Generate a look first');
+          return;
+        }
+        ['top', 'bottom', 'outer', 'accent'].forEach(role => {
+          favorites.add(currentLook[role].hex.toLowerCase());
+        });
+        saveFavorites();
+        renderSwatches();
+        renderFavorites();
+        toast('Pinned outfit colors to favorites ★');
+      });
+
+      $('#copy-look').addEventListener('click', () => {
+        if (!currentLook) {
+          toast('Generate a look first');
+          return;
+        }
+        const warmth = parseInt($('#warmth')?.value) || 0;
+        const hexes = ['top', 'bottom', 'outer', 'accent', 'lip', 'blush', 'eye', 'metal']
+          .map(r => warmShift(currentLook[r].hex, warmth).toUpperCase())
+          .join('  ');
+        copyText(hexes);
+      });
+
+      // Clear favorites
+      $('#clear-favs').addEventListener('click', () => {
+        favorites = new Set();
+        saveFavorites();
+        renderSwatches();
+        renderFavorites();
+        toast('Favorites cleared');
+      });
+
+      // Body color swatches
+      $$('.body-swatch').forEach(swatch => {
+        swatch.addEventListener('click', () => {
+          const hex = swatch.dataset.hex;
+          const name = swatch.dataset.name;
+          copyText(`${name} ${hex.toUpperCase()}`);
+          updateHarmony(hex);
+        });
+      });
+
+      // Copy buttons
+      $$('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          copyText(btn.dataset.copy);
+        });
+      });
+
+      // Look tiles copy
+      $$('.look-tile').forEach(tile => {
+        tile.addEventListener('click', () => {
+          const hex = $(`#look-${tile.dataset.role}-hex`).textContent;
+          if (hex && hex !== '—') {
+            copyText(hex);
+          }
+        });
+      });
+
+      // Harmony tiles copy
+      $$('.harmony-tile').forEach(tile => {
+        tile.addEventListener('click', () => {
+          const hex = tile.querySelector('.harmony-hex').textContent;
+          if (hex && hex !== '—' && hex !== 'Click a swatch') {
+            copyText(hex);
+          }
+        });
+      });
+
+      // Harmony color picker
+      const harmonyPicker = $('#harmony-picker');
+      if (harmonyPicker) {
+        harmonyPicker.addEventListener('input', (e) => {
+          updateHarmony(e.target.value);
+        });
+      }
+
+      // Copy harmony button
+      $('#copy-harmony')?.addEventListener('click', () => {
+        if (window.currentHarmony) {
+          const { base, comp, ana, tri } = window.currentHarmony;
+          copyText(`${base.toUpperCase()}  ${comp.toUpperCase()}  ${ana.toUpperCase()}  ${tri.toUpperCase()}`);
+        } else {
+          toast('Select a base color first');
+        }
+      });
+
+      // Add harmony to favorites
+      $('#add-harmony-favs')?.addEventListener('click', () => {
+        if (window.currentHarmony) {
+          const { base, comp, ana, tri } = window.currentHarmony;
+          [base, comp, ana, tri].forEach(hex => favorites.add(hex.toLowerCase()));
+          saveFavorites();
+          renderSwatches();
+          renderFavorites();
+          toast('Added harmony set to favorites ★');
+        } else {
+          toast('Select a base color first');
+        }
+      });
+    }
+
+    // Initialize
+    function init() {
+      createParticles();
+      initNavigation();
+      initEvents();
+      initHarmonySwatches();
+      renderSwatches();
+      renderFavorites();
+      updateHarmony('#7a9088'); // Start with your eye color
+      generateLook();
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

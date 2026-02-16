@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>The Velvet Meridian</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Velvet Meridian | Lauren's Color Portrait</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Questrial&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0d0d0d;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #e8e4df;
+            --text-secondary: #a09a94;
+            --accent-gold: #c9a962;
+            --accent-rose: #b8848a;
+        }
+
+```
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Questrial', sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+    }
+
+    /* Ambient Background Animation */
+    .ambient-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        opacity: 0.4;
+    }
+
+    .ambient-orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        animation: float 20s ease-in-out infinite;
+    }
+
+    .orb-1 {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, #2d4a3e 0%, transparent 70%);
+        top: -200px;
+        left: -200px;
+        animation-delay: 0s;
+    }
+
+    .orb-2 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, #4a3d5c 0%, transparent 70%);
+        bottom: -150px;
+        right: -150px;
+        animation-delay: -7s;
+    }
+
+    .orb-3 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, #5c4a3d 0%, transparent 70%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation-delay: -14s;
+    }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        25% { transform: translate(50px, -30px) scale(1.1); }
+        50% { transform: translate(-20px, 50px) scale(0.95); }
+        75% { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    /* Header */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        position: relative;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 100%);
+        pointer-events: none;
+    }
+
+    .season-badge {
+        display: inline-block;
+        padding: 0.5rem 1.5rem;
+        border: 1px solid var(--accent-gold);
+        color: var(--accent-gold);
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .season-badge::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(201, 169, 98, 0.2), transparent);
+        animation: shimmer 3s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+
+    .palette-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(3rem, 10vw, 7rem);
+        font-weight: 300;
+        letter-spacing: 0.02em;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #e8e4df 0%, #c9a962 50%, #b8848a 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .palette-subtitle {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.2rem, 3vw, 1.8rem);
+        font-weight: 300;
+        font-style: italic;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+    }
+
+    .scroll-indicator {
+        position: absolute;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text-secondary);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        animation: bounce 2s ease-in-out infinite;
+    }
+
+    .scroll-indicator svg {
+        width: 20px;
+        height: 20px;
+        stroke: var(--text-secondary);
+    }
+
+    @keyframes bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* Analysis Section */
+    .analysis-section {
+        padding: 6rem 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: 4rem;
+    }
+
+    .section-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--accent-gold);
+        margin-bottom: 1rem;
+    }
+
+    .section-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 300;
+    }
+
+    .analysis-content {
+        font-size: 1.1rem;
+        line-height: 2;
+        color: var(--text-secondary);
+    }
+
+    .analysis-content p {
+        margin-bottom: 1.5rem;
+    }
+
+    .highlight {
+        color: var(--text-primary);
+        font-style: italic;
+    }
+
+    /* Color Dimensions */
+    .dimensions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        margin-top: 4rem;
+    }
+
+    .dimension-card {
+        background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+        border: 1px solid rgba(255,255,255,0.05);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dimension-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 3px;
+        height: 0;
+        background: var(--accent-gold);
+        transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dimension-card:hover::before {
+        height: 100%;
+    }
+
+    .dimension-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(201, 169, 98, 0.3);
+    }
+
+    .dimension-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--accent-gold);
+        margin-bottom: 0.5rem;
+    }
+
+    .dimension-value {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.8rem;
+        font-weight: 400;
+        margin-bottom: 1rem;
+    }
+
+    .dimension-description {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.7;
+    }
+
+    /* Main Palette Section */
+    .palette-section {
+        padding: 6rem 2rem;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+    }
+
+    .palette-container {
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    /* Color Category Tabs */
+    .category-nav {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-bottom: 4rem;
+    }
+
+    .category-btn {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.1);
+        color: var(--text-secondary);
+        padding: 0.75rem 1.5rem;
+        font-family: 'Questrial', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .category-btn::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--accent-gold);
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+
+    .category-btn:hover,
+    .category-btn.active {
+        color: var(--text-primary);
+        border-color: rgba(201, 169, 98, 0.5);
+    }
+
+    .category-btn.active::after {
+        width: 60%;
+    }
+
+    /* Color Grid */
+    .color-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .color-card {
+        position: relative;
+        aspect-ratio: 3/4;
+        cursor: pointer;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    .color-card.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .color-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        z-index: 10;
+    }
+
+    .color-swatch {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 30%;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .color-card:hover .color-swatch {
+        bottom: 25%;
+        box-shadow: 0 20px 60px -10px var(--swatch-color);
+    }
+
+    .color-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 30%;
+        background: var(--bg-secondary);
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .color-card:hover .color-info {
+        height: 35%;
+    }
+
+    .color-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1rem;
+        font-weight: 400;
+        margin-bottom: 0.25rem;
+    }
+
+    .color-hex {
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        color: var(--text-secondary);
+        font-family: monospace;
+    }
+
+    .color-usage {
+        font-size: 0.65rem;
+        color: var(--accent-gold);
+        margin-top: 0.5rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.3s ease 0.1s;
+    }
+
+    .color-card:hover .color-usage {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Star Rating for Best Colors */
+    .color-rating {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        display: flex;
+        gap: 2px;
+    }
+
+    .star {
+        width: 12px;
+        height: 12px;
+        fill: var(--accent-gold);
+        filter: drop-shadow(0 0 3px rgba(201, 169, 98, 0.5));
+    }
+
+    /* Detail Modal */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s ease;
+        backdrop-filter: blur(10px);
+    }
+
+    .modal-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .modal-content {
+        background: var(--bg-secondary);
+        max-width: 600px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        position: relative;
+        transform: scale(0.9) translateY(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modal-overlay.active .modal-content {
+        transform: scale(1) translateY(0);
+    }
+
+    .modal-swatch {
+        height: 200px;
+        position: relative;
+    }
+
+    .modal-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(0,0,0,0.5);
+        border: none;
+        color: white;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+        background: rgba(0,0,0,0.8);
+        transform: rotate(90deg);
+    }
+
+    .modal-body {
+        padding: 2rem;
+    }
+
+    .modal-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .modal-hex {
+        font-family: monospace;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-description {
+        line-height: 1.8;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+    }
+
+    .modal-section-title {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent-gold);
+        margin-bottom: 0.75rem;
+    }
+
+    .modal-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .modal-tag {
+        background: rgba(255,255,255,0.05);
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .copy-btn {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: transparent;
+        border: 1px solid var(--accent-gold);
+        color: var(--accent-gold);
+        padding: 0.75rem 1.5rem;
+        font-family: 'Questrial', sans-serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .copy-btn:hover {
+        background: var(--accent-gold);
+        color: var(--bg-primary);
+    }
+
+    .copy-btn.copied {
+        background: #4a7c59;
+        border-color: #4a7c59;
+        color: white;
+    }
+
+    /* Signature Colors Section */
+    .signature-section {
+        padding: 6rem 2rem;
+    }
+
+    .signature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    @media (max-width: 768px) {
+        .signature-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .signature-card {
+        position: relative;
+        aspect-ratio: 1;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .signature-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: inherit;
+        transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .signature-card:hover::before {
+        transform: scale(1.1);
+    }
+
+    .signature-content {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 2rem;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.7) 100%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .signature-card:hover .signature-content {
+        opacity: 1;
+    }
+
+    .signature-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--accent-gold);
+        margin-bottom: 0.5rem;
+    }
+
+    .signature-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+    }
+
+    /* Combinations Section */
+    .combinations-section {
+        padding: 6rem 2rem;
+        background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.2) 100%);
+    }
+
+    .combination-showcase {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .combination-row {
+        display: flex;
+        margin-bottom: 3rem;
+        opacity: 0;
+        transform: translateX(-30px);
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .combination-row.visible {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .combination-row:nth-child(even) {
+        transform: translateX(30px);
+    }
+
+    .combination-row:nth-child(even).visible {
+        transform: translateX(0);
+    }
+
+    .combination-colors {
+        display: flex;
+        flex: 1;
+    }
+
+    .combination-color {
+        flex: 1;
+        height: 120px;
+        transition: flex 0.4s ease;
+    }
+
+    .combination-row:hover .combination-color {
+        flex: 1;
+    }
+
+    .combination-row:hover .combination-color:hover {
+        flex: 1.5;
+    }
+
+    .combination-info {
+        width: 300px;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    @media (max-width: 768px) {
+        .combination-row {
+            flex-direction: column;
+        }
+        .combination-info {
+            width: 100%;
+        }
+    }
+
+    .combination-name {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.3rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .combination-desc {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+
+    /* Interactive Color Mixer */
+    .mixer-section {
+        padding: 6rem 2rem;
+    }
+
+    .mixer-container {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .mixer-canvas {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16/9;
+        background: var(--bg-secondary);
+        margin: 3rem 0;
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .mixer-result {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        transition: all 0.5s ease;
+        box-shadow: 0 0 100px 50px var(--mixer-glow);
+    }
+
+    .mixer-slots {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+    }
+
+    .mixer-slot {
+        width: 80px;
+        height: 80px;
+        border: 2px dashed rgba(255,255,255,0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .mixer-slot:hover {
+        border-color: var(--accent-gold);
+    }
+
+    .mixer-slot.filled {
+        border-style: solid;
+    }
+
+    .mixer-slot-label {
+        position: absolute;
+        bottom: -25px;
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+    }
+
+    .mixer-slot .remove-btn {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--accent-rose);
+        border: none;
+        color: white;
+        font-size: 12px;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .mixer-slot.filled:hover .remove-btn {
+        opacity: 1;
+    }
+
+    .mixer-picker {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .mixer-picker-swatch {
+        width: 35px;
+        height: 35px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .mixer-picker-swatch:hover {
+        transform: scale(1.2);
+        z-index: 5;
+    }
+
+    /* Avoid Colors Section */
+    .avoid-section {
+        padding: 6rem 2rem;
+    }
+
+    .avoid-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1rem;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .avoid-card {
+        position: relative;
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .avoid-card::after {
+        content: '';
+        position: absolute;
+        width: 140%;
+        height: 3px;
+        background: #8b3a3a;
+        transform: rotate(-45deg);
+        box-shadow: 0 0 10px rgba(139, 58, 58, 0.5);
+    }
+
+    .avoid-name {
+        position: absolute;
+        bottom: 0.5rem;
+        left: 0.5rem;
+        font-size: 0.7rem;
+        color: rgba(255,255,255,0.7);
+        text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* Philosophy Section */
+    .philosophy-section {
+        padding: 8rem 2rem;
+        text-align: center;
+    }
+
+    .philosophy-quote {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: clamp(1.5rem, 4vw, 2.5rem);
+        font-weight: 300;
+        font-style: italic;
+        line-height: 1.6;
+        max-width: 900px;
+        margin: 0 auto 2rem;
+        color: var(--text-primary);
+    }
+
+    .philosophy-attribution {
+        font-size: 0.8rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent-gold);
+    }
+
+    /* Footer */
+    footer {
+        padding: 4rem 2rem;
+        text-align: center;
+        border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-logo {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, var(--accent-gold), var(--accent-rose));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .footer-text {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        letter-spacing: 0.1em;
+    }
+
+    /* Utility */
+    .hidden {
+        display: none !important;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: var(--bg-primary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.1);
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.2);
+    }
+
+    /* Animation Classes */
+    .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .fade-in.visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Print Styles */
+    @media print {
+        .ambient-bg, .modal-overlay, .category-nav, .mixer-section {
+            display: none;
+        }
+        body {
+            background: white;
+            color: black;
+        }
+        .color-card {
+            break-inside: avoid;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <!-- Ambient Background -->
+    <div class="ambient-bg">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+    </div>
+
+```
+<!-- Hero Section -->
+<section class="hero">
+    <div class="season-badge">Soft Summer Deep • 16 Season System</div>
+    <h1 class="palette-name">The Velvet Meridian</h1>
+    <p class="palette-subtitle">Where twilight meets the forest floor</p>
+    <div class="scroll-indicator">
+        <span>Discover Your Colors</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+    </div>
+</section>
+
+<!-- Analysis Section -->
+<section class="analysis-section">
+    <div class="section-header fade-in">
+        <div class="section-label">Color Portrait</div>
+        <h2 class="section-title">Understanding Your Chromatic Identity</h2>
+    </div>
+    
+    <div class="analysis-content fade-in">
+        <p>
+            Lauren, your coloring exists in a realm that most seasonal systems struggle to capture. You are not simply warm or cool—you are <span class="highlight">atmospherically complex</span>, like the light at the edge of a forest clearing just before sunset.
+        </p>
+        <p>
+            Your skin possesses a remarkable quality: <span class="highlight">translucent depth with chameleon undertones</span>. The visible blue-green veining at your wrists speaks to cool foundations, yet your skin drinks in golden light like parched earth welcomes rain. This duality is rare and profoundly beautiful.
+        </p>
+        <p>
+            Your eyes are your true compass—<span class="highlight">grey-green hazel with amber starbursts</span> that shift between steel, sage, and gold depending on your palette. They reveal the truth: you belong to the Soft Summer family, but with a depth and warmth that pulls you toward its Deep expression.
+        </p>
+        <p>
+            I've named your palette <span class="highlight">The Velvet Meridian</span>—that liminal line where the softness of twilight meets the grounded richness of moss and earth. Your colors have weight but never heaviness, complexity but never confusion.
+        </p>
+    </div>
+
+    <div class="dimensions-grid">
+        <div class="dimension-card fade-in">
+            <div class="dimension-label">Dominant Dimension</div>
+            <div class="dimension-value">Soft</div>
+            <p class="dimension-description">Your coloring demands colors that have been touched by grey—not dull, but sophisticated. High chroma shocks your system; muted tones make you luminous.</p>
+        </div>
+        <div class="dimension-card fade-in">
+            <div class="dimension-label">Secondary Dimension</div>
+            <div class="dimension-value">Cool-Neutral</div>
+            <p class="dimension-description">You lean cool, but with a flexibility that allows carefully selected neutral-warm tones. Think teal over turquoise, dusty rose over bubblegum pink.</p>
+        </div>
+        <div class="dimension-card fade-in">
+            <div class="dimension-label">Tertiary Dimension</div>
+            <div class="dimension-value">Medium-Deep</div>
+            <p class="dimension-description">Your contrast is moderate, allowing you to wear both lighter and darker values—but your true power lives in the mid-to-deep range where colors develop richness.</p>
+        </div>
+        <div class="dimension-card fade-in">
+            <div class="dimension-label">Contrast Level</div>
+            <div class="dimension-value">Moderate-High</div>
+            <p class="dimension-description">Your ash-brown hair against fair skin with those multitonal eyes creates meaningful contrast. Monochromatic looks flatten you; strategic contrast ignites you.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Signature Colors -->
+<section class="signature-section">
+    <div class="section-header fade-in">
+        <div class="section-label">Your Triumvirate</div>
+        <h2 class="section-title">Three Colors That Define You</h2>
+    </div>
+
+    <div class="signature-grid fade-in">
+        <div class="signature-card" style="background: #2d4a3e;">
+            <div class="signature-content">
+                <div class="signature-label">Power Color</div>
+                <div class="signature-name">Velvet Fern</div>
+            </div>
+        </div>
+        <div class="signature-card" style="background: #4a5568;">
+            <div class="signature-content">
+                <div class="signature-label">Neutral Anchor</div>
+                <div class="signature-name">Storm Slate</div>
+            </div>
+        </div>
+        <div class="signature-card" style="background: #7d6b6b;">
+            <div class="signature-content">
+                <div class="signature-label">Signature Accent</div>
+                <div class="signature-name">Dusty Mauve</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main Palette Section -->
+<section class="palette-section">
+    <div class="palette-container">
+        <div class="section-header fade-in">
+            <div class="section-label">The Complete Palette</div>
+            <h2 class="section-title">72 Colors Curated For You</h2>
+        </div>
+
+        <nav class="category-nav fade-in">
+            <button class="category-btn active" data-category="all">All Colors</button>
+            <button class="category-btn" data-category="neutrals">Neutrals</button>
+            <button class="category-btn" data-category="greens">Greens</button>
+            <button class="category-btn" data-category="blues">Blues & Teals</button>
+            <button class="category-btn" data-category="purples">Purples & Berries</button>
+            <button class="category-btn" data-category="pinks">Pinks & Mauves</button>
+            <button class="category-btn" data-category="earth">Earth Tones</button>
+            <button class="category-btn" data-category="metals">Metals & Accents</button>
+        </nav>
+
+        <div class="color-grid" id="colorGrid">
+            <!-- Colors will be injected by JavaScript -->
+        </div>
+    </div>
+</section>
+
+<!-- Color Combinations -->
+<section class="combinations-section">
+    <div class="section-header fade-in">
+        <div class="section-label">Harmonies</div>
+        <h2 class="section-title">Combinations That Sing</h2>
+    </div>
+
+    <div class="combination-showcase" id="combinationShowcase">
+        <!-- Combinations will be injected by JavaScript -->
+    </div>
+</section>
+
+<!-- Interactive Mixer -->
+<section class="mixer-section">
+    <div class="mixer-container">
+        <div class="section-header fade-in">
+            <div class="section-label">Play</div>
+            <h2 class="section-title">Color Mixer</h2>
+        </div>
+
+        <p class="fade-in" style="color: var(--text-secondary); margin-bottom: 2rem;">
+            Select colors from your palette to see how they blend together. Build your own combinations and discover new harmonies.
+        </p>
+
+        <div class="mixer-canvas fade-in">
+            <div class="mixer-result" id="mixerResult"></div>
+        </div>
+
+        <div class="mixer-slots fade-in" id="mixerSlots">
+            <div class="mixer-slot" data-slot="0">
+                <span class="mixer-slot-label">Color 1</span>
+                <button class="remove-btn hidden">×</button>
+            </div>
+            <div class="mixer-slot" data-slot="1">
+                <span class="mixer-slot-label">Color 2</span>
+                <button class="remove-btn hidden">×</button>
+            </div>
+            <div class="mixer-slot" data-slot="2">
+                <span class="mixer-slot-label">Color 3</span>
+                <button class="remove-btn hidden">×</button>
+            </div>
+        </div>
+
+        <div class="mixer-picker fade-in" id="mixerPicker">
+            <!-- Picker swatches will be injected by JavaScript -->
+        </div>
+    </div>
+</section>
+
+<!-- Colors to Avoid -->
+<section class="avoid-section">
+    <div class="section-header fade-in">
+        <div class="section-label">Boundaries</div>
+        <h2 class="section-title">Colors to Approach With Caution</h2>
+    </div>
+
+    <p class="fade-in" style="text-align: center; color: var(--text-secondary); max-width: 600px; margin: 0 auto 3rem;">
+        These colors fight against your natural coloring—creating discord rather than harmony. They're not forbidden, but they require careful handling if used at all.
+    </p>
+
+    <div class="avoid-grid fade-in" id="avoidGrid">
+        <!-- Avoid colors will be injected by JavaScript -->
+    </div>
+</section>
+
+<!-- Philosophy Section -->
+<section class="philosophy-section">
+    <blockquote class="philosophy-quote fade-in">
+        "Color is not decoration—it's communication. Every shade you wear is a word in the visual language you speak to the world. Lauren, your vocabulary is one of depth, intelligence, and quiet power."
+    </blockquote>
+    <div class="philosophy-attribution fade-in">— Your Color Portrait</div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-logo">The Velvet Meridian</div>
+    <p class="footer-text">A Personal Color Analysis for Lauren • Created December 2024</p>
+</footer>
+
+<!-- Color Detail Modal -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-content">
+        <div class="modal-swatch" id="modalSwatch">
+            <button class="modal-close" id="modalClose">×</button>
+        </div>
+        <div class="modal-body">
+            <h3 class="modal-title" id="modalTitle"></h3>
+            <p class="modal-hex" id="modalHex"></p>
+            <p class="modal-description" id="modalDescription"></p>
+            
+            <div class="modal-section-title">Best For</div>
+            <div class="modal-tags" id="modalTags"></div>
+            
+            <div class="modal-section-title">Pairs Beautifully With</div>
+            <div class="modal-tags" id="modalPairs"></div>
+            
+            <button class="copy-btn" id="copyBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy Hex Code
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Complete Color Database
+    const colorDatabase = {
+        neutrals: [
+            { name: "Charcoal Velvet", hex: "#2d2d2d", rating: 3, usage: "Deepest neutral", description: "A rich, soft black that grounds without harshness. Your substitute for true black.", tags: ["Evening", "Professional", "Anchor"], pairs: ["Dusty Rose", "Sage", "Champagne"] },
+            { name: "Storm Slate", hex: "#4a5568", rating: 3, usage: "Signature neutral", description: "This grey has the depth of approaching weather—cool, sophisticated, alive. Your ultimate neutral.", tags: ["Everyday", "Professional", "Versatile"], pairs: ["Forest Green", "Mauve", "Cream"] },
+            { name: "Pewter", hex: "#6b7280", rating: 2, usage: "Light neutral", description: "A medium grey with subtle warmth that flatters your skin's luminosity.", tags: ["Office", "Layering", "Base"], pairs: ["Plum", "Teal", "Rose"] },
+            { name: "Dove Wing", hex: "#9ca3af", rating: 2, usage: "Soft grey", description: "Light enough to lift, grey enough to ground. Perfect for subtle sophistication.", tags: ["Summer", "Soft contrast", "Blending"], pairs: ["Navy", "Burgundy", "Sage"] },
+            { name: "Soft Taupe", hex: "#8b8178", rating: 3, usage: "Warm neutral", description: "Where grey meets earth—this taupe honors both your cool and warm aspects.", tags: ["Year-round", "Versatile", "Grounding"], pairs: ["Teal", "Plum", "Forest"] },
+            { name: "Cocoa Dust", hex: "#6d5c54", rating: 2, usage: "Brown neutral", description: "A softened brown with grey undertones that won't overpower your coloring.", tags: ["Autumn", "Grounding", "Warm days"], pairs: ["Cream", "Sage", "Dusty Blue"] },
+            { name: "French Roast", hex: "#4a3f3a", rating: 2, usage: "Deep brown", description: "Rich chocolate with ash—depth without the warmth that would clash.", tags: ["Evening", "Drama", "Foundation"], pairs: ["Rose", "Teal", "Gold"] },
+            { name: "Mushroom", hex: "#9e9589", rating: 2, usage: "Light earth", description: "The color of chanterelles in morning light—sophisticated earth tone.", tags: ["Casual", "Layering", "Natural"], pairs: ["Burgundy", "Forest", "Navy"] },
+            { name: "Oyster", hex: "#d1ccc4", rating: 2, usage: "Warm off-white", description: "Not stark, not cream—the perfect warm white that doesn't wash you out.", tags: ["Summer", "Highlighting", "Fresh"], pairs: ["Any color"], "pairs": ["Navy", "Forest", "Burgundy"] },
+            { name: "Almond Cream", hex: "#e8e0d5", rating: 2, usage: "Light neutral", description: "A whisper of warmth in an almost-white. Your brightest safe neutral.", tags: ["Spring", "Freshening", "Light"], pairs: ["Plum", "Teal", "Charcoal"] }
+        ],
+        greens: [
+            { name: "Velvet Fern", hex: "#2d4a3e", rating: 3, usage: "Power color", description: "Your most potent color. This deep, muted forest green makes your eyes flash with life and your skin glow. Wear this when you want to be unforgettable.", tags: ["Power", "Evening", "Statement"], pairs: ["Rose", "Champagne", "Charcoal"] },
+            { name: "Moss Garden", hex: "#4a5d4a", rating: 3, usage: "Signature green", description: "Like sunlight filtering through ancient trees—this moss green is pure magic on you.", tags: ["Everyday", "Natural", "Grounding"], pairs: ["Mauve", "Cream", "Burgundy"] },
+            { name: "Sage Whisper", hex: "#7d8b7d", rating: 3, usage: "Soft green", description: "A grey-green that echoes your eye color and creates seamless harmony.", tags: ["Versatile", "Softening", "Everyday"], pairs: ["Rose", "Plum", "Navy"] },
+            { name: "Eucalyptus", hex: "#6b8e7d", rating: 2, usage: "Cool green", description: "Fresh but grounded—like eucalyptus leaves in morning dew.", tags: ["Spring", "Fresh", "Calm"], pairs: ["Dusty Pink", "Charcoal", "Cream"] },
+            { name: "Verdigris", hex: "#4a6b5a", rating: 2, usage: "Medium green", description: "The patina on old copper—complex, storied, sophisticated.", tags: ["Elegant", "Classic", "Rich"], pairs: ["Gold", "Burgundy", "Taupe"] },
+            { name: "Jade Shadow", hex: "#5a7f6e", rating: 2, usage: "Blue-green", description: "Where green meets the sea—a teal-leaning shade that amplifies your eyes.", tags: ["Statement", "Cool", "Eye-catching"], pairs: ["Mauve", "Silver", "Charcoal"] },
+            { name: "Lichen", hex: "#8fa68c", rating: 2, usage: "Light green", description: "Soft, organic, alive—a lighter green that still has presence.", tags: ["Spring", "Casual", "Natural"], pairs: ["Plum", "Navy", "Mushroom"] },
+            { name: "Olive Mist", hex: "#6b6b4a", rating: 2, usage: "Warm green", description: "Your most golden-leaning green—use sparingly but powerfully.", tags: ["Autumn", "Earthy", "Grounding"], pairs: ["Burgundy", "Navy", "Cream"] },
+            { name: "Hunter's Moon", hex: "#3d5a4a", rating: 2, usage: "Deep green", description: "Dark and mysterious—a green for evenings and impact.", tags: ["Evening", "Drama", "Power"], pairs: ["Rose Gold", "Champagne", "Blush"] },
+            { name: "Celadon", hex: "#9cb8a3", rating: 1, usage: "Accent green", description: "A pale jade that works as a fresh accent or in prints.", tags: ["Accent", "Spring", "Delicate"], pairs: ["Charcoal", "Navy", "Plum"] }
+        ],
+        blues: [
+            { name: "Midnight Ink", hex: "#1e3a5f", rating: 3, usage: "Your navy", description: "This is YOUR navy—deep, slightly teal, infinitely sophisticated. Better than black for you.", tags: ["Professional", "Evening", "Foundation"], pairs: ["Rose", "Gold", "Cream"] },
+            { name: "Atlantic Storm", hex: "#2c4a5e", rating: 3, usage: "Teal-navy", description: "A stormy blue-green that echoes the complexity in your eyes.", tags: ["Power", "Elegant", "Signature"], pairs: ["Dusty Rose", "Champagne", "Sage"] },
+            { name: "Smoked Teal", hex: "#3d6b6b", rating: 3, usage: "Signature teal", description: "This color was made for you. Teal with enough grey to be sophisticated, enough depth to be dramatic.", tags: ["Signature", "Statement", "Power"], pairs: ["Mauve", "Gold", "Cream"] },
+            { name: "Prussian Depth", hex: "#1e3a4a", rating: 2, usage: "Deep blue", description: "An inky, complex blue for high-drama moments.", tags: ["Evening", "Formal", "Impact"], pairs: ["Rose", "Silver", "Champagne"] },
+            { name: "Dusk Marine", hex: "#4a6b7a", rating: 2, usage: "Medium blue", description: "The color of the ocean at twilight—your most wearable blue.", tags: ["Everyday", "Professional", "Calm"], pairs: ["Cream", "Burgundy", "Sage"] },
+            { name: "Steel Blue", hex: "#5a7a8a", rating: 2, usage: "Grey-blue", description: "Cool and professional with enough depth to hold its own.", tags: ["Office", "Versatile", "Sleek"], pairs: ["Plum", "Rose", "Charcoal"] },
+            { name: "Periwinkle Smoke", hex: "#7a8aa8", rating: 2, usage: "Light blue", description: "A dusty periwinkle that softens while maintaining sophistication.", tags: ["Spring", "Soft", "Romantic"], pairs: ["Charcoal", "Burgundy", "Sage"] },
+            { name: "Stonewash", hex: "#6b7d8e", rating: 2, usage: "Denim blue", description: "Your ideal denim shade—faded but present, casual but refined.", tags: ["Casual", "Everyday", "Denim"], pairs: ["Any neutral", "Rose", "Sage"] },
+            { name: "Petrol", hex: "#1e4a4a", rating: 2, usage: "Deep teal", description: "Rich and moody—for when you want color that means business.", tags: ["Evening", "Drama", "Statement"], pairs: ["Rose Gold", "Cream", "Burgundy"] },
+            { name: "Glacial", hex: "#8e9ea8", rating: 1, usage: "Icy blue", description: "A pale, cool blue for accents and accessories.", tags: ["Accent", "Cool", "Fresh"], pairs: ["Navy", "Charcoal", "Burgundy"] }
+        ],
+        purples: [
+            { name: "Crushed Grape", hex: "#4a3a4e", rating: 3, usage: "Deep purple", description: "A dusky, sophisticated purple that enhances your eye color beautifully.", tags: ["Evening", "Elegant", "Rich"], pairs: ["Sage", "Cream", "Gold"] },
+            { name: "Dried Lavender", hex: "#6b5a6e", rating: 3, usage: "Medium purple", description: "Muted, mature, magnificent. This lavender has been touched by twilight.", tags: ["Versatile", "Romantic", "Soft power"], pairs: ["Sage", "Taupe", "Navy"] },
+            { name: "Mulberry Dust", hex: "#5a4a5a", rating: 2, usage: "Plum", description: "A grey-touched plum that brings warmth without overwhelming.", tags: ["Autumn", "Rich", "Grounding"], pairs: ["Sage", "Cream", "Rose Gold"] },
+            { name: "Wisteria Shadow", hex: "#7a6b7d", rating: 2, usage: "Light purple", description: "Soft purple with grey undertones—romantic but grounded.", tags: ["Spring", "Soft", "Delicate"], pairs: ["Charcoal", "Forest", "Cream"] },
+            { name: "Burgundy Wine", hex: "#5a2d3d", rating: 3, usage: "Red-purple", description: "Your red lives here—in the purple family where it gains sophistication.", tags: ["Power", "Evening", "Drama"], pairs: ["Sage", "Gold", "Cream"] },
+            { name: "Smoked Amethyst", hex: "#6b5a7d", rating: 2, usage: "True purple", description: "A clear purple softened by grey—magical against your coloring.", tags: ["Statement", "Special", "Elegant"], pairs: ["Sage", "Champagne", "Navy"] },
+            { name: "Elderberry", hex: "#4a3d4d", rating: 2, usage: "Deep berry", description: "Dark, complex, slightly mysterious—like elderberries at dusk.", tags: ["Evening", "Depth", "Mystery"], pairs: ["Rose", "Cream", "Gold"] },
+            { name: "Thistle", hex: "#8e7d8e", rating: 1, usage: "Pale purple", description: "A whisper of purple for soft accents and layering.", tags: ["Accent", "Soft", "Blending"], pairs: ["Charcoal", "Navy", "Sage"] },
+            { name: "Aubergine", hex: "#3d2d3d", rating: 2, usage: "Eggplant", description: "Deep, grounded purple with brown undertones—earthy elegance.", tags: ["Autumn", "Rich", "Sophisticated"], pairs: ["Sage", "Gold", "Cream"] },
+            { name: "Boysenberry", hex: "#5a3d4a", rating: 2, usage: "Berry purple", description: "Where berry meets plum—a flattering mid-tone for you.", tags: ["Versatile", "Rich", "Feminine"], pairs: ["Sage", "Navy", "Cream"] }
+        ],
+        pinks: [
+            { name: "Dusty Rose", hex: "#9e7d7d", rating: 3, usage: "Signature pink", description: "This is YOUR pink—softened, sophisticated, absolutely stunning against your skin. The pink in the green dress photo proved this beyond doubt.", tags: ["Signature", "Everyday", "Flattering"], pairs: ["Forest", "Navy", "Charcoal"] },
+            { name: "Rose Taupe", hex: "#8e7a7a", rating: 3, usage: "Neutral pink", description: "Pink meets grey meets earth—a uniquely flattering shade for your complexion.", tags: ["Versatile", "Neutral", "Grounding"], pairs: ["Teal", "Navy", "Sage"] },
+            { name: "Mauve Moment", hex: "#7d6b6b", rating: 3, usage: "Cool pink", description: "A sophisticated mauve that bridges pink and purple territories.", tags: ["Elegant", "Soft", "Refined"], pairs: ["Forest", "Navy", "Charcoal"] },
+            { name: "Dried Peony", hex: "#b8a0a0", rating: 2, usage: "Light pink", description: "A soft, dusty pink that flatters without overwhelming.", tags: ["Spring", "Romantic", "Soft"], pairs: ["Charcoal", "Navy", "Forest"] },
+            { name: "Antique Rose", hex: "#a8888b", rating: 2, usage: "Medium rose", description: "Vintage-feeling rose with enough grey to stay sophisticated.", tags: ["Classic", "Feminine", "Timeless"], pairs: ["Forest", "Grey", "Navy"] },
+            { name: "Rosewood", hex: "#5a4a4a", rating: 2, usage: "Deep rose", description: "Dark, complex rose for impact without the harshness of red.", tags: ["Evening", "Drama", "Rich"], pairs: ["Sage", "Gold", "Cream"] },
+            { name: "Blush Smoke", hex: "#c8b0a8", rating: 2, usage: "Warm pink", description: "A peachy-pink with enough grey to work for you.", tags: ["Spring", "Soft", "Fresh"], pairs: ["Teal", "Navy", "Charcoal"] },
+            { name: "Ballet Slipper", hex: "#d8c0b8", rating: 1, usage: "Pale pink", description: "Use sparingly as an accent—this pale pink can wash you out in large doses.", tags: ["Accent", "Delicate", "Careful"], pairs: ["Charcoal", "Navy", "Forest"] },
+            { name: "Raspberry Dust", hex: "#7d5a5a", rating: 2, usage: "Berry pink", description: "Pink with depth and a hint of berry—sophisticated and feminine.", tags: ["Statement", "Rich", "Feminine"], pairs: ["Sage", "Navy", "Gold"] },
+            { name: "Cameo", hex: "#b8a898", rating: 2, usage: "Neutral blush", description: "The most neutral of your pinks—almost a greige with rose undertones.", tags: ["Everyday", "Neutral", "Subtle"], pairs: ["Any color"], "pairs": ["Teal", "Plum", "Charcoal"] }
+        ],
+        earth: [
+            { name: "Terracotta Dusk", hex: "#8e6b5a", rating: 2, usage: "Muted terracotta", description: "Orange's sophisticated cousin—enough grey to be wearable, enough warmth to glow.", tags: ["Autumn", "Earthy", "Warm"], pairs: ["Teal", "Navy", "Sage"] },
+            { name: "Rust Whisper", hex: "#8e5a4a", rating: 2, usage: "Soft rust", description: "Your most wearable warm tone—rust softened to perfection.", tags: ["Autumn", "Grounding", "Rich"], pairs: ["Teal", "Forest", "Navy"] },
+            { name: "Burnt Sienna", hex: "#7a5a4a", rating: 2, usage: "Brown-red", description: "Where brown meets rust—sophisticated earth tone with presence.", tags: ["Autumn", "Natural", "Grounded"], pairs: ["Teal", "Sage", "Cream"] },
+            { name: "Tobacco Leaf", hex: "#5a4a3d", rating: 2, usage: "Warm brown", description: "A complex brown with warm undertones—earthy elegance.", tags: ["Autumn", "Rich", "Sophisticated"], pairs: ["Teal", "Sage", "Rose"] },
+            { name: "Sandstone", hex: "#a89888", rating: 2, usage: "Light earth", description: "A neutral earth tone that won't compete with your coloring.", tags: ["Everyday", "Neutral", "Calm"], pairs: ["Navy", "Burgundy", "Forest"] },
+            { name: "Copper Patina", hex: "#6b5a4a", rating: 2, usage: "Medium earth", description: "Aged copper in color form—rich, complex, beautiful.", tags: ["Autumn", "Metallic feel", "Rich"], pairs: ["Teal", "Navy", "Sage"] },
+            { name: "Driftwood", hex: "#8e8078", rating: 2, usage: "Grey-brown", description: "Weathered wood—grey and brown in perfect balance.", tags: ["Natural", "Casual", "Grounding"], pairs: ["Any color"], "pairs": ["Teal", "Rose", "Navy"] },
+            { name: "Caramel Shadow", hex: "#7a6858", rating: 1, usage: "Golden brown", description: "Use carefully—this golden-brown needs to be balanced with your cooler tones.", tags: ["Accent", "Autumn", "Warm"], pairs: ["Teal", "Navy", "Sage"] },
+            { name: "Chestnut Suede", hex: "#5a4840", rating: 2, usage: "Deep earth", description: "Rich, deep brown with cool undertones for grounding warmth.", tags: ["Autumn", "Deep", "Grounding"], pairs: ["Rose", "Sage", "Cream"] },
+            { name: "Canyon", hex: "#8a7060", rating: 2, usage: "Medium neutral", description: "The color of desert rock at golden hour—warm but sophisticated.", tags: ["Versatile", "Natural", "Earthy"], pairs: ["Teal", "Navy", "Burgundy"] }
+        ],
+        metals: [
+            { name: "Rose Gold Gleam", hex: "#b8a898", rating: 3, usage: "Signature metal", description: "Your metal. Rose gold bridges your warm and cool aspects perfectly.", tags: ["Jewelry", "Accessories", "Signature"], pairs: ["Everything"] },
+            { name: "Champagne", hex: "#d8d0c0", rating: 3, usage: "Light metal", description: "A soft, sophisticated gold that enhances without overwhelming.", tags: ["Evening", "Highlighting", "Elegant"], pairs: ["Navy", "Forest", "Burgundy"] },
+            { name: "Antique Gold", hex: "#b8a068", rating: 2, usage: "Yellow gold", description: "Gold that's been softened by time—your most wearable yellow gold.", tags: ["Evening", "Luxury", "Statement"], pairs: ["Forest", "Navy", "Burgundy"] },
+            { name: "Brushed Silver", hex: "#a8a8a8", rating: 2, usage: "Silver", description: "Cool silver that complements your undertones beautifully.", tags: ["Modern", "Cool", "Sleek"], pairs: ["Any cool tone"] },
+            { name: "Pewter Frost", hex: "#8e8e8e", rating: 2, usage: "Dark silver", description: "A deeper silver for more dramatic metallic moments.", tags: ["Evening", "Drama", "Sophisticated"], pairs: ["Navy", "Burgundy", "Forest"] },
+            { name: "Bronze Whisper", hex: "#9e8878", rating: 2, usage: "Bronze", description: "A cooled-down bronze that adds warmth without clashing.", tags: ["Autumn", "Earthy", "Warm"], pairs: ["Teal", "Navy", "Sage"] },
+            { name: "Gunmetal", hex: "#5a5a5a", rating: 2, usage: "Dark metal", description: "Dark, moody metal for edge and drama.", tags: ["Evening", "Edge", "Modern"], pairs: ["Any color"] },
+            { name: "Copper Glow", hex: "#a87858", rating: 1, usage: "Copper accent", description: "Use sparingly—a touch of copper can be beautiful, but balance is key.", tags: ["Accent", "Warm", "Statement"], pairs: ["Teal", "Navy", "Sage"] }
+        ]
+    };
+
+    // Colors to Avoid
+    const avoidColors = [
+        { name: "Neon Yellow", hex: "#ffff00", reason: "Too bright and warm—clashes with your muted, cool-leaning coloring" },
+        { name: "Hot Pink", hex: "#ff69b4", reason: "Too saturated and warm—overpowers your subtle coloring" },
+        { name: "True Orange", hex: "#ff8c00", reason: "Pure warm orange fights against your cool undertones" },
+        { name: "Bright White", hex: "#ffffff", reason: "Too stark—creates harsh contrast that ages" },
+        { name: "Coral", hex: "#ff7f50", reason: "Too warm and bright—makes you look tired" },
+        { name: "Lime Green", hex: "#32cd32", reason: "Overwhelming saturation clashes with your muted nature" },
+        { name: "Electric Blue", hex: "#0066ff", reason: "Too bright and cool—stark against your soft coloring" },
+        { name: "Warm Beige", hex: "#d2b48c", reason: "Too yellow—creates sallow appearance" },
+        { name: "Peach", hex: "#ffcba4", reason: "Too warm and pale—washes you out completely" },
+        { name: "Pure Red", hex: "#ff0000", reason: "Too bright and warm—use burgundy instead" },
+        { name: "Kelly Green", hex: "#4cbb17", reason: "Too bright—choose muted greens instead" },
+        { name: "Turquoise", hex: "#40e0d0", reason: "Too saturated—opt for smoked teal instead" }
+    ];
+
+    // Color Combinations
+    const combinations = [
+        {
+            name: "The Forest Floor",
+            description: "Your most grounding, powerful combination. Earth and leaf, depth and mystery.",
+            colors: ["#2d4a3e", "#4a5568", "#7d6b6b", "#2d2d2d"]
+        },
+        {
+            name: "Twilight Garden",
+            description: "Soft, romantic, undeniably sophisticated. For evenings when you want to glow.",
+            colors: ["#9e7d7d", "#2d4a3e", "#d8d0c0", "#4a3a4e"]
+        },
+        {
+            name: "Storm & Rose",
+            description: "Cool drama meets soft femininity. Your answer to the navy-and-pink cliché.",
+            colors: ["#1e3a5f", "#9e7d7d", "#4a5568", "#d1ccc4"]
+        },
+        {
+            name: "Autumn Meridian",
+            description: "For days when you want warmth without abandoning your cool foundations.",
+            colors: ["#3d6b6b", "#8e6b5a", "#2d2d2d", "#d8d0c0"]
+        },
+        {
+            name: "Moonlit Sage",
+            description: "Ethereal, soft, deeply flattering. Grey-green magic.",
+            colors: ["#7d8b7d", "#6b7280", "#8e7d8e", "#e8e0d5"]
+        },
+        {
+            name: "Wine & Velvet",
+            description: "Deep, sensuous, powerful. For nights when you want to be remembered.",
+            colors: ["#5a2d3d", "#2d4a3e", "#b8a898", "#2d2d2d"]
+        }
+    ];
+
+    // State
+    let currentCategory = 'all';
+    let mixerColors = [null, null, null];
+    let activeSlot = null;
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        renderColors();
+        renderCombinations();
+        renderAvoidColors();
+        renderMixerPicker();
+        setupEventListeners();
+        setupIntersectionObserver();
+    });
+
+    // Render color grid
+    function renderColors() {
+        const grid = document.getElementById('colorGrid');
+        grid.innerHTML = '';
+
+        let colorsToRender = [];
+
+        if (currentCategory === 'all') {
+            Object.values(colorDatabase).forEach(category => {
+                colorsToRender = colorsToRender.concat(category);
+            });
+        } else {
+            colorsToRender = colorDatabase[currentCategory] || [];
+        }
+
+        colorsToRender.forEach((color, index) => {
+            const card = createColorCard(color, index);
+            grid.appendChild(card);
+        });
+
+        // Animate cards in
+        setTimeout(() => {
+            document.querySelectorAll('.color-card').forEach((card, i) => {
+                setTimeout(() => card.classList.add('visible'), i * 30);
+            });
+        }, 100);
+    }
+
+    // Create color card element
+    function createColorCard(color, index) {
+        const card = document.createElement('div');
+        card.className = 'color-card';
+        card.style.setProperty('--swatch-color', color.hex);
+        card.innerHTML = `
+            <div class="color-swatch" style="background: ${color.hex};">
+                ${color.rating ? createStars(color.rating) : ''}
+            </div>
+            <div class="color-info">
+                <div class="color-name">${color.name}</div>
+                <div class="color-hex">${color.hex.toUpperCase()}</div>
+                <div class="color-usage">${color.usage}</div>
+            </div>
+        `;
+        card.addEventListener('click', () => openModal(color));
+        return card;
+    }
+
+    // Create star rating
+    function createStars(rating) {
+        let stars = '<div class="color-rating">';
+        for (let i = 0; i < rating; i++) {
+            stars += '<svg class="star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+        }
+        stars += '</div>';
+        return stars;
+    }
+
+    // Render combinations
+    function renderCombinations() {
+        const showcase = document.getElementById('combinationShowcase');
+        showcase.innerHTML = '';
+
+        combinations.forEach(combo => {
+            const row = document.createElement('div');
+            row.className = 'combination-row';
+            row.innerHTML = `
+                <div class="combination-colors">
+                    ${combo.colors.map(c => `<div class="combination-color" style="background: ${c};"></div>`).join('')}
+                </div>
+                <div class="combination-info">
+                    <div class="combination-name">${combo.name}</div>
+                    <div class="combination-desc">${combo.description}</div>
+                </div>
+            `;
+            showcase.appendChild(row);
+        });
+    }
+
+    // Render avoid colors
+    function renderAvoidColors() {
+        const grid = document.getElementById('avoidGrid');
+        grid.innerHTML = '';
+
+        avoidColors.forEach(color => {
+            const card = document.createElement('div');
+            card.className = 'avoid-card';
+            card.style.background = color.hex;
+            card.innerHTML = `<span class="avoid-name">${color.name}</span>`;
+            card.title = color.reason;
+            grid.appendChild(card);
+        });
+    }
+
+    // Render mixer picker
+    function renderMixerPicker() {
+        const picker = document.getElementById('mixerPicker');
+        picker.innerHTML = '';
+
+        const allColors = [];
+        Object.values(colorDatabase).forEach(category => {
+            category.forEach(color => {
+                if (!allColors.find(c => c.hex === color.hex)) {
+                    allColors.push(color);
+                }
+            });
+        });
+
+        allColors.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.className = 'mixer-picker-swatch';
+            swatch.style.background = color.hex;
+            swatch.title = color.name;
+            swatch.addEventListener('click', () => addToMixer(color));
+            picker.appendChild(swatch);
+        });
+    }
+
+    // Mixer functions
+    function addToMixer(color) {
+        const emptySlot = mixerColors.findIndex(c => c === null);
+        if (emptySlot === -1) return;
+
+        mixerColors[emptySlot] = color;
+        updateMixerDisplay();
+    }
+
+    function removeFromMixer(slotIndex) {
+        mixerColors[slotIndex] = null;
+        updateMixerDisplay();
+    }
+
+    function updateMixerDisplay() {
+        const slots = document.querySelectorAll('.mixer-slot');
+        const result = document.getElementById('mixerResult');
+
+        slots.forEach((slot, i) => {
+            const color = mixerColors[i];
+            const removeBtn = slot.querySelector('.remove-btn');
+
+            if (color) {
+                slot.style.background = color.hex;
+                slot.classList.add('filled');
+                removeBtn.classList.remove('hidden');
+            } else {
+                slot.style.background = 'transparent';
+                slot.classList.remove('filled');
+                removeBtn.classList.add('hidden');
+            }
+        });
+
+        // Calculate mixed color
+        const activeColors = mixerColors.filter(c => c !== null);
+        if (activeColors.length > 0) {
+            const mixedColor = blendColors(activeColors.map(c => c.hex));
+            result.style.background = mixedColor;
+            result.style.setProperty('--mixer-glow', mixedColor);
+        } else {
+            result.style.background = 'transparent';
+            result.style.setProperty('--mixer-glow', 'transparent');
+        }
+    }
+
+    // Color blending
+    function blendColors(hexColors) {
+        const rgbColors = hexColors.map(hex => hexToRgb(hex));
+        const avg = {
+            r: Math.round(rgbColors.reduce((sum, c) => sum + c.r, 0) / rgbColors.length),
+            g: Math.round(rgbColors.reduce((sum, c) => sum + c.g, 0) / rgbColors.length),
+            b: Math.round(rgbColors.reduce((sum, c) => sum + c.b, 0) / rgbColors.length)
+        };
+        return rgbToHex(avg.r, avg.g, avg.b);
+    }
+
+    function hexToRgb(hex) {
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : { r: 0, g: 0, b: 0 };
+    }
+
+    function rgbToHex(r, g, b) {
+        return '#' + [r, g, b].map(x => {
+            const hex = x.toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
+        }).join('');
+    }
+
+    // Modal functions
+    function openModal(color) {
+        const overlay = document.getElementById('modalOverlay');
+        document.getElementById('modalSwatch').style.background = color.hex;
+        document.getElementById('modalTitle').textContent = color.name;
+        document.getElementById('modalHex').textContent = color.hex.toUpperCase();
+        document.getElementById('modalDescription').textContent = color.description;
+
+        const tagsContainer = document.getElementById('modalTags');
+        tagsContainer.innerHTML = color.tags.map(tag => `<span class="modal-tag">${tag}</span>`).join('');
+
+        const pairsContainer = document.getElementById('modalPairs');
+        pairsContainer.innerHTML = color.pairs.map(pair => `<span class="modal-tag">${pair}</span>`).join('');
+
+        document.getElementById('copyBtn').dataset.hex = color.hex;
+
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Copy to clipboard
+    async function copyHex(hex) {
+        try {
+            await navigator.clipboard.writeText(hex);
+            const btn = document.getElementById('copyBtn');
+            btn.textContent = 'Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => {
+                btn.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy Hex Code
+                `;
+                btn.classList.remove('copied');
+            }, 2000);
+        } catch (err) {
+            console.error('Failed to copy:', err);
+        }
+    }
+
+    // Event listeners
+    function setupEventListeners() {
+        // Category buttons
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategory = btn.dataset.category;
+                renderColors();
+            });
+        });
+
+        // Modal
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+
+        // Copy button
+        document.getElementById('copyBtn').addEventListener('click', (e) => {
+            copyHex(e.currentTarget.dataset.hex);
+        });
+
+        // Mixer slots
+        document.querySelectorAll('.mixer-slot').forEach((slot, i) => {
+            slot.querySelector('.remove-btn').addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeFromMixer(i);
+            });
+        });
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+    }
+
+    // Intersection Observer for animations
+    function setupIntersectionObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in, .combination-row').forEach(el => {
+            observer.observe(el);
+        });
+    }
+</script>
+```
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

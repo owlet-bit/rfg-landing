@@ -1,0 +1,1903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>The Rogue Palette</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Rogue Palette — Personal Color System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-deep: #0d1117;
+      --bg-mid: #161b22;
+      --bg-surface: #1c2128;
+      --bg-elevated: #252c35;
+      --glass: rgba(136, 168, 192, 0.08);
+      --glass-border: rgba(136, 168, 192, 0.15);
+      --glass-hover: rgba(136, 168, 192, 0.12);
+      --frost: rgba(200, 220, 240, 0.06);
+      --text: #e6edf3;
+      --text-mid: #a8b9c9;
+      --text-muted: #6a7a8a;
+      --accent: #7aa2c4;
+      --accent-warm: #c49a9a;
+      --accent-glow: rgba(122, 162, 196, 0.3);
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+      --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+      --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 30px rgba(122, 162, 196, 0.15);
+      --radius: 8px;
+      --radius-lg: 16px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { 
+      font-size: 16px; 
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'IBM Plex Sans', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* Subtle gradient overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse 80% 50% at 20% 0%, rgba(122, 162, 196, 0.08), transparent 50%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(136, 168, 192, 0.06), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Typography */
+    h1, h2, h3 {
+      font-family: 'Fraunces', serif;
+      font-weight: 400;
+      font-optical-sizing: auto;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    header h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: var(--text-mid);
+      max-width: 600px;
+      line-height: 1.7;
+    }
+
+    .season-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 28px;
+      padding: 14px 22px;
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 100px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .season-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+      box-shadow: 0 0 12px var(--accent-glow);
+    }
+
+    .season-text {
+      font-size: 0.9rem;
+      color: var(--text-mid);
+    }
+
+    .season-text strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* Navigation Pills */
+    .nav-pills {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 32px;
+    }
+
+    .pill {
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      font-family: inherit;
+      color: var(--text-mid);
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .pill:hover {
+      background: var(--glass-hover);
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .pill.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-deep);
+      font-weight: 500;
+    }
+
+    /* Main Grid */
+    main {
+      padding: 48px 0 120px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    @media (min-width: 960px) {
+      .main-grid {
+        grid-template-columns: 1.4fr 1fr;
+        gap: 56px;
+      }
+    }
+
+    /* Section Styling */
+    .section {
+      margin-bottom: 48px;
+      scroll-margin-top: 24px;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .section-header h2 {
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    .section-hint {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+    }
+
+    /* Analysis Text */
+    .analysis-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+    }
+
+    .analysis-text p {
+      margin-bottom: 16px;
+    }
+
+    .analysis-text em {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    /* Pigments Grid */
+    .pigments-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 600px) {
+      .pigments-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .pigment {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid var(--glass-border);
+    }
+
+    .pigment:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: var(--shadow-md), var(--shadow-glow);
+    }
+
+    .pigment-color {
+      position: absolute;
+      inset: 0;
+    }
+
+    .pigment-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px 8px 8px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Color Lanes */
+    .lane {
+      margin-bottom: 32px;
+    }
+
+    .lane:last-child {
+      margin-bottom: 0;
+    }
+
+    .lane-header {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .lane-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .lane-note {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+    }
+
+    .swatches-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 700px) {
+      .swatches-row {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Swatch Card */
+    .swatch {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: var(--bg-surface);
+      border: 1px solid var(--glass-border);
+    }
+
+    .swatch:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .swatch.selected {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .swatch.favorite .swatch-star {
+      color: var(--accent-warm);
+      opacity: 1;
+    }
+
+    .swatch-color {
+      aspect-ratio: 1;
+      border-bottom: 1px solid var(--glass-border);
+    }
+
+    .swatch-info {
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 4px;
+      background: var(--bg-surface);
+    }
+
+    .swatch-name {
+      font-size: 0.72rem;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--text);
+      flex: 1;
+    }
+
+    .swatch-hex {
+      font-size: 0.65rem;
+      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .swatch-star {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      opacity: 0.3;
+      transition: opacity 0.15s ease, color 0.15s ease;
+    }
+
+    .swatch:hover .swatch-star {
+      opacity: 0.7;
+    }
+
+    /* Tools Panel */
+    .tools-panel {
+      position: sticky;
+      top: 24px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 24px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .card:last-child {
+      margin-bottom: 0;
+    }
+
+    .card-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--frost);
+    }
+
+    .card-header h3 {
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .card-body {
+      padding: 22px;
+    }
+
+    /* Compare Tool */
+    .compare-slots {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .compare-slot {
+      aspect-ratio: 1.3;
+      border-radius: var(--radius);
+      border: 2px dashed var(--glass-border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+      background: var(--bg-elevated);
+    }
+
+    .compare-slot.filled {
+      border-style: solid;
+      border-color: var(--glass-border);
+    }
+
+    .compare-slot-label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .compare-slot-hex {
+      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      font-size: 0.75rem;
+      color: var(--text-mid);
+    }
+
+    .verdict-box {
+      padding: 18px;
+      background: var(--frost);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+
+    /* Photo Sampler */
+    .photo-upload {
+      border: 2px dashed var(--glass-border);
+      border-radius: var(--radius);
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: var(--bg-elevated);
+    }
+
+    .photo-upload:hover {
+      border-color: var(--accent);
+      background: var(--glass);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .photo-upload-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      opacity: 0.6;
+    }
+
+    .photo-upload-text {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .photo-canvas-wrap {
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 18px;
+      border: 1px solid var(--glass-border);
+    }
+
+    .photo-canvas-wrap canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: crosshair;
+    }
+
+    .sampled-color {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      margin-bottom: 14px;
+    }
+
+    .sampled-chip {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sampled-info {
+      flex: 1;
+    }
+
+    .sampled-hex {
+      font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .sampled-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .nearest-matches {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .nearest-matches::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .nearest-matches::-webkit-scrollbar-thumb {
+      background: var(--glass-border);
+      border-radius: 3px;
+    }
+
+    .nearest-matches .mini-swatch {
+      flex: 0 0 90px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: var(--bg-surface);
+    }
+
+    .nearest-matches .mini-swatch:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .mini-swatch-color {
+      height: 56px;
+    }
+
+    .mini-swatch-name {
+      padding: 8px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--text);
+    }
+
+    /* Capsule Builder */
+    .capsule-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .capsule-slot {
+      padding: 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      background: var(--bg-elevated);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .capsule-slot:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .capsule-slot.filled {
+      background: var(--bg-surface);
+    }
+
+    .capsule-slot-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .capsule-slot-chip {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      border: 1px solid var(--glass-border);
+      background: var(--bg-mid);
+    }
+
+    .capsule-slot-label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .capsule-slot-value {
+      font-size: 0.75rem;
+      color: var(--text-mid);
+      margin-left: 38px;
+    }
+
+    /* Harmony */
+    .harmony-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .harmony-output {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .harmony-chip {
+      aspect-ratio: 1;
+      border-radius: var(--radius);
+      border: 1px solid var(--glass-border);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .harmony-chip:hover {
+      transform: scale(1.05);
+    }
+
+    .harmony-chip-label {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      right: 6px;
+      font-size: 0.58rem;
+      font-weight: 500;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.6);
+      line-height: 1.2;
+    }
+
+    /* Favorites */
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .favorites-empty {
+      grid-column: 1 / -1;
+      padding: 28px;
+      text-align: center;
+      color: var(--text-muted);
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+      font-size: 0.95rem;
+      background: var(--frost);
+      border-radius: var(--radius);
+      border: 1px dashed var(--glass-border);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 18px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      font-family: inherit;
+      border-radius: 100px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--glass-hover);
+      border-color: var(--accent);
+      color: var(--text);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg-deep);
+    }
+
+    .btn-primary:hover {
+      background: #8eb2d0;
+      border-color: #8eb2d0;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: transparent;
+    }
+
+    .btn-ghost:hover {
+      background: var(--glass);
+      border-color: transparent;
+    }
+
+    .btn-sm {
+      padding: 8px 14px;
+      font-size: 0.75rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      padding: 14px 28px;
+      background: var(--bg-surface);
+      border: 1px solid var(--glass-border);
+      color: var(--text);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Helper Text */
+    .helper-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Buttons Row */
+    .buttons-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Hidden file input */
+    input[type="file"] {
+      display: none;
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--glass-border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+
+    /* Section visibility for pill navigation */
+    .section[data-section] {
+      display: block;
+    }
+
+    .section.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>The Rogue Palette</h1>
+    <p class="tagline">A personal color system built from your actual pigments — cool-muted harmony with subtle warmth in the eyes and a rosewood thread throughout.</p>
+    
+    <div class="season-badge">
+      <span class="season-dot"></span>
+      <span class="season-text"><strong>Soft Summer</strong> with Soft Autumn borrowing — misted coolness, medium-low contrast</span>
+    </div>
+
+    <nav class="nav-pills">
+      <button class="pill active" data-target="palette">Full Palette</button>
+      <button class="pill" data-target="sampler">Photo Sampler</button>
+      <button class="pill" data-target="capsule">Capsule Builder</button>
+      <button class="pill" data-target="favorites">Favorites</button>
+      <button class="pill" id="dailyTriadBtn">Daily Triad</button>
+      <button class="pill" id="exportBtn">Export</button>
+    </nav>
+  </header>
+
+  <main>
+    <div class="main-grid">
+      <!-- Left Column: Palette -->
+      <div class="palette-column">
+        
+        <section class="section" data-section="palette">
+          <div class="section-header">
+            <h2>Analysis</h2>
+            <span class="section-hint">the why behind the what</span>
+          </div>
+          <div class="analysis-text">
+            <p>Your coloring sits in that interesting space where cool dominates but warmth flickers through — the amber starburst in your grey-green eyes, the surface rosiness that dances over a neutral-cool base. Colors that are too saturated will overpower you; colors that are too warm will fight your undertone. But give you something muted and slightly cool, and it simply <em>becomes</em> you.</p>
+            <p>Think dusty teal over kelly green, berry over cherry, pewter over silver, and rose-browns that acknowledge both the warmth in your eyes and the cool in your skin.</p>
+          </div>
+        </section>
+
+        <section class="section" data-section="palette">
+          <div class="section-header">
+            <h2>Source Pigments</h2>
+            <span class="section-hint">extracted from you</span>
+          </div>
+          <div class="pigments-grid" id="pigmentsGrid"></div>
+        </section>
+
+        <section class="section" data-section="palette">
+          <div class="section-header">
+            <h2>Wearable Colors</h2>
+            <span class="section-hint">48 colors, 8 families</span>
+          </div>
+          <div id="lanesContainer"></div>
+        </section>
+
+        <!-- Photo Sampler Section -->
+        <section class="section hidden" data-section="sampler">
+          <div class="section-header">
+            <h2>Photo Sampler</h2>
+            <span class="section-hint">match colors from any image</span>
+          </div>
+          <div class="photo-upload" id="photoUpload">
+            <div class="photo-upload-icon">📷</div>
+            <div class="photo-upload-text">Drop an image or click to upload</div>
+          </div>
+          <input type="file" id="photoInput" accept="image/*">
+          <div class="photo-canvas-wrap" id="canvasWrap" style="display: none;">
+            <canvas id="photoCanvas" width="800" height="500"></canvas>
+          </div>
+          <div id="sampleOutput"></div>
+        </section>
+
+        <!-- Capsule Builder Section -->
+        <section class="section hidden" data-section="capsule">
+          <div class="section-header">
+            <h2>Capsule Builder</h2>
+            <span class="section-hint">build an outfit</span>
+          </div>
+          <p class="helper-text" style="margin-bottom: 20px;">Select a swatch from the palette, then tap a slot below to assign it. This helps you plan outfits using your best colors.</p>
+          <div class="capsule-grid" id="capsuleGrid"></div>
+          <div class="buttons-row" style="margin-top: 20px;">
+            <button class="btn btn-sm" id="copyCapsuleBtn">Copy Outfit</button>
+            <button class="btn btn-sm btn-ghost" id="clearCapsuleBtn">Clear All</button>
+          </div>
+        </section>
+
+        <!-- Favorites Section -->
+        <section class="section hidden" data-section="favorites">
+          <div class="section-header">
+            <h2>Favorites</h2>
+            <span class="section-hint">double-tap any swatch to star</span>
+          </div>
+          <div class="favorites-grid" id="favoritesGrid">
+            <div class="favorites-empty" id="favoritesEmpty">Your altar awaits. Double-tap any swatch to add it here.</div>
+          </div>
+        </section>
+
+        <div class="buttons-row" style="margin-top: 32px;" data-section="palette">
+          <button class="btn btn-primary" id="copyPaletteBtn">Copy Palette List</button>
+          <button class="btn" id="downloadJsonBtn">Download JSON</button>
+          <button class="btn btn-ghost" id="resetBtn">Reset Local Data</button>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Tools -->
+      <div class="tools-panel">
+        
+        <!-- Compare -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Compare</h3>
+            <button class="btn btn-ghost btn-sm" id="clearCompareBtn">Clear</button>
+          </div>
+          <div class="card-body">
+            <div class="compare-slots">
+              <div class="compare-slot" id="compareSlotA">
+                <span class="compare-slot-label">A</span>
+                <span class="compare-slot-hex" id="compareHexA">Tap a swatch</span>
+              </div>
+              <div class="compare-slot" id="compareSlotB">
+                <span class="compare-slot-label">B</span>
+                <span class="compare-slot-hex" id="compareHexB">Tap a swatch</span>
+              </div>
+            </div>
+            <div class="verdict-box" id="verdictBox">
+              Select two colors to see which one harmonizes better with your coloring — and where each belongs.
+            </div>
+          </div>
+        </div>
+
+        <!-- Harmony -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Harmony</h3>
+            <span class="section-hint">outfit-ready combos</span>
+          </div>
+          <div class="card-body">
+            <div class="harmony-buttons">
+              <button class="btn btn-sm" data-harmony="analog">Analogous</button>
+              <button class="btn btn-sm" data-harmony="complement">Complement</button>
+              <button class="btn btn-sm" data-harmony="triad">Triad</button>
+              <button class="btn btn-sm" data-harmony="mono">Monochrome</button>
+            </div>
+            <p class="helper-text" style="margin-bottom: 14px;">Select a swatch first, then pick a harmony type.</p>
+            <div class="harmony-output" id="harmonyOutput"></div>
+          </div>
+        </div>
+
+        <!-- Quick Favorites Preview -->
+        <div class="card" id="quickFavCard">
+          <div class="card-header">
+            <h3>Starred</h3>
+            <button class="btn btn-ghost btn-sm" data-target="favorites" id="viewAllFavBtn">View All</button>
+          </div>
+          <div class="card-body">
+            <div class="favorites-grid" id="quickFavGrid" style="grid-template-columns: repeat(4, 1fr);">
+              <div class="favorites-empty" id="quickFavEmpty" style="padding: 18px; font-size: 0.85rem;">Double-tap swatches to star them.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ============================================
+  // DATA
+  // ============================================
+
+  const PIGMENTS = [
+    { name: "Skin Base", hex: "#ddd0c8", note: "neutral-cool porcelain beige" },
+    { name: "Flush", hex: "#c9a5a3", note: "cool dusty rose" },
+    { name: "Lip", hex: "#a5787e", note: "muted mauve-rose" },
+    { name: "Vein", hex: "#7a9da8", note: "blue-green thread" },
+    { name: "Eye Ring", hex: "#7a8872", note: "grey-green glass" },
+    { name: "Eye Center", hex: "#9a8a5e", note: "amber-olive starburst" },
+    { name: "Hair", hex: "#8a7a68", note: "neutral ash-bronde" },
+    { name: "Brow", hex: "#6a5f55", note: "cool taupe-brown" }
+  ];
+
+  const LANES = [
+    {
+      key: "soft_neutrals",
+      name: "Soft Neutrals",
+      note: "your foundation",
+      colors: [
+        ["Charcoal Ink", "#2d2f32", "soft black anchor"],
+        ["Storm Slate", "#4a4f55", "cool grey depth"],
+        ["Pewter Mist", "#6e7378", "mid pewter"],
+        ["Fog Stone", "#a5a8aa", "cool silver-grey"],
+        ["Oyster Linen", "#e5e2dd", "warm-neutral off-white"],
+        ["Paper Cream", "#f5f2eb", "soft cream"]
+      ]
+    },
+    {
+      key: "dusty_teals",
+      name: "Dusty Teals",
+      note: "your eye echo",
+      colors: [
+        ["Deep Current", "#2a4a4f", "teal-navy depth"],
+        ["Kelp Shadow", "#3d5f62", "muted teal"],
+        ["Sea Glass", "#5a8a88", "your signature teal"],
+        ["Verdigris", "#7aa89f", "oxidized green-blue"],
+        ["Seafoam Haze", "#9ec5bb", "light teal mist"],
+        ["Glacier Mint", "#c5ddd5", "pale cool mint"]
+      ]
+    },
+    {
+      key: "soft_blues",
+      name: "Soft Blues",
+      note: "denim territory",
+      colors: [
+        ["Night Water", "#1a2a3a", "deep blue-black"],
+        ["Ink Navy", "#2a3f52", "soft navy"],
+        ["Slate Blue", "#4a6275", "dusty mid-blue"],
+        ["Chambray", "#6a889a", "faded denim"],
+        ["Rain Glass", "#8aaab8", "pale blue-grey"],
+        ["Cloud Wash", "#c5d5dd", "whisper blue"]
+      ]
+    },
+    {
+      key: "berry_rose",
+      name: "Berry & Rose",
+      note: "your red family",
+      colors: [
+        ["Black Cherry", "#3a2028", "wine shadow"],
+        ["Berry Ink", "#5a2a38", "deep berry"],
+        ["Plum Ash", "#7a4a58", "muted plum"],
+        ["Mauve Smoke", "#9a6a78", "dusty mauve"],
+        ["Rose Taupe", "#b8909a", "pink-brown"],
+        ["Blush Fog", "#d5c0c5", "pale cool pink"]
+      ]
+    },
+    {
+      key: "orchid_violet",
+      name: "Orchid & Violet",
+      note: "soft drama",
+      colors: [
+        ["Bruised Iris", "#3a2a42", "deep muted purple"],
+        ["Plum Night", "#5a4a62", "dusky violet"],
+        ["Orchid Grey", "#7a6a82", "grey-purple"],
+        ["Lilac Smoke", "#9a8aa2", "soft lavender"],
+        ["Wisteria Mist", "#c5b8ca", "pale violet"],
+        ["Thistle Fog", "#ddd5e0", "whisper purple"]
+      ]
+    },
+    {
+      key: "stone_skin",
+      name: "Stone & Skin",
+      note: "complexion harmony",
+      colors: [
+        ["Warm Stone", "#6a5a4a", "brown-grey"],
+        ["Mushroom", "#8a7a6a", "grey-beige"],
+        ["Flushed Stone", "#a8888a", "rosy taupe"],
+        ["Powder Nude", "#c5aaa8", "pink-beige"],
+        ["Bisque", "#ddc8c2", "warm pale"],
+        ["Pearl", "#eae2dd", "soft luminous base"]
+      ]
+    },
+    {
+      key: "green_sage",
+      name: "Green & Sage",
+      note: "nature's muted",
+      colors: [
+        ["Forest Shadow", "#2a3228", "deep green-black"],
+        ["Moss Ink", "#3a4a38", "dark muted green"],
+        ["Sage Smoke", "#5a6a55", "grey-green mid"],
+        ["Olive Haze", "#7a8a72", "your eye match"],
+        ["Lichen", "#9aaa92", "pale sage"],
+        ["Celadon Mist", "#c5d2c2", "soft green-grey"]
+      ]
+    },
+    {
+      key: "warm_borrowing",
+      name: "Warm Borrowing",
+      note: "soft autumn crossover",
+      colors: [
+        ["Cocoa Ash", "#4a3a32", "cool-leaning brown"],
+        ["Rosewood", "#6a4a42", "muted rose-brown"],
+        ["Fawn", "#8a6a58", "soft tan-brown"],
+        ["Muted Camel", "#a88a72", "desaturated camel"],
+        ["Oat", "#c8b8a2", "warm neutral"],
+        ["Parchment", "#e5ddd0", "cream with warmth"]
+      ]
+    }
+  ];
+
+  const PALETTE = [];
+  LANES.forEach(lane => {
+    lane.colors.forEach(([name, hex, note]) => {
+      PALETTE.push({
+        name,
+        hex: hex.toLowerCase(),
+        note,
+        lane: lane.name,
+        laneKey: lane.key
+      });
+    });
+  });
+
+  // ============================================
+  // STATE
+  // ============================================
+
+  const LS_FAVORITES = 'rfg_favorites_v2';
+  const LS_CAPSULE = 'rfg_capsule_v2';
+  const LS_ORACLE = 'rfg_oracle_v2';
+
+  let favorites = loadJSON(LS_FAVORITES, []);
+  let capsule = loadJSON(LS_CAPSULE, {});
+  let selectedHex = null;
+  let compareA = null;
+  let compareB = null;
+  let imageData = null;
+  let currentSection = 'palette';
+
+  function loadJSON(key, fallback) {
+    try {
+      const raw = localStorage.getItem(key);
+      return raw ? JSON.parse(raw) : fallback;
+    } catch (e) {
+      return fallback;
+    }
+  }
+
+  function saveJSON(key, val) {
+    try {
+      localStorage.setItem(key, JSON.stringify(val));
+    } catch (e) {}
+  }
+
+  // ============================================
+  // DOM REFS
+  // ============================================
+
+  const toast = document.getElementById('toast');
+  const pigmentsGrid = document.getElementById('pigmentsGrid');
+  const lanesContainer = document.getElementById('lanesContainer');
+  const compareSlotA = document.getElementById('compareSlotA');
+  const compareSlotB = document.getElementById('compareSlotB');
+  const compareHexA = document.getElementById('compareHexA');
+  const compareHexB = document.getElementById('compareHexB');
+  const verdictBox = document.getElementById('verdictBox');
+  const harmonyOutput = document.getElementById('harmonyOutput');
+  const favoritesGrid = document.getElementById('favoritesGrid');
+  const favoritesEmpty = document.getElementById('favoritesEmpty');
+  const quickFavGrid = document.getElementById('quickFavGrid');
+  const quickFavEmpty = document.getElementById('quickFavEmpty');
+  const capsuleGrid = document.getElementById('capsuleGrid');
+  const photoUpload = document.getElementById('photoUpload');
+  const photoInput = document.getElementById('photoInput');
+  const canvasWrap = document.getElementById('canvasWrap');
+  const photoCanvas = document.getElementById('photoCanvas');
+  const ctx = photoCanvas.getContext('2d');
+  const sampleOutput = document.getElementById('sampleOutput');
+
+  // ============================================
+  // UTILITIES
+  // ============================================
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove('show'), 1400);
+  }
+
+  async function copyText(text) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (e) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    showToast('Copied!');
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function hexToRgb(hex) {
+    const m = hex.match(/^#?([0-9a-fA-F]{6})$/);
+    if (!m) return { r: 0, g: 0, b: 0 };
+    const n = parseInt(m[1], 16);
+    return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+  }
+
+  function rgbToHex(r, g, b) {
+    const to = v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+    return '#' + to(r) + to(g) + to(b);
+  }
+
+  function rgbToHsl(r, g, b) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r, g, b), min = Math.min(r, g, b);
+    let h = 0, s = 0, l = (max + min) / 2;
+    const d = max - min;
+    if (d !== 0) {
+      s = d / (1 - Math.abs(2 * l - 1));
+      switch (max) {
+        case r: h = ((g - b) / d) % 6; break;
+        case g: h = ((b - r) / d) + 2; break;
+        case b: h = ((r - g) / d) + 4; break;
+      }
+      h = Math.round(h * 60);
+      if (h < 0) h += 360;
+    }
+    return { h, s, l };
+  }
+
+  function angDist(a, b) {
+    let d = Math.abs(a - b) % 360;
+    return d > 180 ? 360 - d : d;
+  }
+
+  function findByHex(hex) {
+    const hx = (hex || '').toLowerCase();
+    return PALETTE.find(c => c.hex === hx) ||
+           PIGMENTS.find(p => p.hex.toLowerCase() === hx) ||
+           null;
+  }
+
+  function luminance(hex) {
+    const rgb = hexToRgb(hex);
+    return (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+  }
+
+  // ============================================
+  // NAVIGATION
+  // ============================================
+
+  function switchSection(target) {
+    currentSection = target;
+    
+    // Update pills
+    document.querySelectorAll('.nav-pills .pill[data-target]').forEach(pill => {
+      pill.classList.toggle('active', pill.getAttribute('data-target') === target);
+    });
+
+    // Show/hide sections
+    document.querySelectorAll('.section[data-section]').forEach(section => {
+      const sectionType = section.getAttribute('data-section');
+      section.classList.toggle('hidden', sectionType !== target);
+    });
+
+    // Handle export button row visibility
+    const exportRow = document.querySelector('.buttons-row[data-section="palette"]');
+    if (exportRow) {
+      exportRow.style.display = target === 'palette' ? 'flex' : 'none';
+    }
+  }
+
+  // Nav pill clicks
+  document.querySelectorAll('.pill[data-target]').forEach(pill => {
+    pill.addEventListener('click', () => {
+      switchSection(pill.getAttribute('data-target'));
+    });
+  });
+
+  // View all favorites button
+  document.getElementById('viewAllFavBtn').addEventListener('click', () => {
+    switchSection('favorites');
+  });
+
+  // ============================================
+  // RENDER FUNCTIONS
+  // ============================================
+
+  function renderPigments() {
+    pigmentsGrid.innerHTML = PIGMENTS.map(p => `
+      <div class="pigment" data-hex="${p.hex.toLowerCase()}" data-name="${escapeHtml(p.name)}" title="${escapeHtml(p.note)}">
+        <div class="pigment-color" style="background-color: ${p.hex};"></div>
+        <div class="pigment-label">${escapeHtml(p.name)}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderLanes() {
+    lanesContainer.innerHTML = LANES.map(lane => `
+      <div class="lane" data-lane-key="${lane.key}">
+        <div class="lane-header">
+          <span class="lane-name">${escapeHtml(lane.name)}</span>
+          <span class="lane-note">${escapeHtml(lane.note)}</span>
+        </div>
+        <div class="swatches-row">
+          ${lane.colors.map(([name, hex, note]) => `
+            <div class="swatch" data-hex="${hex.toLowerCase()}" data-name="${escapeHtml(name)}" title="${escapeHtml(note)}">
+              <div class="swatch-color" style="background-color: ${hex};"></div>
+              <div class="swatch-info">
+                <div>
+                  <div class="swatch-name">${escapeHtml(name)}</div>
+                  <div class="swatch-hex">${hex.toLowerCase()}</div>
+                </div>
+                <span class="swatch-star">★</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderFavorites() {
+    const favSet = new Set(favorites.map(f => f.hex.toLowerCase()));
+    
+    // Update stars on all swatches
+    document.querySelectorAll('.swatch[data-hex]').forEach(el => {
+      const hx = el.getAttribute('data-hex').toLowerCase();
+      el.classList.toggle('favorite', favSet.has(hx));
+    });
+
+    // Main favorites grid
+    if (!favorites.length) {
+      favoritesEmpty.style.display = 'block';
+      favoritesGrid.querySelectorAll('.swatch').forEach(el => el.remove());
+    } else {
+      favoritesEmpty.style.display = 'none';
+      favoritesGrid.querySelectorAll('.swatch').forEach(el => el.remove());
+
+      favorites.forEach(f => {
+        const el = createSwatchElement(f.hex, f.name, true);
+        favoritesGrid.appendChild(el);
+      });
+    }
+
+    // Quick favorites preview (max 8)
+    if (!favorites.length) {
+      quickFavEmpty.style.display = 'block';
+      quickFavGrid.querySelectorAll('.mini-chip').forEach(el => el.remove());
+    } else {
+      quickFavEmpty.style.display = 'none';
+      quickFavGrid.querySelectorAll('.mini-chip').forEach(el => el.remove());
+
+      favorites.slice(0, 8).forEach(f => {
+        const chip = document.createElement('div');
+        chip.className = 'mini-chip';
+        chip.style.cssText = `
+          aspect-ratio: 1;
+          border-radius: 6px;
+          background-color: ${f.hex};
+          border: 1px solid var(--glass-border);
+          cursor: pointer;
+        `;
+        chip.setAttribute('data-hex', f.hex);
+        chip.setAttribute('data-name', f.name);
+        chip.title = f.name;
+        chip.addEventListener('click', () => handleSwatchTap(chip));
+        quickFavGrid.appendChild(chip);
+      });
+    }
+  }
+
+  function createSwatchElement(hex, name, isFavorite = false) {
+    const el = document.createElement('div');
+    el.className = 'swatch' + (isFavorite ? ' favorite' : '');
+    el.setAttribute('data-hex', hex);
+    el.setAttribute('data-name', name);
+    el.innerHTML = `
+      <div class="swatch-color" style="background-color: ${hex};"></div>
+      <div class="swatch-info">
+        <div>
+          <div class="swatch-name">${escapeHtml(name)}</div>
+          <div class="swatch-hex">${hex}</div>
+        </div>
+        <span class="swatch-star">★</span>
+      </div>
+    `;
+    el.addEventListener('click', () => handleSwatchTap(el));
+    return el;
+  }
+
+  const CAPSULE_SLOTS = [
+    ['top', 'Top'],
+    ['bottom', 'Bottom'],
+    ['outer', 'Outer'],
+    ['shoe', 'Shoe'],
+    ['bag', 'Bag'],
+    ['jewelry', 'Jewelry'],
+    ['lip', 'Lip'],
+    ['liner', 'Liner']
+  ];
+
+  function renderCapsule() {
+    capsuleGrid.innerHTML = CAPSULE_SLOTS.map(([key, label]) => {
+      const val = capsule[key];
+      const hex = val ? val.hex : null;
+      const name = val ? val.name : 'Tap to assign';
+      return `
+        <div class="capsule-slot ${val ? 'filled' : ''}" data-slot="${key}">
+          <div class="capsule-slot-header">
+            <div class="capsule-slot-chip" style="background-color: ${hex || 'var(--bg-mid)'};"></div>
+            <span class="capsule-slot-label">${label}</span>
+          </div>
+          <div class="capsule-slot-value">${escapeHtml(name)}</div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function renderCompare() {
+    if (compareA) {
+      compareSlotA.style.backgroundColor = compareA;
+      compareSlotA.classList.add('filled');
+      compareHexA.textContent = compareA;
+      const lumA = luminance(compareA);
+      compareHexA.style.color = lumA > 0.5 ? '#1c2128' : '#e6edf3';
+      compareSlotA.querySelector('.compare-slot-label').style.color = lumA > 0.5 ? '#1c2128' : '#e6edf3';
+    } else {
+      compareSlotA.style.backgroundColor = 'var(--bg-elevated)';
+      compareSlotA.classList.remove('filled');
+      compareHexA.textContent = 'Tap a swatch';
+      compareHexA.style.color = '';
+      compareSlotA.querySelector('.compare-slot-label').style.color = '';
+    }
+
+    if (compareB) {
+      compareSlotB.style.backgroundColor = compareB;
+      compareSlotB.classList.add('filled');
+      compareHexB.textContent = compareB;
+      const lumB = luminance(compareB);
+      compareHexB.style.color = lumB > 0.5 ? '#1c2128' : '#e6edf3';
+      compareSlotB.querySelector('.compare-slot-label').style.color = lumB > 0.5 ? '#1c2128' : '#e6edf3';
+    } else {
+      compareSlotB.style.backgroundColor = 'var(--bg-elevated)';
+      compareSlotB.classList.remove('filled');
+      compareHexB.textContent = 'Tap a swatch';
+      compareHexB.style.color = '';
+      compareSlotB.querySelector('.compare-slot-label').style.color = '';
+    }
+
+    verdictBox.textContent = buildVerdict(compareA, compareB);
+  }
+
+  function buildVerdict(aHex, bHex) {
+    if (!aHex || !bHex) {
+      return 'Select two colors to see which one harmonizes better with your coloring — and where each belongs.';
+    }
+
+    const a = hexToRgb(aHex), b = hexToRgb(bHex);
+    const hslA = rgbToHsl(a.r, a.g, a.b);
+    const hslB = rgbToHsl(b.r, b.g, b.b);
+    
+    const scoreA = scoreForYou(hslA);
+    const scoreB = scoreForYou(hslB);
+    const winnerHex = scoreA >= scoreB ? aHex : bHex;
+    const loserHex = scoreA >= scoreB ? bHex : aHex;
+    const winner = findByHex(winnerHex);
+    const loser = findByHex(loserHex);
+    
+    const winnerName = winner?.name || 'Color A';
+    const loserName = loser?.name || 'Color B';
+    
+    return `${winnerName} wins — it'll harmonize better with your cool-muted coloring. Use it ${useHint(scoreA >= scoreB ? hslA : hslB)}. ${loserName} reads ${useHint(scoreA >= scoreB ? hslB : hslA)} on you.`;
+  }
+
+  function scoreForYou(hsl) {
+    const coolPeak = 200;
+    const coolScore = 1 - angDist(hsl.h, coolPeak) / 180;
+    const mutedScore = 1 - Math.min(hsl.s, 0.6) / 0.6;
+    const depthScore = 1 - Math.abs(hsl.l - 0.4) / 0.4;
+    return (coolScore * 0.4) + (mutedScore * 0.35) + (depthScore * 0.25);
+  }
+
+  function useHint(hsl) {
+    const l = hsl.l;
+    const s = hsl.s;
+    if (l < 0.25) return 'as an anchor or liner';
+    if (l > 0.7) return 'as a highlight or base';
+    if (s < 0.2) return 'as structure or a neutral';
+    return 'near the face or as a statement';
+  }
+
+  // ============================================
+  // EVENT HANDLERS
+  // ============================================
+
+  let lastTap = { time: 0, hex: null };
+
+  function handleSwatchTap(el) {
+    const hex = el.getAttribute('data-hex').toLowerCase();
+    const name = el.getAttribute('data-name') || findByHex(hex)?.name || 'Color';
+    const now = Date.now();
+
+    // Double-tap detection
+    if (lastTap.hex === hex && (now - lastTap.time) < 400) {
+      toggleFavorite(hex, name);
+      lastTap = { time: 0, hex: null };
+      return;
+    }
+
+    lastTap = { time: now, hex };
+    selectedHex = hex;
+
+    // Update compare
+    if (!compareA || (compareA && compareB)) {
+      compareA = hex;
+      compareB = null;
+    } else {
+      compareB = hex;
+    }
+    renderCompare();
+
+    // Update selection visual
+    document.querySelectorAll('.swatch.selected').forEach(s => s.classList.remove('selected'));
+    el.classList.add('selected');
+
+    copyText(hex);
+  }
+
+  function toggleFavorite(hex, name) {
+    const idx = favorites.findIndex(f => f.hex.toLowerCase() === hex.toLowerCase());
+    if (idx >= 0) {
+      favorites.splice(idx, 1);
+      showToast('Removed from favorites');
+    } else {
+      favorites.unshift({ hex, name: name || findByHex(hex)?.name || 'Color' });
+      if (favorites.length > 24) favorites = favorites.slice(0, 24);
+      showToast('Added to favorites ★');
+    }
+    saveJSON(LS_FAVORITES, favorites);
+    renderFavorites();
+  }
+
+  function attachSwatchListeners() {
+    document.querySelectorAll('.swatch[data-hex], .pigment[data-hex]').forEach(el => {
+      if (el.dataset.bound) return;
+      el.dataset.bound = '1';
+      el.addEventListener('click', () => handleSwatchTap(el));
+    });
+  }
+
+  // Compare clear
+  document.getElementById('clearCompareBtn').addEventListener('click', () => {
+    compareA = null;
+    compareB = null;
+    renderCompare();
+    showToast('Cleared');
+  });
+
+  // Harmony
+  document.querySelectorAll('[data-harmony]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (!selectedHex) {
+        showToast('Select a swatch first');
+        return;
+      }
+      renderHarmony(btn.getAttribute('data-harmony'));
+    });
+  });
+
+  function renderHarmony(type) {
+    const baseRgb = hexToRgb(selectedHex);
+    const baseHsl = rgbToHsl(baseRgb.r, baseRgb.g, baseRgb.b);
+    let targetHues = [];
+
+    switch (type) {
+      case 'analog':
+        targetHues = [(baseHsl.h + 25) % 360, (baseHsl.h + 335) % 360];
+        break;
+      case 'complement':
+        targetHues = [(baseHsl.h + 180) % 360];
+        break;
+      case 'triad':
+        targetHues = [(baseHsl.h + 120) % 360, (baseHsl.h + 240) % 360];
+        break;
+      case 'mono':
+        targetHues = [baseHsl.h, baseHsl.h, baseHsl.h];
+        break;
+    }
+
+    const picks = [{ hex: selectedHex, name: findByHex(selectedHex)?.name || 'Base' }];
+    
+    targetHues.forEach(targetH => {
+      const best = PALETTE
+        .filter(c => c.hex !== selectedHex && !picks.some(p => p.hex === c.hex))
+        .sort((a, b) => {
+          const aRgb = hexToRgb(a.hex);
+          const bRgb = hexToRgb(b.hex);
+          const aHsl = rgbToHsl(aRgb.r, aRgb.g, aRgb.b);
+          const bHsl = rgbToHsl(bRgb.r, bRgb.g, bRgb.b);
+          return angDist(aHsl.h, targetH) - angDist(bHsl.h, targetH);
+        })[0];
+      if (best) picks.push({ hex: best.hex, name: best.name });
+    });
+
+    const neutral = PALETTE.find(c => c.laneKey === 'soft_neutrals' && !picks.some(p => p.hex === c.hex));
+    if (neutral && picks.length < 4) {
+      picks.push({ hex: neutral.hex, name: neutral.name });
+    }
+
+    harmonyOutput.innerHTML = picks.slice(0, 4).map(p => `
+      <div class="harmony-chip" style="background-color: ${p.hex};" data-hex="${p.hex}" data-name="${escapeHtml(p.name)}">
+        <span class="harmony-chip-label">${escapeHtml(p.name)}</span>
+      </div>
+    `).join('');
+
+    harmonyOutput.querySelectorAll('.harmony-chip').forEach(el => {
+      el.addEventListener('click', () => handleSwatchTap(el));
+    });
+  }
+
+  // Capsule
+  capsuleGrid.addEventListener('click', e => {
+    const slot = e.target.closest('.capsule-slot');
+    if (!slot) return;
+    if (!selectedHex) {
+      showToast('Select a swatch first');
+      return;
+    }
+    const key = slot.getAttribute('data-slot');
+    const item = findByHex(selectedHex);
+    capsule[key] = { hex: selectedHex, name: item?.name || 'Color' };
+    saveJSON(LS_CAPSULE, capsule);
+    renderCapsule();
+    showToast('Assigned to ' + key);
+  });
+
+  document.getElementById('clearCapsuleBtn').addEventListener('click', () => {
+    capsule = {};
+    saveJSON(LS_CAPSULE, capsule);
+    renderCapsule();
+    showToast('Capsule cleared');
+  });
+
+  document.getElementById('copyCapsuleBtn').addEventListener('click', () => {
+    const lines = ['CAPSULE OUTFIT', ''];
+    CAPSULE_SLOTS.forEach(([key, label]) => {
+      const val = capsule[key];
+      lines.push(`${label}: ${val ? `${val.name} (${val.hex})` : '—'}`);
+    });
+    copyText(lines.join('\n'));
+  });
+
+  // Photo sampler
+  photoUpload.addEventListener('click', () => photoInput.click());
+  photoUpload.addEventListener('dragover', e => { 
+    e.preventDefault(); 
+    photoUpload.style.borderColor = 'var(--accent)'; 
+  });
+  photoUpload.addEventListener('dragleave', () => { 
+    photoUpload.style.borderColor = ''; 
+  });
+  photoUpload.addEventListener('drop', e => {
+    e.preventDefault();
+    photoUpload.style.borderColor = '';
+    const file = e.dataTransfer.files[0];
+    if (file) loadImage(file);
+  });
+
+  photoInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (file) loadImage(file);
+  });
+
+  function loadImage(file) {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 800, maxH = 550;
+      let w = img.width, h = img.height;
+      const scale = Math.min(maxW / w, maxH / h, 1);
+      w = Math.round(w * scale);
+      h = Math.round(h * scale);
+      photoCanvas.width = w;
+      photoCanvas.height = h;
+      ctx.drawImage(img, 0, 0, w, h);
+      imageData = ctx.getImageData(0, 0, w, h);
+      photoUpload.style.display = 'none';
+      canvasWrap.style.display = 'block';
+      sampleOutput.innerHTML = '';
+      showToast('Tap image to sample');
+    };
+    img.src = URL.createObjectURL(file);
+  }
+
+  photoCanvas.addEventListener('click', e => {
+    if (!imageData) return;
+    const rect = photoCanvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX - rect.left) * (photoCanvas.width / rect.width));
+    const y = Math.floor((e.clientY - rect.top) * (photoCanvas.height / rect.height));
+    const idx = (y * photoCanvas.width + x) * 4;
+    const d = imageData.data;
+    const hex = rgbToHex(d[idx], d[idx + 1], d[idx + 2]);
+    showSample(hex);
+  });
+
+  function showSample(hex) {
+    const nearest = findNearestPalette(hex, 6);
+    
+    sampleOutput.innerHTML = `
+      <div class="sampled-color">
+        <div class="sampled-chip" style="background-color: ${hex};"></div>
+        <div class="sampled-info">
+          <div class="sampled-hex">${hex}</div>
+          <div class="sampled-label">Sampled color</div>
+        </div>
+        <button class="btn btn-sm" id="copySampleBtn">Copy</button>
+      </div>
+      <p class="helper-text" style="margin-bottom: 10px;">Nearest palette matches:</p>
+      <div class="nearest-matches">
+        ${nearest.map(n => `
+          <div class="mini-swatch" data-hex="${n.hex}" data-name="${escapeHtml(n.name)}">
+            <div class="mini-swatch-color" style="background-color: ${n.hex};"></div>
+            <div class="mini-swatch-name">${escapeHtml(n.name)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    document.getElementById('copySampleBtn').addEventListener('click', () => copyText(hex));
+
+    sampleOutput.querySelectorAll('.mini-swatch').forEach(el => {
+      el.addEventListener('click', () => handleSwatchTap(el));
+    });
+
+    showToast('Sampled ' + hex);
+  }
+
+  function findNearestPalette(hex, count) {
+    const rgb = hexToRgb(hex);
+    const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    
+    return PALETTE
+      .map(c => {
+        const cRgb = hexToRgb(c.hex);
+        const cHsl = rgbToHsl(cRgb.r, cRgb.g, cRgb.b);
+        const dH = angDist(hsl.h, cHsl.h) / 180;
+        const dS = Math.abs(hsl.s - cHsl.s);
+        const dL = Math.abs(hsl.l - cHsl.l);
+        return { ...c, dist: dH * 0.5 + dS * 0.25 + dL * 0.25 };
+      })
+      .sort((a, b) => a.dist - b.dist)
+      .slice(0, count);
+  }
+
+  // Daily triad
+  document.getElementById('dailyTriadBtn').addEventListener('click', () => {
+    const today = new Date().toDateString();
+    let oracle = loadJSON(LS_ORACLE, null);
+    
+    if (!oracle || oracle.date !== today) {
+      const neutral = PALETTE.filter(c => c.laneKey === 'soft_neutrals')[Math.floor(Math.random() * 6)];
+      const cool = PALETTE.filter(c => ['dusty_teals', 'soft_blues'].includes(c.laneKey))[Math.floor(Math.random() * 12)];
+      const accent = PALETTE.filter(c => ['berry_rose', 'orchid_violet'].includes(c.laneKey))[Math.floor(Math.random() * 12)];
+      oracle = { date: today, colors: [neutral, cool, accent] };
+      saveJSON(LS_ORACLE, oracle);
+    }
+
+    harmonyOutput.innerHTML = oracle.colors.map(c => `
+      <div class="harmony-chip" style="background-color: ${c.hex};" data-hex="${c.hex}" data-name="${escapeHtml(c.name)}">
+        <span class="harmony-chip-label">${escapeHtml(c.name)}</span>
+      </div>
+    `).join('');
+
+    harmonyOutput.querySelectorAll('.harmony-chip').forEach(el => {
+      el.addEventListener('click', () => handleSwatchTap(el));
+    });
+
+    showToast('Your daily triad ✨');
+  });
+
+  // Export
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const lines = ['THE ROGUE PALETTE', '', 'SOURCE PIGMENTS:', ''];
+    PIGMENTS.forEach(p => lines.push(`${p.name}: ${p.hex} — ${p.note}`));
+    lines.push('', 'WEARABLE COLORS:', '');
+    LANES.forEach(lane => {
+      lines.push(`${lane.name.toUpperCase()} — ${lane.note}`);
+      lane.colors.forEach(([name, hex, note]) => lines.push(`  ${name}: ${hex} — ${note}`));
+      lines.push('');
+    });
+    if (favorites.length) {
+      lines.push('FAVORITES:', '');
+      favorites.forEach(f => lines.push(`  ${f.name}: ${f.hex}`));
+    }
+    copyText(lines.join('\n'));
+  });
+
+  document.getElementById('copyPaletteBtn').addEventListener('click', () => {
+    const lines = ['THE ROGUE PALETTE', '', 'SOURCE PIGMENTS:', ''];
+    PIGMENTS.forEach(p => lines.push(`${p.name}: ${p.hex} — ${p.note}`));
+    lines.push('', 'WEARABLE COLORS:', '');
+    LANES.forEach(lane => {
+      lines.push(`${lane.name.toUpperCase()} — ${lane.note}`);
+      lane.colors.forEach(([name, hex, note]) => lines.push(`  ${name}: ${hex} — ${note}`));
+      lines.push('');
+    });
+    copyText(lines.join('\n'));
+  });
+
+  document.getElementById('downloadJsonBtn').addEventListener('click', () => {
+    const data = {
+      title: 'The Rogue Palette',
+      pigments: PIGMENTS,
+      lanes: LANES,
+      favorites,
+      capsule
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'rogue_palette.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    showToast('Downloaded JSON');
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Reset all local data (favorites, capsule, daily triad)?')) return;
+    favorites = [];
+    capsule = {};
+    localStorage.removeItem(LS_FAVORITES);
+    localStorage.removeItem(LS_CAPSULE);
+    localStorage.removeItem(LS_ORACLE);
+    renderFavorites();
+    renderCapsule();
+    showToast('Reset complete');
+  });
+
+  // ============================================
+  // INIT
+  // ============================================
+
+  renderPigments();
+  renderLanes();
+  renderFavorites();
+  renderCapsule();
+  renderCompare();
+  attachSwatchListeners();
+  switchSection('palette');
+
+})();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

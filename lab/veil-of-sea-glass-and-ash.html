@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Veil of Sea Glass and Ash </title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Veil of Sea-Glass & Ash — Bespoke Palette</title>
+  <style>
+    :root{
+      --bg0:#0b0f16;
+      --bg1:#0f1522;
+
+      /* IMPORTANT: avoid 8-digit hex here; iOS canvas can fail on #RRGGBBAA */
+      --card: rgba(18,26,40,.80);
+      --card2: rgba(14,21,33,.80);
+
+      --border:#223047;
+      --text:#e7eefc;
+      --muted:#a9b7d3;
+      --faint:#7f90b3;
+      --accent:#7aa8ff;
+      --accent2:#f2b7c8;
+      --good:#8fe2c2;
+      --warn:#ffd38a;
+      --shadow: 0 18px 55px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 28px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    }
+
+    /* LIGHT THEME */
+    [data-theme="light"]{
+      --bg0:#f6f8ff;
+      --bg1:#eef2ff;
+
+      /* IMPORTANT: avoid 8-digit hex here too */
+      --card: rgba(255,255,255,.86);
+      --card2: rgba(255,255,255,.86);
+
+      --border:#d7def2;
+      --text:#0e1730;
+      --muted:#40507a;
+      --faint:#6c7aa0;
+      --accent:#2c63ff;
+      --accent2:#c63d6a;
+      --good:#1b9c78;
+      --warn:#b86c00;
+      --shadow: 0 18px 55px rgba(10,30,90,.12);
+    }
+
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(122,168,255,.22), transparent 55%),
+        radial-gradient(900px 600px at 80% 5%, rgba(242,183,200,.20), transparent 60%),
+        radial-gradient(1000px 900px at 70% 85%, rgba(143,226,194,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    a{color:inherit}
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:32px 18px 90px;
+    }
+
+    /* HERO */
+    .hero{
+      position:relative;
+      border:1px solid var(--border);
+      background:
+        linear-gradient(135deg, rgba(122,168,255,.16), rgba(242,183,200,.12), rgba(143,226,194,.10)),
+        var(--card);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius2);
+      padding:26px 22px 18px;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(600px 260px at 20% 0%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(500px 220px at 80% 0%, rgba(255,255,255,.10), transparent 60%);
+      pointer-events:none;
+    }
+    .heroTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+      position:relative;
+    }
+    .title{
+      margin:0;
+      font-weight:820;
+      letter-spacing:-.02em;
+      font-size: clamp(28px, 4vw, 46px);
+      line-height:1.04;
+    }
+    .subtitle{
+      margin:10px 0 0;
+      color:var(--muted);
+      max-width:72ch;
+      font-size: 14.5px;
+      line-height:1.5;
+    }
+
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      justify-content:flex-end;
+      align-items:center;
+      margin-top:6px;
+    }
+    .chip{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      padding:8px 10px;
+      border-radius: 999px;
+      font-size:12.5px;
+      color:var(--muted);
+      display:flex;
+      gap:8px;
+      align-items:center;
+      user-select:none;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    [data-theme="light"] .chip{background: rgba(20,40,90,.05);}
+
+    .btn{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius: 12px;
+      font-weight:650;
+      font-size:12.5px;
+      cursor:pointer;
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.09); border-color: color-mix(in oklab, var(--border), var(--accent) 18%);}
+    .btn:active{transform: translateY(0px) scale(.99);}
+    .btn.small{padding:8px 10px; border-radius: 10px; font-weight:650; font-size:12px;}
+    .btn.primary{border-color: color-mix(in oklab, var(--accent), var(--border) 55%); background: color-mix(in oklab, var(--accent), transparent 85%);}
+    .btn.ghost{background: transparent;}
+    .btn.danger{border-color: color-mix(in oklab, #ff5a7a, var(--border) 60%); background: color-mix(in oklab, #ff5a7a, transparent 88%);}
+
+    .grid{
+      margin-top:18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:14px;
+      position:relative;
+      z-index:1;
+    }
+    @media (max-width: 920px){
+      .grid{grid-template-columns:1fr}
+      .toolbar{justify-content:flex-start}
+    }
+
+    .panel{
+      border:1px solid var(--border);
+      background: var(--card2);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding:16px;
+      overflow:hidden;
+    }
+    .panel h2{
+      margin:0 0 10px;
+      font-size:14px;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .kvs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:10px;
+    }
+    .kv{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      border-radius: 12px;
+      padding:10px 10px;
+      min-width: 160px;
+      flex:1;
+    }
+    .kv .k{font-size:11px; color:var(--faint); text-transform:uppercase; letter-spacing:.08em; font-weight:800}
+    .kv .v{font-size:13px; color:var(--text); margin-top:6px; font-weight:700}
+    .kv .hint{font-size:12px; color:var(--muted); margin-top:6px; line-height:1.35}
+
+    /* BODY COLOR RENDER */
+    .bodyRow{
+      display:flex;
+      gap:14px;
+      align-items:stretch;
+      flex-wrap:wrap;
+    }
+    .bodySwatches{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+      flex:1;
+      min-width: 280px;
+    }
+    .bodyCard{
+      border:1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,.05);
+      padding:10px;
+      position:relative;
+      overflow:hidden;
+      cursor: pointer;
+      user-select:none;
+    }
+    .bodyCard:hover{border-color: color-mix(in oklab, var(--border), var(--accent) 18%);}
+    .bodyCard .label{font-size:11px; color:var(--faint); text-transform:uppercase; letter-spacing:.08em; font-weight:900}
+    .bodyCard .name{font-weight:800; margin-top:6px}
+    .bodyCard .hex{font-family:var(--mono); font-size:11.5px; color:var(--muted); margin-top:6px}
+    .swatch{
+      height:56px;
+      border-radius: 12px;
+      border:1px solid color-mix(in oklab, var(--border), #fff 7%);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.12);
+      margin-top:10px;
+      background: var(--c);
+    }
+    .render{
+      flex:1;
+      min-width: 280px;
+      border:1px solid var(--border);
+      border-radius: 18px;
+      background:
+        radial-gradient(220px 160px at 20% 20%, rgba(255,255,255,.12), transparent 60%),
+        radial-gradient(220px 160px at 80% 20%, rgba(255,255,255,.10), transparent 60%),
+        rgba(255,255,255,.05);
+      padding:14px;
+      position:relative;
+      overflow:hidden;
+    }
+    .renderTitle{
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      margin-bottom:10px;
+    }
+    .renderTitle div:first-child{font-weight:900; letter-spacing:.02em}
+    .renderTitle .mini{font-size:12px; color:var(--muted)}
+    .renderCanvas{
+      width:100%;
+      height:180px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: linear-gradient(135deg, rgba(0,0,0,.12), rgba(0,0,0,0));
+      display:block;
+    }
+
+    /* TOP 10 */
+    .top10{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 920px){ .top10{grid-template-columns: repeat(2, minmax(0,1fr));} }
+    @media (max-width: 420px){ .top10{grid-template-columns: 1fr;} }
+
+    .colorCard{
+      border:1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .12s ease, border-color .12s ease;
+      min-height: 108px;
+    }
+    .colorCard:hover{
+      transform: translateY(-2px);
+      border-color: color-mix(in oklab, var(--border), var(--accent) 22%);
+    }
+    .colorCard .bar{
+      height:44px;
+      background: var(--c);
+    }
+    .colorCard .meta{
+      padding:10px 10px 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .colorCard .name{
+      font-weight:900;
+      font-size:13px;
+      line-height:1.15;
+    }
+    .colorCard .hex{
+      font-family:var(--mono);
+      font-size:11px;
+      color:var(--muted);
+      margin-top:6px;
+    }
+    .tag{
+      font-size:10px;
+      text-transform:uppercase;
+      letter-spacing:.10em;
+      color:rgba(255,255,255,.78);
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(255,255,255,.18);
+      padding:6px 8px;
+      border-radius: 999px;
+      margin:10px;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      position:absolute;
+      top:0; left:0;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    [data-theme="light"] .tag{
+      color: rgba(10,18,40,.75);
+      background: rgba(255,255,255,.65);
+      border-color: rgba(30,60,160,.12);
+    }
+    .heart{
+      position:absolute;
+      top:8px; right:8px;
+      width:34px; height:34px;
+      display:grid; place-items:center;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.18);
+      background: rgba(0,0,0,.16);
+      font-size:14px;
+      cursor:pointer;
+    }
+    .heart.faved{
+      background: color-mix(in oklab, var(--accent2), transparent 70%);
+      border-color: color-mix(in oklab, var(--accent2), #fff 20%);
+    }
+
+    /* LIBRARY */
+    .filters{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+    .pillRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+    }
+    .pill{
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      padding:8px 10px;
+      border-radius: 999px;
+      font-size:12px;
+      font-weight:800;
+      cursor:pointer;
+      user-select:none;
+      transition: border-color .12s ease, background .12s ease, transform .12s ease;
+    }
+    .pill:hover{transform: translateY(-1px); border-color: color-mix(in oklab, var(--border), var(--accent) 18%);}
+    .pill.active{
+      background: color-mix(in oklab, var(--accent), transparent 86%);
+      color: color-mix(in oklab, var(--text), var(--accent) 12%);
+      border-color: color-mix(in oklab, var(--accent), var(--border) 55%);
+    }
+
+    .search{
+      flex:1;
+      min-width: 220px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+    }
+    .input{
+      width:100%;
+      max-width: 420px;
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding:10px 12px;
+      background: rgba(255,255,255,.05);
+      color:var(--text);
+      outline:none;
+      font-weight:650;
+      font-size:12.5px;
+    }
+    .input::placeholder{color: color-mix(in oklab, var(--muted), transparent 20%);}
+
+    .library{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 920px){ .library{grid-template-columns: repeat(2, minmax(0,1fr));} }
+    @media (max-width: 420px){ .library{grid-template-columns: 1fr;} }
+
+    /* MAKEUP TRY-ON */
+    .makeupRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 920px){ .makeupRow{grid-template-columns:1fr;} }
+
+    .faceBox{
+      border:1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+      padding:12px;
+    }
+    .faceTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-bottom:10px;
+    }
+    .faceTop .hint{font-size:12px; color:var(--muted); line-height:1.3}
+    .faceSvg{
+      width:100%;
+      height:auto;
+      display:block;
+      border-radius: 14px;
+      background:
+        radial-gradient(260px 170px at 35% 30%, rgba(255,255,255,.10), transparent 60%),
+        radial-gradient(200px 140px at 70% 25%, rgba(255,255,255,.08), transparent 60%),
+        rgba(0,0,0,.10);
+      border:1px solid var(--border);
+    }
+    [data-theme="light"] .faceSvg{
+      background:
+        radial-gradient(260px 170px at 35% 30%, rgba(0,0,0,.03), transparent 60%),
+        radial-gradient(200px 140px at 70% 25%, rgba(0,0,0,.03), transparent 60%),
+        rgba(255,255,255,.6);
+    }
+    .makeupControls{
+      border:1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      padding:12px;
+    }
+    .subhead{
+      margin:0 0 8px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .miniRow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:10px;}
+    .toggle{
+      display:flex; gap:8px; align-items:center;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      border-radius: 999px;
+      padding:6px 8px;
+      font-size:12px;
+      cursor:pointer;
+      user-select:none;
+      color:var(--muted);
+      font-weight:800;
+    }
+    .toggle.active{background: color-mix(in oklab, var(--good), transparent 88%); border-color: color-mix(in oklab, var(--good), var(--border) 55%); color: color-mix(in oklab, var(--text), var(--good) 12%);}
+
+    .pillGrid{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      margin:10px 0 8px;
+    }
+    .mPill{
+      display:flex; gap:8px; align-items:center;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      border-radius: 999px;
+      padding:8px 10px;
+      cursor:pointer;
+      user-select:none;
+      font-size:12px;
+      font-weight:850;
+      color:var(--text);
+    }
+    .dot{width:12px; height:12px; border-radius:999px; background: var(--c); border:1px solid rgba(255,255,255,.25);}
+    .mPill small{font-family:var(--mono); color:var(--muted); font-weight:750}
+
+    .actions{
+      display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;
+    }
+
+    /* CHART */
+    .chartBox{
+      border:1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      padding:12px;
+      overflow:hidden;
+    }
+    .chartMeta{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+      margin-bottom:10px;
+    }
+    .chartMeta p{margin:0; color:var(--muted); font-size:12.5px; line-height:1.35}
+    .chartLegend{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+      font-size:11.5px; color:var(--muted);
+    }
+    .legendItem{display:flex; gap:6px; align-items:center}
+    .legendSw{width:12px; height:12px; border-radius:3px; background: var(--c); border:1px solid rgba(255,255,255,.20)}
+    canvas.chart{
+      width:100%;
+      height:180px;
+      display:block;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(0,0,0,.08);
+    }
+    [data-theme="light"] canvas.chart{background: rgba(0,0,0,.03);}
+
+    /* LOOKBOOK */
+    .lookbook{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+    }
+    @media (max-width: 920px){ .lookbook{grid-template-columns:1fr} }
+
+    .look{
+      border:1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255,255,255,.05);
+      padding:12px;
+      overflow:hidden;
+      position:relative;
+    }
+    .look h3{
+      margin:0 0 10px;
+      font-size:14px;
+      font-weight:950;
+      letter-spacing:-.01em;
+      display:flex; justify-content:space-between; align-items:center;
+      gap:10px;
+    }
+    .look h3 span{color:var(--muted); font-size:12px; font-weight:850; letter-spacing:.06em; text-transform:uppercase}
+    .rows{
+      display:grid; gap:8px;
+      font-size:12.5px;
+    }
+    .row{
+      display:flex; justify-content:space-between; gap:10px;
+      border-top:1px dashed color-mix(in oklab, var(--border), transparent 15%);
+      padding-top:8px;
+    }
+    .row:first-child{border-top:none; padding-top:0}
+    .row .k{color:var(--muted); font-weight:850}
+    .row .v{font-weight:850; text-align:right; color:var(--text)}
+    .row .v small{display:block; color:var(--muted); font-family:var(--mono); font-weight:750; margin-top:3px}
+    .miniActions{
+      margin-top:10px;
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+
+    /* TOAST */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform: translateX(-50%);
+      background: rgba(15,22,36,.80);
+      color: #eef3ff;
+      border:1px solid rgba(255,255,255,.15);
+      padding:10px 12px;
+      border-radius: 999px;
+      font-weight:800;
+      font-size:12.5px;
+      box-shadow: 0 18px 50px rgba(0,0,0,.35);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .18s ease, transform .18s ease;
+      z-index:999;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      max-width: 92vw;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    [data-theme="light"] .toast{
+      background: rgba(255,255,255,.85);
+      color: #0d1530;
+      border-color: rgba(20,40,120,.14);
+      box-shadow: 0 18px 50px rgba(20,40,120,.16);
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(-4px);}
+
+    /* FOOTNOTE */
+    .foot{
+      margin-top:14px;
+      color:var(--muted);
+      font-size:12.5px;
+      line-height:1.5;
+    }
+    .hr{height:1px; background: color-mix(in oklab, var(--border), transparent 15%); margin:14px 0;}
+  </style>
+</head>
+
+<body data-theme="dark">
+  <div class="wrap">
+
+    <section class="hero">
+      <div class="heroTop">
+        <div>
+          <h1 class="title">Veil of Sea-Glass & Ash</h1>
+          <p class="subtitle">
+            A palette for coloring that reads <b>cool-neutral</b>, <b>softened</b>, and <b>light-to-medium</b> —
+            where your best shades look like they were rinsed in ocean air and then kissed by twilight.
+            Built from a fresh read of your natural traits in the photos: ash-beige hair, porcelain-cool skin, a rose-mauve mouth,
+            and green-hazel eyes with a molten golden star at the center.
+          </p>
+
+          <div class="kvs">
+            <div class="kv">
+              <div class="k">Season</div>
+              <div class="v">Soft Summer (Cool-Neutral, Muted)</div>
+              <div class="hint">Soft chroma, gentle contrast, cool-leaning neutrals, and romantic dusk tones.</div>
+            </div>
+            <div class="kv">
+              <div class="k">Contrast</div>
+              <div class="v">Low → Medium</div>
+              <div class="hint">Your features blend rather than snap: nothing “posterized,” everything atmospheric.</div>
+            </div>
+            <div class="kv">
+              <div class="k">Chroma</div>
+              <div class="v">Soft / Veiled</div>
+              <div class="hint">Colors should look <i>smoked</i>, <i>sea-glass</i>, or <i>mist-washed</i>, not neon-clean.</div>
+            </div>
+            <div class="kv">
+              <div class="k">Hue Bias</div>
+              <div class="v">Cool-Neutral</div>
+              <div class="hint">Blues and rose-mauves harmonize; oranges/yellows fight your undertone.</div>
+            </div>
+            <div class="kv">
+              <div class="k">Value Range</div>
+              <div class="v">Light → Medium</div>
+              <div class="hint">You glow in pale-to-mid depth; very dark black can feel heavy unless softened.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="chip" title="Tap any color card to copy hex.">
+            ⌁ <span><b>Copy-to-clipboard</b> on tap</span>
+          </div>
+          <button class="btn small primary" id="themeBtn" title="Toggle Day/Night mode">☾/☀︎ Day/Night</button>
+          <button class="btn small" id="shuffleBtn" title="Generate a new lookbook set">✦ Generate Looks</button>
+          <button class="btn small" id="focusBtn" title="Set a 'current' color and use it across tools">◎ Set Active Color</button>
+          <button class="btn small ghost" id="exportBtn" title="Export favorites as JSON">⇣ Export Faves</button>
+          <button class="btn small danger" id="wipeBtn" title="Clear saved favorites and makeup">⟲ Reset</button>
+        </div>
+      </div>
+
+      <div class="grid">
+        <!-- LEFT: BODY COLORS -->
+        <div class="panel">
+          <h2>Natural Body Colors — Artistic Rendition</h2>
+          <div class="bodyRow">
+            <div class="bodySwatches" id="bodySwatches"></div>
+
+            <div class="render">
+              <div class="renderTitle">
+                <div>“Your coloring, as a small painting.”</div>
+                <div class="mini">tap swatches to copy • drag slider to intensify</div>
+              </div>
+              <canvas class="renderCanvas" id="renderCanvas" width="900" height="420"></canvas>
+              <div class="hr"></div>
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <div class="chip" style="flex:1; min-width:220px;">
+                  Intensity
+                  <input id="intensity" type="range" min="0" max="100" value="48" style="width:180px" />
+                  <span id="intensityVal" style="font-family:var(--mono); color:var(--muted);">48</span>
+                </div>
+                <button class="btn small" id="repaintBtn">🎴 Repaint</button>
+              </div>
+              <p class="foot">
+                This is intentionally more lyrical than literal: your real coloring is softly muted and cool-neutral, but the rendition
+                keeps your essence while giving it gallery lighting.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: SCIENCE + CHART -->
+        <div class="panel">
+          <h2>Why These Colors Work — A Scientific Read</h2>
+          <p class="foot" style="margin-top:0">
+            Your harmony lives in the overlap of three facts visible in your photos:
+            <b>(1)</b> skin reads porcelain-cool (blue/grey cast, rosy flush rather than peach),
+            <b>(2)</b> hair reads ash-beige to ash-blonde (cool pigment, minimal gold),
+            and <b>(3)</b> eyes are green-hazel with a <b>golden center</b> and a cooler outer ring — meaning you can wear
+            cool tones <i>as long as they’re softened</i>, and you can handle a whisper of warmth only when it’s muted and “antique.”
+          </p>
+
+          <div class="chartBox">
+            <div class="chartMeta">
+              <div>
+                <div class="subhead">Contrast / Value / Chroma Map</div>
+                <p>
+                  This chart plots <b>your palette colors</b> in a 2D space:
+                  <b>X = Value</b> (dark → light) and <b>Y = Chroma</b> (soft → vivid).
+                  Soft chroma lives low. Light value lives right.
+                </p>
+              </div>
+              <div class="chartLegend">
+                <div class="legendItem"><span class="legendSw" style="--c: var(--accent);"></span>Top 10</div>
+                <div class="legendItem"><span class="legendSw" style="--c: var(--accent2);"></span>Wardrobe</div>
+                <div class="legendItem"><span class="legendSw" style="--c: var(--good);"></span>Neutrals</div>
+              </div>
+            </div>
+            <canvas class="chart" id="chart" width="900" height="420"></canvas>
+            <p class="foot">
+              Rule of thumb: if a color looks like it has been <b>rinsed in air</b> rather than printed by a laser, it’s likely yours.
+              If it looks like a saturated crayon or a blazing citrus fruit, it will overpower you.
+            </p>
+          </div>
+
+          <div class="hr"></div>
+          <h2>Eye Color — Vivid Description</h2>
+          <p class="foot" style="margin-top:0">
+            Your eyes are a <b>green-hazel alloy</b>: a soft, greyed olive-green base with a <b>distinct warm amber/gold sunburst</b>
+            around the pupil, plus a cooler, smoky edge that reads almost slate-green in some light.
+            That golden center is why <i>muted</i> roses, mauves, and sea-glass greens look magnetic on you — they echo the eye without shouting over it.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP 10 -->
+    <section class="panel" style="margin-top:14px;">
+      <h2>Your Top Ten Best Colors</h2>
+      <p class="foot" style="margin-top:0">
+        These ten are chosen because they match your <b>cool-neutral undertone</b>, your <b>soft chroma</b>,
+        and your <b>light-to-medium value</b>.
+      </p>
+      <div class="top10" id="top10"></div>
+    </section>
+
+    <!-- POWER NEUTRALS -->
+    <section class="panel" style="margin-top:14px;">
+      <h2>Power Neutrals</h2>
+      <p class="foot" style="margin-top:0">
+        Your best neutrals are not harsh black/optic white. They are <b>smoked</b>, <b>ink-washed</b>, <b>flannel</b>, <b>pewter</b>, <b>stone</b>.
+        Think: “tailored fog.”
+      </p>
+      <div class="library" id="neutrals"></div>
+    </section>
+
+    <!-- MAKEUP -->
+    <section class="panel" style="margin-top:14px;">
+      <h2>Makeup Palette + Try-On</h2>
+      <p class="foot" style="margin-top:0">
+        Tap a pill to apply it. Use finish toggles to shift texture (matte/satin/gloss).
+      </p>
+
+      <div class="makeupRow">
+        <div class="faceBox">
+          <div class="faceTop">
+            <div style="font-weight:950; letter-spacing:.02em;">Face Diagram</div>
+            <div class="hint">Pills apply to lips / blush / lids / liner / brows / highlight.</div>
+          </div>
+
+          <svg class="faceSvg" viewBox="0 0 620 520" xmlns="http://www.w3.org/2000/svg" aria-label="Makeup Try-on Face">
+            <defs>
+              <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="rgba(0,0,0,.25)"/>
+              </filter>
+
+              <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="var(--skin1)"/>
+                <stop offset="1" stop-color="var(--skin2)"/>
+              </linearGradient>
+
+              <radialGradient id="cheekGlow" cx="50%" cy="40%" r="65%">
+                <stop offset="0" stop-color="var(--blush)" stop-opacity=".55"/>
+                <stop offset="1" stop-color="var(--blush)" stop-opacity="0"/>
+              </radialGradient>
+
+              <radialGradient id="highlightGlow" cx="50%" cy="50%" r="70%">
+                <stop offset="0" stop-color="var(--highlight)" stop-opacity=".65"/>
+                <stop offset="1" stop-color="var(--highlight)" stop-opacity="0"/>
+              </radialGradient>
+
+              <linearGradient id="lipGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="var(--lips)" stop-opacity=".95"/>
+                <stop offset="1" stop-color="color-mix(in oklab, var(--lips), black 12%)" stop-opacity=".95"/>
+              </linearGradient>
+            </defs>
+
+            <rect x="0" y="0" width="620" height="520" rx="18" fill="rgba(255,255,255,.03)"/>
+
+            <path d="M250 420 C250 465 370 465 370 420 L395 520 L225 520 Z"
+                  fill="color-mix(in oklab, var(--skin2), black 8%)" opacity=".88"/>
+
+            <path filter="url(#softShadow)"
+              d="M310 70
+                 C400 70 460 150 460 238
+                 C460 335 410 415 310 420
+                 C210 415 160 335 160 238
+                 C160 150 220 70 310 70 Z"
+              fill="url(#skinGrad)" stroke="rgba(255,255,255,.08)" stroke-width="2"/>
+
+            <ellipse cx="310" cy="170" rx="60" ry="90" fill="url(#highlightGlow)" opacity=".85"/>
+            <ellipse cx="262" cy="250" rx="30" ry="40" fill="url(#highlightGlow)" opacity=".55"/>
+
+            <path id="browL" d="M205 190 C230 175 260 170 285 180" fill="none" stroke="var(--brows)" stroke-width="12" stroke-linecap="round" opacity=".85"/>
+            <path id="browR" d="M335 180 C360 170 390 175 415 190" fill="none" stroke="var(--brows)" stroke-width="12" stroke-linecap="round" opacity=".85"/>
+
+            <g opacity=".98">
+              <path d="M215 235 C245 215 275 215 305 235 C275 255 245 255 215 235 Z"
+                    fill="rgba(255,255,255,.90)" stroke="rgba(0,0,0,.08)"/>
+              <path d="M315 235 C345 215 375 215 405 235 C375 255 345 255 315 235 Z"
+                    fill="rgba(255,255,255,.90)" stroke="rgba(0,0,0,.08)"/>
+
+              <circle cx="260" cy="235" r="18" fill="var(--iris)"/>
+              <circle cx="360" cy="235" r="18" fill="var(--iris)"/>
+              <circle cx="260" cy="235" r="7" fill="var(--pupil)"/>
+              <circle cx="360" cy="235" r="7" fill="var(--pupil)"/>
+
+              <circle cx="260" cy="235" r="18" fill="none" stroke="var(--limbal)" stroke-width="3" opacity=".55"/>
+              <circle cx="360" cy="235" r="18" fill="none" stroke="var(--limbal)" stroke-width="3" opacity=".55"/>
+
+              <circle cx="254" cy="229" r="3.5" fill="rgba(255,255,255,.95)"/>
+              <circle cx="354" cy="229" r="3.5" fill="rgba(255,255,255,.95)"/>
+            </g>
+
+            <path id="lidL" d="M218 230 C245 214 275 214 302 230" fill="none" stroke="var(--lids)" stroke-width="14" stroke-linecap="round" opacity=".72"/>
+            <path id="lidR" d="M318 230 C345 214 375 214 402 230" fill="none" stroke="var(--lids)" stroke-width="14" stroke-linecap="round" opacity=".72"/>
+
+            <path id="linerL" d="M220 236 C245 222 275 222 300 236" fill="none" stroke="var(--liner)" stroke-width="5" stroke-linecap="round" opacity=".90"/>
+            <path id="linerR" d="M320 236 C345 222 375 222 400 236" fill="none" stroke="var(--liner)" stroke-width="5" stroke-linecap="round" opacity=".90"/>
+
+            <ellipse id="blushL" cx="215" cy="300" rx="58" ry="42" fill="url(#cheekGlow)"/>
+            <ellipse id="blushR" cx="405" cy="300" rx="58" ry="42" fill="url(#cheekGlow)"/>
+
+            <path d="M305 245 C300 285 300 300 290 318 C305 330 330 330 340 318" fill="none" stroke="rgba(0,0,0,.13)" stroke-width="3" stroke-linecap="round"/>
+
+            <path id="lips"
+              d="M250 360
+                 C285 340 335 340 370 360
+                 C345 390 275 390 250 360 Z"
+              fill="url(#lipGrad)" opacity=".95" stroke="rgba(0,0,0,.12)"/>
+
+            <path id="cupid"
+              d="M310 354 C304 360 316 360 310 354"
+              fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- gloss overlay (toggled by finish) -->
+            <path id="lipShine"
+              d="M260 362 C292 346 328 346 360 362 C332 372 288 372 260 362 Z"
+              fill="rgba(255,255,255,1)" opacity="0" pointer-events="none"/>
+          </svg>
+        </div>
+
+        <div class="makeupControls">
+          <div class="subhead">Finish</div>
+          <div class="miniRow">
+            <div class="toggle active" data-finish="matte">Matte</div>
+            <div class="toggle" data-finish="satin">Satin</div>
+            <div class="toggle" data-finish="gloss">Gloss</div>
+            <div class="chip" style="margin-left:auto;">Saved to your browser</div>
+          </div>
+
+          <div class="subhead">Makeup Pills</div>
+          <div class="pillGrid" id="makeupPills"></div>
+
+          <div class="subhead">Quick Actions</div>
+          <div class="actions">
+            <button class="btn small primary" id="applySuggested">✨ Apply Suggested Look</button>
+            <button class="btn small" id="randomMakeup">🎲 Random Soft-Summer Look</button>
+            <button class="btn small" id="clearMakeup">🫧 Clear Makeup</button>
+          </div>
+
+          <div class="hr"></div>
+          <div class="subhead">Natural Read</div>
+          <p class="foot" style="margin-top:0">
+            Hair reads <b>ash-beige</b>; skin reads <b>cool-neutral porcelain</b>; flush reads <b>muted rose</b>.
+            Soft chroma, not neon. Cool-neutral, not orange.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOOKBOOK -->
+    <section class="panel" style="margin-top:14px;">
+      <h2>Lookbook Generator</h2>
+      <p class="foot" style="margin-top:0">
+        Click any palette color to set it as your <b>Active Color</b>. Then generate looks that keep your harmony.
+      </p>
+      <div class="miniActions">
+        <button class="btn small primary" id="genLooks">✦ Generate 3 Looks</button>
+        <button class="btn small" id="copyActive">Copy Active Color</button>
+        <button class="btn small" id="applyMakeupFromLook">Apply Makeup Suggestion</button>
+      </div>
+      <div class="lookbook" id="lookbook" style="margin-top:10px;"></div>
+    </section>
+
+    <!-- PALETTE LIBRARY -->
+    <section class="panel" style="margin-top:14px;">
+      <h2>Palette Library</h2>
+      <p class="foot" style="margin-top:0">
+        Tap a color to copy its hex. Tap the heart to favorite.
+      </p>
+
+      <div class="filters">
+        <div class="pillRow" id="categoryPills"></div>
+
+        <div class="search">
+          <input class="input" id="search" placeholder="Search by name or hex (e.g., “slate”, “rose”, “#1F3448”)">
+          <button class="btn small" id="sortBtn" title="Toggle sorting">⇅ Sort</button>
+        </div>
+      </div>
+
+      <div class="library" id="library"></div>
+      <p class="foot">
+        Best metals: <b>soft silver</b>, <b>white gold</b>, <b>platinum</b>, <b>pewter</b>, and <b>antique brushed nickel</b>.
+      </p>
+    </section>
+
+    <div class="toast" id="toast">Copied.</div>
+
+  </div>
+
+  <script>
+    /***********************
+     * DATA
+     ***********************/
+    const BODY = [
+      { key:"hair", label:"Hair", name:"Ash-Beige Drift", hex:"#9B8F84" },
+      { key:"roots", label:"Root Shadow", name:"Smoked Taupe Root", hex:"#6F675F" },
+      { key:"brows", label:"Brows", name:"Mink Ash", hex:"#6A645E" },
+      { key:"skin1", label:"Skin (light)", name:"Porcelain Mist", hex:"#E8D8D2" },
+      { key:"skin2", label:"Skin (shadow)", name:"Cool Sandstone", hex:"#D9C4BD" },
+      { key:"veins", label:"Veins", name:"Blue-Green Veil", hex:"#5A8A90" },
+      { key:"flush", label:"Flush", name:"Heather Blush", hex:"#B98A97" },
+      { key:"lips", label:"Lip", name:"Rose-Mauve Quiet", hex:"#A77A8A" },
+      { key:"eyes", label:"Iris", name:"Sea-Glass Hazel", hex:"#6F8774" },
+      { key:"gold", label:"Eye Center", name:"Amber Star", hex:"#B68B52" },
+      { key:"limbal", label:"Limbal Ring", name:"Slate-Green Rim", hex:"#4E5F66" },
+      { key:"shadow", label:"Natural Shadow", name:"Blue-Smoke Charcoal", hex:"#2A3543" },
+      { key:"highlight", label:"Highlight", name:"Fog-Pearl", hex:"#F2ECEA" },
+      { key:"metal", label:"Metal", name:"Weathered Silver", hex:"#B6BCC7" }
+    ];
+
+    const TOP10 = [
+      { cat:"Top 10", name:"Stormglass Teal", hex:"#2F6E78" },
+      { cat:"Top 10", name:"Sea-Glass Green", hex:"#6A8F86" },
+      { cat:"Top 10", name:"Slate Sky Blue", hex:"#5B7F9A" },
+      { cat:"Top 10", name:"Rainwashed Navy", hex:"#1F3448" },
+      { cat:"Top 10", name:"Smoked Periwinkle", hex:"#6E7FAE" },
+      { cat:"Top 10", name:"Bruised Lilac", hex:"#8E7A9D" },
+      { cat:"Top 10", name:"Dusty Rose Silk", hex:"#B07A8E" },
+      { cat:"Top 10", name:"Quiet Berry", hex:"#6B3B58" },
+      { cat:"Top 10", name:"Mulberry Mist", hex:"#7A4B64" },
+      { cat:"Top 10", name:"Graphite Silk", hex:"#2B2E36" }
+    ];
+
+    const NEUTRALS = [
+      { cat:"Neutrals", name:"Blue-Smoke Charcoal", hex:"#2A3543" },
+      { cat:"Neutrals", name:"Pewter Fog", hex:"#7C828C" },
+      { cat:"Neutrals", name:"Weathered Silver", hex:"#B6BCC7" },
+      { cat:"Neutrals", name:"Moonlit Flannel", hex:"#6D7886" },
+      { cat:"Neutrals", name:"Dove Stone", hex:"#A7A0A3" },
+      { cat:"Neutrals", name:"Mushroom Cashmere", hex:"#877D74" },
+      { cat:"Neutrals", name:"Ink-Wash Navy", hex:"#162434" },
+      { cat:"Neutrals", name:"Soft Bone", hex:"#EDE3DE" },
+      { cat:"Neutrals", name:"Glacier Pearl", hex:"#F1EEF3" }
+    ];
+
+    const LIBRARY = [
+      {cat:"Reds", name:"Raspberry Dusk", hex:"#8B2E49"},
+      {cat:"Reds", name:"Currant Silk", hex:"#9A3B57"},
+      {cat:"Reds", name:"Wine-Rose Smoke", hex:"#7E2E42"},
+      {cat:"Reds", name:"Cranberry Shadow", hex:"#7A2841"},
+      {cat:"Reds", name:"Antique Rosewood", hex:"#9B5E6E"},
+      {cat:"Pinks", name:"Rose-Mauve Quiet", hex:"#A77A8A"},
+      {cat:"Pinks", name:"Ballet Smoke", hex:"#D1A9B2"},
+      {cat:"Pinks", name:"Petal Ash", hex:"#D9B7C1"},
+      {cat:"Pinks", name:"Heather Blush", hex:"#B98A97"},
+      {cat:"Pinks", name:"Powdered Peony", hex:"#CFA7B6"},
+
+      {cat:"Purples", name:"Wisteria Smoke", hex:"#A59AB9"},
+      {cat:"Purples", name:"Thistle Dusk", hex:"#8B7E9F"},
+      {cat:"Purples", name:"Smoked Periwinkle", hex:"#6E7FAE"},
+      {cat:"Purples", name:"Bruised Lilac", hex:"#8E7A9D"},
+      {cat:"Purples", name:"Mulberry Mist", hex:"#7A4B64"},
+
+      {cat:"Blues", name:"Slate Sky Blue", hex:"#5B7F9A"},
+      {cat:"Blues", name:"Rainwashed Navy", hex:"#1F3448"},
+      {cat:"Blues", name:"Ink-Wash Navy", hex:"#162434"},
+      {cat:"Blues", name:"Steel Blue Quiet", hex:"#4E6C82"},
+      {cat:"Blues", name:"Storm-Rinsed Denim", hex:"#3B5467"},
+      {cat:"Blues", name:"Harbor Haze", hex:"#7D92A6"},
+
+      {cat:"Greens", name:"Sea-Glass Green", hex:"#6A8F86"},
+      {cat:"Greens", name:"Stormglass Teal", hex:"#2F6E78"},
+      {cat:"Greens", name:"Sage in Shadow", hex:"#7D8E82"},
+      {cat:"Greens", name:"Eucalyptus Smoke", hex:"#778A80"},
+      {cat:"Greens", name:"Juniper Mist", hex:"#5C6F63"},
+      {cat:"Greens", name:"Lichen Grey-Green", hex:"#8E9C93"},
+
+      ...NEUTRALS,
+
+      {cat:"Accents", name:"Antique Champagne", hex:"#BFAE8E"},
+      {cat:"Accents", name:"Amber Ash", hex:"#B68B52"},
+      {cat:"Accents", name:"Misted Terracotta (Muted)", hex:"#B07A6E"},
+      {cat:"Accents", name:"Satin Cocoa Rose", hex:"#8A6B64"}
+    ];
+
+    const MAKEUP = [
+      {slot:"lips",  name:"Rose-Mauve Quiet", hex:"#A77A8A"},
+      {slot:"lips",  name:"Quiet Berry", hex:"#6B3B58"},
+      {slot:"lips",  name:"Cranberry Shadow", hex:"#7A2841"},
+
+      {slot:"blush", name:"Heather Blush", hex:"#B98A97"},
+      {slot:"blush", name:"Ballet Smoke", hex:"#D1A9B2"},
+      {slot:"blush", name:"Petal Ash", hex:"#D9B7C1"},
+
+      {slot:"lids",  name:"Glacier Shadow", hex:"#B7C6D6"},
+      {slot:"lids",  name:"Wisteria Smoke", hex:"#A59AB9"},
+      {slot:"lids",  name:"Dove Stone", hex:"#A7A0A3"},
+
+      {slot:"liner", name:"Blue-Smoke Charcoal", hex:"#2A3543"},
+      {slot:"liner", name:"Stormglass Teal", hex:"#2F6E78"},
+      {slot:"liner", name:"Rainwashed Navy", hex:"#1F3448"},
+
+      {slot:"brows", name:"Mink Ash", hex:"#6A645E"},
+      {slot:"brows", name:"Smoked Taupe Root", hex:"#6F675F"},
+
+      {slot:"highlight", name:"Fog-Pearl", hex:"#F2ECEA"},
+      {slot:"highlight", name:"Glacier Pearl", hex:"#F1EEF3"}
+    ];
+
+    const CATEGORIES = ["All","Top 10","Neutrals","Reds","Pinks","Purples","Blues","Greens","Accents"];
+
+    /***********************
+     * STATE
+     ***********************/
+    const store = {
+      get(k, fallback){ try{ return JSON.parse(localStorage.getItem(k)) ?? fallback; }catch{ return fallback; } },
+      set(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+    };
+
+    let favorites = store.get("veil_faves", []);
+    let activeColor = store.get("veil_active", TOP10[3]); // Rainwashed Navy default
+    let librarySort = store.get("veil_sort", "cat");
+    let filterCat = store.get("veil_cat", "All");
+    let searchQ = "";
+
+    let finish = store.get("veil_finish", "matte");
+    let appliedMakeup = store.get("veil_makeup", {
+      lips: MAKEUP.find(m=>m.name==="Rose-Mauve Quiet").hex,
+      blush: MAKEUP.find(m=>m.name==="Heather Blush").hex,
+      lids: MAKEUP.find(m=>m.name==="Glacier Shadow").hex,
+      liner: MAKEUP.find(m=>m.name==="Blue-Smoke Charcoal").hex,
+      brows: BODY.find(b=>b.key==="brows").hex,
+      highlight: BODY.find(b=>b.key==="highlight").hex
+    });
+
+    /***********************
+     * UTILS
+     ***********************/
+    const $ = (q)=>document.querySelector(q);
+    const el = (tag, attrs={}, children=[])=>{
+      const n = document.createElement(tag);
+      Object.entries(attrs).forEach(([k,v])=>{
+        if(k==="class") n.className=v;
+        else if(k==="style") n.setAttribute("style", v);
+        else if(k.startsWith("on") && typeof v==="function") n.addEventListener(k.slice(2), v);
+        else n.setAttribute(k,v);
+      });
+      (Array.isArray(children)?children:[children]).forEach(c=>{
+        if(c==null) return;
+        n.appendChild(typeof c==="string"?document.createTextNode(c):c);
+      });
+      return n;
+    };
+
+    function toast(msg){
+      const t = $("#toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._tm);
+      toast._tm = setTimeout(()=>t.classList.remove("show"), 1400);
+    }
+
+    async function copyText(txt){
+      try{
+        await navigator.clipboard.writeText(txt);
+        toast(`Copied: ${txt}`);
+      }catch{
+        const ta = el("textarea", {style:"position:fixed;left:-9999px;top:-9999px;"}, txt);
+        document.body.appendChild(ta);
+        ta.select(); document.execCommand("copy");
+        ta.remove();
+        toast(`Copied: ${txt}`);
+      }
+    }
+
+    function isFaved(hex){ return favorites.includes(hex.toLowerCase()); }
+    function toggleFave(hex){
+      hex = hex.toLowerCase();
+      if(isFaved(hex)) favorites = favorites.filter(h=>h!==hex);
+      else favorites = [hex, ...favorites].slice(0, 200);
+      store.set("veil_faves", favorites);
+      renderAll();
+      toast(isFaved(hex) ? "Added to favorites." : "Removed from favorites.");
+    }
+
+    function setActive(color){
+      activeColor = color;
+      store.set("veil_active", activeColor);
+      toast(`Active color: ${color.name} (${color.hex})`);
+      renderAll();
+    }
+
+    function setTheme(next){
+      document.body.setAttribute("data-theme", next);
+      store.set("veil_theme", next);
+      drawChart();
+      repaint();
+    }
+
+    function hexToRgb(hex){
+      const h = hex.replace("#","").trim();
+      const n = parseInt(h.length===3 ? h.split("").map(x=>x+x).join("") : h, 16);
+      return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+    }
+
+    function rgbToHsl(r,g,b){
+      r/=255; g/=255; b/=255;
+      const max=Math.max(r,g,b), min=Math.min(r,g,b);
+      let h,s,l=(max+min)/2;
+      if(max===min){ h=s=0; }
+      else{
+        const d=max-min;
+        s=l>0.5? d/(2-max-min) : d/(max+min);
+        switch(max){
+          case r: h=(g-b)/d + (g<b?6:0); break;
+          case g: h=(b-r)/d + 2; break;
+          case b: h=(r-g)/d + 4; break;
+        }
+        h/=6;
+      }
+      return {h:h*360, s:s*100, l:l*100};
+    }
+
+    function relLuminance(hex){
+      const {r,g,b}=hexToRgb(hex);
+      const sr=[r,g,b].map(v=>{
+        v/=255;
+        return v<=0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055,2.4);
+      });
+      return 0.2126*sr[0]+0.7152*sr[1]+0.0722*sr[2];
+    }
+
+    function inCategory(c, item){
+      if(c==="All") return true;
+      if(c==="Top 10") return TOP10.some(t=>t.hex.toLowerCase()===item.hex.toLowerCase());
+      return item.cat===c;
+    }
+
+    /* SAFETY: normalize 8-digit hex to rgba for canvas */
+    function normalizeColor(str){
+      const s = (str||"").trim();
+      // #RRGGBBAA -> rgba(r,g,b,a)
+      if(/^#([0-9a-fA-F]{8})$/.test(s)){
+        const rr = parseInt(s.slice(1,3),16);
+        const gg = parseInt(s.slice(3,5),16);
+        const bb = parseInt(s.slice(5,7),16);
+        const aa = parseInt(s.slice(7,9),16) / 255;
+        return `rgba(${rr},${gg},${bb},${aa.toFixed(3)})`;
+      }
+      return s;
+    }
+
+    /***********************
+     * FACE VARS
+     ***********************/
+    function applyFaceVars(){
+      const root = document.documentElement.style;
+      const skin1 = BODY.find(x=>x.key==="skin1").hex;
+      const skin2 = BODY.find(x=>x.key==="skin2").hex;
+
+      root.setProperty("--skin1", skin1);
+      root.setProperty("--skin2", skin2);
+
+      root.setProperty("--lips", appliedMakeup.lips);
+      root.setProperty("--blush", appliedMakeup.blush);
+      root.setProperty("--lids", appliedMakeup.lids);
+      root.setProperty("--liner", appliedMakeup.liner);
+      root.setProperty("--brows", appliedMakeup.brows);
+      root.setProperty("--highlight", appliedMakeup.highlight);
+
+      root.setProperty("--iris", BODY.find(x=>x.key==="eyes").hex);
+      root.setProperty("--pupil", "#1b1d22");
+      root.setProperty("--limbal", BODY.find(x=>x.key==="limbal").hex);
+
+      store.set("veil_makeup", appliedMakeup);
+      applyFinishToFace();
+    }
+
+    function applyFinishToFace(){
+      const lipsEl = document.getElementById("lips");
+      const cupid = document.getElementById("cupid");
+      const shine = document.getElementById("lipShine");
+
+      let shineOp = 0, cupidOp = 0.12, lipFilter = "none";
+      if(finish==="matte"){
+        shineOp = 0.00; cupidOp = 0.10; lipFilter = "none";
+      }else if(finish==="satin"){
+        shineOp = 0.18; cupidOp = 0.22; lipFilter = "brightness(1.01)";
+      }else{
+        shineOp = 0.34; cupidOp = 0.38; lipFilter = "brightness(1.02) saturate(1.02)";
+      }
+      if(shine) shine.setAttribute("opacity", String(shineOp));
+      if(cupid) cupid.style.opacity = String(cupidOp);
+      if(lipsEl) lipsEl.style.filter = lipFilter;
+    }
+
+    function setFinish(next){
+      finish = next;
+      store.set("veil_finish", finish);
+      document.querySelectorAll(".toggle").forEach(t=>{
+        t.classList.toggle("active", t.getAttribute("data-finish")===finish);
+      });
+      applyFinishToFace();
+      toast(`Finish: ${finish}`);
+    }
+
+    /***********************
+     * RENDER SECTIONS
+     ***********************/
+    function renderBodySwatches(){
+      const box = $("#bodySwatches");
+      box.innerHTML = "";
+      const items = [
+        BODY.find(b=>b.key==="hair"),
+        BODY.find(b=>b.key==="roots"),
+        BODY.find(b=>b.key==="skin1"),
+        BODY.find(b=>b.key==="skin2"),
+        BODY.find(b=>b.key==="veins"),
+        BODY.find(b=>b.key==="flush"),
+        BODY.find(b=>b.key==="lips"),
+        BODY.find(b=>b.key==="eyes"),
+        BODY.find(b=>b.key==="limbal")
+      ];
+
+      items.forEach(item=>{
+        const card = el("div", {class:"bodyCard", onclick:()=>copyText(item.hex)}, [
+          el("div",{class:"label"}, item.label),
+          el("div",{class:"name"}, item.name),
+          el("div",{class:"hex"}, item.hex),
+          el("div",{class:"swatch", style:`--c:${item.hex}`})
+        ]);
+        box.appendChild(card);
+      });
+    }
+
+    function mkColorCard(item, tagText){
+      const card = el("div", {class:"colorCard", style:`--c:${item.hex}`, onclick:(e)=>{
+        if(e.target && e.target.closest(".heart")) return;
+        copyText(item.hex);
+        setActive(item);
+      }}, [
+        el("div",{class:"bar", style:`background:${item.hex}`}),
+        el("div",{class:"tag"}, tagText || item.cat),
+        el("div",{class:"heart " + (isFaved(item.hex) ? "faved" : ""), onclick:(e)=>{e.stopPropagation(); toggleFave(item.hex);} }, isFaved(item.hex) ? "♥" : "♡"),
+        el("div",{class:"meta"}, [
+          el("div",{}, [
+            el("div",{class:"name"}, item.name),
+            el("div",{class:"hex"}, item.hex)
+          ]),
+          el("div",{}, "")
+        ])
+      ]);
+      return card;
+    }
+
+    function renderTop10(){
+      const box = $("#top10");
+      box.innerHTML = "";
+      TOP10.forEach(c=>box.appendChild(mkColorCard(c,"Top 10")));
+    }
+
+    function renderNeutrals(){
+      const box = $("#neutrals");
+      box.innerHTML = "";
+      NEUTRALS.forEach(c=>box.appendChild(mkColorCard(c,"Neutral")));
+    }
+
+    function renderCategoryPills(){
+      const row = $("#categoryPills");
+      row.innerHTML = "";
+      CATEGORIES.forEach(cat=>{
+        const p = el("button",{class:"pill "+(filterCat===cat?"active":""),
+          onclick:()=>{
+            filterCat = cat;
+            store.set("veil_cat", filterCat);
+            renderLibrary();
+          }}, cat);
+        row.appendChild(p);
+      });
+    }
+
+    function renderLibrary(){
+      const box = $("#library");
+      box.innerHTML = "";
+
+      let items = [...LIBRARY];
+      if(filterCat==="Top 10") items = [...TOP10];
+      items = items.filter(it=>inCategory(filterCat, it));
+
+      const q = (searchQ||"").trim().toLowerCase();
+      if(q){
+        items = items.filter(it =>
+          it.name.toLowerCase().includes(q) ||
+          it.hex.toLowerCase().includes(q) ||
+          (it.cat||"").toLowerCase().includes(q)
+        );
+      }
+
+      if(librarySort==="name"){
+        items.sort((a,b)=>a.name.localeCompare(b.name));
+      }else{
+        items.sort((a,b)=>(a.cat||"").localeCompare(b.cat||"") || a.name.localeCompare(b.name));
+      }
+
+      items.forEach(it=>{
+        const tag = (filterCat==="Top 10") ? "Top 10" : (it.cat || "Color");
+        box.appendChild(mkColorCard(it, tag));
+      });
+
+      if(!items.length){
+        box.appendChild(el("div",{class:"foot"}, "No matches. Try a different search or category."));
+      }
+    }
+
+    function renderMakeupPills(){
+      const box = $("#makeupPills");
+      box.innerHTML = "";
+
+      const slots = ["lips","blush","lids","liner","brows","highlight"];
+      const labels = { lips:"Lips", blush:"Blush", lids:"Lids", liner:"Liner", brows:"Brows", highlight:"Highlight" };
+
+      slots.forEach(slot=>{
+        box.appendChild(el("div",{class:"subhead", style:"margin-top:8px;"}, labels[slot]));
+        const row = el("div",{class:"pillGrid"});
+        MAKEUP.filter(m=>m.slot===slot).forEach(m=>{
+          const pill = el("div",{class:"mPill", style:`--c:${m.hex}`, onclick:()=>{
+            appliedMakeup[slot]=m.hex;
+            applyFaceVars();
+            toast(`${labels[slot]}: ${m.name}`);
+          }}, [
+            el("span",{class:"dot", style:`--c:${m.hex}`}),
+            el("span",{}, m.name),
+            el("small",{}, m.hex)
+          ]);
+          row.appendChild(pill);
+        });
+        box.appendChild(row);
+      });
+    }
+
+    function applySuggestedMakeup(){
+      appliedMakeup = {
+        lips: "#A77A8A",
+        blush: "#B98A97",
+        lids: "#B7C6D6",
+        liner: "#2A3543",
+        brows: "#6A645E",
+        highlight: "#F2ECEA"
+      };
+      applyFaceVars();
+      toast("Suggested Soft-Summer look applied.");
+    }
+
+    function randomSoftSummerMakeup(){
+      function pick(slot){
+        const arr = MAKEUP.filter(m=>m.slot===slot);
+        return arr[Math.floor(Math.random()*arr.length)].hex;
+      }
+      appliedMakeup = {
+        lips: pick("lips"),
+        blush: pick("blush"),
+        lids: pick("lids"),
+        liner: pick("liner"),
+        brows: pick("brows"),
+        highlight: pick("highlight")
+      };
+      applyFaceVars();
+      toast("Random Soft-Summer makeup applied.");
+    }
+
+    function clearMakeup(){
+      appliedMakeup = {
+        lips: BODY.find(b=>b.key==="lips").hex,
+        blush: "rgba(0,0,0,0)",
+        lids: "rgba(0,0,0,0)",
+        liner: BODY.find(b=>b.key==="shadow").hex,
+        brows: BODY.find(b=>b.key==="brows").hex,
+        highlight: "rgba(0,0,0,0)"
+      };
+      applyFaceVars();
+      toast("Makeup cleared.");
+    }
+
+    /***********************
+     * LOOKBOOK
+     ***********************/
+    function pickNeutral(){ return NEUTRALS[Math.floor(Math.random()*NEUTRALS.length)]; }
+    function pickTop(){ return TOP10[Math.floor(Math.random()*TOP10.length)]; }
+
+    function outfitTemplate(type){
+      const structuredNecks = ["open neckline (square/scoop)","soft v-neck","mockneck","boatneck","clean crewneck"];
+      const jewelry = ["architectural hoops", "thin stacked rings", "chain-link bracelet", "teardrop pendant", "sleek cuff", "minimal ear climbers"];
+      const shoes = ["pointed-toe ankle boot", "sleek loafer", "minimal heeled sandal", "clean sneaker (tonal)", "sharp ballet flat"];
+
+      const accent = (activeColor && activeColor.hex) ? activeColor : pickTop();
+      const base = pickNeutral();
+      const second = pickNeutral();
+
+      const neck = structuredNecks[Math.floor(Math.random()*structuredNecks.length)];
+      const jewel = jewelry[Math.floor(Math.random()*jewelry.length)];
+      const shoe = shoes[Math.floor(Math.random()*shoes.length)];
+
+      const m = {
+        lips: ["#A77A8A","#6B3B58","#7A2841"][Math.floor(Math.random()*3)],
+        blush: ["#B98A97","#D1A9B2","#D9B7C1"][Math.floor(Math.random()*3)],
+        lids: ["#B7C6D6","#A59AB9","#A7A0A3"][Math.floor(Math.random()*3)],
+        liner: ["#2A3543","#1F3448","#2F6E78"][Math.floor(Math.random()*3)]
+      };
+
+      const desc = (item, label)=> `${label} in ${item.name} (${item.hex})`;
+
+      let top, bottom, outer, accessory;
+      if(type==="Day Look"){
+        top = desc(accent, "Sheer knit or tee");
+        bottom = desc(base, "Column skirt or tailored trouser");
+        outer = desc(second, "Structured blazer");
+        accessory = `${jewel} in Weathered Silver (#B6BCC7)`;
+      }else if(type==="Night Look"){
+        top = desc(pickTop(), "Silk cami");
+        bottom = desc(base, "Bias-cut midi skirt");
+        outer = desc(second, "Soft-sharp jacket");
+        accessory = `silk scarf in Weathered Silver (#B6BCC7)`;
+      }else{
+        top = desc(accent, "Clean tank or bodysuit");
+        bottom = desc(base, "Straight-leg jean or trouser");
+        outer = desc(second, "Cool-toned leather jacket");
+        accessory = `thin stacked rings in Weathered Silver (#B6BCC7)`;
+      }
+
+      return {
+        type,
+        accent,
+        rows: [
+          {k:"Top", v: top},
+          {k:"Bottom", v: bottom},
+          {k:"Outerwear", v: outer},
+          {k:"Shoes", v: `${shoe} in ${base.name}`, hex: base.hex},
+          {k:"Accessory", v: accessory},
+          {k:"Neckline", v: neck},
+          {k:"Metal", v: ["soft silver","white gold","pewter"][Math.floor(Math.random()*3)]},
+          {k:"Makeup", v: `lips ${m.lips}, blush ${m.blush}, lids ${m.lids}, liner ${m.liner}`}
+        ],
+        makeup: m
+      };
+    }
+
+    let currentLooks = [];
+
+    function renderLooks(){
+      const box = $("#lookbook");
+      box.innerHTML = "";
+      currentLooks.forEach((look)=>{
+        const l = el("div",{class:"look"},[
+          el("h3",{},[
+            el("div",{}, look.type),
+            el("span",{}, "built on harmony")
+          ]),
+          el("div",{class:"rows"},
+            look.rows.map(r=> el("div",{class:"row"},[
+              el("div",{class:"k"}, r.k),
+              el("div",{class:"v"}, [
+                r.v,
+                (r.hex ? el("small",{}, r.hex) : null)
+              ])
+            ]))
+          ),
+          el("div",{class:"miniActions"},[
+            el("button",{class:"btn small", onclick:()=>{ setActive(look.accent); }}, "Use Accent as Active"),
+            el("button",{class:"btn small primary", onclick:()=>{
+              appliedMakeup = {
+                ...appliedMakeup,
+                lips: look.makeup.lips,
+                blush: look.makeup.blush,
+                lids: look.makeup.lids,
+                liner: look.makeup.liner
+              };
+              applyFaceVars();
+              toast("Applied makeup suggestion from look.");
+            }}, "Apply Makeup")
+          ])
+        ]);
+        box.appendChild(l);
+      });
+    }
+
+    function generateLooks(){
+      currentLooks = [
+        outfitTemplate("Day Look"),
+        outfitTemplate("Night Look"),
+        outfitTemplate("Statement Look")
+      ];
+      renderLooks();
+      toast("Generated 3 looks.");
+    }
+
+    /***********************
+     * CHART (VALUE vs CHROMA)
+     ***********************/
+    function drawChart(){
+      const c = $("#chart");
+      const ctx = c.getContext("2d");
+      const W = c.width, H = c.height;
+
+      ctx.clearRect(0,0,W,H);
+
+      // background color safe for iOS canvas
+      const card = normalizeColor(getComputedStyle(document.body).getPropertyValue("--card"));
+      ctx.fillStyle = card || "rgba(18,26,40,.80)";
+      ctx.fillRect(0,0,W,H);
+
+      const pad = 58;
+      const x0 = pad, y0 = H-pad, x1 = W-pad, y1 = pad;
+
+      ctx.strokeStyle = (document.body.getAttribute("data-theme")==="light")
+        ? "rgba(10,20,60,.12)"
+        : "rgba(255,255,255,.14)";
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      ctx.moveTo(x0,y0); ctx.lineTo(x1,y0);
+      ctx.moveTo(x0,y0); ctx.lineTo(x0,y1);
+      ctx.stroke();
+
+      ctx.fillStyle = (document.body.getAttribute("data-theme")==="light")
+        ? "rgba(10,20,60,.55)"
+        : "rgba(235,245,255,.55)";
+      ctx.font = "800 12px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillText("VALUE (dark → light)", x0+6, H-16);
+      ctx.save();
+      ctx.translate(18, y0-6);
+      ctx.rotate(-Math.PI/2);
+      ctx.fillText("CHROMA (soft → vivid)", 0, 0);
+      ctx.restore();
+
+      // harmony zone: soft chroma (low) + light-mid value (right-ish)
+      const hzX0 = x0 + (x1-x0)*0.52;
+      const hzX1 = x0 + (x1-x0)*0.92;
+      const hzY0 = y0 - (y0-y1)*0.10;
+      const hzY1 = y0 - (y0-y1)*0.40;
+
+      ctx.fillStyle = (document.body.getAttribute("data-theme")==="light")
+        ? "rgba(44,99,255,.08)"
+        : "rgba(122,168,255,.10)";
+      ctx.strokeStyle = (document.body.getAttribute("data-theme")==="light")
+        ? "rgba(44,99,255,.22)"
+        : "rgba(122,168,255,.22)";
+      ctx.setLineDash([8,6]);
+      ctx.lineWidth = 2;
+      ctx.fillRect(hzX0, hzY1, hzX1-hzX0, hzY0-hzY1);
+      ctx.strokeRect(hzX0, hzY1, hzX1-hzX0, hzY0-hzY1);
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = (document.body.getAttribute("data-theme")==="light")
+        ? "rgba(10,20,60,.55)"
+        : "rgba(235,245,255,.55)";
+      ctx.font = "800 12px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+      ctx.fillText("Best harmony zone", hzX0+10, hzY1+18);
+
+      function plotPoint(hex, color, size){
+        const lum = relLuminance(hex);
+        const {r,g,b}=hexToRgb(hex);
+        const hsl = rgbToHsl(r,g,b);
+        const chroma = hsl.s/100;
+        const x = x0 + (x1-x0)*lum;
+        const y = y0 - (y0-y1)*chroma;
+
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.globalAlpha = 0.92;
+        ctx.arc(x,y,size,0,Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      const accent  = normalizeColor(getComputedStyle(document.body).getPropertyValue("--accent"))  || "#7aa8ff";
+      const accent2 = normalizeColor(getComputedStyle(document.body).getPropertyValue("--accent2")) || "#f2b7c8";
+      const good    = normalizeColor(getComputedStyle(document.body).getPropertyValue("--good"))    || "#8fe2c2";
+
+      TOP10.forEach(c=>plotPoint(c.hex, accent, 6));
+      NEUTRALS.forEach(c=>plotPoint(c.hex, good, 5));
+      LIBRARY.forEach(c=>{
+        if(c.cat==="Neutrals") return;
+        plotPoint(c.hex, accent2, 4);
+      });
+
+      if(activeColor && activeColor.hex){
+        const stroke = (document.body.getAttribute("data-theme")==="light")
+          ? "rgba(10,20,60,.55)"
+          : "rgba(255,255,255,.55)";
+        ctx.strokeStyle = stroke;
+        const lum = relLuminance(activeColor.hex);
+        const {r,g,b}=hexToRgb(activeColor.hex);
+        const hsl = rgbToHsl(r,g,b);
+        const chroma = hsl.s/100;
+        const x = x0 + (x1-x0)*lum;
+        const y = y0 - (y0-y1)*chroma;
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.arc(x,y,10,0,Math.PI*2);
+        ctx.stroke();
+        ctx.fillStyle = stroke;
+        ctx.font = "900 12px system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial";
+        ctx.fillText("Active", x+12, y+4);
+      }
+    }
+
+    /***********************
+     * ART RENDER
+     ***********************/
+    function hexToRgba(hex, a){
+      const {r,g,b}=hexToRgb(hex);
+      return `rgba(${r},${g},${b},${a})`;
+    }
+
+    function roundRect(ctx, x, y, w, h, r){
+      const rr = Math.min(r, w/2, h/2);
+      ctx.beginPath();
+      ctx.moveTo(x+rr,y);
+      ctx.arcTo(x+w,y, x+w,y+h, rr);
+      ctx.arcTo(x+w,y+h, x,y+h, rr);
+      ctx.arcTo(x,y+h, x,y, rr);
+      ctx.arcTo(x,y, x+w,y, rr);
+      ctx.closePath();
+    }
+
+    function repaint(){
+      const c = $("#renderCanvas");
+      const ctx = c.getContext("2d");
+      const W = c.width, H = c.height;
+      ctx.clearRect(0,0,W,H);
+
+      const intensity = parseInt($("#intensity").value,10)/100;
+
+      const hair = BODY.find(x=>x.key==="hair").hex;
+      const roots = BODY.find(x=>x.key==="roots").hex;
+      const skin1 = BODY.find(x=>x.key==="skin1").hex;
+      const skin2 = BODY.find(x=>x.key==="skin2").hex;
+      const flush = BODY.find(x=>x.key==="flush").hex;
+      const lips = BODY.find(x=>x.key==="lips").hex;
+      const eyes = BODY.find(x=>x.key==="eyes").hex;
+      const limbal = BODY.find(x=>x.key==="limbal").hex;
+      const gold = BODY.find(x=>x.key==="gold").hex;
+      const shadow = BODY.find(x=>x.key==="shadow").hex;
+      const metal = BODY.find(x=>x.key==="metal").hex;
+
+      function wash(x,y,w,h,color,alpha){
+        ctx.fillStyle = color;
+        ctx.globalAlpha = alpha;
+        ctx.fillRect(x,y,w,h);
+        ctx.globalAlpha = 1;
+      }
+
+      const bg = document.body.getAttribute("data-theme")==="light" ? "#ffffff" : "#0c111b";
+      wash(0,0,W,H,bg,1);
+
+      const g1 = ctx.createRadialGradient(W*0.25,H*0.28, 20, W*0.25,H*0.28, W*0.6);
+      g1.addColorStop(0, hexToRgba(eyes, 0.28*intensity+0.10));
+      g1.addColorStop(1, hexToRgba(bg, 0));
+      ctx.fillStyle = g1; ctx.fillRect(0,0,W,H);
+
+      const g2 = ctx.createRadialGradient(W*0.78,H*0.22, 10, W*0.78,H*0.22, W*0.55);
+      g2.addColorStop(0, hexToRgba(lips, 0.22*intensity+0.08));
+      g2.addColorStop(1, hexToRgba(bg, 0));
+      ctx.fillStyle = g2; ctx.fillRect(0,0,W,H);
+
+      const g3 = ctx.createRadialGradient(W*0.55,H*0.78, 10, W*0.55,H*0.78, W*0.7);
+      g3.addColorStop(0, hexToRgba(metal, 0.20*intensity+0.06));
+      g3.addColorStop(1, hexToRgba(bg, 0));
+      ctx.fillStyle = g3; ctx.fillRect(0,0,W,H);
+
+      function stripe(t, hex, strength){
+        const y = H*t;
+        const h = H*(0.14 + Math.random()*0.12);
+        const grad = ctx.createLinearGradient(0,y, W,y+h);
+        grad.addColorStop(0, hexToRgba(hex, (0.16+strength*0.30)*intensity));
+        grad.addColorStop(0.5, hexToRgba(hex, (0.08+strength*0.22)*intensity));
+        grad.addColorStop(1, hexToRgba(hex, 0));
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, y, W, h);
+      }
+
+      stripe(0.05, hair, 0.42);
+      stripe(0.18, roots, 0.28);
+      stripe(0.32, skin1, 0.50);
+      stripe(0.45, skin2, 0.40);
+      stripe(0.57, flush, 0.30);
+      stripe(0.68, eyes, 0.32);
+      stripe(0.80, shadow, 0.26);
+
+      ctx.globalAlpha = 0.18*intensity+0.06;
+      for(let i=0;i<40;i++){
+        ctx.beginPath();
+        const x = W*(0.15 + Math.random()*0.7);
+        const y = H*(0.12 + Math.random()*0.76);
+        const r = 2 + Math.random()*6;
+        ctx.fillStyle = gold;
+        ctx.arc(x,y,r,0,Math.PI*2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      const ring = ctx.createLinearGradient(0,H*0.52,W,H*0.52);
+      ring.addColorStop(0, hexToRgba(limbal, 0));
+      ring.addColorStop(0.5, hexToRgba(limbal, 0.22*intensity+0.08));
+      ring.addColorStop(1, hexToRgba(limbal, 0));
+      ctx.fillStyle = ring;
+      ctx.fillRect(0, H*0.46, W, H*0.12);
+
+      ctx.strokeStyle = document.body.getAttribute("data-theme")==="light" ? "rgba(20,40,120,.14)" : "rgba(255,255,255,.12)";
+      ctx.lineWidth = 4;
+      roundRect(ctx, 8, 8, W-16, H-16, 18);
+      ctx.stroke();
+    }
+
+    /***********************
+     * EXPORT / RESET
+     ***********************/
+    function exportFavorites(){
+      const payload = { title:"Veil of Sea-Glass & Ash — Favorites", favorites, activeColor, makeup: appliedMakeup, finish };
+      const blob = new Blob([JSON.stringify(payload,null,2)], {type:"application/json"});
+      const url = URL.createObjectURL(blob);
+      const a = el("a",{href:url, download:"veil-favorites.json"});
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+      toast("Exported favorites.");
+    }
+
+    function resetAll(){
+      ["veil_faves","veil_active","veil_sort","veil_cat","veil_makeup","veil_finish"].forEach(k=>localStorage.removeItem(k));
+      favorites = [];
+      activeColor = TOP10[3];
+      librarySort = "cat";
+      filterCat = "All";
+      searchQ = "";
+      finish = "matte";
+      appliedMakeup = {
+        lips: "#A77A8A", blush: "#B98A97", lids: "#B7C6D6",
+        liner: "#2A3543", brows: "#6A645E", highlight: "#F2ECEA"
+      };
+      $("#search").value = "";
+      applyFaceVars();
+      setFinish("matte");
+      renderAll();
+      toast("Reset complete.");
+    }
+
+    /***********************
+     * INIT
+     ***********************/
+    function renderAll(){
+      renderBodySwatches();
+      renderTop10();
+      renderNeutrals();
+      renderCategoryPills();
+      renderLibrary();
+      renderMakeupPills();
+      drawChart();
+      renderLooks();
+      applyFaceVars();
+    }
+
+    function init(){
+      const th = store.get("veil_theme", "dark");
+      setTheme(th);
+
+      $("#themeBtn").addEventListener("click", ()=>{
+        const cur = document.body.getAttribute("data-theme");
+        setTheme(cur==="dark" ? "light" : "dark");
+      });
+
+      $("#shuffleBtn").addEventListener("click", generateLooks);
+      $("#genLooks").addEventListener("click", generateLooks);
+
+      $("#focusBtn").addEventListener("click", ()=>{
+        const c = TOP10[Math.floor(Math.random()*TOP10.length)];
+        setActive(c);
+      });
+
+      $("#copyActive").addEventListener("click", ()=> copyText(`${activeColor.name} ${activeColor.hex}`));
+      $("#applyMakeupFromLook").addEventListener("click", ()=>{
+        if(!currentLooks.length) generateLooks();
+        const look = currentLooks[0];
+        appliedMakeup = {...appliedMakeup, ...look.makeup};
+        applyFaceVars();
+        toast("Applied makeup suggestion from Day Look.");
+      });
+
+      $("#exportBtn").addEventListener("click", exportFavorites);
+      $("#wipeBtn").addEventListener("click", resetAll);
+
+      $("#sortBtn").addEventListener("click", ()=>{
+        librarySort = (librarySort==="cat") ? "name" : "cat";
+        store.set("veil_sort", librarySort);
+        toast(librarySort==="name" ? "Sorted by name." : "Sorted by category.");
+        renderLibrary();
+      });
+
+      $("#search").addEventListener("input", (e)=>{
+        searchQ = e.target.value;
+        renderLibrary();
+      });
+
+      document.querySelectorAll(".toggle").forEach(t=>{
+        t.addEventListener("click", ()=> setFinish(t.getAttribute("data-finish")));
+      });
+
+      $("#applySuggested").addEventListener("click", applySuggestedMakeup);
+      $("#randomMakeup").addEventListener("click", randomSoftSummerMakeup);
+      $("#clearMakeup").addEventListener("click", clearMakeup);
+
+      $("#intensity").addEventListener("input", ()=>{
+        $("#intensityVal").textContent = $("#intensity").value;
+        repaint();
+      });
+      $("#repaintBtn").addEventListener("click", repaint);
+
+      filterCat = store.get("veil_cat", "All");
+      librarySort = store.get("veil_sort", "cat");
+      activeColor = store.get("veil_active", TOP10[3]);
+      favorites = store.get("veil_faves", []);
+      finish = store.get("veil_finish", "matte");
+      appliedMakeup = store.get("veil_makeup", appliedMakeup);
+
+      applyFaceVars();
+      setFinish(finish);
+
+      renderAll();
+      generateLooks();
+      repaint();
+
+      toast("Palette loaded. Tap colors to copy. ♥ to favorite.");
+    }
+
+    init();
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

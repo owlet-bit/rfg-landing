@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>The Silver Veil</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Silver Veil — Lauren's Personal Color Universe</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Marcellus&family=Petit+Formal+Script&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --skin-highlight: #F5E8E4;
+            --skin-midtone: #E8D8D4;
+            --skin-shadow: #D4C4C0;
+            --hair-natural: #5C4C44;
+            --hair-current: #9C8C80;
+            --eye-grey: #8B9494;
+            --eye-green: #7C8C80;
+            --eye-gold: #B8A060;
+            --flush: #C89898;
+            --lip: #B88888;
+            --vein-blue: #7BA4B8;
+
+```
+        --bg-primary: #1C1A1E;
+        --bg-secondary: #2C282E;
+        --bg-card: #3C3840;
+        --text-primary: #F0ECEC;
+        --text-secondary: #C4BCBC;
+        --text-muted: #8C8488;
+        --accent: #A8B8C4;
+        --accent-rose: #C4A4A8;
+    }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+        font-family: 'Cormorant Garamond', serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        line-height: 1.7;
+    }
+    
+    .bg-atmosphere {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 0;
+        background: 
+            radial-gradient(ellipse at 20% 20%, rgba(168, 184, 196, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 80%, rgba(196, 164, 168, 0.06) 0%, transparent 50%);
+    }
+    
+    .container {
+        position: relative;
+        z-index: 1;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0 40px;
+    }
+    
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 80px 20px;
+    }
+    
+    .hero-ornament {
+        width: 120px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        margin-bottom: 40px;
+    }
+    
+    .palette-name {
+        font-family: 'Petit Formal Script', cursive;
+        font-size: clamp(3rem, 8vw, 6rem);
+        background: linear-gradient(135deg, var(--accent), var(--accent-rose));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 20px;
+    }
+    
+    .palette-subtitle {
+        font-family: 'Marcellus', serif;
+        font-size: clamp(1rem, 2vw, 1.3rem);
+        color: var(--text-secondary);
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        margin-bottom: 30px;
+    }
+    
+    .season-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 15px;
+        padding: 15px 35px;
+        border: 1px solid rgba(168, 184, 196, 0.3);
+        background: rgba(168, 184, 196, 0.05);
+        border-radius: 50px;
+    }
+    
+    .season-colors { display: flex; gap: 4px; }
+    .season-dot { width: 12px; height: 12px; border-radius: 50%; }
+    
+    .hero-description {
+        max-width: 700px;
+        margin-top: 50px;
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+    
+    .section {
+        padding: 80px 0;
+    }
+    
+    .section-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+    .section-title {
+        font-family: 'Marcellus', serif;
+        font-size: clamp(1.5rem, 3vw, 2rem);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+    
+    .section-line {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-rose));
+        margin: 0 auto;
+    }
+    
+    .body-colors {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+    }
+    
+    .body-card {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid rgba(168, 184, 196, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .body-card:hover {
+        transform: translateY(-5px);
+        border-color: rgba(168, 184, 196, 0.3);
+    }
+    
+    .body-title {
+        font-family: 'Marcellus', serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 20px;
+    }
+    
+    .spectrum {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 15px;
+    }
+    
+    .spectrum-swatch {
+        flex: 1;
+        height: 50px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .spectrum-swatch:hover {
+        transform: scale(1.08);
+    }
+    
+    .color-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+    
+    .eye-vis {
+        width: 110px;
+        height: 110px;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        background: conic-gradient(
+            from 0deg,
+            #5A6B5C 0%,
+            #7B8B6C 20%,
+            #B8A060 35%,
+            #9BAB7C 50%,
+            #B8A060 65%,
+            #7B8B6C 80%,
+            #5A6B5C 100%
+        );
+        box-shadow: inset 0 0 30px rgba(0,0,0,0.5), 0 0 20px rgba(155, 171, 124, 0.2);
+        position: relative;
+    }
+    
+    .eye-vis::before {
+        content: '';
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        width: 38px; height: 38px;
+        background: radial-gradient(#1a1a1a, #0a0a0a);
+        border-radius: 50%;
+    }
+    
+    .eye-vis::after {
+        content: '';
+        position: absolute;
+        top: 18%; left: 28%;
+        width: 14px; height: 10px;
+        background: rgba(255,255,255,0.4);
+        border-radius: 50%;
+        transform: rotate(-30deg);
+    }
+    
+    .palette-category {
+        margin-bottom: 40px;
+    }
+    
+    .category-title {
+        font-family: 'Marcellus', serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(168, 184, 196, 0.2);
+    }
+    
+    .palette-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+    }
+    
+    .swatch {
+        aspect-ratio: 1;
+        border-radius: 12px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .swatch:hover {
+        transform: scale(1.1) translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        z-index: 10;
+    }
+    
+    .swatch.selected {
+        outline: 3px solid var(--accent);
+        outline-offset: 3px;
+    }
+    
+    .swatch-name {
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        padding: 6px;
+        background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+        font-size: 0.65rem;
+        color: white;
+        text-align: center;
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .swatch:hover .swatch-name {
+        transform: translateY(0);
+    }
+    
+    /* Harmony Explorer */
+    .mixer-section {
+        background: var(--bg-secondary);
+        border-radius: 25px;
+        padding: 50px;
+        margin: 40px 0;
+        border: 1px solid rgba(168, 184, 196, 0.1);
+    }
+    
+    .mixer-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .mixer-title {
+        font-family: 'Marcellus', serif;
+        font-size: 1.3rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+    
+    .mixer-subtitle {
+        color: var(--text-secondary);
+        margin-top: 10px;
+    }
+    
+    .mixer-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 30px;
+        align-items: center;
+    }
+    
+    .mixer-slot {
+        text-align: center;
+    }
+    
+    .mixer-slot-label {
+        font-size: 0.8rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+    }
+    
+    .mixer-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto;
+        background: var(--bg-card);
+        border: 2px dashed rgba(168, 184, 196, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .mixer-preview.filled {
+        border-style: solid;
+        border-color: var(--accent);
+    }
+    
+    .mixer-preview span {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .mixer-result {
+        text-align: center;
+    }
+    
+    .result-display {
+        width: 160px;
+        height: 160px;
+        border-radius: 15px;
+        margin: 0 auto 15px;
+        background: var(--bg-card);
+        border: 2px solid rgba(168, 184, 196, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.4s ease;
+    }
+    
+    .harmony-label {
+        font-family: 'Petit Formal Script', cursive;
+        font-size: 1.1rem;
+        color: var(--accent);
+    }
+    
+    /* Lighting Simulator */
+    .lighting-section {
+        background: var(--bg-secondary);
+        border-radius: 25px;
+        padding: 50px;
+        margin: 40px 0;
+        border: 1px solid rgba(168, 184, 196, 0.1);
+    }
+    
+    .lighting-controls {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 40px;
+        flex-wrap: wrap;
+    }
+    
+    .lighting-btn {
+        padding: 10px 20px;
+        background: transparent;
+        border: 1px solid rgba(168, 184, 196, 0.3);
+        border-radius: 20px;
+        color: var(--text-secondary);
+        font-family: inherit;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .lighting-btn:hover {
+        border-color: var(--accent);
+    }
+    
+    .lighting-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: var(--bg-primary);
+    }
+    
+    .lighting-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+    }
+    
+    .lighting-preview {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 12px;
+        padding: 30px;
+        border-radius: 15px;
+        transition: all 0.4s ease;
+    }
+    
+    .lighting-preview.daylight { background: linear-gradient(135deg, #f5f5f5, #e8e8e8); }
+    .lighting-preview.golden-hour { background: linear-gradient(135deg, #f5e6d3, #e8d4b8); }
+    .lighting-preview.overcast { background: linear-gradient(135deg, #d8dce0, #c8ccd0); }
+    .lighting-preview.incandescent { background: linear-gradient(135deg, #f5e8d8, #e8d8c0); }
+    .lighting-preview.candlelight { background: linear-gradient(135deg, #4a3c2e, #3a2c1e); }
+    .lighting-preview.fluorescent { background: linear-gradient(135deg, #f0f5f0, #e0e8e0); }
+    
+    .lighting-swatch {
+        aspect-ratio: 1;
+        border-radius: 8px;
+        transition: filter 0.4s ease;
+    }
+    
+    /* Metals */
+    .metals-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+    }
+    
+    .metal-card {
+        background: var(--bg-card);
+        border-radius: 15px;
+        padding: 20px;
+        text-align: center;
+        border: 1px solid rgba(168, 184, 196, 0.1);
+    }
+    
+    .metal-card.best {
+        border-color: var(--accent);
+        background: linear-gradient(135deg, var(--bg-card), rgba(168, 184, 196, 0.1));
+    }
+    
+    .metal-swatch {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        margin: 0 auto 10px;
+    }
+    
+    .metal-name {
+        font-size: 0.9rem;
+        margin-bottom: 4px;
+    }
+    
+    .metal-status {
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+    
+    .metal-status.recommended { color: var(--accent); }
+    
+    /* Outfit Generator */
+    .outfit-section {
+        display: grid;
+        grid-template-columns: 260px 1fr;
+        gap: 30px;
+    }
+    
+    .outfit-controls {
+        background: var(--bg-card);
+        border-radius: 20px;
+        padding: 25px;
+    }
+    
+    .control-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 10px;
+    }
+    
+    .occasion-btns {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 20px;
+    }
+    
+    .occ-btn {
+        padding: 8px 14px;
+        background: transparent;
+        border: 1px solid rgba(168, 184, 196, 0.3);
+        border-radius: 18px;
+        color: var(--text-secondary);
+        font-family: inherit;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .occ-btn:hover { border-color: var(--accent); }
+    .occ-btn.active { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
+    
+    .gen-btn {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-rose));
+        border: none;
+        border-radius: 12px;
+        color: var(--bg-primary);
+        font-family: 'Marcellus', serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    
+    .outfit-display {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+    
+    .outfit-item {
+        background: var(--bg-card);
+        border-radius: 15px;
+        padding: 18px;
+        text-align: center;
+    }
+    
+    .outfit-swatch {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        margin: 0 auto 10px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    
+    .outfit-label {
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+    }
+    
+    .outfit-name { font-size: 0.85rem; }
+    
+    /* Makeup */
+    .makeup-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+    }
+    
+    .makeup-card {
+        background: var(--bg-card);
+        border-radius: 15px;
+        padding: 22px;
+    }
+    
+    .makeup-title {
+        font-family: 'Marcellus', serif;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        margin-bottom: 12px;
+    }
+    
+    .makeup-swatches {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 12px;
+    }
+    
+    .makeup-swatch {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    
+    .makeup-swatch:hover { transform: scale(1.15); }
+    
+    .makeup-text {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+    }
+    
+    /* Story */
+    .story-section {
+        text-align: center;
+        max-width: 750px;
+        margin: 0 auto;
+        padding: 80px 20px;
+    }
+    
+    .story-text {
+        font-size: 1.2rem;
+        line-height: 2;
+        color: var(--text-secondary);
+        font-style: italic;
+    }
+    
+    .story-text em {
+        color: var(--accent);
+        font-style: normal;
+    }
+    
+    /* Panel */
+    .color-panel {
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%) translateY(150%);
+        background: var(--bg-card);
+        border: 1px solid rgba(168, 184, 196, 0.3);
+        border-radius: 15px;
+        padding: 15px 25px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        z-index: 100;
+        transition: transform 0.3s ease;
+    }
+    
+    .color-panel.visible { transform: translateX(-50%) translateY(0); }
+    
+    .panel-swatch {
+        width: 45px;
+        height: 45px;
+        border-radius: 10px;
+    }
+    
+    .panel-name { font-size: 1rem; margin-bottom: 2px; }
+    .panel-hex { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
+    
+    .panel-copy {
+        padding: 8px 15px;
+        background: var(--accent);
+        border: none;
+        border-radius: 8px;
+        color: var(--bg-primary);
+        font-family: inherit;
+        cursor: pointer;
+    }
+    
+    .panel-close {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        font-size: 1.2rem;
+        cursor: pointer;
+    }
+    
+    .toast {
+        position: fixed;
+        bottom: 90px;
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--accent);
+        color: var(--bg-primary);
+        padding: 10px 20px;
+        border-radius: 8px;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 101;
+    }
+    
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    
+    .footer {
+        padding: 40px 0;
+        text-align: center;
+        border-top: 1px solid rgba(168, 184, 196, 0.1);
+    }
+    
+    .footer-text {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+    }
+    
+    .footer-text em {
+        font-family: 'Petit Formal Script', cursive;
+        color: var(--accent);
+        font-style: normal;
+    }
+    
+    @media (max-width: 900px) {
+        .container { padding: 0 20px; }
+        .outfit-section { grid-template-columns: 1fr; }
+        .outfit-display { grid-template-columns: repeat(2, 1fr); }
+        .mixer-container { grid-template-columns: 1fr; gap: 20px; }
+        .mixer-section, .lighting-section { padding: 30px 20px; }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="bg-atmosphere"></div>
+
+```
+<section class="hero">
+    <div class="hero-ornament"></div>
+    <h1 class="palette-name">The Silver Veil</h1>
+    <p class="palette-subtitle">A Personal Color Universe</p>
+    <div class="season-badge">
+        <div class="season-colors">
+            <div class="season-dot" style="background: #A8B8C4;"></div>
+            <div class="season-dot" style="background: #C4A4A8;"></div>
+            <div class="season-dot" style="background: #8CA090;"></div>
+            <div class="season-dot" style="background: #7C5868;"></div>
+        </div>
+        <span>Soft Summer Neutral</span>
+    </div>
+    <p class="hero-description">
+        "Your coloring holds the quiet poetry of morning mist over still water—cool silver meeting dusty rose, soft teal kissed by lavender, the luminous calm of overcast skies."
+    </p>
+</section>
+
+<div class="container">
+    <!-- Body Colors -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Your Natural Palette</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="body-colors">
+            <div class="body-card">
+                <h3 class="body-title">Skin Tones</h3>
+                <div class="spectrum">
+                    <div class="spectrum-swatch" style="background: #F5E8E4;" onclick="showColor('Highlight', '#F5E8E4')"></div>
+                    <div class="spectrum-swatch" style="background: #E8D8D4;" onclick="showColor('Midtone', '#E8D8D4')"></div>
+                    <div class="spectrum-swatch" style="background: #D4C4C0;" onclick="showColor('Shadow', '#D4C4C0')"></div>
+                    <div class="spectrum-swatch" style="background: #C4B0AC;" onclick="showColor('Deep', '#C4B0AC')"></div>
+                </div>
+                <p class="color-label">Cool-Neutral Undertone</p>
+            </div>
+            
+            <div class="body-card">
+                <h3 class="body-title">Natural Hair</h3>
+                <div class="spectrum">
+                    <div class="spectrum-swatch" style="background: #6B5B54;" onclick="showColor('Light', '#6B5B54')"></div>
+                    <div class="spectrum-swatch" style="background: #5C4C44;" onclick="showColor('Mid', '#5C4C44')"></div>
+                    <div class="spectrum-swatch" style="background: #4C3C34;" onclick="showColor('Deep', '#4C3C34')"></div>
+                </div>
+                <p class="color-label">Cool Ash Brunette</p>
+            </div>
+            
+            <div class="body-card">
+                <h3 class="body-title">Current Hair</h3>
+                <div class="spectrum">
+                    <div class="spectrum-swatch" style="background: #B8A89C;" onclick="showColor('Lightest', '#B8A89C')"></div>
+                    <div class="spectrum-swatch" style="background: #9C8C80;" onclick="showColor('Mid', '#9C8C80')"></div>
+                    <div class="spectrum-swatch" style="background: #7C6C60;" onclick="showColor('Depth', '#7C6C60')"></div>
+                </div>
+                <p class="color-label">Ash Blonde</p>
+            </div>
+            
+            <div class="body-card">
+                <h3 class="body-title">Eye Colors</h3>
+                <div class="eye-vis"></div>
+                <div class="spectrum">
+                    <div class="spectrum-swatch" style="background: #5A6B5C;" onclick="showColor('Outer Ring', '#5A6B5C')"></div>
+                    <div class="spectrum-swatch" style="background: #7B8B6C;" onclick="showColor('Mid Green', '#7B8B6C')"></div>
+                    <div class="spectrum-swatch" style="background: #9BAB7C;" onclick="showColor('Inner Green', '#9BAB7C')"></div>
+                    <div class="spectrum-swatch" style="background: #B8A060;" onclick="showColor('Gold Spark', '#B8A060')"></div>
+                    <div class="spectrum-swatch" style="background: #8B9A8C;" onclick="showColor('Grey Mist', '#8B9A8C')"></div>
+                </div>
+                <p class="color-label">Grey-Green with Gold Flecks</p>
+            </div>
+            
+            <div class="body-card">
+                <h3 class="body-title">Flush & Lips</h3>
+                <div class="spectrum">
+                    <div class="spectrum-swatch" style="background: #D8B4B4;" onclick="showColor('Soft Flush', '#D8B4B4')"></div>
+                    <div class="spectrum-swatch" style="background: #C89898;" onclick="showColor('True Flush', '#C89898')"></div>
+                    <div class="spectrum-swatch" style="background: #B88888;" onclick="showColor('Natural Lip', '#B88888')"></div>
+                    <div class="spectrum-swatch" style="background: #987070;" onclick="showColor('Deep Lip', '#987070')"></div>
+                </div>
+                <p class="color-label">Cool Rose</p>
+            </div>
+            
+            <div class="body-card">
+                <h3 class="body-title">Vein Colors</h3>
+                <div class="spectrum">
+                    <div class="spectrum-swatch" style="background: #7BA4B8;" onclick="showColor('Blue', '#7BA4B8')"></div>
+                    <div class="spectrum-swatch" style="background: #8BB4A8;" onclick="showColor('Blue-Green', '#8BB4A8')"></div>
+                </div>
+                <p class="color-label">Cool-Neutral Indicator</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Full Palette -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Your Complete Palette</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Soft Whites & Ivories</h3>
+            <div class="palette-grid" id="palette-whites">
+                <div class="swatch" style="background: #F5F0F0;" data-name="Soft White" data-hex="#F5F0F0"><span class="swatch-name">Soft White</span></div>
+                <div class="swatch" style="background: #F0E8E8;" data-name="Ivory Pink" data-hex="#F0E8E8"><span class="swatch-name">Ivory Pink</span></div>
+                <div class="swatch" style="background: #EBE4E4;" data-name="Rose White" data-hex="#EBE4E4"><span class="swatch-name">Rose White</span></div>
+                <div class="swatch" style="background: #E0D8D8;" data-name="Light Dove" data-hex="#E0D8D8"><span class="swatch-name">Light Dove</span></div>
+                <div class="swatch" style="background: #D4CCCC;" data-name="Silver Pink" data-hex="#D4CCCC"><span class="swatch-name">Silver Pink</span></div>
+            </div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Roses, Mauves & Berries</h3>
+            <div class="palette-grid">
+                <div class="swatch" style="background: #C4A4A8;" data-name="Dusty Rose" data-hex="#C4A4A8"><span class="swatch-name">Dusty Rose</span></div>
+                <div class="swatch" style="background: #A88080;" data-name="Rose Brown" data-hex="#A88080"><span class="swatch-name">Rose Brown</span></div>
+                <div class="swatch" style="background: #9C8088;" data-name="Mauve" data-hex="#9C8088"><span class="swatch-name">Mauve</span></div>
+                <div class="swatch" style="background: #A87080;" data-name="Soft Raspberry" data-hex="#A87080"><span class="swatch-name">Soft Raspberry</span></div>
+                <div class="swatch" style="background: #8C6070;" data-name="Muted Berry" data-hex="#8C6070"><span class="swatch-name">Muted Berry</span></div>
+                <div class="swatch" style="background: #7C5868;" data-name="Dusty Plum" data-hex="#7C5868"><span class="swatch-name">Dusty Plum</span></div>
+                <div class="swatch" style="background: #6C4858;" data-name="Deep Mauve" data-hex="#6C4858"><span class="swatch-name">Deep Mauve</span></div>
+            </div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Teals, Sages & Greens</h3>
+            <div class="palette-grid">
+                <div class="swatch" style="background: #6C9498;" data-name="Soft Teal" data-hex="#6C9498"><span class="swatch-name">Soft Teal</span></div>
+                <div class="swatch" style="background: #5C8488;" data-name="Muted Teal" data-hex="#5C8488"><span class="swatch-name">Muted Teal</span></div>
+                <div class="swatch" style="background: #4C7478;" data-name="Deep Teal" data-hex="#4C7478"><span class="swatch-name">Deep Teal</span></div>
+                <div class="swatch" style="background: #8CA090;" data-name="Sage" data-hex="#8CA090"><span class="swatch-name">Sage</span></div>
+                <div class="swatch" style="background: #7C9488;" data-name="Eucalyptus" data-hex="#7C9488"><span class="swatch-name">Eucalyptus</span></div>
+                <div class="swatch" style="background: #5C7470;" data-name="Soft Spruce" data-hex="#5C7470"><span class="swatch-name">Soft Spruce</span></div>
+            </div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Blues & Slates</h3>
+            <div class="palette-grid">
+                <div class="swatch" style="background: #A8B8C4;" data-name="Powder Blue" data-hex="#A8B8C4"><span class="swatch-name">Powder Blue</span></div>
+                <div class="swatch" style="background: #7C8C9C;" data-name="Soft Denim" data-hex="#7C8C9C"><span class="swatch-name">Soft Denim</span></div>
+                <div class="swatch" style="background: #6C7C8C;" data-name="Slate" data-hex="#6C7C8C"><span class="swatch-name">Slate</span></div>
+                <div class="swatch" style="background: #4C5C6C;" data-name="Soft Navy" data-hex="#4C5C6C"><span class="swatch-name">Soft Navy</span></div>
+                <div class="swatch" style="background: #3C4C5C;" data-name="Charcoal Blue" data-hex="#3C4C5C"><span class="swatch-name">Charcoal Blue</span></div>
+            </div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Cocoas, Taupes & Neutrals</h3>
+            <div class="palette-grid">
+                <div class="swatch" style="background: #8C7470;" data-name="Cocoa" data-hex="#8C7470"><span class="swatch-name">Cocoa</span></div>
+                <div class="swatch" style="background: #988480;" data-name="Rose Taupe" data-hex="#988480"><span class="swatch-name">Rose Taupe</span></div>
+                <div class="swatch" style="background: #8C8480;" data-name="Cool Taupe" data-hex="#8C8480"><span class="swatch-name">Cool Taupe</span></div>
+                <div class="swatch" style="background: #6C6460;" data-name="Grey Brown" data-hex="#6C6460"><span class="swatch-name">Grey Brown</span></div>
+                <div class="swatch" style="background: #4C4440;" data-name="Charcoal Brown" data-hex="#4C4440"><span class="swatch-name">Charcoal Brown</span></div>
+            </div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Silvers, Greys & Darks</h3>
+            <div class="palette-grid">
+                <div class="swatch" style="background: #B8B4B8;" data-name="Silver" data-hex="#B8B4B8"><span class="swatch-name">Silver</span></div>
+                <div class="swatch" style="background: #A8A4AC;" data-name="Lavender Grey" data-hex="#A8A4AC"><span class="swatch-name">Lavender Grey</span></div>
+                <div class="swatch" style="background: #8C888C;" data-name="Pewter" data-hex="#8C888C"><span class="swatch-name">Pewter</span></div>
+                <div class="swatch" style="background: #4C484C;" data-name="Charcoal" data-hex="#4C484C"><span class="swatch-name">Charcoal</span></div>
+                <div class="swatch" style="background: #2C2830;" data-name="Soft Black" data-hex="#2C2830"><span class="swatch-name">Soft Black</span></div>
+            </div>
+        </div>
+        
+        <div class="palette-category">
+            <h3 class="category-title">Warm Neutrals You Can Borrow</h3>
+            <div class="palette-grid">
+                <div class="swatch" style="background: #A89080;" data-name="Muted Camel" data-hex="#A89080"><span class="swatch-name">Muted Camel</span></div>
+                <div class="swatch" style="background: #9C8070;" data-name="Soft Cognac" data-hex="#9C8070"><span class="swatch-name">Soft Cognac</span></div>
+                <div class="swatch" style="background: #8C7060;" data-name="Mushroom" data-hex="#8C7060"><span class="swatch-name">Mushroom</span></div>
+                <div class="swatch" style="background: #B8A090;" data-name="Greige" data-hex="#B8A090"><span class="swatch-name">Greige</span></div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Harmony Explorer -->
+    <section class="mixer-section">
+        <div class="mixer-header">
+            <h2 class="mixer-title">Harmony Explorer</h2>
+            <p class="mixer-subtitle">Click any swatch above, then click a slot to build combinations</p>
+        </div>
+        
+        <div class="mixer-container">
+            <div class="mixer-slot">
+                <div class="mixer-slot-label">Primary Color</div>
+                <div class="mixer-preview" id="mixer-primary" onclick="assignToSlot('primary')">
+                    <span>Click to assign</span>
+                </div>
+            </div>
+            
+            <div class="mixer-result">
+                <div class="result-display" id="result-display">
+                    <span class="harmony-label" id="harmony-label">Select colors...</span>
+                </div>
+            </div>
+            
+            <div class="mixer-slot">
+                <div class="mixer-slot-label">Accent Color</div>
+                <div class="mixer-preview" id="mixer-accent" onclick="assignToSlot('accent')">
+                    <span>Click to assign</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Metals -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Your Metals</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="metals-grid">
+            <div class="metal-card best">
+                <div class="metal-swatch" style="background: linear-gradient(135deg, #E8E8E8, #B8B8B8, #D0D0D0);"></div>
+                <div class="metal-name">Silver</div>
+                <div class="metal-status recommended">Best Choice</div>
+            </div>
+            <div class="metal-card best">
+                <div class="metal-swatch" style="background: linear-gradient(135deg, #E8D8D0, #C4A8A0, #D8C0B8);"></div>
+                <div class="metal-name">Rose Gold</div>
+                <div class="metal-status recommended">Excellent</div>
+            </div>
+            <div class="metal-card best">
+                <div class="metal-swatch" style="background: linear-gradient(135deg, #F0F0F0, #C8C8C8, #E0E0E0);"></div>
+                <div class="metal-name">White Gold</div>
+                <div class="metal-status recommended">Excellent</div>
+            </div>
+            <div class="metal-card">
+                <div class="metal-swatch" style="background: linear-gradient(135deg, #8C8C8C, #5C5C5C, #707070);"></div>
+                <div class="metal-name">Pewter</div>
+                <div class="metal-status">Great</div>
+            </div>
+            <div class="metal-card">
+                <div class="metal-swatch" style="background: linear-gradient(135deg, #E8D8C0, #C4A878, #D8C8A0);"></div>
+                <div class="metal-name">Soft Gold</div>
+                <div class="metal-status">Softer Tones</div>
+            </div>
+            <div class="metal-card">
+                <div class="metal-swatch" style="background: linear-gradient(135deg, #E8C878, #C49840, #D8B060);"></div>
+                <div class="metal-name">Yellow Gold</div>
+                <div class="metal-status">Use Sparingly</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Lighting Simulator -->
+    <section class="lighting-section">
+        <div class="section-header">
+            <h2 class="section-title">Lighting Simulator</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="lighting-controls">
+            <button class="lighting-btn active" data-lighting="daylight">
+                <div class="lighting-icon" style="background: linear-gradient(135deg, #fff, #e8e8e8);"></div>
+                Daylight
+            </button>
+            <button class="lighting-btn" data-lighting="golden-hour">
+                <div class="lighting-icon" style="background: linear-gradient(135deg, #f5d4a8, #e8c088);"></div>
+                Golden Hour
+            </button>
+            <button class="lighting-btn" data-lighting="overcast">
+                <div class="lighting-icon" style="background: linear-gradient(135deg, #d0d4d8, #b8bcc0);"></div>
+                Overcast
+            </button>
+            <button class="lighting-btn" data-lighting="incandescent">
+                <div class="lighting-icon" style="background: linear-gradient(135deg, #f5e0c8, #e8d0b0);"></div>
+                Incandescent
+            </button>
+            <button class="lighting-btn" data-lighting="candlelight">
+                <div class="lighting-icon" style="background: linear-gradient(135deg, #c89860, #a87840);"></div>
+                Candlelight
+            </button>
+        </div>
+        
+        <div class="lighting-preview daylight" id="lighting-preview"></div>
+    </section>
+    
+    <!-- Outfit Generator -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Outfit Alchemy</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="outfit-section">
+            <div class="outfit-controls">
+                <div class="control-label">Occasion</div>
+                <div class="occasion-btns">
+                    <button class="occ-btn active" onclick="setOccasion(this, 'everyday')">Everyday</button>
+                    <button class="occ-btn" onclick="setOccasion(this, 'professional')">Professional</button>
+                    <button class="occ-btn" onclick="setOccasion(this, 'evening')">Evening</button>
+                    <button class="occ-btn" onclick="setOccasion(this, 'romantic')">Romantic</button>
+                </div>
+                <button class="gen-btn" onclick="generateOutfit()">Generate Palette</button>
+            </div>
+            
+            <div class="outfit-display" id="outfit-display">
+                <div class="outfit-item">
+                    <div class="outfit-swatch" style="background: #F5F0F0;"></div>
+                    <div class="outfit-label">Base</div>
+                    <div class="outfit-name">Soft White</div>
+                </div>
+                <div class="outfit-item">
+                    <div class="outfit-swatch" style="background: #6C9498;"></div>
+                    <div class="outfit-label">Main</div>
+                    <div class="outfit-name">Soft Teal</div>
+                </div>
+                <div class="outfit-item">
+                    <div class="outfit-swatch" style="background: #C4A4A8;"></div>
+                    <div class="outfit-label">Accent</div>
+                    <div class="outfit-name">Dusty Rose</div>
+                </div>
+                <div class="outfit-item">
+                    <div class="outfit-swatch" style="background: linear-gradient(135deg, #E8E8E8, #B8B8B8);"></div>
+                    <div class="outfit-label">Metal</div>
+                    <div class="outfit-name">Silver</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Makeup -->
+    <section class="section">
+        <div class="section-header">
+            <h2 class="section-title">Makeup Harmonies</h2>
+            <div class="section-line"></div>
+        </div>
+        
+        <div class="makeup-grid">
+            <div class="makeup-card">
+                <div class="makeup-title">Lip Colors</div>
+                <div class="makeup-swatches">
+                    <div class="makeup-swatch" style="background: #B88888;" onclick="showColor('Nude Rose', '#B88888')"></div>
+                    <div class="makeup-swatch" style="background: #A87080;" onclick="showColor('Soft Raspberry', '#A87080')"></div>
+                    <div class="makeup-swatch" style="background: #8C6070;" onclick="showColor('Muted Berry', '#8C6070')"></div>
+                    <div class="makeup-swatch" style="background: #987070;" onclick="showColor('Rose Brown', '#987070')"></div>
+                    <div class="makeup-swatch" style="background: #7C5868;" onclick="showColor('Dusty Plum', '#7C5868')"></div>
+                </div>
+                <p class="makeup-text">Soft raspberries, muted berries, rose-browns, cool plums. Avoid warm corals.</p>
+            </div>
+            
+            <div class="makeup-card">
+                <div class="makeup-title">Blush Tones</div>
+                <div class="makeup-swatches">
+                    <div class="makeup-swatch" style="background: #D8B4B4;" onclick="showColor('Soft Rose', '#D8B4B4')"></div>
+                    <div class="makeup-swatch" style="background: #C89898;" onclick="showColor('Dusty Pink', '#C89898')"></div>
+                    <div class="makeup-swatch" style="background: #C4A4A8;" onclick="showColor('Mauve Rose', '#C4A4A8')"></div>
+                    <div class="makeup-swatch" style="background: #B89090;" onclick="showColor('Cool Rose', '#B89090')"></div>
+                </div>
+                <p class="makeup-text">Dusty pinks, soft mauves, cool roses. Avoid peach and coral.</p>
+            </div>
+            
+            <div class="makeup-card">
+                <div class="makeup-title">Eye Shadows</div>
+                <div class="makeup-swatches">
+                    <div class="makeup-swatch" style="background: #A8A4AC;" onclick="showColor('Lavender Grey', '#A8A4AC')"></div>
+                    <div class="makeup-swatch" style="background: #8C7470;" onclick="showColor('Cocoa', '#8C7470')"></div>
+                    <div class="makeup-swatch" style="background: #7C5868;" onclick="showColor('Soft Plum', '#7C5868')"></div>
+                    <div class="makeup-swatch" style="background: #5C8488;" onclick="showColor('Muted Teal', '#5C8488')"></div>
+                    <div class="makeup-swatch" style="background: #8C8480;" onclick="showColor('Cool Taupe', '#8C8480')"></div>
+                </div>
+                <p class="makeup-text">Plums bring out green in your eyes; lavender-greys echo beautifully.</p>
+            </div>
+            
+            <div class="makeup-card">
+                <div class="makeup-title">Bronzer & Contour</div>
+                <div class="makeup-swatches">
+                    <div class="makeup-swatch" style="background: #988480;" onclick="showColor('Rose Taupe', '#988480')"></div>
+                    <div class="makeup-swatch" style="background: #8C7470;" onclick="showColor('Cool Cocoa', '#8C7470')"></div>
+                    <div class="makeup-swatch" style="background: #7C6C68;" onclick="showColor('Soft Contour', '#7C6C68')"></div>
+                </div>
+                <p class="makeup-text">Cool-toned with rose or grey undertones. Never orange-based.</p>
+            </div>
+            
+            <div class="makeup-card">
+                <div class="makeup-title">Highlighter</div>
+                <div class="makeup-swatches">
+                    <div class="makeup-swatch" style="background: #F0ECEC; box-shadow: inset 0 0 12px rgba(200,180,200,0.5);" onclick="showColor('Pearl', '#F0ECEC')"></div>
+                    <div class="makeup-swatch" style="background: #E8E0E0; box-shadow: inset 0 0 12px rgba(184,180,184,0.5);" onclick="showColor('Silver', '#E8E0E0')"></div>
+                    <div class="makeup-swatch" style="background: #EDE4E4; box-shadow: inset 0 0 12px rgba(196,164,168,0.4);" onclick="showColor('Rose', '#EDE4E4')"></div>
+                </div>
+                <p class="makeup-text">Pearl, silver, soft rose. Avoid yellow gold highlighters.</p>
+            </div>
+            
+            <div class="makeup-card">
+                <div class="makeup-title">Brow Shades</div>
+                <div class="makeup-swatches">
+                    <div class="makeup-swatch" style="background: #6C6460;" onclick="showColor('Cool Grey-Brown', '#6C6460')"></div>
+                    <div class="makeup-swatch" style="background: #5C5450;" onclick="showColor('Ash Brown', '#5C5450')"></div>
+                    <div class="makeup-swatch" style="background: #7C7470;" onclick="showColor('Taupe', '#7C7470')"></div>
+                </div>
+                <p class="makeup-text">Cool taupe or grey-brown. Avoid warm browns.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Story -->
+    <section class="story-section">
+        <div class="section-header">
+            <h2 class="section-title">Your Color Story</h2>
+            <div class="section-line"></div>
+        </div>
+        <p class="story-text">
+            You are <em>The Silver Veil</em>—that hushed moment when morning light filters through mist, when the world is soft-edged and luminous. Your palette holds the quiet sophistication of overcast skies, the mystery of eucalyptus groves in fog, the elegance of moonlight on still water.
+            <br><br>
+            Your coloring is <em>cool and soft</em>—nothing harsh, nothing screaming for attention. Your natural dark ash-brown hair, your grey-green eyes with their unexpected gold sparks, your skin that glows against silver metallics—these speak to a palette of <em>restraint</em>, of colors gently muted, softened, made subtle.
+            <br><br>
+            This is not a palette of shyness. This is a palette of <em>quiet power</em>—the kind that draws people in. Dusty roses, soft teals, lavender greys. Colors that make you look expensive, effortless, like you were born knowing exactly what works.
+        </p>
+    </section>
+    
+    <footer class="footer">
+        <p class="footer-text">Created with reverence for color • <em>The Silver Veil</em> • A Soft Summer Neutral Palette</p>
+    </footer>
+</div>
+
+<div class="color-panel" id="color-panel">
+    <div class="panel-swatch" id="panel-swatch"></div>
+    <div>
+        <div class="panel-name" id="panel-name"></div>
+        <div class="panel-hex" id="panel-hex"></div>
+    </div>
+    <button class="panel-copy" onclick="copyColor()">Copy</button>
+    <button class="panel-close" onclick="closePanel()">×</button>
+</div>
+
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+    let currentColor = null;
+    let selectedSwatch = null;
+    let mixerPrimary = null;
+    let mixerAccent = null;
+    let currentOccasion = 'everyday';
+    
+    const colors = {
+        'Soft White': '#F5F0F0', 'Ivory Pink': '#F0E8E8', 'Rose White': '#EBE4E4',
+        'Light Dove': '#E0D8D8', 'Silver Pink': '#D4CCCC', 'Dusty Rose': '#C4A4A8',
+        'Rose Brown': '#A88080', 'Mauve': '#9C8088', 'Soft Raspberry': '#A87080',
+        'Muted Berry': '#8C6070', 'Dusty Plum': '#7C5868', 'Deep Mauve': '#6C4858',
+        'Soft Teal': '#6C9498', 'Muted Teal': '#5C8488', 'Deep Teal': '#4C7478',
+        'Sage': '#8CA090', 'Eucalyptus': '#7C9488', 'Soft Spruce': '#5C7470',
+        'Powder Blue': '#A8B8C4', 'Soft Denim': '#7C8C9C', 'Slate': '#6C7C8C',
+        'Soft Navy': '#4C5C6C', 'Charcoal Blue': '#3C4C5C', 'Cocoa': '#8C7470',
+        'Rose Taupe': '#988480', 'Cool Taupe': '#8C8480', 'Grey Brown': '#6C6460',
+        'Charcoal Brown': '#4C4440', 'Silver': '#B8B4B8', 'Lavender Grey': '#A8A4AC',
+        'Pewter': '#8C888C', 'Charcoal': '#4C484C', 'Soft Black': '#2C2830',
+        'Muted Camel': '#A89080', 'Soft Cognac': '#9C8070', 'Mushroom': '#8C7060', 'Greige': '#B8A090'
+    };
+    
+    const outfits = {
+        everyday: [
+            { base: ['Soft White', '#F5F0F0'], main: ['Soft Teal', '#6C9498'], accent: ['Dusty Rose', '#C4A4A8'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Ivory Pink', '#F0E8E8'], main: ['Cool Taupe', '#8C8480'], accent: ['Muted Berry', '#8C6070'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Light Dove', '#E0D8D8'], main: ['Sage', '#8CA090'], accent: ['Rose Brown', '#A88080'], metal: ['Rose Gold', 'linear-gradient(135deg, #E8D8D0, #C4A8A0)'] }
+        ],
+        professional: [
+            { base: ['Soft White', '#F5F0F0'], main: ['Soft Navy', '#4C5C6C'], accent: ['Dusty Rose', '#C4A4A8'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Ivory Pink', '#F0E8E8'], main: ['Charcoal', '#4C484C'], accent: ['Soft Teal', '#6C9498'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Light Dove', '#E0D8D8'], main: ['Charcoal Brown', '#4C4440'], accent: ['Powder Blue', '#A8B8C4'], metal: ['White Gold', 'linear-gradient(135deg, #F0F0F0, #C8C8C8)'] }
+        ],
+        evening: [
+            { base: ['Soft Black', '#2C2830'], main: ['Dusty Plum', '#7C5868'], accent: ['Silver', '#B8B4B8'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Charcoal Blue', '#3C4C5C'], main: ['Dusty Rose', '#C4A4A8'], accent: ['Silver', '#B8B4B8'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Deep Mauve', '#6C4858'], main: ['Silver Pink', '#D4CCCC'], accent: ['Pewter', '#8C888C'], metal: ['Rose Gold', 'linear-gradient(135deg, #E8D8D0, #C4A8A0)'] }
+        ],
+        romantic: [
+            { base: ['Soft White', '#F5F0F0'], main: ['Dusty Rose', '#C4A4A8'], accent: ['Dusty Plum', '#7C5868'], metal: ['Rose Gold', 'linear-gradient(135deg, #E8D8D0, #C4A8A0)'] },
+            { base: ['Ivory Pink', '#F0E8E8'], main: ['Mauve', '#9C8088'], accent: ['Sage', '#8CA090'], metal: ['Silver', 'linear-gradient(135deg, #E8E8E8, #B8B8B8)'] },
+            { base: ['Rose White', '#EBE4E4'], main: ['Soft Raspberry', '#A87080'], accent: ['Eucalyptus', '#7C9488'], metal: ['Rose Gold', 'linear-gradient(135deg, #E8D8D0, #C4A8A0)'] }
+        ]
+    };
+    
+    // Initialize swatches
+    document.querySelectorAll('.swatch').forEach(swatch => {
+        swatch.addEventListener('click', function() {
+            const name = this.dataset.name;
+            const hex = this.dataset.hex;
+            
+            document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            selectedSwatch = { name, hex };
+            showColor(name, hex);
+        });
+    });
+    
+    function showColor(name, hex) {
+        currentColor = { name, hex };
+        document.getElementById('panel-swatch').style.background = hex;
+        document.getElementById('panel-name').textContent = name;
+        document.getElementById('panel-hex').textContent = hex.toUpperCase();
+        document.getElementById('color-panel').classList.add('visible');
+    }
+    
+    function closePanel() {
+        document.getElementById('color-panel').classList.remove('visible');
+        document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+        selectedSwatch = null;
+    }
+    
+    function copyColor() {
+        if (currentColor) {
+            navigator.clipboard.writeText(currentColor.hex.toUpperCase());
+            const toast = document.getElementById('toast');
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1500);
+        }
+    }
+    
+    function assignToSlot(slot) {
+        if (!selectedSwatch) {
+            alert('Select a color first by clicking a swatch above');
+            return;
+        }
+        
+        const preview = document.getElementById('mixer-' + slot);
+        preview.style.background = selectedSwatch.hex;
+        preview.innerHTML = '';
+        preview.classList.add('filled');
+        
+        if (slot === 'primary') {
+            mixerPrimary = selectedSwatch;
+        } else {
+            mixerAccent = selectedSwatch;
+        }
+        
+        updateMixerResult();
+    }
+    
+    function updateMixerResult() {
+        const display = document.getElementById('result-display');
+        const label = document.getElementById('harmony-label');
+        
+        if (mixerPrimary && mixerAccent) {
+            display.style.background = 'linear-gradient(135deg, ' + mixerPrimary.hex + ' 0%, ' + mixerPrimary.hex + ' 50%, ' + mixerAccent.hex + ' 50%, ' + mixerAccent.hex + ' 100%)';
+            const harmonies = ['Beautiful Contrast', 'Elegant Harmony', 'Soft Transition', 'Cool Balance', 'Sophisticated Pairing'];
+            label.textContent = harmonies[Math.floor(Math.random() * harmonies.length)];
+        } else if (mixerPrimary) {
+            display.style.background = mixerPrimary.hex;
+            label.textContent = mixerPrimary.name;
+        } else if (mixerAccent) {
+            display.style.background = mixerAccent.hex;
+            label.textContent = mixerAccent.name;
+        }
+    }
+    
+    function setOccasion(btn, occ) {
+        document.querySelectorAll('.occ-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentOccasion = occ;
+    }
+    
+    function generateOutfit() {
+        const options = outfits[currentOccasion];
+        const outfit = options[Math.floor(Math.random() * options.length)];
+        
+        document.getElementById('outfit-display').innerHTML = 
+            '<div class="outfit-item"><div class="outfit-swatch" style="background: ' + outfit.base[1] + ';"></div><div class="outfit-label">Base</div><div class="outfit-name">' + outfit.base[0] + '</div></div>' +
+            '<div class="outfit-item"><div class="outfit-swatch" style="background: ' + outfit.main[1] + ';"></div><div class="outfit-label">Main</div><div class="outfit-name">' + outfit.main[0] + '</div></div>' +
+            '<div class="outfit-item"><div class="outfit-swatch" style="background: ' + outfit.accent[1] + ';"></div><div class="outfit-label">Accent</div><div class="outfit-name">' + outfit.accent[0] + '</div></div>' +
+            '<div class="outfit-item"><div class="outfit-swatch" style="background: ' + outfit.metal[1] + ';"></div><div class="outfit-label">Metal</div><div class="outfit-name">' + outfit.metal[0] + '</div></div>';
+    }
+    
+    // Lighting Simulator
+    const lightingColors = [
+        ['Soft White', '#F5F0F0'], ['Dusty Rose', '#C4A4A8'], ['Soft Teal', '#6C9498'],
+        ['Sage', '#8CA090'], ['Powder Blue', '#A8B8C4'], ['Mauve', '#9C8088'],
+        ['Cocoa', '#8C7470'], ['Soft Navy', '#4C5C6C'], ['Dusty Plum', '#7C5868'],
+        ['Lavender Grey', '#A8A4AC'], ['Rose Taupe', '#988480'], ['Muted Berry', '#8C6070']
+    ];
+    
+    const lightingFilters = {
+        'daylight': 'none',
+        'golden-hour': 'sepia(15%) saturate(110%) brightness(105%)',
+        'overcast': 'saturate(85%) brightness(95%)',
+        'incandescent': 'sepia(20%) saturate(90%)',
+        'candlelight': 'sepia(35%) saturate(120%) brightness(85%)'
+    };
+    
+    function initLighting() {
+        const preview = document.getElementById('lighting-preview');
+        preview.innerHTML = lightingColors.map(function(c) {
+            return '<div class="lighting-swatch" style="background: ' + c[1] + ';" title="' + c[0] + '"></div>';
+        }).join('');
+    }
+    
+    document.querySelectorAll('.lighting-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.lighting-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const lighting = this.dataset.lighting;
+            const preview = document.getElementById('lighting-preview');
+            preview.className = 'lighting-preview ' + lighting;
+            
+            const filter = lightingFilters[lighting];
+            document.querySelectorAll('.lighting-swatch').forEach(swatch => {
+                swatch.style.filter = filter;
+            });
+        });
+    });
+    
+    initLighting();
+</script>
+```
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

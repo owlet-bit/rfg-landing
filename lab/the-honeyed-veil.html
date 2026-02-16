@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>The Honeyed Veil</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Honeyed Veil — Color Analysis</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#FAF6F0;--ink:#2D2A26;--gold:#B8956E;--blush:#C9A99C;--sage:#8E9982}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+body{font-family:Baskerville,"Times New Roman",serif;background:var(--cream);color:var(--ink);min-height:100vh;line-height:1.65}
+.realm{max-width:900px;margin:0 auto;padding:2rem 1.5rem}
+header{text-align:center;padding:2.5rem 0;border-bottom:1px solid var(--gold)}
+h1{font-size:2.4rem;font-weight:400;letter-spacing:.12em;margin-bottom:.3rem}
+.season-whisper{font-style:italic;color:var(--gold);font-size:1.05rem}
+.analysis-letter{background:#FFFDF9;border-left:3px solid var(--gold);padding:1.8rem;margin:2rem 0;font-size:1rem}
+.badge{display:inline-block;background:var(--ink);color:var(--cream);padding:.35rem 1rem;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;margin-bottom:1rem}
+
+.cabinet{margin:2.5rem 0}
+.cabinet-title{font-size:1.1rem;letter-spacing:.08em;margin-bottom:1rem;display:flex;align-items:center;gap:.8rem}
+.cabinet-title::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+
+.pigment-row{display:flex;flex-wrap:wrap;gap:.8rem}
+.pigment{text-align:center;cursor:pointer;transition:transform .2s}
+.pigment:hover{transform:translateY(-3px)}
+.pigment-orb{width:52px;height:52px;border-radius:50%;border:2px solid #E8E2DA;margin:0 auto .4rem}
+.pigment-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:#7A756D}
+.pigment-hex{font-family:monospace;font-size:.6rem;color:#9A958D}
+
+.drawer{margin:2rem 0;border:1px solid #E0DAD0;background:#FFFDF9}
+.drawer-handle{padding:1rem 1.2rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;background:#F7F3ED;border-bottom:1px solid #E0DAD0;font-size:.9rem;letter-spacing:.06em}
+.drawer-handle:hover{background:#F0EBE3}
+.drawer-contents{display:none;padding:1.2rem}
+.drawer.open .drawer-contents{display:block}
+.drawer-icon{transition:transform .2s}
+.drawer.open .drawer-icon{transform:rotate(180deg)}
+
+.bloom-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:.6rem}
+.bloom{aspect-ratio:1;cursor:pointer;position:relative;border:3px solid transparent;transition:transform .15s,border-color .15s}
+.bloom:hover{transform:scale(1.08)}
+.bloom.fav{border-color:var(--gold)}
+.bloom.fav::after{content:"♥";position:absolute;top:3px;right:4px;color:var(--gold);font-size:.7rem}
+.bloom-tip{position:absolute;bottom:105%;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:.3rem .6rem;font-size:.6rem;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;z-index:50}
+.bloom:hover .bloom-tip{opacity:1}
+
+.workbench{background:#F0EBE3;padding:1.5rem;margin:2rem 0}
+.workbench h3{font-size:1rem;font-weight:400;margin-bottom:1rem}
+.compare-area{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:1rem}
+.compare-slot{width:70px;height:70px;border:2px dashed #C4BDB0;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:#8A857D;cursor:pointer;transition:all .2s}
+.compare-slot.filled{border-style:solid;border-color:var(--ink)}
+.compare-slot.active{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,149,110,.3)}
+.compare-vs{font-size:1.2rem;color:var(--gold)}
+.verdict-box{background:#FFFDF9;border:1px solid #D4CFC5;padding:1rem;font-style:italic;color:#5A554D;min-height:60px;font-size:.9rem}
+
+.looks-section{margin:2rem 0}
+.looks-section h3{font-size:1rem;font-weight:400;margin-bottom:1rem;display:flex;justify-content:space-between;align-items:center}
+.gen-btn{background:var(--ink);color:var(--cream);border:none;padding:.5rem 1rem;font-family:inherit;font-size:.75rem;cursor:pointer;letter-spacing:.06em}
+.gen-btn:hover{background:#4A4540}
+.looks-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.look-card{background:#FFFDF9;border:1px solid #E0DAD0;padding:1rem}
+.look-name{font-size:.9rem;margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid #E8E2DA}
+.look-swatches{display:flex;gap:.4rem;margin-bottom:.8rem}
+.look-sw{width:32px;height:32px;cursor:pointer;border:1px solid #D4CFC5}
+.look-desc{font-size:.75rem;color:#6A655D;line-height:1.5}
+
+.favorites-chest{margin:2rem 0;border:2px solid var(--gold);padding:1.5rem;background:#FFFDF9}
+.favorites-chest h3{font-size:1rem;font-weight:400;margin-bottom:1rem;color:var(--gold)}
+.fav-grid{display:flex;flex-wrap:wrap;gap:.8rem;min-height:50px}
+.fav-empty{color:#9A958D;font-style:italic;font-size:.85rem}
+.fav-item{text-align:center;cursor:pointer}
+.fav-color{width:45px;height:45px;border:2px solid var(--gold);margin-bottom:.3rem}
+.fav-name{font-size:.55rem;color:#6A655D;max-width:50px;word-break:break-word}
+
+.export-zone{background:#F0EBE3;padding:1.5rem;margin:2rem 0}
+.export-zone h3{font-size:1rem;font-weight:400;margin-bottom:1rem}
+.export-btns{display:flex;gap:.6rem;flex-wrap:wrap}
+.exp-btn{background:var(--ink);color:var(--cream);border:none;padding:.6rem 1.2rem;font-family:inherit;font-size:.75rem;cursor:pointer}
+.exp-btn:hover{background:#4A4540}
+.export-out{margin-top:1rem;background:#FFFDF9;border:1px solid #D4CFC5;padding:.8rem;font-family:monospace;font-size:.65rem;max-height:150px;overflow-y:auto;white-space:pre-wrap;display:none}
+.export-out.show{display:block}
+
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--cream);padding:.6rem 1.2rem;font-size:.8rem;opacity:0;transition:opacity .25s;z-index:999}
+.toast.show{opacity:1}
+
+footer{text-align:center;padding:2rem 0;color:#9A958D;font-size:.8rem;border-top:1px solid #E0DAD0;margin-top:2rem}
+</style>
+</head>
+<body>
+<div class="realm">
+<header>
+<h1>The Honeyed Veil</h1>
+<p class="season-whisper">A Personal Color Portrait for Lauren</p>
+</header>
+
+<article class="analysis-letter">
+<span class="badge">Soft Autumn — Light Influence</span>
+<p>Your coloring tells the story of late September light filtering through wheat fields. There is an extraordinary harmony between your peachy-warm skin, those captivating sage-gold-hazel eyes, and hair that moves through champagne, ash, and honey depending on the light. The warmth in your complexion is present but veiled — never brassy, always soft. Your natural flush brings rose-terracotta to the surface, while the cool blue-green of your veins creates that neutral-warm balance that makes Soft Autumn so versatile. You wear earth and atmosphere equally well, thriving in colors that feel sun-faded, antique, and gently complex.</p>
+</article>
+
+<section class="cabinet">
+<h2 class="cabinet-title">Source Pigments</h2>
+<div class="pigment-row" id="pigments"></div>
+</section>
+
+<section class="cabinet">
+<h2 class="cabinet-title">Your Wearable Palette</h2>
+<div id="drawers"></div>
+</section>
+
+<section class="workbench">
+<h3>Color Comparison</h3>
+<div class="compare-area">
+<div class="compare-slot" id="slot1">select</div>
+<span class="compare-vs">↔</span>
+<div class="compare-slot" id="slot2">select</div>
+</div>
+<div class="verdict-box" id="verdict">Click a slot, then click any swatch to compare two colors.</div>
+</section>
+
+<section class="looks-section">
+<h3>Styled Looks <button class="gen-btn" id="genLooks">Regenerate</button></h3>
+<div class="looks-grid" id="looks"></div>
+</section>
+
+<section class="favorites-chest">
+<h3>♥ Saved Favorites</h3>
+<div class="fav-grid" id="favGrid"><span class="fav-empty">Double-click any swatch to save</span></div>
+</section>
+
+<section class="export-zone">
+<h3>Export</h3>
+<div class="export-btns">
+<button class="exp-btn" id="expJson">JSON</button>
+<button class="exp-btn" id="expText">Text List</button>
+<button class="exp-btn" id="expFavs">Favorites Only</button>
+</div>
+<pre class="export-out" id="expOut"></pre>
+</section>
+
+<footer>The Honeyed Veil — Crafted for Lauren</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+var pigments=[
+{name:"Skin Base",hex:"#E5D3C3",note:"Peachy ivory"},
+{name:"Cheek Warmth",hex:"#D4A090",note:"Rose-terracotta flush"},
+{name:"Eye Center",hex:"#8A9870",note:"Sage with gold flecks"},
+{name:"Eye Ring",hex:"#6B7858",note:"Olive depth"},
+{name:"Hair Light",hex:"#D4C5A5",note:"Champagne highlight"},
+{name:"Hair Mid",hex:"#9A8A70",note:"Ash-honey"},
+{name:"Lip Tone",hex:"#C4A090",note:"Dusty mauve-pink"},
+{name:"Vein Cue",hex:"#9AB0B8",note:"Blue-green neutral"}
+];
+
+var palette={
+"Earth & Neutrals":[
+{name:"Warm Ivory",hex:"#F5ECD8"},{name:"Oat Linen",hex:"#E8DCC4"},{name:"Sandstone",hex:"#D4C4A4"},
+{name:"Driftwood",hex:"#A89474"},{name:"Mushroom",hex:"#8A7E6A"},{name:"Umber Shadow",hex:"#5A4E3E"}
+],
+"Botanical Greens":[
+{name:"Morning Sage",hex:"#C4CCAC"},{name:"Meadow",hex:"#9AA880"},{name:"Olive Grove",hex:"#7A8860"},
+{name:"Fern",hex:"#5A6A4A"},{name:"Eucalyptus",hex:"#8A9A90"},{name:"Moss",hex:"#5A6858"}
+],
+"Sunset Warmth":[
+{name:"Peach Nectar",hex:"#F0D4BC"},{name:"Apricot",hex:"#E4BA94"},{name:"Terracotta",hex:"#C49474"},
+{name:"Burnt Sienna",hex:"#A06A4A"},{name:"Amber",hex:"#D4A454"},{name:"Honey Gold",hex:"#C4983C"}
+],
+"Dusty Romance":[
+{name:"Blush Veil",hex:"#E8D0C8"},{name:"Rose Quartz",hex:"#D4B0A8"},{name:"Mauve Dusk",hex:"#B89090"},
+{name:"Plum Ash",hex:"#907078"},{name:"Berry Wine",hex:"#8A5060"},{name:"Dried Lavender",hex:"#A898A0"}
+],
+"Muted Waters":[
+{name:"Sea Glass",hex:"#C8D4D0"},{name:"Storm Blue",hex:"#9AAAB0"},{name:"Slate",hex:"#7A8A8E"},
+{name:"Teal Patina",hex:"#608078"},{name:"Deep Current",hex:"#4A6068"},{name:"Midnight Sage",hex:"#3A4A48"}
+]
+};
+
+var allColors=[];
+Object.keys(palette).forEach(function(cat){
+palette[cat].forEach(function(c){allColors.push({name:c.name,hex:c.hex,cat:cat});});
+});
+
+var favs=[];
+try{var s=localStorage.getItem("honeyed_favs");if(s)favs=JSON.parse(s);}catch(e){}
+function saveFavs(){try{localStorage.setItem("honeyed_favs",JSON.stringify(favs));}catch(e){}}
+function isFav(hex){return favs.some(function(f){return f.hex===hex;});}
+function toggleFav(c){
+var i=favs.findIndex(function(f){return f.hex===c.hex;});
+if(i>=0)favs.splice(i,1);else favs.push({name:c.name,hex:c.hex});
+saveFavs();renderDrawers();renderFavs();
+}
+
+function toast(t){var el=document.getElementById("toast");if(!el)return;el.textContent=t;el.classList.add("show");setTimeout(function(){el.classList.remove("show");},1400);}
+function copy(t){if(navigator.clipboard)navigator.clipboard.writeText(t).then(function(){toast("Copied: "+t);});else{var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("copy");document.body.removeChild(a);toast("Copied: "+t);}}
+
+function renderPigments(){
+var el=document.getElementById("pigments");if(!el)return;el.innerHTML="";
+pigments.forEach(function(p){
+var d=document.createElement("div");d.className="pigment";
+d.innerHTML="<div class=\"pigment-orb\" style=\"background:"+p.hex+"\"></div><div class=\"pigment-label\">"+p.name+"</div><div class=\"pigment-hex\">"+p.hex+"</div>";
+d.onclick=function(){copy(p.hex);};
+el.appendChild(d);
+});
+}
+
+function renderDrawers(){
+var el=document.getElementById("drawers");if(!el)return;el.innerHTML="";
+Object.keys(palette).forEach(function(cat,idx){
+var d=document.createElement("div");d.className="drawer"+(idx===0?" open":"");
+var h=document.createElement("div");h.className="drawer-handle";
+h.innerHTML=cat+"<span class=\"drawer-icon\">▼</span>";
+h.onclick=function(){d.classList.toggle("open");};
+var c=document.createElement("div");c.className="drawer-contents";
+var g=document.createElement("div");g.className="bloom-grid";
+palette[cat].forEach(function(col){
+var b=document.createElement("div");b.className="bloom"+(isFav(col.hex)?" fav":"");
+b.style.background=col.hex;
+b.innerHTML="<span class=\"bloom-tip\">"+col.name+" "+col.hex+"</span>";
+b.onclick=function(){if(activeSlot){selectCompare(col);}else{copy(col.hex);}};
+b.ondblclick=function(){toggleFav(col);};
+g.appendChild(b);
+});
+c.appendChild(g);d.appendChild(h);d.appendChild(c);el.appendChild(d);
+});
+}
+
+var activeSlot=null,cmp=[null,null];
+function setupCompare(){
+var s1=document.getElementById("slot1"),s2=document.getElementById("slot2");
+if(s1)s1.onclick=function(){activeSlot=1;s1.classList.add("active");if(s2)s2.classList.remove("active");};
+if(s2)s2.onclick=function(){activeSlot=2;s2.classList.add("active");if(s1)s1.classList.remove("active");};
+}
+function selectCompare(c){
+var s=document.getElementById("slot"+activeSlot);
+if(!s)return;
+cmp[activeSlot-1]=c;
+s.style.background=c.hex;s.textContent="";s.classList.add("filled");s.classList.remove("active");
+activeSlot=null;
+if(cmp[0]&&cmp[1])showVerdict();
+}
+function hexToHsl(hex){
+var r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;
+var mx=Math.max(r,g,b),mn=Math.min(r,g,b),h,s,l=(mx+mn)/2;
+if(mx===mn){h=s=0;}else{var d=mx-mn;s=l>.5?d/(2-mx-mn):d/(mx+mn);
+switch(mx){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break;}}
+return{h:h*360,s:s*100,l:l*100};
+}
+function showVerdict(){
+var v=document.getElementById("verdict");if(!v||!cmp[0]||!cmp[1])return;
+var h1=hexToHsl(cmp[0].hex),h2=hexToHsl(cmp[1].hex);
+var hd=Math.abs(h1.h-h2.h);if(hd>180)hd=360-hd;
+var ld=Math.abs(h1.l-h2.l);
+var rel="";
+if(hd<25)rel="monochromatic cousins — effortlessly cohesive";
+else if(hd<50)rel="analogous neighbors — naturally harmonious";
+else if(hd>140)rel="near-complements — dynamic contrast";
+else rel="chromatic partners — interesting tension";
+var use="";
+if(ld>35)use="Strong value contrast: great for layering or text/background pairings.";
+else if(ld>18)use="Moderate depth difference: perfect for main + accent roles.";
+else use="Similar lightness: wear side-by-side as equals in a print or accessory duo.";
+v.textContent="\""+cmp[0].name+"\" & \""+cmp[1].name+"\" are "+rel+". "+use;
+}
+
+var lookData=[
+{title:"Golden Morning",desc:"Soft neutrals with sage accents. Dewy skin, olive-toned shadow, nude-pink lip.",cats:["Earth & Neutrals","Botanical Greens","Dusty Romance"]},
+{title:"Harvest Glow",desc:"Warm terracotta and honey. Bronze cheeks, amber highlight, berry-stained lip.",cats:["Sunset Warmth","Sunset Warmth","Dusty Romance"]},
+{title:"Misty Coast",desc:"Cool slate and eucalyptus. Soft mauve blush, understated elegance.",cats:["Muted Waters","Botanical Greens","Dusty Romance"]},
+{title:"Rose Dusk",desc:"Romantic dusty pinks. Blush-toned everything with soft brown grounding.",cats:["Dusty Romance","Earth & Neutrals","Dusty Romance"]},
+{title:"Forest Floor",desc:"Deep greens and mushroom neutrals. Earthy, grounded, quietly powerful.",cats:["Botanical Greens","Earth & Neutrals","Botanical Greens"]},
+{title:"Sunlit Linen",desc:"Creamy ivories and soft peach. Fresh, minimal, effortless warmth.",cats:["Earth & Neutrals","Sunset Warmth","Earth & Neutrals"]},
+{title:"Twilight Garden",desc:"Muted plums and sage. Moody romance with botanical depth.",cats:["Dusty Romance","Botanical Greens","Muted Waters"]}
+];
+function rnd(a){return a[Math.floor(Math.random()*a.length)];}
+function genLooks(){
+var el=document.getElementById("looks");if(!el)return;el.innerHTML="";
+var picks=lookData.slice().sort(function(){return Math.random()-.5;}).slice(0,5);
+picks.forEach(function(lk){
+var card=document.createElement("div");card.className="look-card";
+var cols=lk.cats.map(function(ct){return rnd(palette[ct]);});
+var sw="<div class=\"look-swatches\">";
+cols.forEach(function(c,i){sw+="<div class=\"look-sw\" style=\"background:"+c.hex+"\" data-i=\""+i+"\"></div>";});
+sw+="</div>";
+card.innerHTML="<div class=\"look-name\">"+lk.title+"</div>"+sw+"<div class=\"look-desc\">"+lk.desc+"</div>";
+card.querySelectorAll(".look-sw").forEach(function(s,i){s.onclick=function(){copy(cols[i].hex);};});
+el.appendChild(card);
+});
+}
+
+function renderFavs(){
+var el=document.getElementById("favGrid");if(!el)return;
+if(favs.length===0){el.innerHTML="<span class=\"fav-empty\">Double-click any swatch to save</span>";return;}
+el.innerHTML="";
+favs.forEach(function(f){
+var d=document.createElement("div");d.className="fav-item";
+d.innerHTML="<div class=\"fav-color\" style=\"background:"+f.hex+"\"></div><div class=\"fav-name\">"+f.name+"</div>";
+d.onclick=function(){copy(f.hex);};
+d.ondblclick=function(){toggleFav(f);};
+el.appendChild(d);
+});
+}
+
+function setupExport(){
+var jb=document.getElementById("expJson"),tb=document.getElementById("expText"),fb=document.getElementById("expFavs"),out=document.getElementById("expOut");
+if(jb)jb.onclick=function(){
+var d={title:"The Honeyed Veil",season:"Soft Autumn Light",pigments:pigments,palette:palette,favorites:favs};
+var j=JSON.stringify(d,null,2);if(out){out.textContent=j;out.classList.add("show");}copy(j);
+};
+if(tb)tb.onclick=function(){
+var lines=["THE HONEYED VEIL","Season: Soft Autumn Light",""];
+Object.keys(palette).forEach(function(c){lines.push("== "+c+" ==");palette[c].forEach(function(x){lines.push(x.name+": "+x.hex);});lines.push("");});
+var t=lines.join("\n");if(out){out.textContent=t;out.classList.add("show");}copy(t);
+};
+if(fb)fb.onclick=function(){
+var d={favorites:favs};var j=JSON.stringify(d,null,2);if(out){out.textContent=j;out.classList.add("show");}copy(j);
+};
+}
+
+function init(){
+renderPigments();renderDrawers();setupCompare();genLooks();renderFavs();setupExport();
+var gb=document.getElementById("genLooks");if(gb)gb.onclick=genLooks;
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+})();
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

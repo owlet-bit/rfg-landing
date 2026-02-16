@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>The Constellarium of Sea-Glass &amp; Berry Ink</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>The Constellarium of Sea-Glass & Berry Ink — Personal Palette</title>
+<style>
+  :root{
+    --bg0:#070a10;
+    --bg1:#0b1020;
+    --panel: rgba(14,18,30,.82);
+    --panel2: rgba(10,14,24,.78);
+    --stroke: rgba(190,210,255,.12);
+    --text:#eef2ff;
+    --muted: rgba(238,242,255,.70);
+    --accent:#7aa8ff;
+    --accent2:#9bd4cb;
+    --shadow: 0 18px 60px rgba(0,0,0,.46);
+    --r2: 26px;
+    --tap: 44px;
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{ height:100%; }
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    color:var(--text);
+    background:
+      radial-gradient(1200px 800px at 18% -10%, rgba(155,212,203,.22), transparent 60%),
+      radial-gradient(1000px 700px at 82% 0%, rgba(122,168,255,.18), transparent 58%),
+      radial-gradient(900px 600px at 50% 120%, rgba(90,45,62,.25), transparent 55%),
+      linear-gradient(180deg, var(--bg0), var(--bg1));
+    overflow-x:hidden;
+  }
+
+  .sky{
+    position: fixed;
+    inset: 0;
+    pointer-events:none;
+    opacity:.55;
+    background:
+      radial-gradient(2px 2px at 12% 18%, rgba(255,255,255,.22) 40%, transparent 55%),
+      radial-gradient(1.5px 1.5px at 28% 42%, rgba(255,255,255,.16) 40%, transparent 58%),
+      radial-gradient(1.8px 1.8px at 74% 26%, rgba(255,255,255,.18) 40%, transparent 58%),
+      radial-gradient(1.3px 1.3px at 84% 64%, rgba(255,255,255,.14) 40%, transparent 58%),
+      radial-gradient(1.6px 1.6px at 52% 78%, rgba(255,255,255,.14) 40%, transparent 58%),
+      radial-gradient(1.2px 1.2px at 8% 74%, rgba(255,255,255,.12) 40%, transparent 58%);
+    mix-blend-mode: screen;
+  }
+
+  .wrap{ max-width: 980px; margin: 0 auto; padding: 18px 14px 120px; }
+
+  header{
+    padding: 16px 8px 10px;
+    display:flex;
+    gap: 14px;
+    align-items:flex-start;
+    justify-content: space-between;
+  }
+
+  .titleBlock{ flex: 1; min-width: 0; }
+  h1{ margin: 0; font-size: 22px; line-height: 1.2; letter-spacing: .2px; }
+  .sub{ margin: 8px 0 0; color: var(--muted); font-size: 14px; line-height: 1.45; }
+
+  .pillRow{ display:flex; gap: 10px; flex-wrap: wrap; justify-content:flex-end; align-items:center; }
+  .pill{
+    min-height: var(--tap);
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(190,210,255,.12);
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+    color: var(--text);
+    font-size: 14px;
+    letter-spacing: .2px;
+    display:inline-flex;
+    gap: 10px;
+    align-items:center;
+    box-shadow: 0 10px 30px rgba(0,0,0,.20) inset;
+    user-select:none;
+    -webkit-tap-highlight-color: transparent;
+    cursor:pointer;
+  }
+  .pill:active{ transform: translateY(1px); }
+  .pill .dot{ width: 10px; height: 10px; border-radius: 99px; background: var(--accent); box-shadow: 0 0 0 6px rgba(122,168,255,.08); }
+
+  .grid{ display:grid; gap: 12px; grid-template-columns: 1fr; }
+
+  .card{
+    background: linear-gradient(180deg, rgba(14,18,30,.82), rgba(10,14,24,.78));
+    border: 1px solid rgba(190,210,255,.12);
+    border-radius: var(--r2);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+  .cardInner{ padding: 14px; }
+
+  .sectionHead{
+    display:flex; align-items: baseline; justify-content: space-between; gap: 10px;
+    padding: 14px 14px 0;
+  }
+  .sectionHead h2{
+    margin: 0;
+    font-size: 15px;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: rgba(238,242,255,.78);
+  }
+  .sectionHead .hint{ color: rgba(238,242,255,.55); font-size: 14px; }
+
+  .analysis{ font-size: 15px; line-height: 1.6; color: rgba(238,242,255,.86); }
+  .analysis p{ margin: 0 0 12px; }
+
+  .badge{
+    display:inline-flex; align-items:center; gap:10px;
+    margin-top: 10px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(155,212,203,.22);
+    background: rgba(255,255,255,.04);
+    font-size: 14px;
+    min-height: var(--tap);
+  }
+  .badge .mark{ width: 10px; height: 10px; border-radius: 999px; background: linear-gradient(180deg, #9bd4cb, #7aa8ff); box-shadow: 0 0 0 7px rgba(155,212,203,.10); }
+
+  .lane{ padding: 12px 14px 16px; border-top: 1px solid rgba(255,255,255,.06); }
+  .laneTop{ display:flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+  .laneName{ margin: 0; font-size: 14px; letter-spacing: .24em; text-transform: uppercase; color: rgba(238,242,255,.72); }
+  .laneNote{ font-size: 14px; color: rgba(238,242,255,.52); }
+
+  .swatches{ display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .swatch{
+    position: relative;
+    border-radius: 18px;
+    border: 1px solid rgba(190,210,255,.14);
+    background: rgba(0,0,0,.18);
+    overflow:hidden;
+    min-height: 84px;
+    padding: 10px;
+    display:flex;
+    align-items:flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select:none;
+  }
+  .swatch:active{ transform: translateY(1px); }
+  .chip{ position:absolute; inset:0 0 auto 0; height: 44px; background: var(--c, #777); border-bottom: 1px solid rgba(255,255,255,.10); }
+  .meta{ position: relative; z-index: 1; min-width: 0; flex: 1 1 auto; }
+  .meta .nm{ font-size: 15px; line-height: 1.2; margin: 0; max-width: none; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .meta .hx{ margin-top: 6px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace; font-size: 14px; color: rgba(238,242,255,.72); letter-spacing: .02em; }
+  .star{
+    position: relative; z-index: 1;
+    width: 44px; height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,.14);
+    display:flex; align-items:center; justify-content:center;
+    background: rgba(255,255,255,.04);
+    flex: 0 0 auto;
+    font-size: 16px;
+    color: rgba(238,242,255,.70);
+  }
+  .swatch.fav .star{ background: rgba(155,212,203,.14); border-color: rgba(155,212,203,.28); color: rgba(255,255,255,.92); }
+
+  /* Photo Sampler nearest matches: keep them legible on mobile */
+  .nearestRow{
+    display:flex;
+    gap: 10px;
+    overflow-x:auto;
+    padding-bottom: 6px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nearestRow::-webkit-scrollbar{ display:none; }
+  .nearestRow .swatch{ min-width: 150px; flex: 0 0 auto; scroll-snap-align: start; }
+  .swatch.mini{ min-height: 76px; padding: 10px; }
+  .swatch.mini .chip{ height: 38px; }
+  .swatch.mini .meta .nm{ font-size: 14px; }
+
+
+  .toast{
+    position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%);
+    padding: 12px 14px; min-height: var(--tap);
+    border-radius: 999px;
+    border: 1px solid rgba(190,210,255,.16);
+    background: rgba(10,14,24,.88);
+    color: rgba(238,242,255,.88);
+    box-shadow: 0 18px 60px rgba(0,0,0,.5);
+    opacity: 0; pointer-events:none;
+    transition: opacity .25s ease, transform .25s ease;
+    font-size: 14px;
+    max-width: 92vw;
+    text-align:center;
+  }
+  .toast.show{ opacity: 1; transform: translateX(-50%) translateY(-6px); }
+
+  .tools{ display:grid; gap: 12px; }
+  .toolRow{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; }
+  .btn{
+    min-height: var(--tap);
+    padding: 10px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(190,210,255,.16);
+    background: rgba(255,255,255,.04);
+    color: rgba(238,242,255,.92);
+    font-size: 14px;
+    letter-spacing:.2px;
+    cursor:pointer;
+    user-select:none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn.primary{ border-color: rgba(155,212,203,.26); background: rgba(255,255,255,.04); }
+  .btn.ghost{ background: transparent; }
+
+  input[type="text"], textarea{
+    width: 100%;
+    min-height: var(--tap);
+    border-radius: 14px;
+    border: 1px solid rgba(190,210,255,.16);
+    background: rgba(0,0,0,.22);
+    color: rgba(238,242,255,.92);
+    padding: 12px;
+    font-size: 14px;
+    outline: none;
+  }
+  textarea{ min-height: 110px; resize: vertical; }
+  .mini{ font-size: 14px; color: rgba(238,242,255,.62); line-height: 1.45; }
+
+  .altar{ display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .favEmpty{ padding: 14px; border-radius: var(--r2); border: 1px dashed rgba(190,210,255,.18); color: rgba(238,242,255,.55); background: rgba(0,0,0,.14); font-size: 14px; line-height: 1.45; }
+
+  .compareBox{ border-radius: var(--r2); border: 1px solid rgba(190,210,255,.14); background: rgba(0,0,0,.18); overflow:hidden; }
+  .compareTop{ display:grid; grid-template-columns: 1fr 1fr; }
+  .cmpCell{ min-height: 86px; padding: 10px; border-right: 1px solid rgba(255,255,255,.08); position: relative; }
+  .cmpCell:last-child{ border-right: none; }
+  .cmpChip{ position:absolute; inset:0; background: var(--cc, rgba(255,255,255,.05)); }
+  .cmpLabel{ position: relative; z-index: 1; display:flex; gap: 10px; align-items:flex-end; justify-content: space-between; height: 100%; }
+  .cmpLabel b{ display:block; font-size: 15px; }
+  .cmpLabel span{ display:block; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; color: rgba(238,242,255,.75); }
+  .verdict{ padding: 12px 12px 14px; border-top: 1px solid rgba(255,255,255,.08); color: rgba(238,242,255,.86); font-size: 15px; line-height: 1.55; }
+
+  /* Photo sampler */
+  .canvasWrap{ border-radius: var(--r2); border: 1px solid rgba(190,210,255,.14); background: rgba(0,0,0,.18); overflow:hidden; }
+  canvas{ width: 100%; height: auto; display:block; background: rgba(255,255,255,.02); }
+  .sampleOut{ display:grid; grid-template-columns: 1fr; gap: 10px; }
+  .sampleCard{ border-radius: var(--r2); border: 1px solid rgba(190,210,255,.14); background: rgba(0,0,0,.16); padding: 12px; }
+  .chipRow{ display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
+  .miniChip{ width: 44px; height: 44px; border-radius: 14px; border: 1px solid rgba(255,255,255,.14); background: var(--mc, #777); }
+
+  /* Capsule slots */
+  .capsuleSlots{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .slot{ border-radius: var(--r2); border: 1px solid rgba(190,210,255,.14); background: rgba(0,0,0,.16); min-height: 70px; padding: 10px; position: relative; overflow:hidden; cursor:pointer; }
+  .slotChip{ position:absolute; inset:0 0 auto 0; height: 38px; background: var(--sc, rgba(255,255,255,.06)); border-bottom: 1px solid rgba(255,255,255,.10); }
+  .slotTxt{ position: relative; z-index: 1; display:flex; justify-content: space-between; gap: 10px; align-items:flex-end; height: 100%; }
+  .slotTxt b{ font-size: 14px; letter-spacing:.12em; text-transform: uppercase; }
+  .slotTxt span{ font-size: 14px; color: rgba(238,242,255,.72); }
+
+  @media (min-width: 720px){
+    .grid{ grid-template-columns: 1.15fr .85fr; align-items:start; }
+    .swatches{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .altar{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .sampleOut{ grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="sky"></div>
+<div class="wrap">
+  <header>
+    <div class="titleBlock">
+      <h1>The Constellarium of Sea-Glass & Berry Ink</h1>
+      <div class="sub">This is the full cabinet: 48 colors across 8 lanes, plus pigments, favorites, compare, harmony, looks, photo sampler, capsule slots, notes, and export — still a single offline HTML file.</div>
+      <div class="badge">
+        <span class="mark"></span>
+        <b>Season placement:</b>
+        <span>Soft Summer (cool-muted) — misted coolness with medium contrast.</span>
+      </div>
+    </div>
+    <div class="pillRow">
+      <div class="pill" id="dailyOracle"><span class="dot"></span><span>Daily triad</span></div>
+      <div class="pill" id="openSearch"><span class="dot" style="background:var(--accent2)"></span><span>Find</span></div>
+      <div class="pill" id="openExport"><span class="dot" style="background:rgba(255,211,138,.95)"></span><span>Export</span></div>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="sectionHead">
+        <h2>Analysis</h2>
+        <div class="hint">poetic, but specific</div>
+      </div>
+      <div class="cardInner analysis">
+        <p>Your harmony is coastline-light: cool, softened, and inked. When colors are too warm or too saturated, they sit on top of you; when they’re cool and misted, they disappear into you — in the good way — like they always belonged.</p>
+        <p>Think pewter instead of chrome, berry ink instead of primary red, sea-glass instead of emerald, and navy that behaves like shadow rather than uniform.</p>
+      </div>
+
+      <div class="sectionHead">
+        <h2>Source pigments</h2>
+        <div class="hint">observed anchors</div>
+      </div>
+      <div class="lane">
+        <div class="swatches" id="pigmentsGrid"></div>
+      </div>
+
+      <div class="sectionHead">
+        <h2>Wearable constellation</h2>
+        <div class="hint">48 colors, 8 lanes</div>
+      </div>
+
+      <div id="lanesContainer"></div>
+
+      <div class="lane">
+        <div class="toolRow">
+          <button class="btn primary" id="copyList" type="button">Copy palette list</button>
+          <button class="btn" id="exportJson" type="button">Export JSON</button>
+          <button class="btn ghost" id="resetLocal" type="button">Reset local</button>
+        </div>
+        <div class="mini" id="statusLine">Cabinet ready.</div>
+      </div>
+    </div>
+
+    <div class="tools">
+      <div class="card">
+        <div class="sectionHead">
+          <h2>Compare and verdict</h2>
+          <div class="hint"><button class="btn ghost" id="clearCompare" type="button">Clear</button></div>
+        </div>
+        <div class="cardInner">
+          <div class="compareBox" id="compareBox">
+            <div class="compareTop">
+              <div class="cmpCell" id="cmpA" style="--cc: rgba(255,255,255,.05);">
+                <div class="cmpChip"></div>
+                <div class="cmpLabel"><div><b>A</b><span id="cmpAHex">Pick a swatch</span></div></div>
+              </div>
+              <div class="cmpCell" id="cmpB" style="--cc: rgba(255,255,255,.05);">
+                <div class="cmpChip"></div>
+                <div class="cmpLabel"><div><b>B</b><span id="cmpBHex">Pick a swatch</span></div></div>
+              </div>
+            </div>
+            <div class="verdict" id="verdictText">Tap any two swatches. I’ll tell you which one wins for you and where each belongs (top, lip, liner, jewelry, night).</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sectionHead">
+          <h2>Harmony</h2>
+          <div class="hint">mini-curations</div>
+        </div>
+        <div class="cardInner">
+          <div class="toolRow">
+            <button class="btn" data-harmony="analog" type="button">Analog</button>
+            <button class="btn" data-harmony="complement" type="button">Complement</button>
+            <button class="btn" data-harmony="triad" type="button">Triad</button>
+            <button class="btn" data-harmony="mono" type="button">Monochrome</button>
+          </div>
+          <div class="mini">Select any swatch, then tap a harmony to get an outfit-ready micro-palette.</div>
+          <div class="altar" id="harmonyOut" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sectionHead">
+          <h2>Favorites altar</h2>
+          <div class="hint">double-tap to star</div>
+        </div>
+        <div class="cardInner">
+          <div class="mini">Favorites persist on this device. Tap to copy. Double-tap to remove. Right-click/long-press a swatch to add a note/dupe.</div>
+          <div class="altar" id="favoritesGrid" style="margin-top:10px;">
+            <div class="favEmpty" id="favEmpty">Empty, on purpose. Fill it like a tiny museum.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sectionHead">
+          <h2>Looks generator</h2>
+          <div class="hint">8 color stories</div>
+        </div>
+        <div class="cardInner">
+          <div class="toolRow">
+            <button class="btn primary" id="genLooks" type="button">Generate new looks</button>
+            <button class="btn" id="pinLook" type="button">Pin favorite look</button>
+          </div>
+          <div id="looksList" style="margin-top:10px;"></div>
+          <div class="mini" id="pinnedLookNote" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sectionHead">
+          <h2>Photo sampler</h2>
+          <div class="hint">match real life</div>
+        </div>
+        <div class="cardInner">
+          <input id="imgInput" type="file" accept="image/*" />
+          <div class="canvasWrap" style="margin-top:10px;">
+            <canvas id="imgCanvas" width="900" height="600"></canvas>
+          </div>
+          <div class="mini" style="margin-top:10px;">Upload any photo. Tap to sample a pixel; I’ll show the nearest palette matches.</div>
+          <div class="sampleOut" id="sampleOut" style="margin-top:10px;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sectionHead">
+          <h2>Capsule slots</h2>
+          <div class="hint">build a fit</div>
+        </div>
+        <div class="cardInner">
+          <div class="mini">Tap a swatch, then tap a slot to assign it. Copy your outfit as text.</div>
+          <div class="capsuleSlots" id="capsuleSlots" style="margin-top:10px;"></div>
+          <div class="toolRow" style="margin-top:10px;">
+            <button class="btn" id="copyCapsule" type="button">Copy capsule</button>
+            <button class="btn" id="clearCapsule" type="button">Clear</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="exportCard">
+        <div class="sectionHead">
+          <h2>Export</h2>
+          <div class="hint">json + text</div>
+        </div>
+        <div class="cardInner">
+          <div class="toolRow">
+            <button class="btn primary" id="copyExportText" type="button">Copy as text</button>
+            <button class="btn" id="downloadJson" type="button">Download JSON</button>
+          </div>
+          <textarea id="exportArea" readonly style="margin-top:10px;"></textarea>
+        </div>
+      </div>
+
+      <div class="card" id="searchCard" style="display:none;">
+        <div class="sectionHead">
+          <h2>Find</h2>
+          <div class="hint"><button class="btn ghost" id="closeSearch" type="button">Close</button></div>
+        </div>
+        <div class="cardInner">
+          <input id="searchInput" type="text" placeholder="Search by name, hex, lane..." />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Copied.</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const TITLE = "The Constellarium of Sea-Glass & Berry Ink";
+
+  const PIGMENTS = [
+    { name:"Skin Base - Porcelain Fog", hex:"#e7d7d0", note:"cool-leaning beige-pink" },
+    { name:"Flush - Rose Hush", hex:"#caa0a5", note:"muted cool rose" },
+    { name:"Lip - Mauve Ash", hex:"#9b6f7a", note:"smoked mauve-rose" },
+    { name:"Vein - Blue-Green Thread", hex:"#6d8ea1", note:"cool blue-green cast" },
+    { name:"Eye - Green-Grey Glass", hex:"#6e7b66", note:"greyed green" },
+    { name:"Hair - Ash Sand", hex:"#8b7a6b", note:"neutral-cool beige-brown" },
+    { name:"Brow - Taupe Branch", hex:"#6f6158", note:"cool taupe" },
+    { name:"Shadow - Storm Graphite", hex:"#2c3342", note:"soft charcoal-navy" }
+  ];
+
+  const LANES = [
+    { key:"mist_neutrals", name:"Mist Neutrals", note:"quiet structure", tags:["neutral","work"], colors:[
+      ["Abyssal Navy","#0f1722","dark anchor neutral"],
+      ["Ink Slate","#1a2433","cool slate navy"],
+      ["Storm Graphite","#2c3342","soft charcoal"],
+      ["Pewter Thread","#4b5363","grey metal neutral"],
+      ["Fog Linen","#cfd6e4","cool pale neutral"],
+      ["Oyster Mist","#e8e2e6","cool off-white"]
+    ]},
+    { key:"sea_glass_greens", name:"Sea-Glass Greens", note:"cool translucence", tags:["green","teal"], colors:[
+      ["Sea-Glass","#6fb8b1","blue-green light"],
+      ["Tidepool Teal","#4c9d96","teal mid"],
+      ["Deep Kelp","#2d6f74","blue-teal depth"],
+      ["Mint Haze","#9bd4cb","mist mint"],
+      ["Harbor Bottle","#1f4e57","ink teal"],
+      ["Glacier Sage","#7f9e93","grey sage"]
+    ]},
+    { key:"blue_shadows", name:"Blue Shadows", note:"denim, knit, liner", tags:["blue"], colors:[
+      ["Smoke Blue","#6e86a1","hazy blue"],
+      ["Blue Steel","#4f6a86","cool steel blue"],
+      ["Coastal Dusk","#2b4565","deep dusk blue"],
+      ["Inkwell Blue","#162a44","near-navy ink"],
+      ["Rainglass","#9eb3c9","pale blue mist"],
+      ["Night Current","#101e33","deep blue-black"]
+    ]},
+    { key:"berry_inks", name:"Berry Inks", note:"your 'red' lane", tags:["berry","lip"], colors:[
+      ["Berry Ink","#5a2b3e","deep berry"],
+      ["Plum Veil","#7a3a55","plum rose"],
+      ["Mauve Smoke","#9a5b78","muted mauve"],
+      ["Rose Ash","#c79ab0","cool pink ash"],
+      ["Black Cherry","#3c1f2b","wine shadow"],
+      ["Mulberry Silk","#8c4f63","soft mulberry"]
+    ]},
+    { key:"orchid_smoke", name:"Orchid Smoke", note:"soft drama", tags:["purple"], colors:[
+      ["Lilac Soot","#8c86a8","greyed lilac"],
+      ["Orchid Ash","#7a6a8e","smoked orchid"],
+      ["Faded Heliotrope","#a18fb8","powder violet"],
+      ["Wisteria Fog","#c8b9da","very light violet"],
+      ["Bruised Iris","#5b4b6f","deep muted purple"],
+      ["Amethyst Dust","#6a5d7f","stone purple"]
+    ]},
+    { key:"stone_rose", name:"Stone Rose", note:"skin echoes", tags:["makeup"], colors:[
+      ["Alabaster Rose","#ead7dd","pale cool pink"],
+      ["Vein Pearl","#b6c7d6","blue pearl"],
+      ["Flushed Stone","#b58b93","cool rosy stone"],
+      ["Powder Taupe","#8a7f86","mauve-taupe"],
+      ["Mushroom Haze","#9a8f8a","cool beige-grey"],
+      ["Clay Petal","#a77c86","muted rose-brown"]
+    ]},
+    { key:"sea_iron", name:"Sea Iron", note:"metals + edge", tags:["metal"], colors:[
+      ["Silver Salt","#dfe5f0","cool silver light"],
+      ["Gull Grey","#aab4c2","mid cool grey"],
+      ["Graphite Ring","#434a58","graphite"],
+      ["Tarnish Pewter","#58626f","soft metal"],
+      ["Oil Slick","#0b1a1c","blue-black green"],
+      ["Shadow Pine","#102426","deep pine-black"]
+    ]},
+    { key:"soft_warmth_safe", name:"Soft Warmth (Safe)", note:"your warm-leaning yes", tags:["warmish"], colors:[
+      ["Drift Sand","#b7a293","warm-neutral beige"],
+      ["Oat Milk","#e7dccf","pale warm neutral"],
+      ["Fawn Smoke","#9a8578","soft fawn"],
+      ["Muted Brass","#9b8a66","desaturated gold"],
+      ["Rosewood Haze","#8a5f62","cool-leaning rosewood"],
+      ["Cocoa Ash","#5a4a43","soft cocoa"]
+    ]}
+  ];
+
+  const PALETTE = [];
+  LANES.forEach(l => l.colors.forEach(c => PALETTE.push({
+    lane:l.name, laneKey:l.key, name:c[0], hex:c[1].toLowerCase(), note:c[2]||"", tags:(l.tags||[]).slice()
+  })));
+
+  const pigmentsGrid = document.getElementById("pigmentsGrid");
+  const lanesContainer = document.getElementById("lanesContainer");
+
+  function escapeHtml(s){ return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;"); }
+  function escapeAttr(s){ return escapeHtml(s).replaceAll('"',"&quot;"); }
+
+  function swatchHTML(item, kind){
+    const data = [
+      `data-hex="${item.hex}"`,
+      `data-name="${escapeAttr(item.name)}"`,
+      item.lane ? `data-lane="${escapeAttr(item.lane)}"` : "",
+      item.note ? `data-note="${escapeAttr(item.note)}"` : "",
+      `data-kind="${kind}"`
+    ].filter(Boolean).join(" ");
+    return `
+      <div class="swatch" style="--c:${item.hex};" ${data} role="button" tabindex="0" aria-label="${escapeAttr(item.name)} ${item.hex}">
+        <div class="chip" aria-hidden="true"></div>
+        <div class="meta">
+          <p class="nm">${escapeHtml(item.name)}</p>
+          <div class="hx">${item.hex}</div>
+        </div>
+        <div class="star" aria-hidden="true">☆</div>
+      </div>
+    `;
+  }
+
+  function renderStatic(){
+    pigmentsGrid.innerHTML = PIGMENTS.map(p => swatchHTML({name:p.name, hex:p.hex.toLowerCase(), note:p.note, lane:"Source pigments"}, "pigment")).join("");
+    lanesContainer.innerHTML = LANES.map(l => {
+      const colors = l.colors.map(c => swatchHTML({name:c[0], hex:c[1].toLowerCase(), note:c[2], lane:l.name}, "palette")).join("");
+      return `
+        <div class="lane" data-lane="${escapeAttr(l.name)}" data-lanekey="${escapeAttr(l.key)}">
+          <div class="laneTop">
+            <h3 class="laneName">${escapeHtml(l.name)}</h3>
+            <div class="laneNote">${escapeHtml(l.note||"")}</div>
+          </div>
+          <div class="swatches">${colors}</div>
+        </div>
+      `;
+    }).join("");
+  }
+  renderStatic();
+
+  // Storage keys
+  const LS_FAV = "rfg_palette_favorites_v4";
+  const LS_NOTES = "rfg_palette_notes_v2";
+  const LS_PIN = "rfg_palette_pinned_look_v2";
+  const LS_CAPSULE = "rfg_palette_capsule_v2";
+  const LS_ORACLE_DAY = "rfg_palette_oracle_day_v2";
+
+  function loadJSON(key, fallback){
+    try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+    catch(e){ return fallback; }
+  }
+  function saveJSON(key, val){ try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){} }
+
+  let favorites = loadJSON(LS_FAV, []);
+  let notes = loadJSON(LS_NOTES, {});
+  let pinned = loadJSON(LS_PIN, null);
+  let capsule = loadJSON(LS_CAPSULE, {});
+  let selectedHex = null;
+  let cmpA = null, cmpB = null;
+
+  const toast = document.getElementById("toast");
+  const statusLine = document.getElementById("statusLine");
+  const favoritesGrid = document.getElementById("favoritesGrid");
+  const favEmpty = document.getElementById("favEmpty");
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => toast.classList.remove("show"), 1100);
+  }
+
+  async function copyToClipboard(text){
+    try{ await navigator.clipboard.writeText(text); showToast("Copied " + text); }
+    catch(e){
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position="fixed"; ta.style.left="-9999px";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      try{ document.execCommand("copy"); }catch(err){}
+      ta.remove();
+      showToast("Copied " + text);
+    }
+  }
+
+  function findByHex(hex){
+    const hx = (hex||"").toLowerCase();
+    let m = PALETTE.find(c => c.hex === hx);
+    if(m) return m;
+    const pm = PIGMENTS.map(p => ({name:p.name, hex:p.hex.toLowerCase(), lane:"Source pigments", note:p.note, tags:["pigment"]})).find(p => p.hex === hx);
+    return pm || null;
+  }
+
+  function refreshFavMarks(){
+    const favSet = new Set(favorites.map(f => (f.hex||"").toLowerCase()));
+    document.querySelectorAll(".swatch[data-hex]").forEach(el => {
+      const hx = (el.getAttribute("data-hex")||"").toLowerCase();
+      if(favSet.has(hx)) el.classList.add("fav"); else el.classList.remove("fav");
+    });
+  }
+
+  function renderFavorites(){
+    favoritesGrid.querySelectorAll(".swatch").forEach(n => n.remove());
+    if(!favorites.length){ favEmpty.style.display="block"; return; }
+    favEmpty.style.display="none";
+    favorites.forEach(f => {
+      const el = document.createElement("div");
+      el.className = "swatch fav";
+      el.style.setProperty("--c", f.hex);
+      el.setAttribute("data-hex", f.hex);
+      el.setAttribute("data-name", f.name || "Favorited Color");
+      el.innerHTML = `
+        <div class="chip" aria-hidden="true"></div>
+        <div class="meta"><p class="nm">${escapeHtml(f.name || "Favorited Color")}</p><div class="hx">${escapeHtml(f.hex)}</div></div>
+        <div class="star" aria-hidden="true">★</div>
+      `;
+      favoritesGrid.appendChild(el);
+    });
+  }
+
+  function dedupeFavorites(arr){
+    const seen = new Set(); const out = [];
+    for(const f of arr){
+      const hx = (f.hex||"").toLowerCase();
+      if(!hx || seen.has(hx)) continue;
+      seen.add(hx);
+      out.push({hex:hx, name:f.name || (findByHex(hx)?.name || "Favorited Color")});
+    }
+    return out;
+  }
+
+  function toggleFavorite(hex){
+    const hx = (hex||"").toLowerCase();
+    const idx = favorites.findIndex(f => (f.hex||"").toLowerCase() === hx);
+    const nm = findByHex(hx)?.name || "Favorited Color";
+    if(idx >= 0){ favorites.splice(idx,1); showToast("Removed"); }
+    else{ favorites.unshift({hex:hx, name:nm}); favorites = dedupeFavorites(favorites).slice(0,24); showToast("Favorited " + nm); }
+    saveJSON(LS_FAV, favorites);
+    refreshFavMarks();
+    renderFavorites();
+    updateExportArea();
+  }
+
+  function openNotePrompt(hex){
+    const hx = (hex||"").toLowerCase();
+    const nm = findByHex(hx)?.name || hx;
+    const current = notes[hx] || "";
+    const next = prompt("Notes / dupes for " + nm + " " + hx, current);
+    if(next === null) return;
+    const cleaned = String(next).trim();
+    if(cleaned) notes[hx]=cleaned; else delete notes[hx];
+    saveJSON(LS_NOTES, notes);
+    showToast(cleaned ? "Saved note" : "Cleared note");
+    updateExportArea();
+  }
+
+  let lastTapTime = 0;
+  let lastTapHex = null;
+  function handleSwatchTap(el){
+    const hx = (el.getAttribute("data-hex")||"").toLowerCase();
+    const nm = el.getAttribute("data-name") || (findByHex(hx)?.name || "Color");
+    const now = Date.now();
+    if(lastTapHex === hx && (now - lastTapTime) < 420){
+      lastTapTime = 0; lastTapHex = null;
+      toggleFavorite(hx);
+      return;
+    }
+    lastTapTime = now; lastTapHex = hx;
+    selectedHex = hx;
+    statusLine.textContent = "Selected " + nm + " (" + hx + ").";
+    copyToClipboard(hx);
+    setCompare(hx);
+  }
+
+  function attachSwatchListeners(){
+    let ignoreClickUntil = 0;
+
+    document.querySelectorAll(".swatch[data-hex]").forEach(el => {
+      if(el.dataset.boundListeners === "1") return;
+      el.dataset.boundListeners = "1";
+      // Right click / long-press notes
+      el.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        openNotePrompt((el.getAttribute("data-hex")||"").toLowerCase());
+      });
+
+      let pressTimer = null;
+      let moved = false;
+
+      el.addEventListener("pointerdown", (e) => {
+        moved = false;
+        clearTimeout(pressTimer);
+        if(e.pointerType === "touch"){
+          const hx = (el.getAttribute("data-hex")||"").toLowerCase();
+          pressTimer = setTimeout(() => openNotePrompt(hx), 520);
+        }
+      });
+
+      el.addEventListener("pointermove", () => { moved = true; clearTimeout(pressTimer); }, {passive:true});
+      el.addEventListener("pointercancel", () => clearTimeout(pressTimer), {passive:true});
+
+      el.addEventListener("pointerup", (e) => {
+        clearTimeout(pressTimer);
+        if(moved) return;
+        ignoreClickUntil = Date.now() + 480;
+        e.preventDefault();
+        e.stopPropagation();
+        handleSwatchTap(el);
+      });
+
+      // Fallback for browsers that don't fire pointer events reliably
+      el.addEventListener("click", (e) => {
+        if(Date.now() < ignoreClickUntil){ e.preventDefault(); return; }
+        e.preventDefault();
+        handleSwatchTap(el);
+      });
+    });
+
+    // Favorites altar: tap to copy, double-tap to remove (works on mobile)
+    if(favoritesGrid.dataset.bound !== "1"){
+      favoritesGrid.dataset.bound = "1";
+
+      let favLastTapTime = 0;
+      let favLastHex = null;
+
+      favoritesGrid.addEventListener("pointerup", (e) => {
+      const sw = e.target.closest(".swatch[data-hex]");
+      if(!sw) return;
+      const hx = (sw.getAttribute("data-hex")||"").toLowerCase();
+      const nm = sw.getAttribute("data-name") || (findByHex(hx)?.name || "Color");
+      const now = Date.now();
+
+      if(favLastHex === hx && (now - favLastTapTime) < 420){
+        favLastTapTime = 0; favLastHex = null;
+        toggleFavorite(hx);
+        return;
+      }
+      favLastTapTime = now; favLastHex = hx;
+      copyToClipboard(hx);
+      statusLine.textContent = "Favorite: " + nm + " (" + hx + "). Double-tap to remove.";
+    }, {passive:false});
+    }
+  }
+
+  // Compare
+  const cmpAHexEl = document.getElementById("cmpAHex");
+  const cmpBHexEl = document.getElementById("cmpBHex");
+  const cmpAEl = document.getElementById("cmpA");
+  const cmpBEl = document.getElementById("cmpB");
+  const verdictEl = document.getElementById("verdictText");
+
+  function setCompare(hex){
+    const hx = (hex||"").toLowerCase();
+    if(!cmpA || (cmpA && cmpB)){ cmpA = hx; cmpB = null; }
+    else{ cmpB = hx; }
+    renderCompare();
+  }
+
+  function renderCompare(){
+    if(cmpA){ cmpAHexEl.textContent = cmpA; cmpAEl.style.setProperty("--cc", cmpA); }
+    else{ cmpAHexEl.textContent = "Pick a swatch"; cmpAEl.style.setProperty("--cc","rgba(255,255,255,.05)"); }
+    if(cmpB){ cmpBHexEl.textContent = cmpB; cmpBEl.style.setProperty("--cc", cmpB); }
+    else{ cmpBHexEl.textContent = "Pick a swatch"; cmpBEl.style.setProperty("--cc","rgba(255,255,255,.05)"); }
+    verdictEl.textContent = buildVerdict(cmpA, cmpB);
+  }
+
+  function clearCompare(){ cmpA=null; cmpB=null; renderCompare(); showToast("Compare cleared"); }
+  document.getElementById("clearCompare").addEventListener("click", clearCompare);
+
+  function buildVerdict(aHex,bHex){
+    if(!aHex || !bHex) return "Tap any two swatches. I’ll tell you which one wins for you and where each belongs (top, lip, liner, jewelry, night).";
+    const a = hexToRgb(aHex), b = hexToRgb(bHex);
+    const A = rgbToHsl(a.r,a.g,a.b), B = rgbToHsl(b.r,b.g,b.b);
+    const scoreA = scoreForYou(A), scoreB = scoreForYou(B);
+    const winA = scoreA >= scoreB;
+    const w = winA ? findByHex(aHex) : findByHex(bHex);
+    const l = winA ? findByHex(bHex) : findByHex(aHex);
+    return (w?.name || (winA?"A":"B")) + " wins. Use it when you want " + useHint(winA?A:B) +
+      ". The other one reads " + useHint(winA?B:A) + " on you.";
+  }
+
+  function useHint(hsl){
+    const cool = coolness(hsl.h);
+    const sat = hsl.s;
+    const light = hsl.l;
+    const bits = [];
+    bits.push(cool > .55 ? "cool harmony" : "warm-leaning");
+    bits.push(sat < .28 ? "soft focus" : "accent punch");
+    bits.push(light < .25 ? "night depth" : (light > .6 ? "mist highlight" : "day structure"));
+    return bits.join(", ");
+  }
+
+  function scoreForYou(hsl){
+    const cool = coolness(hsl.h);
+    const muted = 1 - clamp01((hsl.s - 0.18) / 0.55);
+    const depth = 1 - Math.abs(hsl.l - 0.38) / 0.38;
+    return (0.45*cool) + (0.35*muted) + (0.20*depth);
+  }
+  function coolness(h){
+    const coolPeak = 215, warmPeak = 35;
+    const dCool = angDist(h,coolPeak), dWarm = angDist(h,warmPeak);
+    return clamp01((dWarm - dCool + 180)/360);
+  }
+  function clamp01(x){ return Math.max(0, Math.min(1, x)); }
+  function angDist(a,b){ let d = Math.abs(a-b)%360; return d>180?360-d:d; }
+
+  // Harmony (simple: pick nearest by hue from palette)
+  const harmonyOut = document.getElementById("harmonyOut");
+  let lastHarmony = null;
+
+  function renderHarmony(kind){
+    if(!selectedHex){ showToast("Select a swatch first"); return; }
+    const base = hexToRgb(selectedHex);
+    const bh = rgbToHsl(base.r,base.g,base.b).h;
+    let targets = [];
+    let story = "";
+    if(kind==="analog"){ targets=[(bh+18)%360,(bh+342)%360]; story="Analog = expensive on purpose."; }
+    else if(kind==="complement"){ targets=[(bh+180)%360]; story="Complement = contrast, but muted."; }
+    else if(kind==="triad"){ targets=[(bh+120)%360,(bh+240)%360]; story="Triad = impact, keep one neutral."; }
+    else{ targets=[bh,bh]; story="Monochrome = your superpower."; }
+
+    const picks = nearestByHueTargets(targets, kind==="mono"?4:3);
+    lastHarmony = {kind, base:selectedHex, picks, story};
+    renderHarmonyOutLast();
+  }
+
+  function nearestByHueTargets(targets, total){
+    const out = [];
+    for(const t of targets){
+      const best = PALETTE.slice().sort((x,y) => hueDiff(t,x.hex) - hueDiff(t,y.hex))[0];
+      out.push(best);
+    }
+    // add neutrals if needed
+    while(out.length < total){
+      out.push(PALETTE.filter(c => c.laneKey==="mist_neutrals")[Math.floor(Math.random()*6)]);
+    }
+    const seen=new Set(); const uniq=[];
+    for(const c of out){ if(!c || seen.has(c.hex)) continue; seen.add(c.hex); uniq.push(c); }
+    return uniq.slice(0,total);
+  }
+
+  function hueDiff(target, hex){
+    const rgb = hexToRgb(hex);
+    const h = rgbToHsl(rgb.r,rgb.g,rgb.b).h;
+    return angDist(target,h);
+  }
+
+  function renderHarmonyOutLast(){
+    harmonyOut.innerHTML = "";
+    if(!lastHarmony) return;
+    const base = findByHex(lastHarmony.base);
+    const items = [{name: base?.name || "Base", hex:lastHarmony.base}].concat(lastHarmony.picks.map(p => ({name:p.name, hex:p.hex})));
+    items.forEach(it => {
+      const el = document.createElement("div");
+      el.className = "swatch";
+      el.style.setProperty("--c", it.hex);
+      el.setAttribute("data-hex", it.hex);
+      el.setAttribute("data-name", it.name);
+      el.innerHTML = `<div class="chip"></div><div class="meta"><p class="nm">${escapeHtml(it.name)}</p><div class="hx">${escapeHtml(it.hex)}</div></div><div class="star">☆</div>`;
+      harmonyOut.appendChild(el);
+    });
+    const note = document.createElement("div");
+    note.className = "favEmpty";
+    note.textContent = lastHarmony.story;
+    harmonyOut.appendChild(note);
+    attachSwatchListeners();
+  }
+
+  document.querySelectorAll("[data-harmony]").forEach(btn => btn.addEventListener("click", () => renderHarmony(btn.getAttribute("data-harmony"))));
+
+  // Looks
+  const looksList = document.getElementById("looksList");
+  const pinnedLookNote = document.getElementById("pinnedLookNote");
+  const LOOKS = [
+    {title:"Coastal Witch (Day)", desc:"Sea-glass near the face + ink navy structure. Soft berry lip. Silver jewelry."},
+    {title:"Museum Date (Night)", desc:"Black cherry depth with fog-linen highlight. Muted teal accessory."},
+    {title:"Power Softness (Work)", desc:"Slate + pewter with one controlled color. Competent without armor."},
+    {title:"Orchid Smoke (Romance)", desc:"Soft purple story with one deep anchor. Drama that doesn’t yell."},
+    {title:"Stage Lights (Safe Contrast)", desc:"Deep navy + fog linen + one jewel note. Camera-friendly without harshness."},
+    {title:"Warmth Without Betrayal", desc:"Drift sand + muted brass, but cool counterweight near the face."},
+    {title:"Berry Thesis Statement", desc:"Berry ink + storm graphite. Elegant red without primary energy."},
+    {title:"Grey-Green Siren", desc:"Greens that behave like glass. Everything else quiet."}
+  ];
+  let currentLooks = [];
+
+  function randFromLane(key){
+    const lane = LANES.find(l => l.key===key);
+    const c = lane.colors[Math.floor(Math.random()*lane.colors.length)];
+    return {name:c[0], hex:c[1].toLowerCase()};
+  }
+
+  function generateLooks(){
+    currentLooks = LOOKS.map((t,i) => {
+      const picks = [
+        randFromLane("mist_neutrals"),
+        randFromLane(["sea_glass_greens","blue_shadows"][i%2]),
+        randFromLane(["berry_inks","orchid_smoke"][i%2]),
+        randFromLane("stone_rose"),
+        randFromLane("sea_iron")
+      ];
+      return {title:t.title, desc:t.desc, picks};
+    });
+    renderLooks();
+    updateExportArea();
+    showToast("Looks refreshed");
+  }
+
+  function renderLooks(){
+    looksList.innerHTML = "";
+    currentLooks.forEach(lk => {
+      const el = document.createElement("div");
+      el.className = "compareBox";
+      el.innerHTML = `
+        <div style="display:grid; grid-template-columns: repeat(5, 1fr); height:44px;">
+          ${lk.picks.map(p => `<div style="background:${escapeHtml(p.hex)}"></div>`).join("")}
+        </div>
+        <div class="verdict">
+          <b>${escapeHtml(lk.title)}</b><br/>
+          <span style="color:rgba(238,242,255,.78)">${escapeHtml(lk.desc)}</span><br/><br/>
+          ${lk.picks.map(p => `${escapeHtml(p.name)} <span style="opacity:.75; font-family:ui-monospace, Menlo, Consolas, monospace;">${escapeHtml(p.hex)}</span>`).join(" • ")}
+        </div>
+      `;
+      looksList.appendChild(el);
+    });
+    pinnedLookNote.textContent = pinned ? ("Pinned: " + pinned.title) : "Pin one when a look feels like the truth.";
+  }
+
+  document.getElementById("genLooks").addEventListener("click", generateLooks);
+  document.getElementById("pinLook").addEventListener("click", () => {
+    if(!currentLooks.length) generateLooks();
+    pinned = currentLooks[Math.floor(Math.random()*currentLooks.length)];
+    saveJSON(LS_PIN, pinned);
+    renderLooks();
+    updateExportArea();
+    showToast("Pinned " + pinned.title);
+  });
+
+  // Daily triad
+  const dailyOracle = document.getElementById("dailyOracle");
+  function todayKey(){
+    const d = new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function oraclePick(){
+    const key = todayKey();
+    const saved = loadJSON(LS_ORACLE_DAY, null);
+    if(saved && saved.key===key) return saved;
+    const neutral = PALETTE.filter(c => c.laneKey==="mist_neutrals")[Math.floor(Math.random()*6)];
+    const cool = PALETTE.filter(c => ["sea_glass_greens","blue_shadows"].includes(c.laneKey))[Math.floor(Math.random()*12)];
+    const spice = PALETTE.filter(c => ["berry_inks","orchid_smoke"].includes(c.laneKey))[Math.floor(Math.random()*12)];
+    const out = {key, triad:[neutral,cool,spice]};
+    saveJSON(LS_ORACLE_DAY, out);
+    return out;
+  }
+  function renderOracle(){
+    const o = oraclePick();
+    dailyOracle.onclick = () => {
+      lastHarmony = {kind:"oracle", base:o.triad[0].hex, picks:[o.triad[1],o.triad[2]], story:"Daily triad: "+o.triad.map(x=>x.name).join(" + ")};
+      selectedHex = o.triad[0].hex;
+      renderHarmonyOutLast();
+      showToast("Oracle loaded");
+    };
+  }
+
+  // Capsule slots
+  const SLOT_DEFS = [["top","Top"],["bottom","Bottom"],["shoe","Shoe"],["bag","Bag"],["lip","Lip"],["liner","Liner"],["jewelry","Jewelry"],["outer","Outer"]];
+  const capsuleSlots = document.getElementById("capsuleSlots");
+  function renderCapsule(){
+    capsuleSlots.innerHTML = SLOT_DEFS.map(([k,label]) => {
+      const v = capsule[k];
+      const hx = v ? v.hex : null;
+      const nm = v ? v.name : "Tap to assign";
+      return `
+        <div class="slot" data-slot="${escapeAttr(k)}" style="--sc:${hx ? hx : "rgba(255,255,255,.06)"}">
+          <div class="slotChip"></div>
+          <div class="slotTxt">
+            <div><b>${escapeHtml(label)}</b><div class="mini">${escapeHtml(nm)}</div></div>
+            <span>${hx ? escapeHtml(hx) : ""}</span>
+          </div>
+        </div>
+      `;
+    }).join("");
+  }
+  capsuleSlots.addEventListener("click", (e) => {
+    const slot = e.target.closest(".slot[data-slot]");
+    if(!slot) return;
+    if(!selectedHex){ showToast("Select a swatch first"); return; }
+    const key = slot.getAttribute("data-slot");
+    const m = findByHex(selectedHex) || {name:"Color", hex:selectedHex};
+    capsule[key] = {hex:selectedHex, name:m.name};
+    saveJSON(LS_CAPSULE, capsule);
+    renderCapsule();
+    updateExportArea();
+    showToast("Assigned");
+  });
+  document.getElementById("copyCapsule").addEventListener("click", () => {
+    const lines = ["CAPSULE (" + TITLE + ")"];
+    SLOT_DEFS.forEach(([k,label]) => {
+      const v = capsule[k];
+      lines.push(label + ": " + (v ? (v.name + " " + v.hex) : "(empty)"));
+    });
+    copyToClipboard(lines.join("\n"));
+  });
+  document.getElementById("clearCapsule").addEventListener("click", () => {
+    capsule = {}; saveJSON(LS_CAPSULE, capsule);
+    renderCapsule(); updateExportArea(); showToast("Cleared");
+  });
+
+  // Export
+  const exportArea = document.getElementById("exportArea");
+  function paletteListText(){
+    const lines = [];
+    lines.push(TITLE);
+    lines.push("");
+    lines.push("SOURCE PIGMENTS:");
+    PIGMENTS.forEach(p => lines.push(p.name + " " + p.hex + " — " + p.note));
+    lines.push("");
+    lines.push("WEARABLE PALETTE:");
+    LANES.forEach(l => {
+      lines.push("");
+      lines.push(l.name.toUpperCase() + " — " + (l.note||""));
+      l.colors.forEach(c => lines.push(c[0] + " " + c[1] + " — " + (c[2]||"")));
+    });
+    lines.push("");
+    lines.push("FAVORITES:");
+    if(!favorites.length) lines.push("(none yet)");
+    else favorites.forEach(f => lines.push((f.name||"Favorited Color") + " " + f.hex + (notes[f.hex] ? " — Note: " + notes[f.hex] : "")));
+    if(pinned){
+      lines.push("");
+      lines.push("PINNED LOOK:");
+      lines.push(pinned.title + " — " + pinned.desc);
+      pinned.picks.forEach(p => lines.push(p.name + " " + p.hex));
+    }
+    return lines.join("\n");
+  }
+  function exportObject(){
+    return {title:TITLE, pigments:PIGMENTS, lanes:LANES, favorites:favorites.map(f => ({hex:f.hex,name:f.name,note:notes[f.hex]||""})), capsule, pinned, looks:currentLooks};
+  }
+  function updateExportArea(){ exportArea.value = JSON.stringify(exportObject(), null, 2); }
+
+  document.getElementById("copyList").addEventListener("click", () => copyToClipboard(paletteListText()));
+  document.getElementById("copyExportText").addEventListener("click", () => copyToClipboard(paletteListText()));
+  document.getElementById("exportJson").addEventListener("click", () => { updateExportArea(); showToast("Export updated"); });
+  document.getElementById("downloadJson").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(exportObject(),null,2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = "lauren_palette_export.json";
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+    showToast("Downloaded JSON");
+  });
+
+  document.getElementById("resetLocal").addEventListener("click", () => {
+    if(!confirm("Reset favorites, notes, pinned look, capsule, and oracle?")) return;
+    favorites=[]; notes={}; pinned=null; capsule={};
+    saveJSON(LS_FAV, favorites); saveJSON(LS_NOTES, notes); saveJSON(LS_PIN, pinned); saveJSON(LS_CAPSULE, capsule);
+    localStorage.removeItem(LS_ORACLE_DAY);
+    refreshFavMarks(); renderFavorites(); renderCapsule(); updateExportArea();
+    showToast("Reset complete");
+  });
+
+  // Search
+  const searchCard = document.getElementById("searchCard");
+  const openSearch = document.getElementById("openSearch");
+  const closeSearch = document.getElementById("closeSearch");
+  const searchInput = document.getElementById("searchInput");
+
+  openSearch.addEventListener("click", () => { searchCard.style.display="block"; setTimeout(()=>searchInput.focus(),50); });
+  closeSearch.addEventListener("click", () => { searchCard.style.display="none"; clearHighlights(); });
+
+  function clearHighlights(){ document.querySelectorAll(".swatch").forEach(el => el.style.outline=""); }
+  searchInput.addEventListener("input", () => {
+    const q = (searchInput.value||"").trim().toLowerCase();
+    clearHighlights();
+    if(!q) return;
+    document.querySelectorAll(".swatch[data-hex]").forEach(el => {
+      const hx = (el.getAttribute("data-hex")||"").toLowerCase();
+      const nm = (el.getAttribute("data-name")||"").toLowerCase();
+      const ln = (el.getAttribute("data-lane")||"").toLowerCase();
+      const nt = (el.getAttribute("data-note")||"").toLowerCase();
+      const hit = hx.includes(q) || nm.includes(q) || ln.includes(q) || nt.includes(q) || (notes[hx]||"").toLowerCase().includes(q);
+      if(hit){ el.style.outline="2px solid rgba(155,212,203,.35)"; el.style.outlineOffset="2px"; }
+    });
+  });
+
+  document.getElementById("openExport").addEventListener("click", () => {
+    updateExportArea();
+    document.getElementById("exportCard").scrollIntoView({behavior:"smooth", block:"start"});
+    showToast("Export ready");
+  });
+
+  // Photo sampler
+  const imgInput = document.getElementById("imgInput");
+  const canvas = document.getElementById("imgCanvas");
+  const ctx = canvas.getContext("2d");
+  const sampleOut = document.getElementById("sampleOut");
+  let imgDataCache = null;
+
+  imgInput.addEventListener("change", (e) => {
+    const file = e.target.files && e.target.files[0];
+    if(!file) return;
+    const img = new Image();
+    img.onload = () => {
+      const maxW=900, maxH=700;
+      let w=img.width, h=img.height;
+      const scale = Math.min(maxW/w, maxH/h, 1);
+      w=Math.round(w*scale); h=Math.round(h*scale);
+      canvas.width=w; canvas.height=h;
+      ctx.clearRect(0,0,w,h);
+      ctx.drawImage(img,0,0,w,h);
+      imgDataCache = ctx.getImageData(0,0,w,h);
+      sampleOut.innerHTML="";
+      showToast("Tap to sample");
+    };
+    img.src = URL.createObjectURL(file);
+  });
+
+  canvas.addEventListener("click", (e) => {
+    if(!imgDataCache) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.floor((e.clientX-rect.left)*(canvas.width/rect.width));
+    const y = Math.floor((e.clientY-rect.top)*(canvas.height/rect.height));
+    const idx = (y*canvas.width + x)*4;
+    const d = imgDataCache.data;
+    const hex = rgbToHex(d[idx], d[idx+1], d[idx+2]);
+    const nearest = nearestPalette(hex, 6);
+    renderSample(hex, nearest);
+  });
+
+  function nearestPalette(hex, n){
+    const rgb = hexToRgb(hex);
+    const hsl = rgbToHsl(rgb.r,rgb.g,rgb.b);
+    const scored = PALETTE.map(c => {
+      const cr = hexToRgb(c.hex);
+      const ch = rgbToHsl(cr.r,cr.g,cr.b);
+      const dH = angDist(hsl.h,ch.h)/180;
+      const dS = Math.abs(hsl.s - ch.s);
+      const dL = Math.abs(hsl.l - ch.l);
+      return {c, dist:(dH*0.55)+(dS*0.25)+(dL*0.20)};
+    }).sort((a,b)=>a.dist-b.dist);
+    return scored.slice(0,n);
+  }
+
+  function renderSample(sampleHex, nearest){
+    sampleOut.innerHTML="";
+    const card = document.createElement("div");
+    card.className="sampleCard";
+    card.innerHTML = `
+      <div class="chipRow">
+        <div class="miniChip" style="--mc:${escapeHtml(sampleHex)}; background:${escapeHtml(sampleHex)}"></div>
+        <div><b>Sample</b> <span style="opacity:.75; font-family:ui-monospace, Menlo, Consolas, monospace;">${escapeHtml(sampleHex)}</span></div>
+        <button class="btn" type="button" id="copySample" style="margin-left:auto;">Copy</button>
+      </div>
+      <div class="mini" style="margin-top:10px;">Nearest matches:</div>
+      <div class="nearestRow" id="nearestGrid" style="margin-top:10px;"></div>
+    `;
+    sampleOut.appendChild(card);
+    card.querySelector("#copySample").addEventListener("click", () => copyToClipboard(sampleHex));
+    const ng = card.querySelector("#nearestGrid");
+    nearest.forEach(n => {
+      const el = document.createElement("div");
+      el.className="swatch mini";
+      el.style.setProperty("--c", n.c.hex);
+      el.setAttribute("data-hex", n.c.hex);
+      el.setAttribute("data-name", n.c.name);
+      el.innerHTML = `<div class="chip"></div><div class="meta"><p class="nm">${escapeHtml(n.c.name)}</p><div class="hx">${escapeHtml(n.c.hex)}</div></div><div class="star">☆</div>`;
+      ng.appendChild(el);
+    });
+    attachSwatchListeners();
+    showToast("Sampled " + sampleHex);
+  }
+
+  // Color utilities
+  function hexToRgb(hex){
+    const m = String(hex||"").trim().match(/^#?([0-9a-fA-F]{6})$/);
+    if(!m) return null;
+    const n = parseInt(m[1], 16);
+    return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+  }
+  function rgbToHex(r,g,b){
+    const to = (v) => Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,"0");
+    return "#" + to(r) + to(g) + to(b);
+  }
+  function rgbToHsl(r,g,b){
+    r/=255; g/=255; b/=255;
+    const max=Math.max(r,g,b), min=Math.min(r,g,b);
+    let h=0,s=0,l=(max+min)/2;
+    const d=max-min;
+    if(d!==0){
+      s = d/(1-Math.abs(2*l-1));
+      switch(max){
+        case r: h = ((g-b)/d) % 6; break;
+        case g: h = ((b-r)/d) + 2; break;
+        case b: h = ((r-g)/d) + 4; break;
+      }
+      h = Math.round(h*60);
+      if(h<0) h+=360;
+    }
+    return {h, s, l};
+  }
+
+  // Init
+  refreshFavMarks();
+  renderFavorites();
+  renderCompare();
+  attachSwatchListeners();
+  renderOracle();
+  renderCapsule();
+  generateLooks();
+  updateExportArea();
+})();
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

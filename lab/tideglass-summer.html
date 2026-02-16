@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Tideglass Summer</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Lauren’s Tideglass Summer — Cool Summer (Blue-Green Dominant)</title>
+  <style>
+    :root{
+      --bg0:#070B10;
+      --bg1:#0B1220;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.08);
+      --stroke:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.70);
+      --faint:rgba(255,255,255,.52);
+      --shadow: 0 16px 44px rgba(0,0,0,.45);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+
+      /* palette accents (blue-green bias) */
+      --a1:#2E7F8F; /* tide teal */
+      --a2:#4A6FAE; /* mineral blue */
+      --a3:#E46F7A; /* rose-coral */
+      --glow: 0 0 0 1px rgba(255,255,255,.10), 0 14px 46px rgba(46,127,143,.20);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:var(--sans);
+      background:
+        radial-gradient(900px 700px at 15% 10%, rgba(46,127,143,.22), transparent 60%),
+        radial-gradient(800px 600px at 90% 25%, rgba(74,111,174,.18), transparent 55%),
+        radial-gradient(800px 600px at 55% 95%, rgba(228,111,122,.14), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    body.light{
+      --bg0:#f5f3ef;
+      --bg1:#e9edf3;
+      --panel:rgba(10,14,18,.04);
+      --panel2:rgba(10,14,18,.06);
+      --stroke:rgba(10,14,18,.10);
+      --text:rgba(10,14,18,.92);
+      --muted:rgba(10,14,18,.72);
+      --faint:rgba(10,14,18,.54);
+      background:
+        radial-gradient(900px 700px at 15% 10%, rgba(46,127,143,.14), transparent 60%),
+        radial-gradient(800px 600px at 90% 25%, rgba(74,111,174,.12), transparent 55%),
+        radial-gradient(800px 600px at 55% 95%, rgba(228,111,122,.12), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+    }
+
+    .wrap{max-width:1160px;margin:0 auto;padding:26px 18px 84px}
+    header{
+      display:grid;
+      grid-template-columns:1.25fr .75fr;
+      gap:16px;
+      align-items:start;
+      margin-top:8px;
+    }
+    @media (max-width:900px){ header{grid-template-columns:1fr} }
+
+    .hero{
+      position:relative;
+      border:1px solid var(--stroke);
+      border-radius:28px;
+      padding:26px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute; inset:-1px;
+      background:
+        radial-gradient(520px 240px at 18% 12%, rgba(46,127,143,.26), transparent 62%),
+        radial-gradient(520px 240px at 88% 30%, rgba(74,111,174,.22), transparent 62%),
+        radial-gradient(520px 240px at 55% 90%, rgba(228,111,122,.16), transparent 62%);
+      filter:saturate(1.05);
+      opacity:.95;
+      pointer-events:none;
+    }
+    .hero > *{position:relative; z-index:1}
+
+    .kicker{
+      margin:0 0 12px;
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:var(--faint);
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:42px;
+      line-height:1.06;
+      letter-spacing:-.02em;
+    }
+    .subtitle{
+      margin:0;
+      max-width:72ch;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .side{
+      border:1px solid var(--stroke);
+      border-radius:24px;
+      padding:16px;
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+    }
+
+    .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .btn{
+      appearance:none;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:14px;
+      cursor:pointer;
+      transition:.15s ease;
+      font-size:13px;
+    }
+    .btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.08)}
+    .btn.primary{
+      background:rgba(46,127,143,.20);
+      border-color:rgba(46,127,143,.30);
+      box-shadow:0 0 0 1px rgba(46,127,143,.16) inset;
+    }
+    .toggleRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+    .switch{
+      display:flex;align-items:center;gap:10px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.05);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      color:var(--text);
+      user-select:none;
+    }
+    .switch input{transform:scale(1.05)}
+    .divider{height:1px;background:rgba(255,255,255,.10);margin:14px 0}
+
+    .pillRow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+    .pill{
+      appearance:none;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      cursor:pointer;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .pill:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.18); background:rgba(255,255,255,.07)}
+    .pill.active{
+      background:rgba(46,127,143,.16);
+      border-color:rgba(46,127,143,.30);
+      box-shadow:0 0 0 1px rgba(46,127,143,.16) inset;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:14px;
+      margin-top:16px;
+    }
+    @media (max-width:980px){ .grid{grid-template-columns:repeat(3,1fr)} }
+    @media (max-width:720px){ .grid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:440px){ .grid{grid-template-columns:1fr} }
+
+    .card{
+      border:1px solid var(--stroke);
+      border-radius:22px;
+      padding:18px;
+      background:rgba(255,255,255,.05);
+      box-shadow:var(--shadow);
+    }
+    .full{grid-column:1/-1}
+    h2{margin:0 0 10px;font-size:20px;letter-spacing:-.01em}
+    .small{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+    .tiny{margin:10px 0 0;color:var(--faint);font-size:12px;line-height:1.5}
+
+    .sectionTitle{
+      display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin-bottom:10px
+    }
+    .right{color:var(--faint);font-size:12px}
+
+    /* swatches */
+    .swatchGrid{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width:980px){ .swatchGrid{grid-template-columns:repeat(3,1fr)} }
+    @media (max-width:720px){ .swatchGrid{grid-template-columns:repeat(2,1fr)} }
+    @media (max-width:440px){ .swatchGrid{grid-template-columns:1fr} }
+
+    .swatch{
+      border:1px solid var(--stroke);
+      background:rgba(0,0,0,.20);
+      border-radius:16px;
+      padding:12px;
+      position:relative;
+      overflow:hidden;
+      min-height:90px;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    body.light .swatch{background:rgba(10,14,18,.03)}
+    .swatch:hover{transform:translateY(-2px); border-color:rgba(255,255,255,.18)}
+    .bar{
+      height:22px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.20);
+      margin-bottom:10px;
+    }
+    .name{margin:0 0 6px;font-weight:700;font-size:13px}
+    .meta{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .hex{font-family:var(--mono);font-size:12px;color:var(--muted)}
+    .tag{
+      font-size:11px;
+      padding:6px 9px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);
+      color:rgba(255,255,255,.82);
+      white-space:nowrap;
+    }
+    body.light .tag{color:rgba(10,14,18,.78); background:rgba(10,14,18,.04); border-color:rgba(10,14,18,.10)}
+
+    .favBtn{
+      position:absolute;
+      top:10px; right:10px;
+      width:30px;height:30px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(0,0,0,.22);
+      display:flex;align-items:center;justify-content:center;
+      font-size:16px;
+      line-height:1;
+      cursor:pointer;
+      transition:.15s ease;
+    }
+    body.light .favBtn{background:rgba(10,14,18,.03); border-color:rgba(10,14,18,.12)}
+    .favBtn:hover{transform:scale(1.06)}
+    .favBtn.active{border-color:rgba(228,111,122,.55); box-shadow:0 0 0 1px rgba(228,111,122,.20) inset}
+    .favBtn span{opacity:.9}
+
+    /* highlight */
+    .highlight{
+      outline: 2px solid rgba(46,127,143,.62);
+      box-shadow: 0 0 0 1px rgba(46,127,143,.18) inset, 0 18px 44px rgba(46,127,143,.14);
+    }
+
+    /* search */
+    .searchRow{
+      display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px
+    }
+    .search{
+      flex:1;
+      min-width:220px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      padding:12px 12px;
+      border-radius:14px;
+      outline:none;
+      font-size:14px;
+    }
+    body.light .search{background:rgba(10,14,18,.03)}
+    .hint{color:var(--faint);font-size:12px}
+
+    /* toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      bottom:18px;
+      transform:translateX(-50%);
+      background:rgba(10,14,18,.88);
+      border:1px solid rgba(255,255,255,.14);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:999px;
+      font-size:13px;
+      box-shadow:var(--shadow);
+      opacity:0;
+      pointer-events:none;
+      transition:.18s ease;
+      z-index:999;
+    }
+    body.light .toast{background:rgba(250,250,250,.92); border-color:rgba(10,14,18,.12); color:rgba(10,14,18,.92)}
+    .toast.show{opacity:1; transform:translateX(-50%) translateY(-4px)}
+
+    /* look box */
+    .lookBox{
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.05);
+      border-radius:18px;
+      padding:14px;
+      margin-top:10px;
+    }
+    body.light .lookBox{background:rgba(10,14,18,.03)}
+    .lookTitle{font-weight:800;margin:0 0 6px}
+    .lookSub{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+    .legend span{
+      font-size:12px;color:var(--muted);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.04);
+      padding:7px 10px;border-radius:999px;
+    }
+    body.light .legend span{border-color:rgba(10,14,18,.12); background:rgba(10,14,18,.03)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="hero">
+        <p class="kicker">Bespoke pigment map • built from your real body colors</p>
+        <h1>Lauren’s <span style="color:rgba(255,255,255,.96)">Tideglass Summer</span><br>
+          <span style="font-weight:650;opacity:.9">Cool Summer / True Summer (Blue-Green Dominant, Rose-Coral Reds)</span>
+        </h1>
+        <p class="subtitle">
+          Your skin reads <b>cool-neutral</b> with a <b>rose-peach living flush</b>. Your hair sits in the <b>ash-taupe</b> lane (not honey/gold).
+          Your eyes are a layered phenomenon: <b>sage-green field</b>, an <b>olive-gold inner ring</b>, and a <b>slate blue-grey rim</b>.
+          That combination makes <b>blue-greens</b> your power axis and makes your “coral” a <b>rose-coral</b> (pink-based), not orange-based.
+        </p>
+
+        <div class="pillRow" id="filterRow">
+          <button class="pill active" data-filter="all">Show all</button>
+          <button class="pill" data-filter="top10">Top 10</button>
+          <button class="pill" data-filter="neutrals">Power neutrals</button>
+          <button class="pill" data-filter="bluegreens">Blue-greens</button>
+          <button class="pill" data-filter="blues">Blues</button>
+          <button class="pill" data-filter="greens">Greens</button>
+          <button class="pill" data-filter="pinks">Rose-pinks / “my coral”</button>
+          <button class="pill" data-filter="reds">Reds</button>
+          <button class="pill" data-filter="purples">Purples</button>
+          <button class="pill" data-filter="lights">Light lifts</button>
+          <button class="pill" data-filter="makeup">Makeup</button>
+          <button class="pill" data-filter="metals">Metals</button>
+          <button class="pill" data-filter="favorites">♥ Favorites</button>
+          <button class="pill" data-filter="body">Body colors</button>
+        </div>
+
+        <div class="searchRow">
+          <input class="search" id="search" placeholder="Search swatches (e.g., “teal”, “rose-coral”, “navy”, “cranberry”)…" />
+          <div class="hint">Tap swatch to copy hex • heart saves</div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <h2 style="margin:0 0 8px">Season proof (fast + real)</h2>
+        <p class="small">
+          <b>Temperature:</b> your skin stays clean in cool pigments; warm/yellow reads “on top.”<br>
+          <b>Chroma:</b> you need <b>mineral clarity</b> (not dusty, not neon).<br>
+          <b>Value:</b> medium range; black is too hard—use <b>ink navy / deep teal / graphite</b>.<br>
+          <b>Eye-echo:</b> blue-green + slate + sage are your “native language.”
+        </p>
+
+        <div class="divider"></div>
+
+        <h2 style="margin:0 0 8px">Controls</h2>
+        <div class="controls">
+          <button class="btn primary" id="toggleMode">Toggle Night ↔ Day</button>
+          <button class="btn" id="clearHighlight">Clear Highlights</button>
+          <button class="btn" id="clearFavorites">Clear Favorites</button>
+        </div>
+
+        <div class="toggleRow">
+          <label class="switch" title="Outfit generator will include one of your cool reds more often">
+            <input type="checkbox" id="includeRed" />
+            Include a Red Accent
+          </label>
+          <label class="switch" title="Outfit generator will pick a rose-coral/pink lift near the face">
+            <input type="checkbox" id="includeRoseLift" checked />
+            Include Rose-Coral Lift
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <h2 style="margin:0 0 8px">Outfit Generator</h2>
+        <p class="small">Builds a wearable formula and highlights the exact swatches it used.</p>
+        <div class="controls" style="margin-top:10px">
+          <button class="btn primary" id="generateOutfit">Generate Outfit Formula</button>
+          <button class="btn" id="cycleLook">Cycle Curated Looks</button>
+        </div>
+
+        <div class="lookBox" id="outfitBox">
+          <p class="lookTitle" id="outfitTitle">Click “Generate Outfit Formula.”</p>
+          <p class="lookSub" id="outfitSub">It will highlight swatches in the palette below.</p>
+          <div class="legend" id="outfitLegend"></div>
+        </div>
+      </aside>
+    </header>
+
+    <div class="grid">
+
+      <section class="card full">
+        <div class="sectionTitle">
+          <h2 style="margin:0">Body Colors (your real pigments)</h2>
+          <div class="right">These anchor the whole palette</div>
+        </div>
+        <p class="small">
+          <b>Veins:</b> inner wrist can read more violet (thin skin + light); forearm often reads blue-green/teal. Both can be true at once.
+          Your overall signal is <b>cool-neutral</b> with a <b>blue-green bias</b>.
+        </p>
+        <div class="swatchGrid" id="bodyGrid"></div>
+      </section>
+
+      <section class="card full">
+        <div class="sectionTitle">
+          <h2 style="margin:0">Why your best colors work (science, not “mauve prison”)</h2>
+          <div class="right">undertone • chroma • value • eye-echo</div>
+        </div>
+        <p class="small">
+          <b>1) Undertone harmony:</b> Your base reads <b>cool-neutral</b>. Too-warm pigments (orange/yellow) create surface muddiness.
+          <br><b>2) Mineral chroma:</b> You asked for <b>slightly more saturation</b> than classic Soft Summer. Correct. You handle <b>clear, cool pigment</b>
+          (teal, mineral blue, rose-coral) as long as it’s not neon.
+          <br><b>3) Value control:</b> Your drama lives in <b>ink navy / deep teal / graphite</b>, not black.
+          <br><b>4) Eye echo:</b> Your iris carries <b>sage + slate + blue-green</b>; the palette repeats those wavelengths so your face looks “assembled,” not fought with.
+          <br><b>5) The pink issue:</b> Your “coral” is <b>rose-coral</b> (pink-based) — not orange-coral. Mauves can exist, but they are not your whole personality.
+        </p>
+        <p class="tiny">If a “summer” palette looks like a Victorian ghost, it’s not you. This one is built to be alive.</p>
+      </section>
+
+      <section class="card full">
+        <div class="sectionTitle">
+          <h2 style="margin:0">Palette (tap to copy • ♥ to save • filter/search above)</h2>
+          <div class="right">Top 10 + full wardrobe spectrum + makeup + metals</div>
+        </div>
+        <div class="swatchGrid" id="paletteGrid"></div>
+      </section>
+
+      <section class="card full">
+        <div class="sectionTitle">
+          <h2 style="margin:0">Makeup Map</h2>
+          <div class="right">Cool Summer with rose-coral reds</div>
+        </div>
+        <p class="small">
+          Best effect on you is <b>clean pigment + controlled softness</b>:
+          rose-coral blush, cool berry reds, taupe/pewter eyes, slate liner, blue-green accents.
+        </p>
+        <div class="swatchGrid" id="makeupGrid"></div>
+      </section>
+
+      <section class="card full">
+        <div class="sectionTitle">
+          <h2 style="margin:0">Style Elements (based on your features)</h2>
+          <div class="right">Structure + sleekness + controlled drama</div>
+        </div>
+        <p class="small">
+          Your coloring reads <b>refined + cinematic</b> when styling is <b>clean, intentional, and not fussy</b>.
+          Think: sharp lines, smooth fabrics, sculptural details — but in your cool palette.
+        </p>
+        <ul class="small" style="margin:10px 0 0; padding-left:18px; line-height:1.7">
+          <li><b>Necklines:</b> open + clean (soft V, wide scoop, boat, square). Avoid tiny cluttered necklines.</li>
+          <li><b>Silhouettes:</b> defined waist, long vertical lines, wrap/structured drape. (Soft-Dramatic friendly.)</li>
+          <li><b>Hardware:</b> brushed/satin finishes; avoid bright yellow gold shine.</li>
+          <li><b>Jewelry:</b> elongated sculptural shapes (ovals, drops, curved daggers), not tiny glitter clusters.</li>
+          <li><b>Prints:</b> high-end blur: watercolor florals, marbling, heathered checks. Avoid high-contrast comic prints.</li>
+          <li><b>Best “drama” move:</b> deep teal or ink navy column + rose-coral mouth.</li>
+        </ul>
+      </section>
+
+      <section class="card full">
+        <div class="sectionTitle">
+          <h2 style="margin:0">Metals</h2>
+          <div class="right">Smoked shine beats yellow shine</div>
+        </div>
+        <p class="small">
+          Best: <b>platinum</b>, <b>white gold</b>, <b>brushed silver</b>, <b>pewter</b>.
+          Gold can work only as <b>soft champagne</b> (muted), never bright yellow.
+        </p>
+        <div class="swatchGrid" id="metalsGrid"></div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Copied</div>
+
+<script>
+/* -----------------------------
+   Storage (remembers mode + favorites)
+------------------------------ */
+const STORE_KEY = "lauren_tideglass_summer_v1";
+const store = (() => {
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : { light:false, favorites:{} };
+  }catch(e){
+    return { light:false, favorites:{} };
+  }
+})();
+function saveStore(){
+  localStorage.setItem(STORE_KEY, JSON.stringify(store));
+}
+
+/* -----------------------------
+   Data: Body Colors (bespoke)
+------------------------------ */
+const bodyColors = [
+  {name:"Ash-Taupe Root (Hair)", hex:"#4A443F", tag:"hair"},
+  {name:"Cool Beige-Taupe Lights (Hair)", hex:"#A79E8F", tag:"hair"},
+  {name:"Fair Cool-Neutral Beige (Skin)", hex:"#C8B1A2", tag:"skin"},
+  {name:"Rose-Peach Living Flush", hex:"#E3A0A2", tag:"flush"},
+  {name:"Cool Rose Lip Natural", hex:"#C27B8C", tag:"lip"},
+  {name:"Vein — Wrist Violet", hex:"#585B86", tag:"vein"},
+  {name:"Vein — Forearm Blue-Green", hex:"#2F6E7A", tag:"vein"},
+  {name:"Eye — Olive-Gold Inner Ring", hex:"#B49066", tag:"eye"},
+  {name:"Eye — Sage Field", hex:"#7D9A8E", tag:"eye"},
+  {name:"Eye — Slate Rim", hex:"#6B7A92", tag:"eye"}
+];
+
+/* -----------------------------
+   Data: Palette (Cool Summer / True Summer, clearer chroma)
+   Groups: top10, neutrals, bluegreens, blues, greens, pinks, reds, purples, lights, makeup, metals
+------------------------------ */
+const palette = [
+  /* TOP 10 — your “never fail” power set */
+  {name:"Ink Navy Column", hex:"#1C2D46", group:["top10","neutrals","blues"]},
+  {name:"Deep Tide Teal", hex:"#0F4E57", group:["top10","bluegreens"]},
+  {name:"Mineral Teal", hex:"#2E7F8F", group:["top10","bluegreens"]},
+  {name:"Sea-Glass Bright", hex:"#58B8B5", group:["top10","bluegreens","lights"]},
+  {name:"Sage Iris Echo", hex:"#6F9B8E", group:["top10","greens"]},
+  {name:"Steel Blue Lens", hex:"#4F78A6", group:["top10","blues"]},
+  {name:"Cool Rose-Coral", hex:"#E46F7A", group:["top10","pinks","reds","makeup"]},
+  {name:"Raspberry Red", hex:"#B91E4B", group:["top10","reds","makeup"]},
+  {name:"Cranberry Velvet", hex:"#8E1F41", group:["top10","reds","makeup"]},
+  {name:"Pewter Smoke Neutral", hex:"#7E8793", group:["top10","neutrals"]},
+
+  /* POWER NEUTRALS (cool, inky, not beige) */
+  {name:"Soft Porcelain", hex:"#F3F1EE", group:["neutrals","lights"]},
+  {name:"Oyster Grey-Beige", hex:"#B9B1AA", group:["neutrals"]},
+  {name:"Cool Taupe Stone", hex:"#9A8F8A", group:["neutrals"]},
+  {name:"Graphite Veil", hex:"#3B424C", group:["neutrals"]},
+  {name:"Blue-Black Ink", hex:"#0C111A", group:["neutrals"]},
+
+  /* BLUE-GREENS (plenty — your demand is correct) */
+  {name:"Lagoon Glass", hex:"#4AAFAE", group:["bluegreens","lights"]},
+  {name:"Teal Current", hex:"#1F5F6A", group:["bluegreens"]},
+  {name:"Harbor Teal", hex:"#2E7F8F", group:["bluegreens"]},
+  {name:"Aegean Teal", hex:"#3A8C8C", group:["bluegreens"]},
+  {name:"Storm Teal", hex:"#2B6B74", group:["bluegreens"]},
+  {name:"Blue-Green Satin", hex:"#2D8A9B", group:["bluegreens"]},
+  {name:"Deep Fjord", hex:"#0F3F46", group:["bluegreens"]},
+  {name:"Evergreen Teal", hex:"#2F5F5A", group:["bluegreens","greens"]},
+  {name:"Mermaid Glass", hex:"#7ECFCB", group:["bluegreens","lights"]},
+  {name:"Seaglass Pale", hex:"#8AD0CC", group:["bluegreens","lights"]},
+
+  /* BLUES (clear, cool, mineral) */
+  {name:"Bluebell Slate", hex:"#5E7FA6", group:["blues"]},
+  {name:"Glacier Denim", hex:"#6F8FB8", group:["blues","lights"]},
+  {name:"Rainwashed Blue", hex:"#4A6FAE", group:["blues"]},
+  {name:"Storm Mid-Blue", hex:"#3A5E8F", group:["blues"]},
+  {name:"Periscope Blue", hex:"#2B4F7C", group:["blues"]},
+  {name:"Slate Rim Blue", hex:"#6B7A92", group:["blues"]},
+
+  /* GREENS (cool greens—never yellow) */
+  {name:"Eucalyptus Clean", hex:"#5F9C95", group:["greens","bluegreens"]},
+  {name:"Sage Mineral", hex:"#8FB7AE", group:["greens","lights"]},
+  {name:"Juniper Smoke", hex:"#356D67", group:["greens"]},
+  {name:"Pine-Teal Depth", hex:"#234E4A", group:["greens","bluegreens"]},
+  {name:"Iris Sage", hex:"#7D9A8E", group:["greens"]},
+
+  /* ROSE-PINKS / “MY CORAL” (pink-based, not orange) */
+  {name:"Rose-Coral Flush", hex:"#F08A8A", group:["pinks","makeup"]},
+  {name:"Cool Watermelon", hex:"#E35D6A", group:["pinks","reds","makeup"]},
+  {name:"Rosy Peach (Pink-Based)", hex:"#F3A1A1", group:["pinks","lights","makeup"]},
+  {name:"Clear Blush Rose", hex:"#E06B8F", group:["pinks","makeup"]},
+  {name:"Petal Pink Lift", hex:"#F6B3BD", group:["pinks","lights"]},
+  {name:"Rose-Pink Silk", hex:"#D84F7A", group:["pinks","reds"]},
+
+  /* REDS (Cool Summer reds — yes, you get RED) */
+  {name:"Blue-Red Cherry", hex:"#C10D3A", group:["reds","makeup"]},
+  {name:"Raspberry Red", hex:"#B91E4B", group:["reds","makeup"]},
+  {name:"Cranberry Velvet", hex:"#8E1F41", group:["reds","makeup"]},
+  {name:"Pomegranate Ink", hex:"#7A1031", group:["reds"]},
+  {name:"Rose-Scarlet (Cool)", hex:"#D61A4B", group:["reds"]},
+  {name:"Berry Wine", hex:"#61143A", group:["reds"]},
+
+  /* PURPLES (cool editorial accents) */
+  {name:"Orchid Glow", hex:"#9A5DD6", group:["purples"]},
+  {name:"Iris Violet", hex:"#6A5FAE", group:["purples"]},
+  {name:"Periwinkle Clean", hex:"#7F8FE8", group:["purples","lights"]},
+  {name:"Plum Shadow", hex:"#4B2343", group:["purples"]},
+  {name:"Amethyst Smoke", hex:"#7B4B8B", group:["purples"]},
+
+  /* LIGHT LIFTS (to brighten without turning icy) */
+  {name:"Seafoam Pearl", hex:"#BFEAE7", group:["lights","bluegreens"]},
+  {name:"Cloud Blue", hex:"#C9D8F2", group:["lights","blues"]},
+  {name:"Icy Rose Mist", hex:"#F2CBD5", group:["lights","pinks"]},
+  {name:"Pale Lilac Air", hex:"#E3D9F3", group:["lights","purples"]},
+
+  /* MAKEUP (functional set) */
+  {name:"Foundation — Cool Neutral", hex:"#C9B2A3", group:["makeup"]},
+  {name:"Concealer — Cool Beige", hex:"#D6C2B6", group:["makeup"]},
+  {name:"Blush — Rose-Peach", hex:"#F08A8A", group:["makeup","pinks"]},
+  {name:"Blush — Clear Cool Rose", hex:"#E06B8F", group:["makeup","pinks"]},
+  {name:"Eyeshadow — Taupe Stone", hex:"#9A8F8A", group:["makeup","neutrals"]},
+  {name:"Eyeshadow — Pewter", hex:"#7E8793", group:["makeup","neutrals"]},
+  {name:"Liner — Slate", hex:"#2C3A4F", group:["makeup","neutrals","blues"]},
+  {name:"Mascara — Soft Black", hex:"#131822", group:["makeup","neutrals"]},
+  {name:"Lip — Rose-Coral", hex:"#E46F7A", group:["makeup","pinks","reds"]},
+  {name:"Lip — Raspberry", hex:"#B91E4B", group:["makeup","reds"]},
+  {name:"Lip — Cranberry", hex:"#8E1F41", group:["makeup","reds"]},
+
+  /* METALS */
+  {name:"Brushed Silver", hex:"#C8CED8", group:["metals"]},
+  {name:"White Gold", hex:"#D9D6CF", group:["metals"]},
+  {name:"Platinum", hex:"#BFC7D3", group:["metals"]},
+  {name:"Pewter", hex:"#8A93A2", group:["metals"]},
+  {name:"Champagne Gold (Muted)", hex:"#C7B48A", group:["metals"]}
+];
+
+/* -----------------------------
+   Curated looks (cycle)
+------------------------------ */
+const curatedLooks = [
+  {
+    title:"Tideglass Authority",
+    sub:"Ink navy + mineral teal + sea-glass bright + pewter. Clean, expensive, eyes go cinematic.",
+    picks:["Ink Navy Column","Mineral Teal","Sea-Glass Bright","Pewter Smoke Neutral"]
+  },
+  {
+    title:"Blue-Green Siren (Your Power Lane)",
+    sub:"Deep tide teal + lagoon glass + sage echo + graphite. Strong without harshness.",
+    picks:["Deep Tide Teal","Lagoon Glass","Sage Iris Echo","Graphite Veil"]
+  },
+  {
+    title:"Rose-Coral Alive (Your ‘Coral’)",
+    sub:"Cool rose-coral + steel blue + oyster grey-beige. Skin reads awake, not pink-blotchy.",
+    picks:["Cool Rose-Coral","Steel Blue Lens","Oyster Grey-Beige","Pewter Smoke Neutral"]
+  },
+  {
+    title:"Cool Red Weapon",
+    sub:"Raspberry red + ink navy + sea-glass pale. Looks intentional, not ‘holiday costume.’",
+    picks:["Raspberry Red","Ink Navy Column","Seaglass Pale","Pewter Smoke Neutral"]
+  }
+];
+
+/* -----------------------------
+   UI Helpers
+------------------------------ */
+const toast = document.getElementById("toast");
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"), 900);
+}
+async function copyHex(hex){
+  try{
+    await navigator.clipboard.writeText(hex.toUpperCase());
+    showToast(`Copied ${hex.toUpperCase()}`);
+  }catch(e){
+    showToast("Copy failed (browser permission)");
+  }
+}
+
+function isFav(name){ return !!store.favorites[name]; }
+function toggleFav(name){
+  if(store.favorites[name]) delete store.favorites[name];
+  else store.favorites[name] = true;
+  saveStore();
+  renderPalette(); // re-render to update hearts (and favorites view)
+}
+
+/* -----------------------------
+   Render: Body + Palette + Makeup + Metals
+------------------------------ */
+const bodyGrid = document.getElementById("bodyGrid");
+const paletteGrid = document.getElementById("paletteGrid");
+const makeupGrid = document.getElementById("makeupGrid");
+const metalsGrid = document.getElementById("metalsGrid");
+
+function swatchEl(item){
+  const el = document.createElement("div");
+  el.className = "swatch";
+  el.dataset.name = item.name;
+  el.dataset.hex = item.hex;
+  el.dataset.groups = (item.group||[]).join(",");
+  el.dataset.search = (item.name + " " + (item.group||[]).join(" ")).toLowerCase();
+
+  const fav = document.createElement("button");
+  fav.className = "favBtn" + (isFav(item.name) ? " active" : "");
+  fav.type = "button";
+  fav.innerHTML = `<span>${isFav(item.name) ? "♥" : "♡"}</span>`;
+  fav.addEventListener("click", (e)=>{ e.stopPropagation(); toggleFav(item.name); });
+
+  el.innerHTML = `
+    <div class="bar" style="background:${item.hex}"></div>
+    <p class="name">${item.name}</p>
+    <div class="meta">
+      <span class="hex">${item.hex.toUpperCase()}</span>
+      <span class="tag">${(item.group||["custom"])[0]}</span>
+    </div>
+  `;
+  el.appendChild(fav);
+
+  el.addEventListener("click", ()=>copyHex(item.hex));
+  return el;
+}
+
+function bodyEl(item){
+  const el = document.createElement("div");
+  el.className = "swatch";
+  el.dataset.search = (item.name + " " + item.tag).toLowerCase();
+  el.innerHTML = `
+    <div class="bar" style="background:${item.hex}"></div>
+    <p class="name">${item.name}</p>
+    <div class="meta">
+      <span class="hex">${item.hex.toUpperCase()}</span>
+      <span class="tag">${item.tag}</span>
+    </div>
+  `;
+  el.addEventListener("click", ()=>copyHex(item.hex));
+  return el;
+}
+
+function renderBody(){
+  bodyGrid.innerHTML = "";
+  bodyColors.forEach(c=>bodyGrid.appendChild(bodyEl(c)));
+}
+
+let currentFilter = "all";
+function applyFilterAndSearch(){
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const swatches = [...paletteGrid.querySelectorAll(".swatch")];
+
+  swatches.forEach(el=>{
+    const groups = (el.dataset.groups||"").split(",").filter(Boolean);
+    const matchesFilter =
+      currentFilter === "all" ||
+      (currentFilter === "favorites" && isFav(el.dataset.name)) ||
+      groups.includes(currentFilter);
+
+    const matchesSearch = !q || (el.dataset.search||"").includes(q);
+
+    el.style.display = (matchesFilter && matchesSearch) ? "" : "none";
+  });
+}
+
+function renderPalette(){
+  paletteGrid.innerHTML = "";
+  palette.forEach(c=>paletteGrid.appendChild(swatchEl(c)));
+
+  // makeup
+  makeupGrid.innerHTML = "";
+  palette.filter(c=>c.group.includes("makeup")).forEach(c=>makeupGrid.appendChild(swatchEl(c)));
+
+  // metals
+  metalsGrid.innerHTML = "";
+  palette.filter(c=>c.group.includes("metals")).forEach(c=>metalsGrid.appendChild(swatchEl(c)));
+
+  applyFilterAndSearch();
+}
+
+renderBody();
+renderPalette();
+
+/* -----------------------------
+   Filter pills
+------------------------------ */
+const pills = [...document.querySelectorAll("#filterRow .pill")];
+function setFilter(key){
+  currentFilter = key;
+  pills.forEach(p=>p.classList.toggle("active", p.dataset.filter===key));
+
+  if(key === "body"){
+    document.getElementById("search").value = "";
+    setTimeout(()=>document.getElementById("bodyGrid").scrollIntoView({behavior:"smooth", block:"start"}), 50);
+    // keep palette visible; revert to all after scrolling
+    setTimeout(()=>{
+      currentFilter = "all";
+      pills.forEach(p=>p.classList.toggle("active", p.dataset.filter==="all"));
+      applyFilterAndSearch();
+    }, 300);
+    return;
+  }
+
+  applyFilterAndSearch();
+}
+pills.forEach(p=>p.addEventListener("click", ()=>setFilter(p.dataset.filter)));
+
+document.getElementById("search").addEventListener("input", applyFilterAndSearch);
+
+/* -----------------------------
+   Light/Dark mode (persisted)
+------------------------------ */
+function applyMode(){
+  document.body.classList.toggle("light", !!store.light);
+}
+applyMode();
+document.getElementById("toggleMode").addEventListener("click", ()=>{
+  store.light = !store.light;
+  saveStore();
+  applyMode();
+});
+
+/* -----------------------------
+   Highlight helpers
+------------------------------ */
+function clearHighlights(){
+  document.querySelectorAll("#paletteGrid .swatch").forEach(el=>el.classList.remove("highlight"));
+}
+function highlightByNames(names){
+  clearHighlights();
+  const set = new Set(names);
+  document.querySelectorAll("#paletteGrid .swatch").forEach(el=>{
+    if(set.has(el.dataset.name)) el.classList.add("highlight");
+  });
+  document.getElementById("paletteGrid").scrollIntoView({behavior:"smooth", block:"start"});
+}
+document.getElementById("clearHighlight").addEventListener("click", clearHighlights);
+
+/* -----------------------------
+   Favorites clearing
+------------------------------ */
+document.getElementById("clearFavorites").addEventListener("click", ()=>{
+  store.favorites = {};
+  saveStore();
+  renderPalette();
+  showToast("Favorites cleared");
+});
+
+/* -----------------------------
+   Outfit generator (with optional red + optional rose lift)
+------------------------------ */
+function pickFrom(group){
+  const options = palette.filter(c=>c.group.includes(group));
+  return options[Math.floor(Math.random()*options.length)];
+}
+function pickFromNames(names){
+  const options = names.map(n=>palette.find(x=>x.name===n)).filter(Boolean);
+  return options[Math.floor(Math.random()*options.length)];
+}
+function buildLegend(items){
+  const legend = document.getElementById("outfitLegend");
+  legend.innerHTML = "";
+  items.forEach(({label, hex})=>{
+    const s = document.createElement("span");
+    s.innerHTML = `${label}: <span style="display:inline-block;width:10px;height:10px;border-radius:99px;background:${hex};border:1px solid rgba(255,255,255,.18);margin:0 6px -1px 6px"></span><span style="font-family:var(--mono)">${hex.toUpperCase()}</span>`;
+    legend.appendChild(s);
+  });
+}
+
+document.getElementById("generateOutfit").addEventListener("click", ()=>{
+  const includeRed = document.getElementById("includeRed").checked;
+  const includeRoseLift = document.getElementById("includeRoseLift").checked;
+
+  const base = pickFromNames(["Ink Navy Column","Graphite Veil","Cool Taupe Stone","Oyster Grey-Beige","Pewter Smoke Neutral"]);
+  const main = pickFromNames(["Mineral Teal","Deep Tide Teal","Steel Blue Lens","Eucalyptus Clean","Periscope Blue","Teal Current","Aegean Teal"]);
+  const depth = pickFromNames(["Blue-Black Ink","Deep Fjord","Pomegranate Ink","Pine-Teal Depth"]);
+  const lift = includeRoseLift
+    ? pickFromNames(["Cool Rose-Coral","Rose-Coral Flush","Clear Blush Rose","Cool Watermelon","Rosy Peach (Pink-Based)"])
+    : null;
+
+  const red = includeRed
+    ? pickFromNames(["Blue-Red Cherry","Raspberry Red","Cranberry Velvet","Rose-Scarlet (Cool)"])
+    : null;
+
+  // Build formula
+  const picks = [base.name, main.name, depth.name].concat(lift ? [lift.name] : []).concat(red ? [red.name] : []);
+  const title = "Outfit Formula: Base + Main + Depth" + (lift ? " + Rose-Lift" : "") + (red ? " + Red Accent" : "");
+  const sub =
+    `Wear: ${base.name} (base) • ${main.name} (main) • ${depth.name} (depth)` +
+    (lift ? ` • ${lift.name} (near face)` : "") +
+    (red ? ` • ${red.name} (statement)` : "") +
+    `. Metal: brushed silver/pewter.`;
+
+  document.getElementById("outfitTitle").textContent = title;
+  document.getElementById("outfitSub").textContent = sub;
+
+  const legendItems = [
+    {label:"Base", hex:base.hex},
+    {label:"Main", hex:main.hex},
+    {label:"Depth", hex:depth.hex},
+    ...(lift ? [{label:"Rose-Lift", hex:lift.hex}] : []),
+    ...(red ? [{label:"Red", hex:red.hex}] : [])
+  ];
+  buildLegend(legendItems);
+  highlightByNames(picks);
+});
+
+/* -----------------------------
+   Curated look cycle
+------------------------------ */
+let lookIndex = -1;
+document.getElementById("cycleLook").addEventListener("click", ()=>{
+  lookIndex = (lookIndex + 1) % curatedLooks.length;
+  const L = curatedLooks[lookIndex];
+  document.getElementById("outfitTitle").textContent = `Curated Look: ${L.title}`;
+  document.getElementById("outfitSub").textContent = L.sub;
+  buildLegend(L.picks.map(n=>{
+    const c = palette.find(x=>x.name===n);
+    return {label:n, hex:c ? c.hex : "#000000"};
+  }));
+  highlightByNames(L.picks);
+});
+
+/* -----------------------------
+   Initial state
+------------------------------ */
+applyFilterAndSearch();
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>
