@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jupie Behavior Lab</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #2D2A32;
+  --bg-surface: #3D3A42;
+  --bg-card: rgba(60, 55, 68, 0.7);
+  --surface-cream: #FFF8E7;
+  --surface-warm: #F5E6D3;
+  --text-light: #FFF8E7;
+  --text-muted: #A8A3B3;
+  --accent-yellow: #FFD93D;
+  --accent-orange: #FF9642;
+  --accent-coral: #FF6B6B;
+  --accent-teal: #6BCB9E;
+  --accent-purple: #B19CD9;
+  --glow-yellow: rgba(255, 217, 61, 0.3);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes flap {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scream {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.2) rotate(-5deg); }
+  75% { transform: scale(1.2) rotate(5deg); }
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: linear-gradient(170deg, var(--bg-deep) 0%, var(--bg-surface) 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  line-height: 1.6;
+  padding: 16px;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 20px 16px 30px;
+}
+
+.jupie-icon {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: normal;
+  color: var(--accent-yellow);
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Stats bar */
+.stats-bar {
+  display: flex;
+  justify-content: space-around;
+  padding: 16px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(255, 217, 61, 0.1);
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  color: var(--accent-yellow);
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 217, 61, 0.1);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  background: rgba(255, 217, 61, 0.1);
+}
+
+.tab.active {
+  background: rgba(255, 217, 61, 0.15);
+  border-color: var(--accent-yellow);
+  color: var(--accent-yellow);
+}
+
+/* Panels */
+.panel {
+  display: none;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.panel.active {
+  display: block;
+}
+
+/* Card */
+.card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 217, 61, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-yellow);
+  margin-bottom: 16px;
+}
+
+/* Behavior buttons */
+.behavior-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.behavior-btn {
+  padding: 16px 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  color: var(--surface-warm);
+  font-family: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.behavior-btn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 217, 61, 0.3);
+}
+
+.behavior-btn:active {
+  transform: scale(0.98);
+}
+
+.behavior-btn.logged {
+  animation: bounce 0.3s ease-out;
+}
+
+.behavior-emoji {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.behavior-name {
+  font-size: 0.8rem;
+}
+
+.behavior-count {
+  font-size: 0.65rem;
+  color: var(--accent-yellow);
+  margin-top: 4px;
+}
+
+/* Intensity selector */
+.intensity-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.intensity-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.intensity-options {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.intensity-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.intensity-btn:hover {
+  transform: scale(1.1);
+}
+
+.intensity-btn.selected {
+  border-color: var(--accent-yellow);
+  background: rgba(255, 217, 61, 0.15);
+}
+
+/* Notes */
+.notes-input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 0.85rem;
+  margin-top: 12px;
+  resize: none;
+}
+
+.notes-input::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.notes-input:focus {
+  outline: none;
+  border-color: var(--accent-yellow);
+}
+
+.notes-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Log */
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.log-item {
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.log-emoji {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.log-content {
+  flex: 1;
+}
+
+.log-behavior {
+  font-size: 0.9rem;
+  color: var(--surface-cream);
+  margin-bottom: 2px;
+}
+
+.log-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.log-intensity {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.log-notes {
+  font-size: 0.8rem;
+  color: var(--surface-warm);
+  font-style: italic;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.log-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.log-delete:hover {
+  opacity: 1;
+  color: var(--accent-coral);
+}
+
+.log-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.log-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+/* Patterns */
+.pattern-section {
+  margin-bottom: 24px;
+}
+
+.pattern-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  margin-bottom: 12px;
+}
+
+.pattern-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.pattern-day {
+  text-align: center;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  padding: 4px;
+}
+
+.pattern-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.pattern-cell.level-1 { background: rgba(255, 217, 61, 0.2); }
+.pattern-cell.level-2 { background: rgba(255, 217, 61, 0.4); }
+.pattern-cell.level-3 { background: rgba(255, 217, 61, 0.6); }
+.pattern-cell.level-4 { background: rgba(255, 217, 61, 0.8); }
+.pattern-cell.level-5 { background: var(--accent-yellow); }
+
+.time-chart {
+  display: flex;
+  align-items: flex-end;
+  height: 100px;
+  gap: 4px;
+  padding: 10px 0;
+}
+
+.time-bar {
+  flex: 1;
+  background: linear-gradient(180deg, var(--accent-yellow), var(--accent-orange));
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease-out;
+  position: relative;
+}
+
+.time-bar::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.behavior-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.breakdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.breakdown-emoji {
+  font-size: 1.25rem;
+  width: 30px;
+  text-align: center;
+}
+
+.breakdown-bar-container {
+  flex: 1;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.breakdown-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-yellow), var(--accent-orange));
+  border-radius: 10px;
+  transition: width 0.5s ease-out;
+}
+
+.breakdown-count {
+  font-size: 0.8rem;
+  color: var(--accent-yellow);
+  min-width: 30px;
+  text-align: right;
+}
+
+/* Chaos index */
+.chaos-meter {
+  text-align: center;
+  padding: 20px;
+}
+
+.chaos-value {
+  font-size: 4rem;
+  color: var(--accent-yellow);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.chaos-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.chaos-description {
+  font-size: 0.9rem;
+  color: var(--surface-warm);
+  font-style: italic;
+}
+
+/* Top moments */
+.top-moment {
+  padding: 16px;
+  background: rgba(255, 217, 61, 0.1);
+  border-radius: 12px;
+  border-left: 3px solid var(--accent-yellow);
+}
+
+.top-moment-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-yellow);
+  margin-bottom: 8px;
+}
+
+.top-moment-text {
+  font-size: 0.9rem;
+  color: var(--surface-cream);
+}
+
+/* Export */
+.export-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.export-btn {
+  flex: 1;
+  padding: 12px 16px;
+  background: rgba(255, 217, 61, 0.1);
+  border: 1px solid rgba(255, 217, 61, 0.3);
+  border-radius: 20px;
+  color: var(--accent-yellow);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 120px;
+}
+
+.export-btn:hover {
+  background: rgba(255, 217, 61, 0.2);
+}
+
+.export-btn.danger {
+  border-color: var(--accent-coral);
+  color: var(--accent-coral);
+}
+
+.export-btn.danger:hover {
+  background: rgba(255, 107, 107, 0.2);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-surface);
+  border: 1px solid var(--accent-yellow);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--accent-yellow); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header class="header">
+    <div class="jupie-icon">🐦</div>
+    <h1 class="title">Jupie Behavior Lab</h1>
+    <p class="subtitle">Documenting her majesty's chaos, one scream at a time</p>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-value" id="todayCount">0</div>
+      <div class="stat-label">Today</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="streakCount">0</div>
+      <div class="stat-label">Day Streak</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value" id="totalCount">0</div>
+      <div class="stat-label">All Time</div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="log">Log</button>
+    <button class="tab" data-tab="history">History</button>
+    <button class="tab" data-tab="patterns">Patterns</button>
+  </div>
+
+  <!-- Log Panel -->
+  <div class="panel active" id="panel-log">
+    <div class="card">
+      <div class="card-title">What's he doing?</div>
+      <div class="behavior-grid" id="behaviorGrid"></div>
+      
+      <div class="intensity-section">
+        <div class="intensity-label">Intensity Level</div>
+        <div class="intensity-options" id="intensityOptions">
+          <button class="intensity-btn" data-intensity="1">😌</button>
+          <button class="intensity-btn selected" data-intensity="2">🙂</button>
+          <button class="intensity-btn" data-intensity="3">😤</button>
+          <button class="intensity-btn" data-intensity="4">🔥</button>
+          <button class="intensity-btn" data-intensity="5">💀</button>
+        </div>
+      </div>
+      
+      <textarea class="notes-input" id="notesInput" placeholder="Additional context... (what triggered it? how long? casualties?)" rows="2"></textarea>
+      <div class="notes-hint">📝 Notes will be saved when you tap a behavior above</div>
+    </div>
+  </div>
+
+  <!-- History Panel -->
+  <div class="panel" id="panel-history">
+    <div class="card">
+      <div class="card-title">Recent Incidents</div>
+      <div class="log-list" id="logList"></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">Save Your Data</div>
+      <div class="export-actions">
+        <button class="export-btn" id="downloadText">Download (.txt)</button>
+        <button class="export-btn" id="downloadJson">Download (.json)</button>
+        <button class="export-btn" id="copyClipboard">Copy to Clipboard</button>
+      </div>
+      <div class="export-actions" style="margin-top: 12px;">
+        <button class="export-btn danger" id="clearData">Clear All Data</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patterns Panel -->
+  <div class="panel" id="panel-patterns">
+    <div class="card">
+      <div class="chaos-meter">
+        <div class="chaos-value" id="chaosIndex">0</div>
+        <div class="chaos-label">Weekly Chaos Index</div>
+        <div class="chaos-description" id="chaosDescription">Not enough data yet...</div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="pattern-section">
+        <div class="pattern-title">Most Chaotic Time of Day</div>
+        <div class="time-chart" id="timeChart"></div>
+      </div>
+    </div>
+    
+    <div class="card">
+      <div class="pattern-section">
+        <div class="pattern-title">Behavior Breakdown</div>
+        <div class="behavior-breakdown" id="behaviorBreakdown"></div>
+      </div>
+    </div>
+    
+    <div class="card" id="topMomentCard" style="display: none;">
+      <div class="top-moment">
+        <div class="top-moment-label">🏆 Most Chaotic Moment</div>
+        <div class="top-moment-text" id="topMomentText"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Behaviors
+const behaviors = [
+  { id: "scream", emoji: "🗣️", name: "Screaming" },
+  { id: "bra", emoji: "👙", name: "Bra Hook Attack" },
+  { id: "morning", emoji: "🌅", name: "Morning Theatre" },
+  { id: "sing", emoji: "🎵", name: "Singing" },
+  { id: "bite", emoji: "😈", name: "Bitey" },
+  { id: "cuddle", emoji: "🥰", name: "Cuddly" },
+  { id: "fly", emoji: "✈️", name: "Zoom Flight" },
+  { id: "food", emoji: "🥬", name: "Food Crime" },
+  { id: "mirror", emoji: "🪞", name: "Mirror Obsession" },
+  { id: "jealous", emoji: "😤", name: "Jealous" },
+  { id: "bath", emoji: "💦", name: "Bath Time" },
+  { id: "nap", emoji: "😴", name: "Sleepy Floof" }
+];
+
+// State
+let state = {
+  logs: [],
+  streak: 0,
+  lastLogDate: null
+};
+
+let selectedIntensity = 2;
+
+// Load state
+function loadState() {
+  const saved = localStorage.getItem("jupieTracker");
+  if (saved) {
+    state = JSON.parse(saved);
+  }
+  updateStreak();
+}
+
+function saveState() {
+  localStorage.setItem("jupieTracker", JSON.stringify(state));
+}
+
+function updateStreak() {
+  const today = new Date().toDateString();
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  
+  if (state.lastLogDate === today) {
+    // Already logged today, streak continues
+  } else if (state.lastLogDate === yesterday) {
+    // Logged yesterday, streak continues if we log today
+  } else if (state.lastLogDate !== today) {
+    // Streak broken (unless we log today)
+    const daysSinceLastLog = state.lastLogDate 
+      ? Math.floor((new Date(today) - new Date(state.lastLogDate)) / 86400000)
+      : 0;
+    if (daysSinceLastLog > 1) {
+      state.streak = 0;
+    }
+  }
+}
+
+// Init
+function init() {
+  loadState();
+  setupTabs();
+  renderBehaviors();
+  setupIntensity();
+  renderHistory();
+  renderPatterns();
+  updateStats();
+  setupExport();
+}
+
+function setupTabs() {
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+      
+      if (tab.dataset.tab === "patterns") {
+        renderPatterns();
+      }
+    });
+  });
+}
+
+function renderBehaviors() {
+  const grid = document.getElementById("behaviorGrid");
+  const todayCounts = getTodayCounts();
+  
+  grid.innerHTML = behaviors.map(b => `
+    <button class="behavior-btn" data-behavior="${b.id}">
+      <span class="behavior-emoji">${b.emoji}</span>
+      <span class="behavior-name">${b.name}</span>
+      ${todayCounts[b.id] ? `<span class="behavior-count">×${todayCounts[b.id]}</span>` : ''}
+    </button>
+  `).join("");
+  
+  document.querySelectorAll(".behavior-btn").forEach(btn => {
+    btn.addEventListener("click", () => logBehavior(btn.dataset.behavior));
+  });
+}
+
+function setupIntensity() {
+  document.querySelectorAll(".intensity-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".intensity-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedIntensity = parseInt(btn.dataset.intensity);
+    });
+  });
+}
+
+function logBehavior(behaviorId) {
+  const behavior = behaviors.find(b => b.id === behaviorId);
+  const notes = document.getElementById("notesInput").value.trim();
+  const now = new Date();
+  const today = now.toDateString();
+  
+  const entry = {
+    id: Date.now(),
+    behavior: behaviorId,
+    emoji: behavior.emoji,
+    name: behavior.name,
+    intensity: selectedIntensity,
+    notes: notes,
+    timestamp: now.toISOString(),
+    hour: now.getHours(),
+    dayOfWeek: now.getDay()
+  };
+  
+  state.logs.unshift(entry);
+  
+  // Update streak
+  if (state.lastLogDate !== today) {
+    const yesterday = new Date(Date.now() - 86400000).toDateString();
+    if (state.lastLogDate === yesterday || !state.lastLogDate) {
+      state.streak++;
+    } else {
+      state.streak = 1;
+    }
+    state.lastLogDate = today;
+  }
+  
+  saveState();
+  
+  // Clear notes
+  document.getElementById("notesInput").value = "";
+  
+  // Visual feedback
+  const btn = document.querySelector(`[data-behavior="${behaviorId}"]`);
+  btn.classList.add("logged");
+  setTimeout(() => btn.classList.remove("logged"), 300);
+  
+  renderBehaviors();
+  renderHistory();
+  updateStats();
+  
+  if (notes) {
+    showToast(`${behavior.emoji} ${behavior.name} logged with notes!`);
+  } else {
+    showToast(`${behavior.emoji} ${behavior.name} logged!`);
+  }
+}
+
+function getTodayCounts() {
+  const today = new Date().toDateString();
+  const todayLogs = state.logs.filter(l => new Date(l.timestamp).toDateString() === today);
+  const counts = {};
+  todayLogs.forEach(l => {
+    counts[l.behavior] = (counts[l.behavior] || 0) + 1;
+  });
+  return counts;
+}
+
+function renderHistory() {
+  const list = document.getElementById("logList");
+  
+  if (state.logs.length === 0) {
+    list.innerHTML = `
+      <div class="log-empty">
+        <div class="log-empty-icon">🐦</div>
+        <p>No incidents logged yet.<br>The calm before the storm...</p>
+      </div>
+    `;
+    return;
+  }
+  
+  // Show last 50
+  const recentLogs = state.logs.slice(0, 50);
+  
+  list.innerHTML = recentLogs.map(log => {
+    const date = new Date(log.timestamp);
+    const timeStr = date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+    const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    const intensityEmojis = ['', '😌', '🙂', '😤', '🔥', '💀'];
+    
+    return `
+      <div class="log-item">
+        <span class="log-emoji">${log.emoji}</span>
+        <div class="log-content">
+          <div class="log-behavior">${log.name}</div>
+          <div class="log-meta">
+            ${dateStr} at ${timeStr}
+            <span class="log-intensity">${intensityEmojis[log.intensity]}</span>
+          </div>
+          ${log.notes ? `<div class="log-notes">"${log.notes}"</div>` : ''}
+        </div>
+        <button class="log-delete" data-id="${log.id}">×</button>
+      </div>
+    `;
+  }).join("");
+  
+  // Delete handlers
+  document.querySelectorAll(".log-delete").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const id = parseInt(btn.dataset.id);
+      state.logs = state.logs.filter(l => l.id !== id);
+      saveState();
+      renderHistory();
+      renderBehaviors();
+      updateStats();
+      showToast("Entry deleted");
+    });
+  });
+}
+
+function updateStats() {
+  const today = new Date().toDateString();
+  const todayCount = state.logs.filter(l => new Date(l.timestamp).toDateString() === today).length;
+  
+  document.getElementById("todayCount").textContent = todayCount;
+  document.getElementById("streakCount").textContent = state.streak;
+  document.getElementById("totalCount").textContent = state.logs.length;
+}
+
+function renderPatterns() {
+  // Time of day chart
+  const hourCounts = Array(24).fill(0);
+  state.logs.forEach(l => {
+    hourCounts[l.hour]++;
+  });
+  
+  const maxHour = Math.max(...hourCounts, 1);
+  const timeLabels = ['6a', '9a', '12p', '3p', '6p', '9p'];
+  const timeSlots = [6, 9, 12, 15, 18, 21];
+  
+  const timeChart = document.getElementById("timeChart");
+  timeChart.innerHTML = timeSlots.map((hour, i) => {
+    // Sum 3-hour windows
+    const count = hourCounts[hour] + hourCounts[hour + 1] + hourCounts[hour + 2];
+    const height = (count / (maxHour * 3)) * 100;
+    return `<div class="time-bar" style="height: ${Math.max(height, 5)}%;" data-label="${timeLabels[i]}"></div>`;
+  }).join("");
+  
+  // Behavior breakdown
+  const behaviorCounts = {};
+  state.logs.forEach(l => {
+    behaviorCounts[l.behavior] = (behaviorCounts[l.behavior] || 0) + 1;
+  });
+  
+  const maxBehavior = Math.max(...Object.values(behaviorCounts), 1);
+  const sortedBehaviors = behaviors
+    .map(b => ({ ...b, count: behaviorCounts[b.id] || 0 }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+  
+  const breakdown = document.getElementById("behaviorBreakdown");
+  breakdown.innerHTML = sortedBehaviors.map(b => `
+    <div class="breakdown-item">
+      <span class="breakdown-emoji">${b.emoji}</span>
+      <div class="breakdown-bar-container">
+        <div class="breakdown-bar" style="width: ${(b.count / maxBehavior) * 100}%;"></div>
+      </div>
+      <span class="breakdown-count">${b.count}</span>
+    </div>
+  `).join("");
+  
+  // Chaos index (weekly)
+  const weekAgo = Date.now() - (7 * 86400000);
+  const weekLogs = state.logs.filter(l => new Date(l.timestamp).getTime() > weekAgo);
+  const chaosScore = weekLogs.reduce((sum, l) => sum + l.intensity, 0);
+  
+  document.getElementById("chaosIndex").textContent = chaosScore;
+  
+  const chaosDescriptions = [
+    { max: 0, text: "Suspiciously quiet. He's planning something." },
+    { max: 20, text: "Relatively peaceful week. Enjoy it while it lasts." },
+    { max: 50, text: "Normal cockatiel energy. Manageable chaos." },
+    { max: 100, text: "He's been extra. Consider earplugs." },
+    { max: 200, text: "Peak chaos achieved. You're surviving, not thriving." },
+    { max: Infinity, text: "Absolute mayhem. You live in his house now." }
+  ];
+  
+  const desc = chaosDescriptions.find(d => chaosScore <= d.max);
+  document.getElementById("chaosDescription").textContent = desc.text;
+  
+  // Top moment
+  const topMoment = state.logs.find(l => l.intensity === 5 && l.notes);
+  if (topMoment) {
+    document.getElementById("topMomentCard").style.display = "block";
+    const date = new Date(topMoment.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    document.getElementById("topMomentText").textContent = `${topMoment.emoji} ${topMoment.name} on ${date}: "${topMoment.notes}"`;
+  } else {
+    document.getElementById("topMomentCard").style.display = "none";
+  }
+}
+
+function setupExport() {
+  // Download as text file
+  document.getElementById("downloadText").addEventListener("click", () => {
+    if (state.logs.length === 0) {
+      showToast("No data to export");
+      return;
+    }
+    
+    const text = generateTextExport();
+    downloadFile(text, "jupie-behavior-log.txt", "text/plain");
+    showToast("Downloaded! 🐦");
+  });
+  
+  // Download as JSON (for backup/reimport later)
+  document.getElementById("downloadJson").addEventListener("click", () => {
+    if (state.logs.length === 0) {
+      showToast("No data to export");
+      return;
+    }
+    
+    const json = JSON.stringify(state, null, 2);
+    downloadFile(json, "jupie-data-backup.json", "application/json");
+    showToast("Backup saved! 🐦");
+  });
+  
+  // Copy to clipboard
+  document.getElementById("copyClipboard").addEventListener("click", () => {
+    if (state.logs.length === 0) {
+      showToast("No data to export");
+      return;
+    }
+    
+    const text = generateTextExport();
+    copyToClipboard(text);
+  });
+  
+  document.getElementById("clearData").addEventListener("click", () => {
+    if (state.logs.length === 0) {
+      showToast("Nothing to clear");
+      return;
+    }
+    
+    if (confirm(`Delete all ${state.logs.length} entries? This cannot be undone.\n\nConsider downloading a backup first!`)) {
+      state.logs = [];
+      state.streak = 0;
+      state.lastLogDate = null;
+      saveState();
+      renderBehaviors();
+      renderHistory();
+      renderPatterns();
+      updateStats();
+      showToast("All data cleared");
+    }
+  });
+}
+
+function generateTextExport() {
+  let text = "🐦 JUPIE BEHAVIOR LOG\n";
+  text += `Exported: ${new Date().toLocaleDateString()}\n`;
+  text += `Total entries: ${state.logs.length}\n`;
+  text += `Logging streak: ${state.streak} days\n\n`;
+  text += "=".repeat(40) + "\n\n";
+  
+  state.logs.forEach(log => {
+    const date = new Date(log.timestamp);
+    const dateStr = date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+    const intensityLabels = ['', 'Mild', 'Moderate', 'Spicy', 'Intense', 'DEFCON 1'];
+    
+    text += `${log.emoji} ${log.name}\n`;
+    text += `   ${dateStr}\n`;
+    text += `   Intensity: ${intensityLabels[log.intensity]}\n`;
+    if (log.notes) text += `   Notes: "${log.notes}"\n`;
+    text += "\n";
+  });
+  
+  return text;
+}
+
+function downloadFile(content, filename, type) {
+  const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function copyToClipboard(text) {
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => showToast("Copied to clipboard!")).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.select();
+  try {
+    document.execCommand("copy");
+    showToast("Copied to clipboard!");
+  } catch (err) {
+    showToast("Copy failed");
+  }
+  document.body.removeChild(textarea);
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+init();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
