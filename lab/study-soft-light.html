@@ -1,0 +1,2603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Study in Soft Light</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #2C3E50;
+  --bg-velvet: #3D4852;
+  --bg-drawer: #4A5568;
+  --surface-bone: #F5F0EB;
+  --surface-parchment: #E8E4E1;
+  --surface-warm: #D8D0C8;
+  --text-light: #F5F0EB;
+  --text-dark: #2F3640;
+  --accent-lavender: #9A8FBF;
+  --accent-jade: #6B9B8A;
+  --accent-rose: #C48B9F;
+  --accent-gold: #C9A86C;
+  --shadow-deep: rgba(0,0,0,0.4);
+  --glow: rgba(154, 143, 191, 0.3);
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px var(--glow); }
+  50% { box-shadow: 0 0 15px var(--glow), 0 0 25px var(--glow); }
+}
+
+@keyframes copied {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: linear-gradient(170deg, var(--bg-deep) 0%, var(--bg-velvet) 50%, #2D3A3A 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  line-height: 1.6;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Floating particles */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: var(--accent-lavender);
+  border-radius: 50%;
+  animation: starTwinkle 3s ease-in-out infinite;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 20px;
+  border-bottom: 1px solid rgba(154, 143, 191, 0.2);
+  margin-bottom: 30px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: normal;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  background: linear-gradient(135deg, var(--surface-bone), var(--accent-lavender));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: float 4s ease-in-out infinite;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-jade);
+  opacity: 0.8;
+}
+
+.season-badge {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 8px 24px;
+  background: linear-gradient(135deg, rgba(107, 155, 138, 0.2), rgba(154, 143, 191, 0.2));
+  border: 1px solid var(--accent-lavender);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Sections */
+.section {
+  background: linear-gradient(145deg, rgba(74, 85, 104, 0.4), rgba(61, 72, 82, 0.6));
+  border: 1px solid rgba(154, 143, 191, 0.15);
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.6s ease-out;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent-lavender);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(154, 143, 191, 0.2);
+}
+
+/* Analysis text */
+.analysis-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--surface-parchment);
+  font-style: italic;
+}
+
+.analysis-text p {
+  margin-bottom: 16px;
+  text-indent: 1.5em;
+}
+
+.analysis-text p:first-child {
+  text-indent: 0;
+}
+
+.analysis-text p:first-child::first-letter {
+  font-size: 3em;
+  float: left;
+  line-height: 0.8;
+  margin-right: 8px;
+  color: var(--accent-lavender);
+}
+
+/* Source pigments */
+.pigments-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.pigment-card {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pigment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--shadow-deep);
+}
+
+.pigment-swatch {
+  height: 50px;
+  position: relative;
+}
+
+.pigment-swatch::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+}
+
+.pigment-info {
+  padding: 10px;
+}
+
+.pigment-name {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--surface-bone);
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+
+.pigment-hex {
+  font-family: "SF Mono", "Monaco", "Inconsolata", monospace;
+  font-size: 0.7rem;
+  color: var(--accent-lavender);
+  margin-bottom: 6px;
+}
+
+.pigment-desc {
+  font-size: 0.7rem;
+  line-height: 1.5;
+  color: var(--surface-warm);
+  font-style: italic;
+  display: none;
+}
+
+.pigment-card.expanded .pigment-desc {
+  display: block;
+}
+
+.pigment-expand {
+  font-size: 0.65rem;
+  color: var(--accent-jade);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.pigment-card.expanded .pigment-expand {
+  display: none;
+}
+
+/* Palette */
+.palette-category {
+  margin-bottom: 20px;
+}
+
+.category-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-rose);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.category-name::before,
+.category-name::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(196, 139, 159, 0.3), transparent);
+}
+
+.swatches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(44px, 1fr));
+  gap: 8px;
+}
+
+.swatch {
+  aspect-ratio: 1;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid transparent;
+}
+
+.swatch:hover {
+  transform: scale(1.1);
+  z-index: 10;
+  box-shadow: 0 4px 15px var(--shadow-deep);
+}
+
+.swatch.favorite {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(201, 168, 108, 0.4);
+}
+
+.swatch.favorite::after {
+  content: "\2665";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 10px;
+  color: var(--accent-gold);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.swatch.selected {
+  border-color: var(--surface-bone);
+  box-shadow: 0 0 0 3px var(--accent-lavender);
+}
+
+.swatch.copied {
+  animation: copied 0.3s ease-out;
+}
+
+.swatch-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-velvet);
+  border: 1px solid var(--accent-lavender);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 100;
+}
+
+.swatch:hover .swatch-tooltip {
+  opacity: 1;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(154, 143, 191, 0.2);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--surface-warm);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+  min-height: 44px;
+}
+
+.tab:hover {
+  border-color: var(--accent-lavender);
+  color: var(--text-light);
+}
+
+.tab.active {
+  background: linear-gradient(135deg, rgba(154, 143, 191, 0.3), rgba(107, 155, 138, 0.3));
+  border-color: var(--accent-lavender);
+  color: var(--text-light);
+}
+
+/* Compare panel */
+.compare-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compare-slots {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.compare-slot {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  border: 2px dashed rgba(154, 143, 191, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--surface-warm);
+  transition: all 0.2s;
+}
+
+.compare-slot.filled {
+  border-style: solid;
+  border-color: var(--accent-lavender);
+}
+
+.compare-slot .slot-label {
+  background: rgba(0,0,0,0.5);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.compare-verdict {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  min-height: 120px;
+}
+
+.verdict-title {
+  font-size: 0.875rem;
+  color: var(--accent-jade);
+  margin-bottom: 12px;
+}
+
+.verdict-text {
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--surface-parchment);
+  font-style: italic;
+}
+
+.compare-clear {
+  background: transparent;
+  border: 1px solid var(--accent-rose);
+  color: var(--accent-rose);
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  align-self: center;
+  min-height: 44px;
+  transition: all 0.2s;
+}
+
+.compare-clear:hover {
+  background: var(--accent-rose);
+  color: var(--bg-deep);
+}
+
+/* Looks */
+.looks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.look-card {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.look-header {
+  padding: 16px;
+  border-bottom: 1px solid rgba(154, 143, 191, 0.1);
+}
+
+.look-title {
+  font-size: 1rem;
+  color: var(--surface-bone);
+  margin-bottom: 4px;
+}
+
+.look-occasion {
+  font-size: 0.75rem;
+  color: var(--accent-jade);
+  font-style: italic;
+}
+
+.look-colors {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px;
+  gap: 8px;
+}
+
+.look-color {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.look-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.look-label {
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--surface-warm);
+}
+
+.look-description {
+  padding: 0 16px 16px;
+  font-size: 0.875rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Oracle */
+.oracle-panel {
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.oracle-swatch {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  box-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow);
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.oracle-name {
+  font-size: 1.125rem;
+  color: var(--surface-bone);
+  margin-bottom: 8px;
+}
+
+.oracle-hex {
+  font-family: "SF Mono", "Monaco", monospace;
+  font-size: 0.875rem;
+  color: var(--accent-lavender);
+  margin-bottom: 20px;
+}
+
+.oracle-message {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--surface-parchment);
+  font-style: italic;
+  max-width: 400px;
+  margin: 0 auto 24px;
+}
+
+.oracle-button {
+  background: linear-gradient(135deg, var(--accent-lavender), var(--accent-jade));
+  border: none;
+  color: var(--bg-deep);
+  padding: 12px 32px;
+  border-radius: 25px;
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 44px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.oracle-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px var(--glow);
+}
+
+/* Lighting */
+.lighting-panel {
+  text-align: center;
+}
+
+.lighting-preview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  margin-bottom: 24px;
+  padding: 20px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.lighting-swatch {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.lighting-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.lighting-btn {
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(154, 143, 191, 0.2);
+  border-radius: 20px;
+  color: var(--surface-warm);
+  font-family: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.2s;
+}
+
+.lighting-btn:hover,
+.lighting-btn.active {
+  border-color: var(--accent-lavender);
+  color: var(--text-light);
+  background: rgba(154, 143, 191, 0.2);
+}
+
+/* Shopping translator */
+.translator-panel {
+  text-align: center;
+}
+
+.translator-input-wrap {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.translator-color-input {
+  width: 60px;
+  height: 60px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 0;
+  background: transparent;
+}
+
+.translator-color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.translator-color-input::-webkit-color-swatch {
+  border-radius: 50%;
+  border: 3px solid var(--surface-bone);
+}
+
+.translator-hex-input {
+  width: 120px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(154, 143, 191, 0.3);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: "SF Mono", "Monaco", monospace;
+  font-size: 0.875rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.translator-hex-input:focus {
+  outline: none;
+  border-color: var(--accent-lavender);
+}
+
+.translator-result {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.match-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-jade);
+  margin-bottom: 16px;
+}
+
+.match-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.match-swatch {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.match-arrow {
+  color: var(--accent-lavender);
+  font-size: 1.5rem;
+}
+
+.match-info {
+  text-align: left;
+}
+
+.match-name {
+  font-size: 0.875rem;
+  color: var(--surface-bone);
+  margin-bottom: 4px;
+}
+
+.match-hex {
+  font-family: "SF Mono", "Monaco", monospace;
+  font-size: 0.75rem;
+  color: var(--accent-lavender);
+}
+
+.match-verdict {
+  margin-top: 16px;
+  font-size: 0.875rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+}
+
+/* Harmony chains */
+.harmony-panel {
+  text-align: center;
+}
+
+.harmony-instruction {
+  font-size: 0.875rem;
+  color: var(--surface-warm);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.harmony-results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.harmony-mood {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.mood-name {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-rose);
+  margin-bottom: 12px;
+}
+
+.mood-swatches {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.mood-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.mood-description {
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+}
+
+/* Export */
+.export-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.export-btn {
+  padding: 14px 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--accent-lavender);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 48px;
+  transition: all 0.2s;
+}
+
+.export-btn:hover {
+  background: var(--accent-lavender);
+  color: var(--bg-deep);
+}
+
+.export-textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(154, 143, 191, 0.2);
+  border-radius: 8px;
+  color: var(--surface-parchment);
+  font-family: "SF Mono", "Monaco", monospace;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+/* Favorites section */
+.favorites-section {
+  margin-top: 30px;
+}
+
+.favorites-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--surface-warm);
+  font-style: italic;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+}
+
+.favorite-item {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.favorite-item:hover {
+  transform: scale(1.02);
+}
+
+.favorite-swatch {
+  height: 60px;
+}
+
+.favorite-info {
+  padding: 8px;
+  text-align: center;
+}
+
+.favorite-name {
+  font-size: 0.7rem;
+  color: var(--surface-bone);
+  margin-bottom: 2px;
+}
+
+.favorite-hex {
+  font-family: "SF Mono", "Monaco", monospace;
+  font-size: 0.65rem;
+  color: var(--accent-lavender);
+}
+
+/* Memory journal */
+.memory-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.memory-instruction {
+  font-size: 0.875rem;
+  color: var(--surface-warm);
+  text-align: center;
+  font-style: italic;
+}
+
+.memory-form {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.memory-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(154, 143, 191, 0.3);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 0.875rem;
+}
+
+.memory-input:focus {
+  outline: none;
+  border-color: var(--accent-lavender);
+}
+
+.memory-save {
+  padding: 12px 24px;
+  background: var(--accent-jade);
+  border: none;
+  border-radius: 8px;
+  color: var(--bg-deep);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.memory-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.memory-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+.memory-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.memory-text {
+  flex: 1;
+  font-size: 0.875rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+}
+
+.memory-delete {
+  background: transparent;
+  border: none;
+  color: var(--accent-rose);
+  cursor: pointer;
+  padding: 8px;
+  font-size: 1rem;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-velvet);
+  border: 1px solid var(--accent-lavender);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s;
+  pointer-events: none;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-lavender);
+  border-radius: 4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .title { font-size: 1.5rem; }
+  .section { padding: 16px; }
+  .compare-slot { width: 80px; height: 80px; }
+  .oracle-swatch { width: 100px; height: 100px; }
+}
+
+/* Body Zones */
+.zones-panel {
+  text-align: center;
+}
+
+.zones-instruction {
+  font-size: 0.875rem;
+  color: var(--surface-warm);
+  font-style: italic;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.zones-selector {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.zone-btn {
+  padding: 10px 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(154, 143, 191, 0.2);
+  border-radius: 20px;
+  color: var(--surface-warm);
+  font-family: inherit;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.2s;
+}
+
+.zone-btn:hover,
+.zone-btn.active {
+  border-color: var(--accent-jade);
+  color: var(--text-light);
+  background: rgba(107, 155, 138, 0.2);
+}
+
+.zone-description {
+  font-size: 0.875rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  line-height: 1.7;
+}
+
+.zone-colors {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+  gap: 12px;
+}
+
+.zone-color-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.zone-swatch {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+
+.zone-swatch:hover {
+  transform: scale(1.1);
+}
+
+.zone-color-name {
+  font-size: 0.65rem;
+  color: var(--surface-warm);
+  text-align: center;
+}
+
+/* Capsule */
+.capsule-panel {
+  text-align: center;
+}
+
+.capsule-instruction {
+  font-size: 0.875rem;
+  color: var(--surface-warm);
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.capsule-selector {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.capsule-btn {
+  padding: 12px 24px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(154, 143, 191, 0.2);
+  border-radius: 25px;
+  color: var(--surface-warm);
+  font-family: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.2s;
+}
+
+.capsule-btn:hover,
+.capsule-btn.active {
+  border-color: var(--accent-lavender);
+  color: var(--text-light);
+  background: rgba(154, 143, 191, 0.2);
+}
+
+.capsule-result {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.capsule-color {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.capsule-swatch {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+.capsule-swatch:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px var(--shadow-deep);
+}
+
+.capsule-color-name {
+  font-size: 0.65rem;
+  color: var(--surface-warm);
+  max-width: 60px;
+  text-align: center;
+}
+
+.capsule-note {
+  font-size: 0.8rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+  line-height: 1.7;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+}
+
+/* Exhaustion */
+.exhaustion-panel {
+  text-align: center;
+}
+
+.exhaustion-header {
+  margin-bottom: 20px;
+}
+
+.exhaustion-title {
+  font-size: 1.125rem;
+  color: var(--surface-bone);
+  font-weight: normal;
+  margin-bottom: 6px;
+}
+
+.exhaustion-subtitle {
+  font-size: 0.8rem;
+  color: var(--accent-rose);
+  font-style: italic;
+}
+
+.exhaustion-description {
+  font-size: 0.875rem;
+  color: var(--surface-parchment);
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 24px;
+  padding: 0 10px;
+}
+
+.exhaustion-colors {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.exhaustion-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.exhaustion-swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid rgba(255,255,255,0.1);
+  transition: transform 0.2s;
+}
+
+.exhaustion-swatch:hover {
+  transform: scale(1.05);
+}
+
+.exhaustion-label {
+  font-size: 0.7rem;
+  color: var(--surface-warm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.exhaustion-color-name {
+  font-size: 0.65rem;
+  color: var(--accent-lavender);
+}
+
+.exhaustion-rules {
+  text-align: left;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.exhaustion-rules h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent-jade);
+  margin-bottom: 12px;
+  font-weight: normal;
+}
+
+.exhaustion-rules ul {
+  list-style: none;
+  padding: 0;
+}
+
+.exhaustion-rules li {
+  font-size: 0.8rem;
+  color: var(--surface-parchment);
+  margin-bottom: 8px;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.5;
+}
+
+.exhaustion-rules li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: var(--accent-rose);
+}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="container">
+  <!-- Header -->
+  <header class="header">
+    <h1 class="title">A Study in Soft Light</h1>
+    <p class="subtitle">Personal Color Analysis</p>
+    <span class="season-badge">Soft Summer</span>
+  </header>
+
+  <!-- Analysis -->
+  <section class="section">
+    <h2 class="section-title">The Reading</h2>
+    <div class="analysis-text">
+      <p>The evidence assembles like witnesses to a quiet truth: porcelain skin with the faintest whisper of cool, translucent enough to reveal blue-violet shadows pooling beneath the eyes and at the temples. The veins confess blue, not green. The flush blooms rose, not peach. The lips rest in mauve, not salmon. When the skin reacts - to sun, to stress, to life - it reaches for pink. This is coloring that lives by gentler light.</p>
+      <p>And yet there is warmth here too, tucked into the folds: the amber eye ring burning gold against the cool gray-green surround, the golden passages written through the hair by sunlight and intention. This is not dramatic coolness but coolness with a door left open - neutral-leaning-cool, able to welcome slight warmth if it arrives in muted form. The cool colors in these photographs - emerald velvet, navy silk, burgundy florals - do not drain. They harmonize.</p>
+      <p>Soft Summer holds space for all of it: the cool undertone and the whisper of warmth, the light value and the tolerance for gentle depth, the muted chroma and the low-medium contrast. It is the season of overcast skies reflected in still water, of roses past their peak but no less beautiful, of colors that suggest rather than declare.</p>
+    </div>
+  </section>
+
+  <!-- Source Pigments -->
+  <section class="section">
+    <h2 class="section-title">Source Pigments</h2>
+    <div class="pigments-grid" id="pigmentsGrid"></div>
+  </section>
+
+  <!-- Main Palette -->
+  <section class="section">
+    <h2 class="section-title">The Wearable Palette</h2>
+    <p style="font-size: 0.8rem; color: var(--surface-warm); margin-bottom: 16px; font-style: italic;">Click to copy hex. Double-click to favorite.</p>
+    <div id="paletteContainer"></div>
+  </section>
+
+  <!-- Features Tabs -->
+  <section class="section">
+    <div class="tabs" id="featureTabs">
+      <button class="tab active" data-tab="compare">Compare</button>
+      <button class="tab" data-tab="looks">Looks</button>
+      <button class="tab" data-tab="oracle">Oracle</button>
+      <button class="tab" data-tab="zones">Body Zones</button>
+      <button class="tab" data-tab="capsule">Capsule</button>
+      <button class="tab" data-tab="exhaustion">Exhaustion</button>
+      <button class="tab" data-tab="lighting">Lighting</button>
+      <button class="tab" data-tab="translator">Translator</button>
+      <button class="tab" data-tab="harmony">Harmony</button>
+      <button class="tab" data-tab="memory">Memory</button>
+      <button class="tab" data-tab="export">Export</button>
+    </div>
+
+    <div id="featureContent">
+      <!-- Compare Panel -->
+      <div class="feature-panel" id="panel-compare">
+        <div class="compare-panel">
+          <p style="font-size: 0.8rem; color: var(--surface-warm); text-align: center; font-style: italic; margin-bottom: 8px;">Select two colors from your palette to compare</p>
+          <div class="compare-slots">
+            <div class="compare-slot" id="compareSlot1"><span class="slot-label">Color 1</span></div>
+            <div class="compare-slot" id="compareSlot2"><span class="slot-label">Color 2</span></div>
+          </div>
+          <div class="compare-verdict" id="compareVerdict">
+            <div class="verdict-title">Awaiting Selection</div>
+            <div class="verdict-text">Choose two colors to discover their relationship.</div>
+          </div>
+          <button class="compare-clear" id="compareClear">Clear Selection</button>
+        </div>
+      </div>
+
+      <!-- Looks Panel -->
+      <div class="feature-panel" id="panel-looks" style="display: none;">
+        <div class="looks-container" id="looksContainer"></div>
+      </div>
+
+      <!-- Oracle Panel -->
+      <div class="feature-panel" id="panel-oracle" style="display: none;">
+        <div class="oracle-panel" id="oraclePanel">
+          <div class="oracle-swatch" id="oracleSwatch"></div>
+          <div class="oracle-name" id="oracleName">Pull a color</div>
+          <div class="oracle-hex" id="oracleHex">...</div>
+          <div class="oracle-message" id="oracleMessage">The Oracle awaits. Draw a color and receive guidance for how to wear it today.</div>
+          <button class="oracle-button" id="oracleButton">Draw from the Palette</button>
+        </div>
+      </div>
+
+      <!-- Body Zones Panel -->
+      <div class="feature-panel" id="panel-zones" style="display: none;">
+        <div class="zones-panel">
+          <p class="zones-instruction">Not all colors belong everywhere. Some sing near your face; others anchor from a distance. Select a zone to see which colors belong there.</p>
+          <div class="zones-selector">
+            <button class="zone-btn active" data-zone="face">Near Face</button>
+            <button class="zone-btn" data-zone="torso">Torso</button>
+            <button class="zone-btn" data-zone="legs">Below Waist</button>
+            <button class="zone-btn" data-zone="accessories">Accessories</button>
+            <button class="zone-btn" data-zone="distance">Distance Colors</button>
+          </div>
+          <div class="zone-description" id="zoneDescription"></div>
+          <div class="zone-colors" id="zoneColors"></div>
+        </div>
+      </div>
+
+      <!-- Capsule Panel -->
+      <div class="feature-panel" id="panel-capsule" style="display: none;">
+        <div class="capsule-panel">
+          <p class="capsule-instruction">Ruthless compression. How many colors do you actually need?</p>
+          <div class="capsule-selector">
+            <button class="capsule-btn" data-count="5">5 Colors</button>
+            <button class="capsule-btn" data-count="10">10 Colors</button>
+            <button class="capsule-btn active" data-count="15">15 Colors</button>
+          </div>
+          <div class="capsule-result" id="capsuleResult"></div>
+          <div class="capsule-note" id="capsuleNote"></div>
+        </div>
+      </div>
+
+      <!-- Exhaustion Panel -->
+      <div class="feature-panel" id="panel-exhaustion" style="display: none;">
+        <div class="exhaustion-panel">
+          <div class="exhaustion-header">
+            <h3 class="exhaustion-title">The Exhaustion Palette</h3>
+            <p class="exhaustion-subtitle">For days when you are not okay but must appear functional</p>
+          </div>
+          <div class="exhaustion-description">
+            <p>These are not self-care colors. These are survival colors. They require no thought, no coordination, no energy you do not have. They say "I am fine" when you are not. They hide what needs hiding. They forgive everything.</p>
+          </div>
+          <div class="exhaustion-colors" id="exhaustionColors"></div>
+          <div class="exhaustion-rules" id="exhaustionRules"></div>
+        </div>
+      </div>
+
+      <!-- Lighting Panel -->
+      <div class="feature-panel" id="panel-lighting" style="display: none;">
+        <div class="lighting-panel">
+          <p style="font-size: 0.8rem; color: var(--surface-warm); text-align: center; font-style: italic; margin-bottom: 16px;">See how your colors transform under different light</p>
+          <div class="lighting-preview" id="lightingPreview"></div>
+          <div class="lighting-controls">
+            <button class="lighting-btn active" data-light="daylight">Daylight</button>
+            <button class="lighting-btn" data-light="golden">Golden Hour</button>
+            <button class="lighting-btn" data-light="overcast">Overcast</button>
+            <button class="lighting-btn" data-light="warm">Warm Indoor</button>
+            <button class="lighting-btn" data-light="cool">Cool Fluorescent</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Translator Panel -->
+      <div class="feature-panel" id="panel-translator" style="display: none;">
+        <div class="translator-panel">
+          <p style="font-size: 0.8rem; color: var(--surface-warm); text-align: center; font-style: italic; margin-bottom: 16px;">Found a color while shopping? Find your closest palette match.</p>
+          <div class="translator-input-wrap">
+            <input type="color" class="translator-color-input" id="translatorColorInput" value="#8B7355">
+            <input type="text" class="translator-hex-input" id="translatorHexInput" placeholder="#8B7355" maxlength="7">
+          </div>
+          <div class="translator-result" id="translatorResult">
+            <div class="match-label">Closest Match</div>
+            <div class="match-display">
+              <div class="match-swatch" id="inputSwatch" style="background: #8B7355;"></div>
+              <span class="match-arrow">&rarr;</span>
+              <div class="match-swatch" id="matchSwatch"></div>
+              <div class="match-info">
+                <div class="match-name" id="matchName">--</div>
+                <div class="match-hex" id="matchHex">--</div>
+              </div>
+            </div>
+            <div class="match-verdict" id="matchVerdict"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Harmony Panel -->
+      <div class="feature-panel" id="panel-harmony" style="display: none;">
+        <div class="harmony-panel">
+          <p class="harmony-instruction">Select any color from your palette to see its harmony chains - colors that create different emotional moods when worn together.</p>
+          <div class="harmony-results" id="harmonyResults">
+            <p style="color: var(--surface-warm); font-style: italic;">Select a color above to see harmonies</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Memory Panel -->
+      <div class="feature-panel" id="panel-memory" style="display: none;">
+        <div class="memory-panel">
+          <p class="memory-instruction">Tag colors with personal memories. Select a color, then write your note.</p>
+          <div class="memory-form">
+            <div id="memorySelectedColor" style="width: 44px; height: 44px; border-radius: 6px; background: var(--bg-drawer); border: 2px dashed var(--accent-lavender);"></div>
+            <input type="text" class="memory-input" id="memoryInput" placeholder="Write your memory..." maxlength="200">
+            <button class="memory-save" id="memorySave">Save</button>
+          </div>
+          <div class="memory-list" id="memoryList"></div>
+          <button class="export-btn" id="exportMemories" style="margin-top: 16px; width: 100%;">Export Memories as JSON</button>
+        </div>
+      </div>
+
+      <!-- Export Panel -->
+      <div class="feature-panel" id="panel-export" style="display: none;">
+        <div class="export-panel">
+          <button class="export-btn" id="exportJson">Export Full Palette as JSON</button>
+          <button class="export-btn" id="exportFavorites">Export Favorites as JSON</button>
+          <button class="export-btn" id="exportText">Export as Text List</button>
+          <textarea class="export-textarea" id="exportOutput" readonly placeholder="Export data will appear here..."></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Favorites Section -->
+  <section class="section favorites-section">
+    <h2 class="section-title">Your Favorites</h2>
+    <div id="favoritesContainer">
+      <p class="favorites-empty">Double-click any swatch to add it to your collection.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Data
+const sourcePigments = [
+  { name: "The Foundation", hex: "#E5D0C3", desc: "Your baseline skin tone - sampled from the forehead and cheek in neutral daylight. This is the canvas everything else plays against: fair, cool-leaning, luminous without being stark." },
+  { name: "The Veil", hex: "#D8C8C0", desc: "The thin-skinned areas where translucency shows through - under your eyes, at your temples, inner wrists. Your skin is unusually transparent here, revealing the blue-violet blood beneath. This is why you can wear cool colors so close to your face." },
+  { name: "The Rose Within", hex: "#C9A097", desc: "Your natural flush - the pink that rises in your cheeks when the world asks too much. Sampled from the apples of your cheeks in the car selfies. Rose, not peach. Cool, not warm. This pigment is why coral blush looks wrong on you." },
+  { name: "The Quiet Mouth", hex: "#B08B8B", desc: "Your natural lip color with no product - a dusty mauve like a pressed flower. This desaturated cool pink is the key to finding lipsticks that look like 'you but better' rather than painted-on." },
+  { name: "The Truth at the Root", hex: "#7A6B58", desc: "Your natural hair color where it grows from the scalp - medium ash-brown, the color of driftwood in shadow. This is the honest answer to 'what undertone is your hair' regardless of highlights." },
+  { name: "The Sun's Editing", hex: "#C4AA7D", desc: "The golden-blonde through your lengths - whether from balayage or sunlight, this is the warmest note in your coloring. It's why you can tolerate soft golds despite being cool-dominant." },
+  { name: "The Outer Ring", hex: "#7E8A72", desc: "The dominant color of your iris - soft gray-green, like moss in fog. This is what people see from across a room. Cool, muted, dreamlike." },
+  { name: "The Inner Fire", hex: "#9A8352", desc: "The amber starburst around your pupil - central heterochromia that burns gold against the cool surround. This warm center is the exception that prevents you from being a True Summer." },
+  { name: "The Frame", hex: "#5E5045", desc: "Your brow and lash color - cool medium brown that punctuates without shouting. Soft enough to keep your overall contrast low-to-medium." },
+  { name: "The Confession", hex: "#6B7A8C", desc: "Your vein color visible through the inner wrist - distinctly blue-violet, not green. This is the body's truth about undertone, and yours says cool unambiguously." }
+];
+
+const paletteCategories = [
+  {
+    name: "Neutrals",
+    colors: [
+      { hex: "#2F3640", name: "Charcoal" },
+      { hex: "#4A5568", name: "Slate" },
+      { hex: "#E8E4E1", name: "Soft White" },
+      { hex: "#3D4852", name: "Storm Cloud" },
+      { hex: "#8B8589", name: "Taupe" },
+      { hex: "#1F2937", name: "Deep Ink" },
+      { hex: "#F5F0EB", name: "Cream" },
+      { hex: "#6B7280", name: "Pewter" }
+    ]
+  },
+  {
+    name: "Roses & Pinks",
+    colors: [
+      { hex: "#D4A5A5", name: "Rose" },
+      { hex: "#E8B4B8", name: "Soft Coral Pink" },
+      { hex: "#C48B9F", name: "Raspberry Rose" },
+      { hex: "#F2C4C4", name: "Ballet Pink" },
+      { hex: "#B76E79", name: "Dusty Raspberry" },
+      { hex: "#E0B4B7", name: "Soft Blush" },
+      { hex: "#DDA0A0", name: "Tea Rose" },
+      { hex: "#C97B84", name: "Berry Pink" }
+    ]
+  },
+  {
+    name: "Blues",
+    colors: [
+      { hex: "#6B9AC4", name: "Cornflower" },
+      { hex: "#87CEEB", name: "Sky Blue" },
+      { hex: "#5F9EA0", name: "Cadet Blue" },
+      { hex: "#4682B4", name: "Steel Blue" },
+      { hex: "#7BA3BC", name: "French Blue" },
+      { hex: "#A7C7E7", name: "Periwinkle Blue" },
+      { hex: "#3A6B8C", name: "Denim" },
+      { hex: "#8CBED6", name: "Soft Cyan" }
+    ]
+  },
+  {
+    name: "Greens",
+    colors: [
+      { hex: "#6B9B8A", name: "Jade" },
+      { hex: "#8FBC8F", name: "Sea Green" },
+      { hex: "#5D8A74", name: "Eucalyptus" },
+      { hex: "#98D4BB", name: "Mint" },
+      { hex: "#4A7C6F", name: "Teal Green" },
+      { hex: "#88B09A", name: "Soft Sage" },
+      { hex: "#3D6B5A", name: "Deep Jade" }
+    ]
+  },
+  {
+    name: "Teals & Aquas",
+    colors: [
+      { hex: "#5DADE2", name: "Aqua" },
+      { hex: "#48A9A6", name: "Teal" },
+      { hex: "#76C7C0", name: "Soft Turquoise" },
+      { hex: "#367588", name: "Deep Teal" },
+      { hex: "#88CCC7", name: "Seafoam" },
+      { hex: "#2E8B8B", name: "Dark Cyan" }
+    ]
+  },
+  {
+    name: "Purples & Lavenders",
+    colors: [
+      { hex: "#9A8FBF", name: "Lavender" },
+      { hex: "#7B68A6", name: "Soft Violet" },
+      { hex: "#B4A7D6", name: "Wisteria" },
+      { hex: "#6B5B7A", name: "Plum" },
+      { hex: "#9370DB", name: "Medium Purple" },
+      { hex: "#8878A8", name: "Dusty Violet" },
+      { hex: "#5D4E6D", name: "Deep Amethyst" }
+    ]
+  },
+  {
+    name: "Berries & Wines",
+    colors: [
+      { hex: "#8B4570", name: "Soft Magenta" },
+      { hex: "#915F6D", name: "Dusty Berry" },
+      { hex: "#7B4B5E", name: "Wine Rose" },
+      { hex: "#A4607A", name: "Orchid" },
+      { hex: "#6B3A5B", name: "Plum Wine" }
+    ]
+  },
+  {
+    name: "Warm Accents",
+    colors: [
+      { hex: "#D4AF87", name: "Soft Gold" },
+      { hex: "#C9A86C", name: "Champagne" },
+      { hex: "#E6C9A8", name: "Pale Peach" },
+      { hex: "#BFA07A", name: "Muted Bronze" },
+      { hex: "#D4C4A8", name: "Warm Sand" }
+    ]
+  },
+  {
+    name: "Depth Colors",
+    colors: [
+      { hex: "#2C4A5E", name: "Deep Teal Blue" },
+      { hex: "#3D5A5A", name: "Deep Spruce" },
+      { hex: "#4A3A50", name: "Eggplant" },
+      { hex: "#2D4A3E", name: "Forest" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#5A3D4A", name: "Burgundy" }
+    ]
+  }
+];
+
+const looks = [
+  {
+    title: "First Impressions",
+    occasion: "Meeting someone who matters",
+    description: "The art of being memorable without trying too hard. Soft authority wrapped in approachability - you want them to remember how they felt, not what you wore.",
+    colors: [
+      { hex: "#6B9B8A", label: "Top" },
+      { hex: "#2F3640", label: "Bottom" },
+      { hex: "#3D5A5A", label: "Outer" },
+      { hex: "#8B8589", label: "Shoe" },
+      { hex: "#D4AF87", label: "Metal" },
+      { hex: "#C48B9F", label: "Lip" },
+      { hex: "#D4A5A5", label: "Cheek" }
+    ]
+  },
+  {
+    title: "Soft Authority",
+    occasion: "When you need to be taken seriously without intimidating",
+    description: "Navy speaks of competence without shouting it. The lavender softens what could be severe. This is power that does not need to announce itself.",
+    colors: [
+      { hex: "#F5F0EB", label: "Top" },
+      { hex: "#3A4D6B", label: "Bottom" },
+      { hex: "#4A5568", label: "Outer" },
+      { hex: "#3A4D6B", label: "Shoe" },
+      { hex: "#6B7280", label: "Metal" },
+      { hex: "#B08B8B", label: "Lip" },
+      { hex: "#E8B4B8", label: "Cheek" }
+    ]
+  },
+  {
+    title: "Romantic Evening",
+    occasion: "Candlelight and intention",
+    description: "Plum wine and dusty rose speak a language older than words. The gold catches light like a secret. You are not trying to be beautiful; you simply are.",
+    colors: [
+      { hex: "#6B3A5B", label: "Dress" },
+      { hex: "#D4AF87", label: "Metal" },
+      { hex: "#5A3D4A", label: "Shoe" },
+      { hex: "#8B4570", label: "Lip" },
+      { hex: "#C48B9F", label: "Cheek" },
+      { hex: "#8878A8", label: "Eye" },
+      { hex: "#C9A86C", label: "Highlight" }
+    ]
+  },
+  {
+    title: "Weekend Creative",
+    occasion: "Studio time, coffee shops, existing on your own terms",
+    description: "Eucalyptus and cream say you are thinking about something more interesting than clothes. The rose lip reminds you - and anyone who sees - that softness is not weakness.",
+    colors: [
+      { hex: "#E8E4E1", label: "Top" },
+      { hex: "#5D8A74", label: "Bottom" },
+      { hex: "#88B09A", label: "Layer" },
+      { hex: "#D4C4A8", label: "Shoe" },
+      { hex: "#BFA07A", label: "Bag" },
+      { hex: "#DDA0A0", label: "Lip" },
+      { hex: "#F2C4C4", label: "Cheek" }
+    ]
+  },
+  {
+    title: "The Armor",
+    occasion: "Difficult conversations, boundary days, needing to feel bulletproof",
+    description: "Deep charcoal absorbs rather than reflects. The burgundy is wine-dark and serious. You are not here to negotiate; you are here to be heard. The soft gold jewelry reminds you that strength can still be beautiful.",
+    colors: [
+      { hex: "#2F3640", label: "Top" },
+      { hex: "#1F2937", label: "Bottom" },
+      { hex: "#5A3D4A", label: "Outer" },
+      { hex: "#2F3640", label: "Shoe" },
+      { hex: "#D4AF87", label: "Metal" },
+      { hex: "#7B4B5E", label: "Lip" },
+      { hex: "#915F6D", label: "Cheek" }
+    ]
+  }
+];
+
+const oracleMessages = [
+  "Wear this near your face today. It will make your eyes tell secrets.",
+  "This color asks nothing of you. Let it carry you through.",
+  "Today calls for this shade - it will say what you cannot.",
+  "Someone needs to see you in this. You will not know who until it happens.",
+  "This is your armor today. Soft, but impenetrable.",
+  "Wear this and speak less. The color will do the talking.",
+  "This shade forgives everything. Wear it when you need forgiveness.",
+  "Not your safest choice. Exactly why you should wear it.",
+  "This color remembers who you are becoming. Wear it forward.",
+  "Today, this. Tomorrow, you will understand why."
+];
+
+// State
+let favorites = [];
+let compareColors = [null, null];
+let selectedForMemory = null;
+let memories = [];
+let allColors = [];
+
+// Load from localStorage
+try {
+  const savedFavorites = localStorage.getItem("softSummerFavorites");
+  if (savedFavorites) favorites = JSON.parse(savedFavorites);
+  
+  const savedMemories = localStorage.getItem("softSummerMemories");
+  if (savedMemories) memories = JSON.parse(savedMemories);
+} catch (e) {
+  console.log("Could not load from localStorage");
+}
+
+function saveFavorites() {
+  try {
+    localStorage.setItem("softSummerFavorites", JSON.stringify(favorites));
+  } catch (e) {}
+}
+
+function saveMemories() {
+  try {
+    localStorage.setItem("softSummerMemories", JSON.stringify(memories));
+  } catch (e) {}
+}
+
+// Build allColors array
+paletteCategories.forEach(cat => {
+  cat.colors.forEach(c => {
+    allColors.push({ ...c, category: cat.name });
+  });
+});
+
+// Utility functions
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+function copyToClipboard(text) {
+  // Try modern clipboard API first
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast("Copied: " + text);
+    }).catch(() => {
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  textarea.style.top = "-9999px";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    document.execCommand("copy");
+    showToast("Copied: " + text);
+  } catch (err) {
+    showToast("Tap to select: " + text);
+  }
+  document.body.removeChild(textarea);
+}
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+function colorDistance(hex1, hex2) {
+  const c1 = hexToRgb(hex1);
+  const c2 = hexToRgb(hex2);
+  if (!c1 || !c2) return Infinity;
+  return Math.sqrt(
+    Math.pow(c1.r - c2.r, 2) +
+    Math.pow(c1.g - c2.g, 2) +
+    Math.pow(c1.b - c2.b, 2)
+  );
+}
+
+function adjustColorForLighting(hex, mode) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return hex;
+  
+  let { r, g, b } = rgb;
+  
+  switch(mode) {
+    case "golden":
+      r = Math.min(255, r * 1.1);
+      g = Math.min(255, g * 1.02);
+      b = Math.max(0, b * 0.85);
+      break;
+    case "overcast":
+      r = r * 0.95;
+      g = g * 0.97;
+      b = Math.min(255, b * 1.05);
+      break;
+    case "warm":
+      r = Math.min(255, r * 1.08);
+      g = Math.min(255, g * 1.02);
+      b = b * 0.92;
+      break;
+    case "cool":
+      r = r * 0.92;
+      g = g * 0.98;
+      b = Math.min(255, b * 1.1);
+      break;
+  }
+  
+  return "#" + [r, g, b].map(x => {
+    const hex = Math.round(x).toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  }).join("");
+}
+
+// Initialize particles
+function initParticles() {
+  const container = document.getElementById("particles");
+  for (let i = 0; i < 30; i++) {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    particle.style.left = Math.random() * 100 + "%";
+    particle.style.top = Math.random() * 100 + "%";
+    particle.style.animationDelay = Math.random() * 3 + "s";
+    particle.style.opacity = Math.random() * 0.5 + 0.2;
+    container.appendChild(particle);
+  }
+}
+
+// Render source pigments
+function renderPigments() {
+  const grid = document.getElementById("pigmentsGrid");
+  grid.innerHTML = sourcePigments.map((p, i) => `
+    <div class="pigment-card" id="pigment-${i}" onclick="togglePigment(${i}, '${p.hex}')">
+      <div class="pigment-swatch" style="background: ${p.hex};"></div>
+      <div class="pigment-info">
+        <div class="pigment-name">${p.name}</div>
+        <div class="pigment-hex">${p.hex}</div>
+        <div class="pigment-expand">tap to learn more</div>
+        <div class="pigment-desc">${p.desc}</div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function togglePigment(index, hex) {
+  const card = document.getElementById("pigment-" + index);
+  const wasExpanded = card.classList.contains("expanded");
+  
+  // Collapse all others
+  document.querySelectorAll(".pigment-card").forEach(c => c.classList.remove("expanded"));
+  
+  if (!wasExpanded) {
+    card.classList.add("expanded");
+  } else {
+    // If collapsing, copy the hex
+    copyToClipboard(hex);
+  }
+}
+
+// Render palette
+function renderPalette() {
+  const container = document.getElementById("paletteContainer");
+  container.innerHTML = paletteCategories.map(cat => `
+    <div class="palette-category">
+      <div class="category-name">${cat.name}</div>
+      <div class="swatches-grid">
+        ${cat.colors.map(c => `
+          <div class="swatch ${favorites.some(f => f.hex === c.hex) ? 'favorite' : ''}" 
+               style="background: ${c.hex};"
+               data-hex="${c.hex}"
+               data-name="${c.name}"
+               onclick="handleSwatchClick(event, '${c.hex}', '${c.name}')"
+               ondblclick="toggleFavorite('${c.hex}', '${c.name}')">
+            <div class="swatch-tooltip">${c.name}<br>${c.hex}</div>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+}
+
+function handleSwatchClick(event, hex, name) {
+  event.target.classList.add("copied");
+  setTimeout(() => event.target.classList.remove("copied"), 300);
+  
+  copyToClipboard(hex);
+  
+  // Also set for compare or memory if those are active
+  const activeTab = document.querySelector(".tab.active").dataset.tab;
+  
+  if (activeTab === "compare") {
+    if (!compareColors[0]) {
+      compareColors[0] = { hex, name };
+      document.getElementById("compareSlot1").style.background = hex;
+      document.getElementById("compareSlot1").classList.add("filled");
+      document.getElementById("compareSlot1").innerHTML = `<span class="slot-label" style="color: ${isLight(hex) ? '#2F3640' : '#F5F0EB'}">${name}</span>`;
+    } else if (!compareColors[1]) {
+      compareColors[1] = { hex, name };
+      document.getElementById("compareSlot2").style.background = hex;
+      document.getElementById("compareSlot2").classList.add("filled");
+      document.getElementById("compareSlot2").innerHTML = `<span class="slot-label" style="color: ${isLight(hex) ? '#2F3640' : '#F5F0EB'}">${name}</span>`;
+      generateVerdict();
+    }
+  } else if (activeTab === "memory") {
+    selectedForMemory = { hex, name };
+    document.getElementById("memorySelectedColor").style.background = hex;
+    document.getElementById("memorySelectedColor").style.border = "none";
+  } else if (activeTab === "harmony") {
+    generateHarmonies(hex, name);
+  }
+  
+  // Update selected state
+  document.querySelectorAll(".swatch").forEach(s => s.classList.remove("selected"));
+  event.target.classList.add("selected");
+}
+
+function isLight(hex) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return false;
+  const luminance = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
+  return luminance > 0.5;
+}
+
+function toggleFavorite(hex, name) {
+  const index = favorites.findIndex(f => f.hex === hex);
+  if (index === -1) {
+    favorites.push({ hex, name });
+    showToast("Added to favorites: " + name);
+  } else {
+    favorites.splice(index, 1);
+    showToast("Removed from favorites");
+  }
+  saveFavorites();
+  renderPalette();
+  renderFavorites();
+}
+
+function renderFavorites() {
+  const container = document.getElementById("favoritesContainer");
+  if (favorites.length === 0) {
+    container.innerHTML = '<p class="favorites-empty">Double-click any swatch to add it to your collection.</p>';
+    return;
+  }
+  
+  container.innerHTML = `
+    <div class="favorites-grid">
+      ${favorites.map(f => `
+        <div class="favorite-item" onclick="copyToClipboard('${f.hex}')" ondblclick="toggleFavorite('${f.hex}', '${f.name}')">
+          <div class="favorite-swatch" style="background: ${f.hex};"></div>
+          <div class="favorite-info">
+            <div class="favorite-name">${f.name}</div>
+            <div class="favorite-hex">${f.hex}</div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+// Tab navigation
+document.getElementById("featureTabs").addEventListener("click", (e) => {
+  if (e.target.classList.contains("tab")) {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    e.target.classList.add("active");
+    
+    document.querySelectorAll(".feature-panel").forEach(p => p.style.display = "none");
+    document.getElementById("panel-" + e.target.dataset.tab).style.display = "block";
+  }
+});
+
+// Compare functionality
+function generateVerdict() {
+  const c1 = compareColors[0];
+  const c2 = compareColors[1];
+  if (!c1 || !c2) return;
+  
+  const distance = colorDistance(c1.hex, c2.hex);
+  const rgb1 = hexToRgb(c1.hex);
+  const rgb2 = hexToRgb(c2.hex);
+  
+  // Calculate properties
+  const warmth1 = (rgb1.r - rgb1.b) / 255;
+  const warmth2 = (rgb2.r - rgb2.b) / 255;
+  const warmthDiff = Math.abs(warmth1 - warmth2);
+  
+  const value1 = (rgb1.r + rgb1.g + rgb1.b) / 3 / 255;
+  const value2 = (rgb2.r + rgb2.g + rgb2.b) / 3 / 255;
+  const valueDiff = Math.abs(value1 - value2);
+  
+  let title, text;
+  
+  if (distance < 50) {
+    title = "Quiet Companions";
+    text = `These colors are close siblings - ${c1.name} and ${c2.name} create a tonal, sophisticated effect. Wear them together for monochromatic elegance. The lack of contrast is the point: whispered luxury.`;
+  } else if (warmthDiff > 0.3) {
+    title = "Tension Point";
+    text = `${c1.name} and ${c2.name} pull in different thermal directions. This can work as deliberate contrast - warm against cool creates visual interest - but keep them separated by neutrals. Do not let them touch directly.`;
+  } else if (valueDiff > 0.4) {
+    title = "Light Meets Shadow";
+    text = `Strong value contrast between ${c1.name} and ${c2.name}. The lighter shade belongs near your face; the deeper one anchors below. This pairing creates structure and draws the eye upward.`;
+  } else if (valueDiff < 0.15 && warmthDiff < 0.15) {
+    title = "Natural Allies";
+    text = `${c1.name} and ${c2.name} share undertone and value - they were meant to be worn together. Layer them freely. This is the easiest kind of harmony: effortless and forgiving.`;
+  } else {
+    title = "Complementary Balance";
+    text = `${c1.name} and ${c2.name} balance each other well. The variation is enough to be interesting without creating conflict. Use one as the dominant and the other as accent for a polished result.`;
+  }
+  
+  document.getElementById("compareVerdict").innerHTML = `
+    <div class="verdict-title">${title}</div>
+    <div class="verdict-text">${text}</div>
+  `;
+}
+
+document.getElementById("compareClear").addEventListener("click", () => {
+  compareColors = [null, null];
+  document.getElementById("compareSlot1").style.background = "";
+  document.getElementById("compareSlot1").classList.remove("filled");
+  document.getElementById("compareSlot1").innerHTML = '<span class="slot-label">Color 1</span>';
+  document.getElementById("compareSlot2").style.background = "";
+  document.getElementById("compareSlot2").classList.remove("filled");
+  document.getElementById("compareSlot2").innerHTML = '<span class="slot-label">Color 2</span>';
+  document.getElementById("compareVerdict").innerHTML = `
+    <div class="verdict-title">Awaiting Selection</div>
+    <div class="verdict-text">Choose two colors to discover their relationship.</div>
+  `;
+  document.querySelectorAll(".swatch").forEach(s => s.classList.remove("selected"));
+});
+
+// Looks
+function renderLooks() {
+  const container = document.getElementById("looksContainer");
+  container.innerHTML = looks.map(look => `
+    <div class="look-card">
+      <div class="look-header">
+        <div class="look-title">${look.title}</div>
+        <div class="look-occasion">${look.occasion}</div>
+      </div>
+      <div class="look-colors">
+        ${look.colors.map(c => `
+          <div class="look-color">
+            <div class="look-swatch" style="background: ${c.hex};" onclick="copyToClipboard('${c.hex}')"></div>
+            <div class="look-label">${c.label}</div>
+          </div>
+        `).join("")}
+      </div>
+      <div class="look-description">${look.description}</div>
+    </div>
+  `).join("");
+}
+
+// Oracle
+document.getElementById("oracleButton").addEventListener("click", () => {
+  const color = allColors[Math.floor(Math.random() * allColors.length)];
+  const message = oracleMessages[Math.floor(Math.random() * oracleMessages.length)];
+  
+  document.getElementById("oracleSwatch").style.background = color.hex;
+  document.getElementById("oracleName").textContent = color.name;
+  document.getElementById("oracleHex").textContent = color.hex;
+  document.getElementById("oracleMessage").textContent = message;
+});
+
+// Lighting
+function renderLighting(mode = "daylight") {
+  const preview = document.getElementById("lightingPreview");
+  const sampleColors = ["#6B9AC4", "#D4A5A5", "#6B9B8A", "#9A8FBF", "#C9A86C", "#5A3D4A", "#E8E4E1", "#4682B4", "#C48B9F", "#3D5A5A"];
+  
+  preview.innerHTML = sampleColors.map(hex => {
+    const adjusted = mode === "daylight" ? hex : adjustColorForLighting(hex, mode);
+    return `<div class="lighting-swatch" style="background: ${adjusted};"></div>`;
+  }).join("");
+  
+  // Set background tint
+  const bgTints = {
+    daylight: "rgba(255, 255, 255, 0.05)",
+    golden: "rgba(255, 200, 100, 0.08)",
+    overcast: "rgba(150, 170, 200, 0.08)",
+    warm: "rgba(255, 180, 120, 0.1)",
+    cool: "rgba(180, 200, 255, 0.1)"
+  };
+  preview.style.background = bgTints[mode];
+}
+
+document.querySelectorAll(".lighting-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".lighting-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderLighting(btn.dataset.light);
+  });
+});
+
+// Shopping Translator
+function findClosestMatch(inputHex) {
+  let closest = null;
+  let minDistance = Infinity;
+  
+  allColors.forEach(color => {
+    const dist = colorDistance(inputHex, color.hex);
+    if (dist < minDistance) {
+      minDistance = dist;
+      closest = color;
+    }
+  });
+  
+  return { color: closest, distance: minDistance };
+}
+
+function updateTranslator(hex) {
+  document.getElementById("inputSwatch").style.background = hex;
+  
+  const match = findClosestMatch(hex);
+  if (match.color) {
+    document.getElementById("matchSwatch").style.background = match.color.hex;
+    document.getElementById("matchName").textContent = match.color.name;
+    document.getElementById("matchHex").textContent = match.color.hex;
+    
+    let verdict;
+    if (match.distance < 30) {
+      verdict = "Excellent match. This color is essentially in your palette - buy with confidence.";
+    } else if (match.distance < 60) {
+      verdict = "Good match. Close enough to harmonize well. Safe to purchase.";
+    } else if (match.distance < 100) {
+      verdict = "Approximate match. This color bends your palette slightly. Consider if you need exactly this shade or if the palette version would serve.";
+    } else {
+      verdict = "Distant match. This color strays from your palette. Proceed with caution - try it on in person before committing.";
+    }
+    document.getElementById("matchVerdict").textContent = verdict;
+  }
+}
+
+document.getElementById("translatorColorInput").addEventListener("input", (e) => {
+  const hex = e.target.value;
+  document.getElementById("translatorHexInput").value = hex.toUpperCase();
+  updateTranslator(hex);
+});
+
+document.getElementById("translatorHexInput").addEventListener("input", (e) => {
+  let hex = e.target.value;
+  if (!hex.startsWith("#")) hex = "#" + hex;
+  if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+    document.getElementById("translatorColorInput").value = hex;
+    updateTranslator(hex);
+  }
+});
+
+// Harmony Chains
+function generateHarmonies(hex, name) {
+  const rgb = hexToRgb(hex);
+  const container = document.getElementById("harmonyResults");
+  
+  // Find colors that create different moods
+  const moods = [
+    {
+      name: "Serene",
+      description: "Colors that quiet the mind when paired together",
+      filter: (c) => {
+        const cRgb = hexToRgb(c.hex);
+        const satDiff = Math.abs((rgb.r - rgb.b) - (cRgb.r - cRgb.b));
+        return satDiff < 40 && colorDistance(hex, c.hex) > 50;
+      }
+    },
+    {
+      name: "Dramatic",
+      description: "Colors that create tension and visual interest",
+      filter: (c) => {
+        const cRgb = hexToRgb(c.hex);
+        const valueDiff = Math.abs((rgb.r + rgb.g + rgb.b) - (cRgb.r + cRgb.g + cRgb.b)) / 3;
+        return valueDiff > 80;
+      }
+    },
+    {
+      name: "Romantic",
+      description: "Colors that feel intimate and soft together",
+      filter: (c) => {
+        return (c.category === "Roses & Pinks" || c.category === "Purples & Lavenders") && c.hex !== hex;
+      }
+    },
+    {
+      name: "Grounded",
+      description: "Colors that anchor and stabilize",
+      filter: (c) => {
+        return (c.category === "Neutrals" || c.category === "Depth Colors") && c.hex !== hex;
+      }
+    }
+  ];
+  
+  container.innerHTML = moods.map(mood => {
+    const matches = allColors.filter(mood.filter).slice(0, 3);
+    if (matches.length === 0) return "";
+    
+    return `
+      <div class="harmony-mood">
+        <div class="mood-name">${mood.name}</div>
+        <div class="mood-swatches">
+          <div class="mood-swatch" style="background: ${hex};" title="${name}"></div>
+          <span style="color: var(--accent-lavender);">+</span>
+          ${matches.map(m => `<div class="mood-swatch" style="background: ${m.hex};" title="${m.name}" onclick="copyToClipboard('${m.hex}')"></div>`).join("")}
+        </div>
+        <div class="mood-description">${mood.description}</div>
+      </div>
+    `;
+  }).join("");
+}
+
+// Memory Journal
+document.getElementById("memorySave").addEventListener("click", () => {
+  const input = document.getElementById("memoryInput");
+  const text = input.value.trim();
+  
+  if (!selectedForMemory) {
+    showToast("Select a color first");
+    return;
+  }
+  if (!text) {
+    showToast("Write a memory");
+    return;
+  }
+  
+  memories.push({
+    hex: selectedForMemory.hex,
+    name: selectedForMemory.name,
+    text: text,
+    timestamp: Date.now()
+  });
+  
+  saveMemories();
+  
+  input.value = "";
+  selectedForMemory = null;
+  document.getElementById("memorySelectedColor").style.background = "var(--bg-drawer)";
+  document.getElementById("memorySelectedColor").style.border = "2px dashed var(--accent-lavender)";
+  
+  renderMemories();
+  showToast("Memory saved");
+});
+
+function renderMemories() {
+  const list = document.getElementById("memoryList");
+  if (memories.length === 0) {
+    list.innerHTML = '<p style="color: var(--surface-warm); font-style: italic; text-align: center;">No memories yet</p>';
+    return;
+  }
+  
+  list.innerHTML = memories.map((m, i) => `
+    <div class="memory-item">
+      <div class="memory-swatch" style="background: ${m.hex};"></div>
+      <div class="memory-text">"${m.text}" - ${m.name}</div>
+      <button class="memory-delete" onclick="deleteMemory(${i})">&times;</button>
+    </div>
+  `).join("");
+}
+
+function deleteMemory(index) {
+  memories.splice(index, 1);
+  saveMemories();
+  renderMemories();
+}
+
+// Export
+document.getElementById("exportJson").addEventListener("click", () => {
+  const data = {
+    title: "A Study in Soft Light",
+    season: "Soft Summer",
+    sourcePigments,
+    palette: paletteCategories,
+    exportDate: new Date().toISOString()
+  };
+  document.getElementById("exportOutput").value = JSON.stringify(data, null, 2);
+  showToast("Exported full palette");
+});
+
+document.getElementById("exportFavorites").addEventListener("click", () => {
+  const data = {
+    favorites,
+    exportDate: new Date().toISOString()
+  };
+  document.getElementById("exportOutput").value = JSON.stringify(data, null, 2);
+  showToast("Exported favorites");
+});
+
+document.getElementById("exportText").addEventListener("click", () => {
+  let text = "A STUDY IN SOFT LIGHT\nSoft Summer Palette\n\n";
+  
+  paletteCategories.forEach(cat => {
+    text += cat.name.toUpperCase() + "\n";
+    cat.colors.forEach(c => {
+      text += `  ${c.name}: ${c.hex}\n`;
+    });
+    text += "\n";
+  });
+  
+  if (favorites.length > 0) {
+    text += "FAVORITES\n";
+    favorites.forEach(f => {
+      text += `  ${f.name}: ${f.hex}\n`;
+    });
+  }
+  
+  document.getElementById("exportOutput").value = text;
+  showToast("Exported as text");
+});
+
+document.getElementById("exportMemories").addEventListener("click", () => {
+  if (memories.length === 0) {
+    showToast("No memories to export");
+    return;
+  }
+  const data = {
+    title: "Color Memories",
+    memories: memories.map(m => ({
+      color: m.name,
+      hex: m.hex,
+      memory: m.text,
+      date: new Date(m.timestamp).toISOString()
+    })),
+    exportDate: new Date().toISOString()
+  };
+  
+  // Switch to export tab and show the data
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  document.querySelector('[data-tab="export"]').classList.add("active");
+  document.querySelectorAll(".feature-panel").forEach(p => p.style.display = "none");
+  document.getElementById("panel-export").style.display = "block";
+  document.getElementById("exportOutput").value = JSON.stringify(data, null, 2);
+  showToast("Exported " + memories.length + " memories");
+});
+
+// Body Zones data and functions
+const zoneData = {
+  face: {
+    description: "Colors that touch your face must harmonize with your skin, eyes, and lips. These are your most flattering colors - they make your eyes brighter, your skin clearer, your features more alive. Wear these as tops, scarves, necklines, earrings, and of course makeup.",
+    colors: [
+      { hex: "#E8E4E1", name: "Soft White" },
+      { hex: "#D4A5A5", name: "Rose" },
+      { hex: "#C48B9F", name: "Raspberry Rose" },
+      { hex: "#9A8FBF", name: "Lavender" },
+      { hex: "#6B9B8A", name: "Jade" },
+      { hex: "#6B9AC4", name: "Cornflower" },
+      { hex: "#B4A7D6", name: "Wisteria" },
+      { hex: "#E0B4B7", name: "Soft Blush" },
+      { hex: "#87CEEB", name: "Sky Blue" },
+      { hex: "#8FBC8F", name: "Sea Green" }
+    ]
+  },
+  torso: {
+    description: "The largest canvas on your body. These colors can handle being seen in mass without overwhelming. Solid choices for dresses, blouses, sweaters, and jackets. They're interesting enough to carry a look but not so demanding they exhaust the eye.",
+    colors: [
+      { hex: "#4A5568", name: "Slate" },
+      { hex: "#6B9B8A", name: "Jade" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#6B5B7A", name: "Plum" },
+      { hex: "#5D8A74", name: "Eucalyptus" },
+      { hex: "#4682B4", name: "Steel Blue" },
+      { hex: "#915F6D", name: "Dusty Berry" },
+      { hex: "#3D5A5A", name: "Deep Spruce" },
+      { hex: "#7B68A6", name: "Soft Violet" },
+      { hex: "#48A9A6", name: "Teal" }
+    ]
+  },
+  legs: {
+    description: "Below the waist is far from your face - colors here can be deeper, more grounding. These anchor your silhouette. Pants, skirts, shoes. The eye moves down and finds stability.",
+    colors: [
+      { hex: "#2F3640", name: "Charcoal" },
+      { hex: "#1F2937", name: "Deep Ink" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#2C4A5E", name: "Deep Teal Blue" },
+      { hex: "#4A3A50", name: "Eggplant" },
+      { hex: "#2D4A3E", name: "Forest" },
+      { hex: "#5A3D4A", name: "Burgundy" },
+      { hex: "#3D5A5A", name: "Deep Spruce" },
+      { hex: "#4A5568", name: "Slate" },
+      { hex: "#6B7280", name: "Pewter" }
+    ]
+  },
+  accessories: {
+    description: "Small doses of color that punctuate rather than dominate. Bags, belts, jewelry, scarves worn as accents. These can be slightly more adventurous because the quantity is small. A flash of something unexpected.",
+    colors: [
+      { hex: "#D4AF87", name: "Soft Gold" },
+      { hex: "#C9A86C", name: "Champagne" },
+      { hex: "#6B7280", name: "Pewter" },
+      { hex: "#8B4570", name: "Soft Magenta" },
+      { hex: "#367588", name: "Deep Teal" },
+      { hex: "#6B3A5B", name: "Plum Wine" },
+      { hex: "#BFA07A", name: "Muted Bronze" },
+      { hex: "#5D4E6D", name: "Deep Amethyst" },
+      { hex: "#A4607A", name: "Orchid" },
+      { hex: "#2E8B8B", name: "Dark Cyan" }
+    ]
+  },
+  distance: {
+    description: "Coats, outerwear, what people see from across the room or the street. These colors must survive distance - they flatten less, hold their character when not examined up close. Your coat is often your first impression.",
+    colors: [
+      { hex: "#4A5568", name: "Slate" },
+      { hex: "#3D5A5A", name: "Deep Spruce" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#6B5B7A", name: "Plum" },
+      { hex: "#2C4A5E", name: "Deep Teal Blue" },
+      { hex: "#5A3D4A", name: "Burgundy" },
+      { hex: "#4A3A50", name: "Eggplant" },
+      { hex: "#2D4A3E", name: "Forest" }
+    ]
+  }
+};
+
+function renderZones(zone) {
+  const data = zoneData[zone];
+  document.getElementById("zoneDescription").textContent = data.description;
+  document.getElementById("zoneColors").innerHTML = data.colors.map(c => `
+    <div class="zone-color-item">
+      <div class="zone-swatch" style="background: ${c.hex};" onclick="copyToClipboard('${c.hex}')" title="${c.hex}"></div>
+      <div class="zone-color-name">${c.name}</div>
+    </div>
+  `).join("");
+}
+
+document.querySelectorAll(".zone-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".zone-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderZones(btn.dataset.zone);
+  });
+});
+
+// Capsule compression data and functions
+const capsuleData = {
+  5: {
+    colors: [
+      { hex: "#2F3640", name: "Charcoal" },
+      { hex: "#E8E4E1", name: "Soft White" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#6B9B8A", name: "Jade" },
+      { hex: "#C48B9F", name: "Raspberry Rose" }
+    ],
+    note: "The absolute minimum. One dark neutral, one light neutral, one rich depth color, one signature color, one accent. These five can build at least 15 distinct outfits. Pack this for a weekend trip and never think about what to wear."
+  },
+  10: {
+    colors: [
+      { hex: "#2F3640", name: "Charcoal" },
+      { hex: "#E8E4E1", name: "Soft White" },
+      { hex: "#4A5568", name: "Slate" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#6B9B8A", name: "Jade" },
+      { hex: "#C48B9F", name: "Raspberry Rose" },
+      { hex: "#9A8FBF", name: "Lavender" },
+      { hex: "#5D8A74", name: "Eucalyptus" },
+      { hex: "#D4A5A5", name: "Rose" },
+      { hex: "#D4AF87", name: "Soft Gold" }
+    ],
+    note: "A working wardrobe. Two dark neutrals for grounding, one light neutral, one navy for authority, two greens that play differently, two pinks for warmth, one lavender for softness, one metallic accent. This is a week-long trip or a capsule closet that actually functions."
+  },
+  15: {
+    colors: [
+      { hex: "#2F3640", name: "Charcoal" },
+      { hex: "#1F2937", name: "Deep Ink" },
+      { hex: "#E8E4E1", name: "Soft White" },
+      { hex: "#F5F0EB", name: "Cream" },
+      { hex: "#4A5568", name: "Slate" },
+      { hex: "#3A4D6B", name: "Soft Navy" },
+      { hex: "#6B9B8A", name: "Jade" },
+      { hex: "#5D8A74", name: "Eucalyptus" },
+      { hex: "#C48B9F", name: "Raspberry Rose" },
+      { hex: "#D4A5A5", name: "Rose" },
+      { hex: "#9A8FBF", name: "Lavender" },
+      { hex: "#6B5B7A", name: "Plum" },
+      { hex: "#48A9A6", name: "Teal" },
+      { hex: "#D4AF87", name: "Soft Gold" },
+      { hex: "#5A3D4A", name: "Burgundy" }
+    ],
+    note: "Comfortable range with room to play. Enough neutrals to build structure, enough color to express mood. This covers professional, casual, evening, and creative contexts. If you could only keep 15 colors forever, these would serve you."
+  }
+};
+
+function renderCapsule(count) {
+  const data = capsuleData[count];
+  document.getElementById("capsuleResult").innerHTML = data.colors.map(c => `
+    <div class="capsule-color">
+      <div class="capsule-swatch" style="background: ${c.hex};" onclick="copyToClipboard('${c.hex}')" title="${c.hex}"></div>
+      <div class="capsule-color-name">${c.name}</div>
+    </div>
+  `).join("");
+  document.getElementById("capsuleNote").textContent = data.note;
+}
+
+document.querySelectorAll(".capsule-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".capsule-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderCapsule(parseInt(btn.dataset.count));
+  });
+});
+
+// Exhaustion palette
+const exhaustionPalette = {
+  colors: [
+    { hex: "#4A5568", name: "Slate", role: "Base Layer" },
+    { hex: "#E8E4E1", name: "Soft White", role: "Light Layer" },
+    { hex: "#6B7280", name: "Pewter", role: "Alternative Base" },
+    { hex: "#3D5A5A", name: "Deep Spruce", role: "Outer Layer" },
+    { hex: "#8B8589", name: "Taupe", role: "Soft Neutral" },
+    { hex: "#88B09A", name: "Soft Sage", role: "Gentle Color" }
+  ],
+  rules: [
+    "No prints. Solids only. Patterns require decisions.",
+    "Nothing that wrinkles visibly. You will not iron today.",
+    "Nothing tight. Comfort is the only priority.",
+    "These six colors all work together. Any combination is safe.",
+    "Soft sage is the only color - it says 'I made an effort' when you did not.",
+    "Dark bottoms, lighter top. It looks intentional even when it is not.",
+    "Silver or pewter jewelry only. Gold requires more energy than you have.",
+    "If mascara is too much, skip it. These colors carry themselves."
+  ]
+};
+
+function renderExhaustion() {
+  document.getElementById("exhaustionColors").innerHTML = exhaustionPalette.colors.map(c => `
+    <div class="exhaustion-item">
+      <div class="exhaustion-swatch" style="background: ${c.hex};" onclick="copyToClipboard('${c.hex}')" title="${c.hex}"></div>
+      <div class="exhaustion-label">${c.role}</div>
+      <div class="exhaustion-color-name">${c.name}</div>
+    </div>
+  `).join("");
+  
+  document.getElementById("exhaustionRules").innerHTML = `
+    <h4>The Rules of Survival Dressing</h4>
+    <ul>
+      ${exhaustionPalette.rules.map(r => `<li>${r}</li>`).join("")}
+    </ul>
+  `;
+}
+
+// Initialize
+initParticles();
+renderPigments();
+renderPalette();
+renderFavorites();
+renderLooks();
+renderLighting();
+updateTranslator("#8B7355");
+renderMemories();
+renderZones("face");
+renderCapsule(15);
+renderExhaustion();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
