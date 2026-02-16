@@ -197,14 +197,7 @@
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-//  PALETTE REGISTRY
-//  Add new palettes here and they auto-render as cards.
-//  Colors array = the preview swatches shown on the card.
-// ═══════════════════════════════════════════════════════
-
 const palettes = [
-  // ── CLIENT PALETTES ──
   {
     section: "Client Palettes",
     items: [
@@ -221,54 +214,50 @@ const palettes = [
         meta: "133 colors · non-seasonal lived palette",
         tag: "personal",
         colors: ["#A01830", "#505078", "#D4A878", "#CFB53B", "#000000", "#305090"],
-       },
+      },
       {
         title: "Lauren — The Velvet Siren V.6",
         file: "velvet-siren-v-6.html",
         meta: "133 colors · non-seasonal lived palette",
         tag: "personal",
         colors: ["#A01830", "#505078", "#D4A878", "#CFB53B", "#000000", "#305090"],
-       },
+      },
       {
         title: "Lauren — The Velvet Siren V.5",
         file: "velvet-siren-v-5.html",
         meta: "133 colors · non-seasonal lived palette",
         tag: "personal",
         colors: ["#A01830", "#505078", "#D4A878", "#CFB53B", "#000000", "#305090"],
-       },
+      },
     ],
   },
-
-  // ── SEASONAL REFERENCE PALETTES ──
   {
     section: "Seasonal Reference",
-    items: [
-      // {
-      //   title: "True Spring",
-      //   file: "true-spring-ref.html",
-      //   meta: "Reference palette",
-      //   tag: "reference",
-      //   colors: ["#hex1", "#hex2", "#hex3", "#hex4", "#hex5", "#hex6"],
-      // },
-    ],
+    items: [],
   },
-
-  // ── TOOLS & PROTOTYPES ──
   {
     section: "Tools & Prototypes",
+    items: [],
+  },
+  {
+    section: "HTML Toys",
     items: [
-      // {
-      //   title: "Color Sampler",
-      //   file: "sampler.html",
-      //   meta: "Photo → HSV extraction",
-      //   tag: "tool",
-      //   colors: ["#E8DDD3", "#C4956A", "#2A2520", "#A89A8C"],
-      // },
+      {
+        title: "Chaos Tarot",
+        file: "chaos-tarot.html",
+        meta: "interactive tarot pulls",
+        tag: "toy",
+      },
+      {
+        title: "Jupie Behavior Tracker",
+        file: "jupie-tracker.html",
+        meta: "cockatiel behavior logging",
+        tag: "toy",
+      },
     ],
   },
 ];
 
-// ── RENDER ──
 const container = document.getElementById("labContent");
 
 palettes.forEach((section, si) => {
@@ -318,7 +307,6 @@ palettes.forEach((section, si) => {
   container.appendChild(grid);
 });
 
-// ── PARTICLES ──
 const particlesEl = document.getElementById("particles");
 for (let i = 0; i < 20; i++) {
   const p = document.createElement("div");
@@ -330,8 +318,6 @@ for (let i = 0; i < 20; i++) {
   particlesEl.appendChild(p);
 }
 </script>
-
-<!-- PASSWORD GATE — remove this line to make the page public -->
 <script src="../assets/gate.js"></script>
 </body>
 </html>
