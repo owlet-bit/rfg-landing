@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Velvet Siren — Paper Doll</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cormorant Garamond',serif;background:#0a0a0f;color:#e8e0d8;min-height:100vh;overflow-x:hidden}
+
+.sparkle-field{position:fixed;inset:0;pointer-events:none;z-index:0}
+.sparkle{position:absolute;width:3px;height:3px;background:radial-gradient(circle,rgba(207,181,59,.9),transparent);border-radius:50%;animation:sparkle-drift linear infinite}
+@keyframes sparkle-drift{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:1}90%{opacity:1}100%{opacity:0;transform:translateY(-10vh) scale(1.5)}}
+.sparkle-pulse{position:absolute;width:2px;height:2px;background:rgba(212,165,165,.6);border-radius:50%;animation:sp-pulse 3s ease-in-out infinite}
+@keyframes sp-pulse{0%,100%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(2)}}
+
+.app{position:relative;z-index:1;display:grid;grid-template-columns:280px 1fr 300px;min-height:100vh}
+.palette-panel{background:rgba(15,15,22,.95);border-right:1px solid rgba(207,181,59,.15);overflow-y:auto;padding:20px 16px;max-height:100vh;position:sticky;top:0}
+.palette-panel::-webkit-scrollbar{width:4px}.palette-panel::-webkit-scrollbar-thumb{background:rgba(207,181,59,.3);border-radius:2px}
+.panel-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:3px;text-transform:uppercase;color:rgba(207,181,59,.8);text-align:center;margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid rgba(207,181,59,.15)}
+.cat-section{margin-bottom:14px}
+.cat-header{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(232,224,216,.5);cursor:pointer;display:flex;align-items:center;gap:8px;padding:5px 0;user-select:none;transition:color .2s}
+.cat-header:hover{color:rgba(207,181,59,.8)}
+.cat-header .arrow{font-size:8px;transition:transform .2s;color:rgba(207,181,59,.5)}
+.cat-header.open .arrow{transform:rotate(90deg)}
+.cat-count{font-size:10px;color:rgba(232,224,216,.3);margin-left:auto}
+.cat-colors{display:none;flex-wrap:wrap;gap:5px;padding:6px 0 2px}.cat-colors.open{display:flex}
+.swatch{width:28px;height:28px;border-radius:3px;cursor:grab;border:2px solid transparent;transition:all .2s;position:relative}
+.swatch:hover{transform:scale(1.15);border-color:rgba(207,181,59,.6);box-shadow:0 0 10px rgba(207,181,59,.3)}
+.swatch.selected{border-color:#CFB53B;box-shadow:0 0 14px rgba(207,181,59,.5)}
+.swatch-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:rgba(15,15,22,.95);border:1px solid rgba(207,181,59,.3);padding:3px 7px;border-radius:3px;font-size:10px;white-space:nowrap;color:#e8e0d8;pointer-events:none;z-index:100}
+.swatch:hover .swatch-tip{display:block}
+
+/* Mode tabs */
+.mode-tabs{display:flex;gap:0;margin-bottom:16px;border:1px solid rgba(207,181,59,.2);border-radius:4px;overflow:hidden}
+.mode-tab{flex:1;padding:8px 4px;text-align:center;font-family:'Cinzel',serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:rgba(232,224,216,.4);cursor:pointer;transition:all .2s;background:transparent}
+.mode-tab.active{background:rgba(207,181,59,.15);color:rgba(207,181,59,.9)}
+.mode-tab:hover:not(.active){background:rgba(207,181,59,.05)}
+.mode-content{display:none}.mode-content.active{display:block}
+
+/* Makeup face */
+.makeup-look{padding:10px;margin-bottom:8px;border:1px solid rgba(207,181,59,.1);border-radius:6px;cursor:pointer;transition:all .2s}
+.makeup-look:hover{border-color:rgba(207,181,59,.3);background:rgba(207,181,59,.04)}
+.makeup-look-name{font-family:'Cinzel',serif;font-size:11px;color:rgba(207,181,59,.7);margin-bottom:4px}
+.makeup-look-desc{font-size:11px;color:rgba(232,224,216,.4);line-height:1.4;margin-bottom:6px}
+.makeup-swatches{display:flex;gap:6px;align-items:center}
+.makeup-swatch{width:20px;height:20px;border-radius:50%;border:1px solid rgba(255,255,255,.15)}
+.makeup-label{font-size:9px;color:rgba(232,224,216,.3);text-transform:uppercase;letter-spacing:1px}
+
+.figure-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px;min-height:100vh}
+.figure-title{font-family:'Cinzel',serif;font-size:18px;letter-spacing:6px;color:rgba(207,181,59,.7);margin-bottom:16px;text-transform:uppercase;animation:title-glow 4s ease-in-out infinite}
+@keyframes title-glow{0%,100%{text-shadow:0 0 20px rgba(207,181,59,.2)}50%{text-shadow:0 0 40px rgba(207,181,59,.5)}}
+.figure-container{position:relative;width:260px}
+.figure-container svg{width:100%;height:auto;filter:drop-shadow(0 0 30px rgba(207,181,59,.08))}
+.zone{cursor:pointer;transition:all .15s}.zone:hover{filter:brightness(1.2)}.zone.active{animation:zone-pulse 1.5s ease-in-out infinite}
+@keyframes zone-pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.controls{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
+.btn{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:8px 16px;background:rgba(207,181,59,.1);border:1px solid rgba(207,181,59,.3);color:rgba(207,181,59,.8);border-radius:4px;cursor:pointer;transition:all .2s}
+.btn:hover{background:rgba(207,181,59,.2);border-color:rgba(207,181,59,.6);box-shadow:0 0 20px rgba(207,181,59,.15)}
+
+.info-panel{background:rgba(15,15,22,.95);border-left:1px solid rgba(207,181,59,.15);overflow-y:auto;padding:20px 16px;max-height:100vh;position:sticky;top:0}
+.info-panel::-webkit-scrollbar{width:4px}.info-panel::-webkit-scrollbar-thumb{background:rgba(207,181,59,.3);border-radius:2px}
+.section-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(207,181,59,.6);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid rgba(207,181,59,.1)}
+.outfit-slot{display:flex;align-items:center;gap:10px;padding:7px;margin-bottom:5px;border-radius:4px;cursor:pointer;transition:background .2s;border:1px solid transparent}
+.outfit-slot:hover{background:rgba(207,181,59,.05);border-color:rgba(207,181,59,.1)}.outfit-slot.active{background:rgba(207,181,59,.1);border-color:rgba(207,181,59,.3)}
+.slot-preview{width:24px;height:24px;border-radius:3px;border:1px solid rgba(232,224,216,.2);flex-shrink:0}
+.slot-name{font-size:12px;color:rgba(232,224,216,.6)}.slot-color-name{font-size:10px;color:rgba(207,181,59,.5);font-style:italic}
+.slot-clear{font-size:14px;color:rgba(232,224,216,.3);cursor:pointer;padding:0 4px;display:none;margin-left:auto}
+.outfit-slot:hover .slot-clear{display:block}.slot-clear:hover{color:rgba(207,181,59,.8)}
+
+.pairing-alert{margin-top:16px;padding:10px;background:rgba(207,181,59,.08);border:1px solid rgba(207,181,59,.25);border-radius:6px;display:none}
+.pairing-alert.show{display:block;animation:pairing-in .4s ease}
+@keyframes pairing-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.pairing-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;color:rgba(207,181,59,.9);margin-bottom:6px}
+.p-match{margin-bottom:8px}
+.p-match-name{color:#CFB53B;font-size:13px;font-style:italic}
+.p-match-desc{font-size:11px;color:rgba(232,224,216,.4);line-height:1.4}
+
+.saved-section{margin-top:20px}
+.saved-look{display:flex;align-items:center;gap:8px;padding:7px;margin-bottom:5px;border-radius:4px;cursor:pointer;border:1px solid rgba(207,181,59,.08);transition:all .2s}
+.saved-look:hover{background:rgba(207,181,59,.05);border-color:rgba(207,181,59,.2)}
+.saved-colors{display:flex;gap:2px;flex:1}
+.saved-mini{width:14px;height:14px;border-radius:2px;border:1px solid rgba(255,255,255,.1)}
+.saved-name{font-size:11px;color:rgba(232,224,216,.5)}
+.saved-delete{font-size:13px;color:rgba(232,224,216,.3);cursor:pointer;padding:0 4px;opacity:0;transition:opacity .2s}
+.saved-look:hover .saved-delete{opacity:1}
+
+@media(max-width:1000px){.app{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.palette-panel,.info-panel{position:relative;max-height:none}}
+
+/* Pairing cards */
+.pairing-card{padding:10px;margin-bottom:8px;border:1px solid rgba(207,181,59,.1);border-radius:6px;cursor:pointer;transition:all .2s}
+.pairing-card:hover{border-color:rgba(207,181,59,.35);background:rgba(207,181,59,.04)}
+.pairing-card-name{font-family:'Cinzel',serif;font-size:11px;color:rgba(207,181,59,.7);margin-bottom:4px}
+.pairing-card-desc{font-size:11px;color:rgba(232,224,216,.4);line-height:1.4;margin-bottom:8px}
+.pairing-card-swatches{display:flex;gap:6px;align-items:center}
+.pairing-swatch{width:28px;height:28px;border-radius:4px;border:1px solid rgba(255,255,255,.15)}
+.pairing-plus{color:rgba(207,181,59,.4);font-size:14px}
+.pairing-card-btn{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:5px 10px;background:rgba(207,181,59,.1);border:1px solid rgba(207,181,59,.2);color:rgba(207,181,59,.7);border-radius:3px;cursor:pointer;margin-left:auto;transition:all .2s}
+.pairing-card-btn:hover{background:rgba(207,181,59,.2);border-color:rgba(207,181,59,.5)}
+
+/* Suggestion whispers */
+.suggest-area{margin-top:12px}
+.suggest-whisper{padding:10px;margin-bottom:6px;background:rgba(207,181,59,.05);border:1px solid rgba(207,181,59,.15);border-radius:6px;animation:whisper-in .5s ease;cursor:pointer;transition:all .2s}
+.suggest-whisper:hover{border-color:rgba(207,181,59,.4);background:rgba(207,181,59,.1)}
+@keyframes whisper-in{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.suggest-label{font-family:'Cinzel',serif;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(207,181,59,.5);margin-bottom:4px}
+.suggest-text{font-size:12px;color:rgba(232,224,216,.6);font-style:italic;margin-bottom:6px}
+.suggest-pair{display:flex;align-items:center;gap:6px}
+.suggest-swatch{width:18px;height:18px;border-radius:3px;border:1px solid rgba(255,255,255,.1)}
+.suggest-name{font-size:11px;color:#CFB53B}
+</style>
+</head>
+<body>
+<div class="sparkle-field" id="sparkleField"></div>
+<div class="app">
+  <div class="palette-panel">
+    <div class="panel-title">✦ Velvet Siren ✦</div>
+    <div class="mode-tabs">
+      <div class="mode-tab active" onclick="switchMode('palette')">Palette</div>
+      <div class="mode-tab" onclick="switchMode('makeup')">Makeup</div>
+      <div class="mode-tab" onclick="switchMode('pairings')">Pairings</div>
+    </div>
+    <div id="paletteMode" class="mode-content active"><div id="paletteContainer"></div></div>
+    <div id="makeupMode" class="mode-content"><div id="makeupContainer"></div></div>
+    <div id="pairingsMode" class="mode-content"><div id="pairingsContainer"></div></div>
+  </div>
+
+  <div class="figure-panel">
+    <div class="figure-title">✦ Dress Her Up ✦</div>
+    <div class="figure-container">
+      <svg viewBox="0 0 260 750" xmlns="http://www.w3.org/2000/svg" id="figureSvg">
+        <defs>
+          <radialGradient id="skinGrad" cx="50%" cy="30%" r="65%"><stop offset="0%" stop-color="#F5E6D8"/><stop offset="100%" stop-color="#E8D5C4"/></radialGradient>
+          <linearGradient id="hairGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D4B880"/><stop offset="50%" stop-color="#C8A86E"/><stop offset="100%" stop-color="#B8985E"/></linearGradient>
+        </defs>
+        <!-- HAIR BACK -->
+        <path class="zone" id="zone-hair-back" data-zone="hair" fill="url(#hairGrad)"
+          d="M95,58 C88,65 82,80 78,100 C72,130 68,170 66,210 C64,260 63,310 65,360 C66,390 68,410 72,425 Q76,435 82,432 C80,410 78,380 77,350 C76,310 77,270 79,230 C81,190 85,150 92,120 C96,105 100,92 104,82 L95,58 Z M165,58 C172,65 178,80 182,100 C188,130 192,170 194,210 C196,260 197,310 195,360 C194,390 192,410 188,425 Q184,435 178,432 C180,410 182,380 183,350 C184,310 183,270 181,230 C179,190 175,150 168,120 C164,105 160,92 156,82 L165,58 Z"/>
+        <!-- SKIN -->
+        <ellipse cx="130" cy="52" rx="34" ry="42" fill="url(#skinGrad)"/>
+        <rect x="120" y="90" width="20" height="24" rx="6" fill="url(#skinGrad)"/>
+        <path fill="url(#skinGrad)" d="M78,140 C72,158 66,185 62,215 C58,240 56,260 57,275 C58,282 62,286 66,283 C70,280 72,272 74,258 C76,240 80,218 84,200 L78,140 Z"/>
+        <path fill="url(#skinGrad)" d="M182,140 C188,158 194,185 198,215 C202,240 204,260 203,275 C202,282 198,286 194,283 C190,280 188,272 186,258 C184,240 180,218 176,200 L182,140 Z"/>
+        <path fill="url(#skinGrad)" d="M108,478 L104,555 L100,620 C99,634 102,640 108,640 C114,640 117,634 116,620 L114,555 L116,478 Z"/>
+        <path fill="url(#skinGrad)" d="M144,478 L146,555 L148,620 C149,634 146,640 140,640 C134,640 131,634 132,620 L136,555 L142,478 Z"/>
+        <!-- TOP -->
+        <path class="zone" id="zone-top" data-zone="top" fill="#2a2a35" d="M86,114 C82,118 78,126 76,136 L78,140 C82,152 86,168 90,185 L96,215 L100,245 L104,265 L130,270 L156,265 L160,245 L164,215 L170,185 C174,168 178,152 182,140 L184,136 C182,126 178,118 174,114 C168,110 156,108 130,108 C104,108 92,110 86,114 Z"/>
+        <!-- SLEEVES -->
+        <path class="zone" id="zone-sleeve-l" data-zone="sleeves" fill="#2a2a35" d="M76,136 C74,142 72,150 70,160 C68,172 67,184 66,194 C70,190 74,182 78,172 C80,164 82,155 84,146 L76,136 Z"/>
+        <path class="zone" id="zone-sleeve-r" data-zone="sleeves" fill="#2a2a35" d="M184,136 C186,142 188,150 190,160 C192,172 193,184 194,194 C190,190 186,182 182,172 C180,164 178,155 176,146 L184,136 Z"/>
+        <!-- BELT -->
+        <rect class="zone" id="zone-belt" data-zone="belt" x="102" y="263" width="56" height="14" rx="3" fill="#1a1a1f"/>
+        <!-- BOTTOM -->
+        <path class="zone" id="zone-bottom" data-zone="bottom" fill="#1f1f28" d="M102,277 C98,320 94,370 90,420 C88,440 86,458 85,475 L130,480 L175,475 C174,458 172,440 170,420 C166,370 162,320 158,277 Z"/>
+        <!-- SHOES -->
+        <path class="zone" id="zone-shoe-l" data-zone="shoes" fill="#1a1a1f" d="M98,634 C94,636 90,640 88,644 C86,648 88,652 94,654 L118,654 C122,654 124,650 122,646 C120,642 118,638 116,634 Z"/>
+        <path class="zone" id="zone-shoe-r" data-zone="shoes" fill="#1a1a1f" d="M132,634 C130,638 128,642 128,646 C126,650 128,654 132,654 L156,654 C162,654 164,648 162,644 C160,640 156,636 152,634 Z"/>
+        <!-- HAIR FRONT -->
+        <path data-zone="hair" fill="url(#hairGrad)" style="pointer-events:none" d="M96,30 C92,22 100,12 114,8 C122,6 135,5 145,7 C158,10 168,20 166,32 C164,42 162,50 160,56 L162,46 C164,35 159,24 149,18 C140,14 124,13 115,18 C106,24 100,35 102,46 L96,30 Z"/>
+        <!-- FACE — MAKEUP ZONES -->
+        <!-- Eye whites -->
+        <ellipse cx="118" cy="47" rx="7" ry="3.5" fill="#F5F0EB" style="pointer-events:none"/>
+        <ellipse cx="142" cy="47" rx="7" ry="3.5" fill="#F5F0EB" style="pointer-events:none"/>
+        <!-- Irises -->
+        <circle cx="118" cy="47" r="3" fill="#6B8060" style="pointer-events:none"/>
+        <circle cx="142" cy="47" r="3" fill="#6B8060" style="pointer-events:none"/>
+        <!-- Pupils -->
+        <circle cx="118" cy="47" r="1.5" fill="#2A1A10" style="pointer-events:none"/>
+        <circle cx="142" cy="47" r="1.5" fill="#2A1A10" style="pointer-events:none"/>
+        <!-- Eyelids (crescent shapes — this is the eyeshadow zone) -->
+        <path class="zone" id="zone-eye-l" data-zone="eyes" fill="#E8D5C4" opacity="0.7"
+          d="M110,47 Q114,40 118,39 Q122,40 126,47 Q122,43 118,42 Q114,43 110,47 Z"/>
+        <path class="zone" id="zone-eye-r" data-zone="eyes" fill="#E8D5C4" opacity="0.7"
+          d="M134,47 Q138,40 142,39 Q146,40 150,47 Q146,43 142,42 Q138,43 134,47 Z"/>
+        <!-- Cheeks -->
+        <ellipse class="zone" id="zone-cheek-l" data-zone="cheeks" cx="108" cy="60" rx="10" ry="7" fill="transparent" opacity="0.5"/>
+        <ellipse class="zone" id="zone-cheek-r" data-zone="cheeks" cx="152" cy="60" rx="10" ry="7" fill="transparent" opacity="0.5"/>
+        <!-- Lips -->
+        <path class="zone" id="zone-lips" data-zone="lips" d="M123,72 Q127,69 130,69 Q133,69 137,72 Q134,76 130,77 Q126,76 123,72 Z" fill="#C89898" opacity="0.9"/>
+
+        <!-- ACCESSORIES -->
+        <circle class="zone" id="zone-earring-l" data-zone="earrings" cx="94" cy="58" r="4.5" fill="#CFB53B"/>
+        <circle class="zone" id="zone-earring-r" data-zone="earrings" cx="166" cy="58" r="4.5" fill="#CFB53B"/>
+        <path class="zone" id="zone-necklace" data-zone="necklace" fill="none" stroke="#CFB53B" stroke-width="1.5" d="M115,104 Q130,118 145,104"/>
+        <circle class="zone" id="zone-necklace-gem" data-zone="necklace" cx="130" cy="116" r="4" fill="#CFB53B"/>
+        <g class="zone" id="zone-bag" data-zone="bag" transform="translate(198,320)">
+          <rect x="0" y="0" width="26" height="32" rx="4" fill="#3D2B24"/>
+          <path d="M6,-7 Q13,-13 20,-7" fill="none" stroke="#3D2B24" stroke-width="2"/>
+          <rect x="8" y="11" width="10" height="2" rx="1" fill="rgba(207,181,59,.4)"/>
+        </g>
+        <ellipse class="zone" id="zone-bracelet" data-zone="bracelet" cx="59" cy="270" rx="7" ry="4" fill="none" stroke="#CFB53B" stroke-width="2"/>
+      </svg>
+    </div>
+    <div class="controls">
+      <button class="btn" onclick="randomize()">✦ Randomize</button>
+      <button class="btn" onclick="clearAll()">Clear</button>
+      <button class="btn" onclick="saveLook()">Save Look</button>
+    </div>
+  </div>
+
+  <div class="info-panel">
+    <div class="section-label">✦ Current Outfit ✦</div>
+    <div id="outfitSlots"></div>
+    <div class="suggest-area" id="suggestArea"></div>
+    <div class="pairing-alert" id="pairingAlert">
+      <div class="pairing-title">✦ Pairing Detected ✦</div>
+      <div id="pairingMatches"></div>
+    </div>
+    <div class="saved-section">
+      <div class="section-label">✦ Saved Looks ✦</div>
+      <div id="savedLooks"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══ REAL PALETTE DATA — 133 COLORS ═══
+const colors={
+corals:[{name:"Petal",hex:"#F4C8C0"},{name:"Shell Pink",hex:"#F0B0A8"},{name:"Peachy Pink",hex:"#EAAA96"},{name:"Morning Flush",hex:"#E8A090"},{name:"Coral Glow",hex:"#E09888"},{name:"Living Coral",hex:"#E07068"},{name:"Dusty Coral",hex:"#DB8A80"},{name:"Soft Coral",hex:"#D4817A"},{name:"Bright Coral",hex:"#D86060"},{name:"Desert Rose",hex:"#C97268"},{name:"Deep Coral",hex:"#C4716A"},{name:"Terracotta Rose",hex:"#B86860"},{name:"Terra Cotta",hex:"#B05050"},{name:"Burnt Sienna",hex:"#985850"},{name:"Sienna",hex:"#886058"},{name:"Dark Rust",hex:"#784848"}],
+pinks:[{name:"Barely Pink",hex:"#F0D0D8"},{name:"Blush Cloud",hex:"#E8C4C4"},{name:"Pink Champagne",hex:"#E0B8C0"},{name:"Rose Quartz",hex:"#D4B0B0"},{name:"Dusty Rose",hex:"#D4A5A5"},{name:"Mauve Rose",hex:"#C8A0A8"},{name:"Antique Pink",hex:"#C89898"},{name:"Peony",hex:"#E07088"},{name:"Muted Rose",hex:"#B08888"},{name:"Warm Pink",hex:"#C07090"},{name:"Berry Pink",hex:"#A87088"},{name:"Deep Mauve",hex:"#987878"},{name:"Deep Pink",hex:"#884060"},{name:"Wine Rose",hex:"#703850"}],
+purples:[{name:"Soft Lavender",hex:"#E8D8F0"},{name:"Wisteria",hex:"#D4C4E0"},{name:"Lilac",hex:"#C0A8D0"},{name:"Hazy Iris",hex:"#B8A0C8"},{name:"Orchid",hex:"#A888B8"},{name:"Dusty Purple",hex:"#9878A8"},{name:"Amethyst",hex:"#8868A0"},{name:"Smoky Grape",hex:"#7A6890"},{name:"Deep Violet",hex:"#684880"},{name:"Nightshade",hex:"#604070"},{name:"Plum Wine",hex:"#503868"}],
+greens:[{name:"Sage Mist",hex:"#C8D8C8"},{name:"Mint Whisper",hex:"#A8C8B8"},{name:"Soft Sage",hex:"#8AB8A0"},{name:"Dusty Fern",hex:"#688878"},{name:"Seafoam",hex:"#5A9A82"},{name:"Muted Jade",hex:"#5A7A70"},{name:"Jade",hex:"#4A7D68"},{name:"Eucalyptus",hex:"#4A6B62"},{name:"Pine",hex:"#3D6B58"},{name:"Dark Sage",hex:"#355C50"},{name:"Emerald Deep",hex:"#2D5A4A"},{name:"Deep Evergreen",hex:"#2B4840"},{name:"Forest Velvet",hex:"#1E4D3D"}],
+teals:[{name:"Teal Mist",hex:"#A0C8C8"},{name:"Soft Teal",hex:"#88C0C0"},{name:"Sea Teal",hex:"#68A8A8"},{name:"Muted Teal",hex:"#508888"},{name:"Aqua Teal",hex:"#4A9898"},{name:"Bright Teal",hex:"#3A8080"},{name:"Peacock",hex:"#387878"},{name:"Teal",hex:"#2A6868"},{name:"Deep Teal",hex:"#1A4A4A"},{name:"Dark Petrol",hex:"#1A3838"}],
+blues:[{name:"Sky Mist",hex:"#98B8C0"},{name:"Sea Glass",hex:"#78A0A8"},{name:"Stonewash",hex:"#607888"},{name:"Coastal",hex:"#5A8898"},{name:"Slate Blue",hex:"#4A7080"},{name:"True Blue",hex:"#4682B4"},{name:"Steel Blue",hex:"#3A5A6A"},{name:"Dusk Navy",hex:"#384858"},{name:"Prussian",hex:"#2C4A5C"},{name:"Deep Ocean",hex:"#2A4858"},{name:"Cobalt",hex:"#305090"},{name:"Midnight Navy",hex:"#1C3A4D"}],
+browns:[{name:"Rose Taupe",hex:"#B89888"},{name:"Mushroom",hex:"#A08070"},{name:"Pebble",hex:"#98807A"},{name:"Taupe Brown",hex:"#8B6B58"},{name:"Warm Brown",hex:"#7A5A48"},{name:"Driftwood",hex:"#786058"},{name:"Cocoa",hex:"#6B4A3A"},{name:"Coffee",hex:"#5C4033"},{name:"Chestnut",hex:"#5A4038"},{name:"Espresso",hex:"#4A352D"},{name:"Dark Chocolate",hex:"#3D2B24"},{name:"Bitter Chocolate",hex:"#2E201A"}],
+indigos:[{name:"Soft Indigo",hex:"#7878b8"},{name:"Storm Indigo",hex:"#6868a8"},{name:"Dusty Indigo",hex:"#5a5a98"},{name:"Muted Dusk",hex:"#505078"},{name:"Twilight",hex:"#484885"},{name:"Violet Indigo",hex:"#3a3a70"},{name:"Ink",hex:"#2d2d5a"},{name:"Deep Indigo",hex:"#252545"},{name:"Black Iris",hex:"#1E1E3A"},{name:"Midnight Indigo",hex:"#1a1a2e"}],
+berries:[{name:"Raspberry",hex:"#A86878"},{name:"Berry",hex:"#9C5868"},{name:"Mulberry",hex:"#8B4858"},{name:"Cranberry",hex:"#8A4050"},{name:"Burgundy",hex:"#7A3848"},{name:"Wine",hex:"#783848"},{name:"Currant",hex:"#704058"},{name:"Plum",hex:"#684050"},{name:"Deep Wine",hex:"#6B2C3A"},{name:"Oxblood",hex:"#5C2434"},{name:"Black Cherry",hex:"#4A1828"}],
+reds:[{name:"Raspberry Red",hex:"#C83050"},{name:"Cherry",hex:"#B82040"},{name:"Tomato Red",hex:"#B03828"},{name:"True Red",hex:"#A01830"},{name:"Crimson",hex:"#9A2030"},{name:"Brick Red",hex:"#953030"},{name:"Classic Red",hex:"#8B1538"},{name:"Burnt Red",hex:"#8B2500"},{name:"Garnet",hex:"#7B2030"},{name:"Wine Red",hex:"#722F37"}],
+foundations:[{name:"Pure White",hex:"#FFFFFF"},{name:"Champagne",hex:"#F7E7CE"},{name:"Ivory",hex:"#F5F0EB"},{name:"Cream",hex:"#E8E0D8"},{name:"Warm Gold",hex:"#D4A878"},{name:"Antique Gold",hex:"#CFB53B"},{name:"Bronze",hex:"#CD7F32"},{name:"Silver",hex:"#C0C0C0"},{name:"Rose Gold",hex:"#B87850"},{name:"Burnished Copper",hex:"#B87333"},{name:"Antique Bronze",hex:"#8C7853"},{name:"Charcoal",hex:"#2D2D35"},{name:"Soft Black",hex:"#1A1A1F"},{name:"True Black",hex:"#000000"}]
+};
+
+// ═══ 38 PAIRINGS ═══
+const pairings=[
+{title:"The Signature",colors:["#1E4D3D","#D4817A"],desc:"Forest green + coral. Your most powerful combination. The velvet jumpsuit energy."},
+{title:"The Romantic Edge",colors:["#1A1A1F","#D4A5A5"],desc:"Black + dusty rose. Gothic femininity. The choker and the blush."},
+{title:"The Ocean",colors:["#1C3A4D","#F5F0EB"],desc:"Navy + ivory. Elegant severity. The strapless gown mood."},
+{title:"The Wine Hour",colors:["#6B2C3A","#5A9A82"],desc:"Deep wine + sage. Unexpected harmony. Teal eyeshadow, berry lips."},
+{title:"The Blush",colors:["#E8C4C4","#D4817A"],desc:"Pink + coral. All-over flush. The monochrome moment."},
+{title:"The Midnight",colors:["#1A1A1F","#CFB53B"],desc:"Black + gold. Occult glamour. Moon pendants and candlelight."},
+{title:"The Garden",colors:["#5A9A82","#FFFFFF"],desc:"Seafoam + white. Fresh, clean, alive. Summer daytime energy."},
+{title:"The Drama",colors:["#5C2434","#C0C0C0"],desc:"Oxblood + silver. High contrast. Stage presence."},
+{title:"The Chocolate Box",colors:["#3D2B24","#A01830"],desc:"Dark chocolate + true red. That iconic photo. Old Hollywood glamour."},
+{title:"The Coffee House",colors:["#5C4033","#E8C4C4"],desc:"Coffee brown + blush pink. Warm, approachable, effortlessly chic."},
+{title:"The Autumn Siren",colors:["#3D2B24","#D4817A"],desc:"Chocolate + coral. Your warmth meets your warmth. Unexpectedly perfect."},
+{title:"The Library",colors:["#4A352D","#1C3A4D"],desc:"Espresso + navy. Intellectual depth. Lecture hall energy."},
+{title:"The Red Moment",colors:["#A01830","#000000"],desc:"True red + black. Maximum impact. Comedy stage presence."},
+{title:"The Earthy Goddess",colors:["#6B4A3A","#5A9A82"],desc:"Cocoa + seafoam. Grounded but fresh. Nature witch vibes."},
+{title:"The Velvet Hour",colors:["#3D2B24","#1E4D3D"],desc:"Chocolate + forest. Rich, deep, luxurious. Evening opulence."},
+{title:"The Coral Depths",colors:["#D4817A","#2A4858"],desc:"Soft coral + deep ocean. Warm and cool in perfect tension."},
+{title:"The Ink & Blush",colors:["#252545","#D4A5A5"],desc:"Deep indigo + dusty rose. Moody romance. Late night poetry."},
+{title:"The Twilight",colors:["#484885","#CFB53B"],desc:"Violet indigo + antique gold. Celestial glamour. Stargazing energy."},
+{title:"The Storm",colors:["#1a1a2e","#C0C0C0"],desc:"Midnight indigo + silver. Thunder and lightning. Dramatic entrance."},
+{title:"The Mystic",colors:["#252545","#A888B8"],desc:"Deep indigo + orchid. Purple on purple. Witchy and wise."},
+{title:"The Night Orchid",colors:["#1a1a2e","#D4817A"],desc:"Midnight indigo + coral. Dark meets warm. Unexpected magic."},
+{title:"The Peacock",colors:["#387878","#CFB53B"],desc:"Peacock teal + antique gold. Regal and unexpected. Statement energy."},
+{title:"The Rust & Pine",colors:["#985850","#1E4D3D"],desc:"Burnt sienna + forest velvet. Like autumn in the Pacific Northwest."},
+{title:"The Rosewood Hour",colors:["#B05050","#1A1A1F"],desc:"Deep rose coral + black. Leather jacket energy. The expensive version of effortless."},
+{title:"The Copper Flame",colors:["#B87333","#7B2030"],desc:"Burnished copper + garnet. Jewelry box glamour. Renaissance portrait energy."},
+{title:"The Sage Branch",colors:["#355C50","#D4817A"],desc:"Dark sage + soft coral. Military jacket meets feminine flush. Your contradiction."},
+{title:"The Bronze Age",colors:["#CD7F32","#252545"],desc:"Bronze + deep indigo. Ancient and modern at once. Museum gala energy."},
+{title:"The Mauve Smoke",colors:["#704058","#E8C4C4"],desc:"Currant + blush cloud. Warm spice with softness. The cashmere sweater moment."},
+{title:"The Moss & Berry",colors:["#4A6B62","#6B2C3A"],desc:"Moss + deep wine. Forest floor after rain. Witchy but grounded."},
+{title:"The Terra Firma",colors:["#B05050","#4A352D"],desc:"Terra cotta + espresso. Monochrome warmth. Pottery studio to dinner."},
+{title:"The Brick & Gold",colors:["#953030","#CFB53B"],desc:"Brick red + antique gold. Byzantine mosaic energy. Bold, ancient, commanding."},
+{title:"The Black Iris",colors:["#1E1E3A","#E8C4C4"],desc:"Black iris + blush cloud. Bruise meets bloom. The darkest kind of romantic."},
+{title:"The Petrol & Peony",colors:["#1A3838","#C07090"],desc:"Dark petrol + peony. Moody depth with a flush of life. Night garden energy."},
+{title:"The Black Cherry",colors:["#4A1828","#D4A878"],desc:"Black cherry + warm gold. Opulent darkness. Velvet opera box mood."},
+{title:"The Canyon",colors:["#B86860","#2B4840"],desc:"Strawberry + deep evergreen. Desert meets forest. The road trip palette."},
+{title:"The Nightshade",colors:["#604070","#CFB53B"],desc:"Nightshade + antique gold. Poison and treasure. The villain origin story."},
+{title:"The Cobalt Hour",colors:["#305090","#D4817A"],desc:"Cobalt + soft coral. Electric depth meets warm flush. The gallery opening palette."},
+{title:"The Royal Ink",colors:["#305090","#CFB53B"],desc:"Cobalt + antique gold. Regal and commanding. Crown jewel energy."}
+];
+
+// ═══ 21 MAKEUP LOOKS ═══
+const makeupLooks=[
+{name:"The Everyday",desc:"Your signature: heavy coral flush, nude-rose lip, shimmer on lids",eye:"#E8A090",cheek:"#D4817A",lip:"#C89898"},
+{name:"The Smoky Coral",desc:"Taupe smoke on eyes, coral cheeks, dusty rose lip",eye:"#A08070",cheek:"#DB8A80",lip:"#C8A0A8"},
+{name:"The Night Out",desc:"Deep bronze-taupe smoke, heavy flush, berry lip",eye:"#5C4033",cheek:"#D4817A",lip:"#8B4858"},
+{name:"The Green Siren",desc:"Teal-green shimmer on lids, coral flush, wine lip",eye:"#3A8080",cheek:"#E09888",lip:"#783848"},
+{name:"The Rose Gold",desc:"Copper shimmer all over, peachy flush, nude lip",eye:"#B87850",cheek:"#E8A090",lip:"#D4A5A5"},
+{name:"The Chocolate Kiss",desc:"Dark chocolate smoke, soft coral cheeks, classic red lip",eye:"#3D2B24",cheek:"#D4817A",lip:"#A01830"},
+{name:"The Coffee Date",desc:"Warm espresso in the crease, mushroom on lid, rosy nude lip",eye:"#5C4033",cheek:"#D4A5A5",lip:"#B89888"},
+{name:"The Bold Statement",desc:"Soft neutral eye, minimal cheek, true red lip stealing the show",eye:"#A08070",cheek:"#E8C4C4",lip:"#8B1538"},
+{name:"The Forest Witch",desc:"Deep forest liner, cocoa crease, berry-stained lip",eye:"#1E4D3D",cheek:"#C8A0A8",lip:"#6B2C3A"},
+{name:"The Navy Night",desc:"Midnight navy smoke, pink champagne cheek, wine lip",eye:"#1C3A4D",cheek:"#E0B8C0",lip:"#5C2434"},
+{name:"The Indigo Dream",desc:"Deep indigo smoke, dusty rose cheek, plum lip",eye:"#252545",cheek:"#D4A5A5",lip:"#684050"},
+{name:"The Twilight",desc:"Violet indigo lid, soft coral flush, berry lip",eye:"#484885",cheek:"#D4817A",lip:"#8B4858"},
+{name:"The Orchid Hour",desc:"Soft lavender lid, blush cheek, mauve rose lip",eye:"#D4C4E0",cheek:"#E0B8C0",lip:"#C8A0A8"},
+{name:"The Teal Temptress",desc:"Bright teal lid, coral flush, raspberry lip",eye:"#3A8080",cheek:"#DB8A80",lip:"#9C5868"},
+{name:"The Purple Reign",desc:"Deep amethyst smoke, pink champagne cheek, plum wine lip",eye:"#8868A0",cheek:"#E0B8C0",lip:"#503868"},
+{name:"The Rust Hour",desc:"Burnt sienna wash on lids, warm coral flush, cranberry lip",eye:"#985850",cheek:"#D4817A",lip:"#8A4050"},
+{name:"The Bronze Goddess",desc:"Bronze shimmer on lids, terra cotta flush, garnet lip",eye:"#CD7F32",cheek:"#B05050",lip:"#7B2030"},
+{name:"The Sage Smoke",desc:"Dark sage smudged on lids, peachy flush, wine lip",eye:"#355C50",cheek:"#EAAA96",lip:"#783848"},
+{name:"The Black Iris",desc:"Black iris wash on lids, pebble contour, cranberry lip",eye:"#1E1E3A",cheek:"#98807A",lip:"#8A4050"},
+{name:"The Nightshade",desc:"Nightshade on lids, ballet slipper cheek, deep wine lip",eye:"#604070",cheek:"#E0B8C0",lip:"#6B2C3A"},
+{name:"The Cobalt Siren",desc:"Cobalt liner or wash on lids, coral flush, berry lip",eye:"#305090",cheek:"#DB8A80",lip:"#7A3848"}
+];
+
+const zonesDef=[{id:"hair",label:"Hair",def:"url(#hairGrad)"},{id:"top",label:"Top",def:"#2a2a35"},{id:"sleeves",label:"Sleeves",def:"#2a2a35"},{id:"belt",label:"Belt",def:"#1a1a1f"},{id:"bottom",label:"Bottom",def:"#1f1f28"},{id:"shoes",label:"Shoes",def:"#1a1a1f"},{id:"earrings",label:"Earrings",def:"#CFB53B"},{id:"necklace",label:"Necklace",def:"#CFB53B"},{id:"bag",label:"Bag",def:"#3D2B24"},{id:"bracelet",label:"Bracelet",def:"#CFB53B"},{id:"eyes",label:"Eyes",def:"#E8D5C4"},{id:"cheeks",label:"Cheeks",def:"transparent"},{id:"lips",label:"Lips",def:"#C89898"}];
+let outfit={},selectedColor=null,activeZone=null,savedLooks=[];
+try{savedLooks=JSON.parse(localStorage.getItem('vs-looks')||'[]')}catch(e){}
+const allColors=Object.values(colors).flat();
+
+// ═══ SPARKLES ═══
+function initSparkles(){const f=document.getElementById('sparkleField');for(let i=0;i<45;i++){const s=document.createElement('div');s.className=Math.random()>.3?'sparkle':'sparkle-pulse';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.animationDuration=(8+Math.random()*12)+'s';s.style.animationDelay=Math.random()*8+'s';s.style.width=s.style.height=(1.5+Math.random()*3)+'px';f.appendChild(s)}}
+
+// ═══ MODE SWITCH ═══
+function switchMode(mode){
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.mode-content').forEach(c=>c.classList.remove('active'));
+  const idx=mode==='palette'?0:mode==='makeup'?1:2;
+  document.querySelectorAll('.mode-tab')[idx].classList.add('active');
+  document.getElementById(mode==='palette'?'paletteMode':mode==='makeup'?'makeupMode':'pairingsMode').classList.add('active');
+}
+
+// ═══ PALETTE ═══
+function buildPalette(){const c=document.getElementById('paletteContainer');c.innerHTML='';Object.entries(colors).forEach(([cat,cols],i)=>{const sec=document.createElement('div');sec.className='cat-section';const hdr=document.createElement('div');hdr.className='cat-header'+(i===0?' open':'');hdr.innerHTML=`<span class="arrow">▶</span>${cat}<span class="cat-count">${cols.length}</span>`;hdr.onclick=()=>{hdr.classList.toggle('open');hdr.nextElementSibling.classList.toggle('open')};const cd=document.createElement('div');cd.className='cat-colors'+(i===0?' open':'');cols.forEach(col=>{const sw=document.createElement('div');sw.className='swatch';sw.style.background=col.hex;sw.draggable=true;sw.innerHTML=`<div class="swatch-tip">${col.name}</div>`;sw.onclick=e=>{e.stopPropagation();document.querySelectorAll('.swatch').forEach(s=>s.classList.remove('selected'));sw.classList.add('selected');selectedColor={hex:col.hex,name:col.name};if(activeZone)applyColor(activeZone,selectedColor)};sw.ondragstart=e=>{e.dataTransfer.setData('text/plain',JSON.stringify({hex:col.hex,name:col.name}))};cd.appendChild(sw)});sec.appendChild(hdr);sec.appendChild(cd);c.appendChild(sec)})}
+
+// ═══ MAKEUP LOOKS ═══
+function buildMakeup(){const c=document.getElementById('makeupContainer');c.innerHTML='';makeupLooks.forEach(look=>{const d=document.createElement('div');d.className='makeup-look';d.innerHTML=`<div class="makeup-look-name">${look.name}</div><div class="makeup-look-desc">${look.desc}</div><div class="makeup-swatches"><div class="makeup-swatch" style="background:${look.eye}"></div><span class="makeup-label">eye</span><div class="makeup-swatch" style="background:${look.cheek}"></div><span class="makeup-label">cheek</span><div class="makeup-swatch" style="background:${look.lip}"></div><span class="makeup-label">lip</span></div>`;d.onclick=()=>{applyColor('eyes',{hex:look.eye,name:look.name+' Eye'});applyColor('cheeks',{hex:look.cheek,name:look.name+' Cheek'});applyColor('lips',{hex:look.lip,name:look.name+' Lip'});document.querySelectorAll('.makeup-look').forEach(m=>m.style.borderColor='rgba(207,181,59,.1)');d.style.borderColor='rgba(207,181,59,.6)'};c.appendChild(d)})}
+
+// ═══ PAIRINGS BROWSER ═══
+function findColorName(hex){const h=hex.toUpperCase();for(const cols of Object.values(colors)){const f=cols.find(c=>c.hex.toUpperCase()===h);if(f)return f.name}return hex}
+
+function applyPairing(p){
+  const c1={hex:p.colors[0],name:findColorName(p.colors[0])};
+  const c2={hex:p.colors[1],name:findColorName(p.colors[1])};
+  applyColor('top',c1);applyColor('bottom',c2);
+  applyColor('belt',c1);applyColor('shoes',c1);
+  applyColor('bag',c2);
+}
+
+function buildPairings(){const c=document.getElementById('pairingsContainer');c.innerHTML='';pairings.forEach(p=>{const d=document.createElement('div');d.className='pairing-card';d.innerHTML=`<div class="pairing-card-name">${p.title}</div><div class="pairing-card-desc">${p.desc}</div><div class="pairing-card-swatches"><div class="pairing-swatch" style="background:${p.colors[0]}"></div><span class="pairing-plus">+</span><div class="pairing-swatch" style="background:${p.colors[1]}"></div><button class="pairing-card-btn" onclick="event.stopPropagation()">Style Me</button></div>`;d.querySelector('.pairing-card-btn').onclick=e=>{e.stopPropagation();applyPairing(p);document.querySelectorAll('.pairing-card').forEach(c=>c.style.borderColor='rgba(207,181,59,.1)');d.style.borderColor='rgba(207,181,59,.6)'};d.onclick=()=>{};c.appendChild(d)})}
+
+// ═══ SUGGESTION WHISPERS ═══
+function checkSuggestions(){
+  const area=document.getElementById('suggestArea');
+  const usedHexes=Object.values(outfit).map(c=>c.hex.toUpperCase());
+  if(!usedHexes.length){area.innerHTML='';return}
+  let suggestions=[];
+  pairings.forEach(p=>{
+    const c1=p.colors[0].toUpperCase();
+    const c2=p.colors[1].toUpperCase();
+    const has1=usedHexes.includes(c1);
+    const has2=usedHexes.includes(c2);
+    if(has1&&!has2)suggestions.push({pairing:p,addHex:p.colors[1],addName:findColorName(p.colors[1])});
+    else if(has2&&!has1)suggestions.push({pairing:p,addHex:p.colors[0],addName:findColorName(p.colors[0])});
+  });
+  if(!suggestions.length){area.innerHTML='';return}
+  // Show up to 3 suggestions
+  area.innerHTML='<div class="suggest-label">✦ Complete a Pairing ✦</div>'+suggestions.slice(0,3).map(s=>`<div class="suggest-whisper" onclick="suggestApply('${s.addHex}','${s.addName.replace(/'/g,"\\'")}','${s.pairing.title.replace(/'/g,"\\'")}')"><div class="suggest-text">Add ${s.addName} for...</div><div class="suggest-pair"><div class="suggest-swatch" style="background:${s.addHex}"></div><div class="suggest-name">${s.pairing.title}</div></div></div>`).join('');
+}
+
+function suggestApply(hex,name,pairingTitle){
+  const color={hex,name};
+  // Find first empty clothing zone to put it in
+  const tryZones=['top','bottom','belt','sleeves','shoes','bag','necklace','earrings','bracelet'];
+  const emptyZone=tryZones.find(z=>!outfit[z]);
+  if(emptyZone)applyColor(emptyZone,color);
+  else applyColor('bottom',color); // fallback: replace bottom
+}
+// ═══ SLOTS ═══
+function buildSlots(){const c=document.getElementById('outfitSlots');c.innerHTML='';zonesDef.forEach(z=>{const s=document.createElement('div');s.className='outfit-slot'+(activeZone===z.id?' active':'');const o=outfit[z.id];s.innerHTML=`<div class="slot-preview" style="background:${o?o.hex:'rgba(255,255,255,.05)'}"></div><div><div class="slot-name">${z.label}</div><div class="slot-color-name">${o?o.name:'—'}</div></div><div class="slot-clear" data-zone="${z.id}">×</div>`;s.onclick=e=>{if(e.target.classList.contains('slot-clear')){clearZone(z.id);return}activeZone=z.id;document.querySelectorAll('.zone').forEach(el=>el.classList.remove('active'));document.querySelectorAll(`[data-zone="${z.id}"]`).forEach(el=>el.classList.add('active'));if(selectedColor)applyColor(z.id,selectedColor);buildSlots()};c.appendChild(s)})}
+
+// ═══ APPLY/CLEAR ═══
+function applyColor(zid,color){outfit[zid]=color;if(zid==='necklace'){document.getElementById('zone-necklace').setAttribute('stroke',color.hex);document.getElementById('zone-necklace-gem').setAttribute('fill',color.hex)}else if(zid==='bracelet'){document.getElementById('zone-bracelet').setAttribute('stroke',color.hex)}else if(zid==='bag'){const g=document.getElementById('zone-bag');g.querySelector('rect').setAttribute('fill',color.hex);g.querySelector('path').setAttribute('stroke',color.hex)}else if(zid==='eyes'){document.getElementById('zone-eye-l').setAttribute('fill',color.hex);document.getElementById('zone-eye-r').setAttribute('fill',color.hex)}else if(zid==='cheeks'){document.getElementById('zone-cheek-l').setAttribute('fill',color.hex);document.getElementById('zone-cheek-r').setAttribute('fill',color.hex)}else if(zid==='lips'){document.getElementById('zone-lips').setAttribute('fill',color.hex)}else{document.querySelectorAll(`[data-zone="${zid}"]`).forEach(el=>{if(el.getAttribute('fill')&&el.getAttribute('fill')!=='none'&&!el.style.pointerEvents)el.setAttribute('fill',color.hex)})}buildSlots();checkPairings()}
+
+function clearZone(zid){delete outfit[zid];const z=zonesDef.find(z=>z.id===zid);if(zid==='necklace'){document.getElementById('zone-necklace').setAttribute('stroke',z.def);document.getElementById('zone-necklace-gem').setAttribute('fill',z.def)}else if(zid==='bracelet'){document.getElementById('zone-bracelet').setAttribute('stroke',z.def)}else if(zid==='bag'){const g=document.getElementById('zone-bag');g.querySelector('rect').setAttribute('fill',z.def);g.querySelector('path').setAttribute('stroke',z.def)}else if(zid==='eyes'){document.getElementById('zone-eye-l').setAttribute('fill',z.def);document.getElementById('zone-eye-r').setAttribute('fill',z.def)}else if(zid==='cheeks'){document.getElementById('zone-cheek-l').setAttribute('fill',z.def);document.getElementById('zone-cheek-r').setAttribute('fill',z.def)}else if(zid==='lips'){document.getElementById('zone-lips').setAttribute('fill',z.def)}else{document.querySelectorAll(`[data-zone="${zid}"]`).forEach(el=>{if(el.getAttribute('fill')&&el.getAttribute('fill')!=='none'&&!el.style.pointerEvents)el.setAttribute('fill',z.def)})}buildSlots();checkPairings()}
+
+function initZones(){document.querySelectorAll('.zone').forEach(el=>{const zone=el.dataset.zone;el.addEventListener('click',()=>{activeZone=zone;document.querySelectorAll('.zone').forEach(z=>z.classList.remove('active'));document.querySelectorAll(`[data-zone="${zone}"]`).forEach(z=>z.classList.add('active'));if(selectedColor)applyColor(zone,selectedColor);buildSlots()});el.addEventListener('dragover',e=>e.preventDefault());el.addEventListener('drop',e=>{e.preventDefault();try{const d=JSON.parse(e.dataTransfer.getData('text/plain'));applyColor(zone,d)}catch(err){}})})}
+
+function checkPairings(){const used=Object.values(outfit).map(c=>c.hex.toUpperCase());const alert=document.getElementById('pairingAlert');let found=[];pairings.forEach(p=>{if(used.includes(p.colors[0].toUpperCase())&&used.includes(p.colors[1].toUpperCase()))found.push(p)});if(found.length){alert.classList.add('show');document.getElementById('pairingMatches').innerHTML=found.map(f=>`<div class="p-match"><div class="p-match-name">${f.title}</div><div class="p-match-desc">${f.desc}</div></div>`).join('')}else alert.classList.remove('show');checkSuggestions()}
+
+function randomize(){['top','sleeves','belt','bottom','shoes','earrings','necklace','bag','bracelet'].forEach(z=>{applyColor(z,allColors[Math.floor(Math.random()*allColors.length)])})}
+function clearAll(){zonesDef.forEach(z=>clearZone(z.id));outfit={};buildSlots();checkPairings()}
+function saveLook(){if(!Object.keys(outfit).length)return;savedLooks.push({name:'Look #'+(savedLooks.length+1),outfit:{...outfit}});try{localStorage.setItem('vs-looks',JSON.stringify(savedLooks))}catch(e){}renderSaved()}
+function loadLook(i){clearAll();Object.entries(savedLooks[i].outfit).forEach(([z,c])=>applyColor(z,c))}
+function deleteLook(i){savedLooks.splice(i,1);try{localStorage.setItem('vs-looks',JSON.stringify(savedLooks))}catch(e){}renderSaved()}
+function renderSaved(){const c=document.getElementById('savedLooks');c.innerHTML='';savedLooks.forEach((l,i)=>{const d=document.createElement('div');d.className='saved-look';d.innerHTML=`<div class="saved-colors">${Object.values(l.outfit).slice(0,6).map(c=>`<div class="saved-mini" style="background:${c.hex}"></div>`).join('')}</div><div class="saved-name">${l.name}</div><div class="saved-delete" onclick="event.stopPropagation();deleteLook(${i})">×</div>`;d.onclick=()=>loadLook(i);c.appendChild(d)})}
+
+initSparkles();buildPalette();buildMakeup();buildPairings();buildSlots();initZones();renderSaved();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
