@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaos Tarot</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #0D0D1A;
+  --bg-surface: #1A1A2E;
+  --bg-card: rgba(30, 30, 50, 0.8);
+  --surface-cream: #F5E6D3;
+  --surface-gold: #D4AF37;
+  --text-light: #E8E4E1;
+  --text-muted: #7A7A8C;
+  --accent-purple: #9B59B6;
+  --accent-blue: #3498DB;
+  --accent-pink: #E91E8C;
+  --accent-gold: #D4AF37;
+  --glow-purple: rgba(155, 89, 182, 0.4);
+  --glow-gold: rgba(212, 175, 55, 0.4);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes starPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes cardReveal {
+  0% { transform: rotateY(180deg) scale(0.8); opacity: 0; }
+  50% { transform: rotateY(90deg) scale(1.1); }
+  100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 30px var(--glow-purple), 0 0 60px var(--glow-gold); }
+  50% { box-shadow: 0 0 50px var(--glow-purple), 0 0 100px var(--glow-gold); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: radial-gradient(ellipse at center, var(--bg-surface) 0%, var(--bg-deep) 100%);
+  color: var(--text-light);
+  min-height: 100vh;
+  line-height: 1.6;
+  padding: 16px;
+  overflow-x: hidden;
+}
+
+/* Stars */
+.stars {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: starPulse 3s ease-in-out infinite;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 30px 16px 40px;
+}
+
+.header-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: normal;
+  background: linear-gradient(90deg, var(--accent-purple), var(--accent-gold), var(--accent-pink));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px;
+  background: var(--bg-card);
+  border: 1px solid rgba(155, 89, 182, 0.2);
+  border-radius: 10px;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab:hover {
+  background: rgba(155, 89, 182, 0.1);
+}
+
+.tab.active {
+  background: rgba(155, 89, 182, 0.2);
+  border-color: var(--accent-purple);
+  color: var(--accent-purple);
+}
+
+/* Panels */
+.panel {
+  display: none;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.panel.active {
+  display: block;
+}
+
+/* Pull Section */
+.pull-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.deck-visual {
+  position: relative;
+  width: 160px;
+  height: 240px;
+  margin: 0 auto 30px;
+  cursor: pointer;
+  perspective: 1000px;
+}
+
+.deck-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--bg-card), #2A2A4E);
+  border: 2px solid var(--accent-gold);
+  border-radius: 12px;
+  transition: all 0.3s;
+}
+
+.deck-card:nth-child(1) { transform: rotate(-3deg) translateY(6px); }
+.deck-card:nth-child(2) { transform: rotate(-1deg) translateY(3px); }
+.deck-card:nth-child(3) { transform: rotate(1deg); }
+
+.deck-card::before {
+  content: "✦";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  color: var(--accent-gold);
+  opacity: 0.5;
+}
+
+.deck-visual:hover .deck-card {
+  box-shadow: 0 0 30px var(--glow-purple);
+}
+
+.deck-visual:hover .deck-card:nth-child(3) {
+  transform: rotate(1deg) translateY(-10px);
+}
+
+.pull-prompt {
+  font-size: 1rem;
+  color: var(--surface-cream);
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.pull-btn {
+  padding: 16px 40px;
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
+  border: none;
+  border-radius: 30px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.pull-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px var(--glow-purple);
+}
+
+.pull-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Revealed Card */
+.revealed-section {
+  display: none;
+  text-align: center;
+  padding: 20px;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.revealed-section.show {
+  display: block;
+}
+
+.revealed-card {
+  width: 200px;
+  height: 300px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, var(--bg-surface), #2A2A4E);
+  border: 3px solid var(--accent-gold);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation: cardReveal 0.8s ease-out, glowPulse 2s ease-in-out infinite;
+}
+
+.revealed-emoji {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.revealed-name {
+  font-size: 1.25rem;
+  color: var(--accent-gold);
+  text-align: center;
+  line-height: 1.3;
+}
+
+.revealed-meaning {
+  font-size: 1rem;
+  color: var(--surface-cream);
+  font-style: italic;
+  line-height: 1.8;
+  max-width: 350px;
+  margin: 0 auto 20px;
+}
+
+.revealed-guidance {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+.draw-again-btn {
+  margin-top: 24px;
+  padding: 12px 30px;
+  background: transparent;
+  border: 1px solid var(--accent-purple);
+  border-radius: 25px;
+  color: var(--accent-purple);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.draw-again-btn:hover {
+  background: var(--accent-purple);
+  color: white;
+}
+
+/* Deck Management */
+.card-form {
+  background: var(--bg-card);
+  border: 1px solid rgba(155, 89, 182, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.form-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-purple);
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(155, 89, 182, 0.2);
+  border-radius: 8px;
+  color: var(--text-light);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-purple);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.form-textarea {
+  min-height: 80px;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.emoji-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.emoji-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(155, 89, 182, 0.2);
+  border-radius: 8px;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.emoji-btn:hover {
+  border-color: var(--accent-purple);
+  transform: scale(1.1);
+}
+
+.emoji-btn.selected {
+  border-color: var(--accent-gold);
+  background: rgba(212, 175, 55, 0.2);
+}
+
+.add-card-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent-purple);
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.add-card-btn:hover {
+  background: var(--accent-pink);
+  transform: scale(1.02);
+}
+
+/* Deck List */
+.deck-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deck-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(155, 89, 182, 0.15);
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.deck-item:hover {
+  border-color: rgba(155, 89, 182, 0.3);
+}
+
+.deck-item-emoji {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.deck-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.deck-item-name {
+  font-size: 0.95rem;
+  color: var(--accent-gold);
+  margin-bottom: 2px;
+}
+
+.deck-item-meaning {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deck-item-delete {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 8px;
+  opacity: 0.5;
+  transition: all 0.2s;
+}
+
+.deck-item-delete:hover {
+  opacity: 1;
+  color: var(--accent-pink);
+}
+
+.deck-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.deck-count {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 16px;
+}
+
+/* Starter pack */
+.starter-section {
+  margin-top: 24px;
+  padding: 20px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.starter-title {
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  margin-bottom: 8px;
+}
+
+.starter-text {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+.starter-btn {
+  padding: 10px 24px;
+  background: transparent;
+  border: 1px solid var(--accent-gold);
+  border-radius: 20px;
+  color: var(--accent-gold);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.starter-btn:hover {
+  background: var(--accent-gold);
+  color: var(--bg-deep);
+}
+
+/* History */
+.history-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(155, 89, 182, 0.15);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.history-date {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.history-pull {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.history-emoji {
+  font-size: 2rem;
+}
+
+.history-name {
+  font-size: 0.95rem;
+  color: var(--accent-gold);
+}
+
+.history-empty {
+  text-align: center;
+  padding: 40px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.clear-history-btn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid var(--accent-pink);
+  border-radius: 20px;
+  color: var(--accent-pink);
+  font-family: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-history-btn:hover {
+  background: var(--accent-pink);
+  color: white;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--bg-surface);
+  border: 1px solid var(--accent-purple);
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  color: var(--text-light);
+  z-index: 1000;
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="stars" id="stars"></div>
+
+<div class="container">
+  <header class="header">
+    <div class="header-icon">🔮</div>
+    <h1 class="title">Chaos Tarot</h1>
+    <p class="subtitle">Your archetypes. Your meanings. Your chaos.</p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="pull">Pull</button>
+    <button class="tab" data-tab="deck">Deck</button>
+    <button class="tab" data-tab="history">History</button>
+  </div>
+
+  <!-- Pull Panel -->
+  <div class="panel active" id="panel-pull">
+    <div class="pull-section" id="pullSection">
+      <div class="deck-visual" id="deckVisual">
+        <div class="deck-card"></div>
+        <div class="deck-card"></div>
+        <div class="deck-card"></div>
+      </div>
+      <p class="pull-prompt">The cards know something you don't.<br>Are you ready to hear it?</p>
+      <button class="pull-btn" id="pullBtn">Draw a Card</button>
+    </div>
+    
+    <div class="revealed-section" id="revealedSection">
+      <div class="revealed-card">
+        <div class="revealed-emoji" id="revealedEmoji">✦</div>
+        <div class="revealed-name" id="revealedName">The Unknown</div>
+      </div>
+      <p class="revealed-meaning" id="revealedMeaning">The meaning reveals itself...</p>
+      <div class="revealed-guidance" id="revealedGuidance">Guidance appears here...</div>
+      <button class="draw-again-btn" id="drawAgainBtn">Draw Again</button>
+    </div>
+  </div>
+
+  <!-- Deck Panel -->
+  <div class="panel" id="panel-deck">
+    <div class="card-form">
+      <div class="form-title">Create a Card</div>
+      
+      <div class="form-group">
+        <label class="form-label">Card Name</label>
+        <input type="text" class="form-input" id="cardName" placeholder="The Audacity, The Nap, The Unsubscribe...">
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Symbol</label>
+        <input type="text" class="form-input" id="cardEmoji" placeholder="Choose or type an emoji" maxlength="2">
+        <div class="emoji-picker" id="emojiPicker"></div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Meaning</label>
+        <textarea class="form-textarea" id="cardMeaning" placeholder="What does this card mean when it appears?"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">Guidance (optional)</label>
+        <textarea class="form-textarea" id="cardGuidance" placeholder="What action or reflection does this card suggest?"></textarea>
+      </div>
+      
+      <button class="add-card-btn" id="addCardBtn">Add to Deck</button>
+    </div>
+    
+    <div class="deck-list" id="deckList"></div>
+    <div class="deck-count" id="deckCount"></div>
+    
+    <div class="starter-section" id="starterSection">
+      <div class="starter-title">Need inspiration?</div>
+      <div class="starter-text">Load a starter deck with archetypes to get you going</div>
+      <button class="starter-btn" id="starterBtn">Load Starter Deck</button>
+    </div>
+  </div>
+
+  <!-- History Panel -->
+  <div class="panel" id="panel-history">
+    <div id="historyList"></div>
+    <button class="clear-history-btn" id="clearHistoryBtn">Clear History</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Starter deck
+const starterDeck = [
+  { emoji: "💅", name: "The Audacity", meaning: "You are being called to do the thing you're scared to do. Not recklessly, but boldly. The audacity is not optional today.", guidance: "What would you do if you weren't afraid of being seen as 'too much'?" },
+  { emoji: "😴", name: "The Nap", meaning: "Rest is not laziness. Your body is asking for something. The answers you seek require a rested mind to receive them.", guidance: "What are you avoiding by staying busy?" },
+  { emoji: "🔇", name: "The Unsubscribe", meaning: "Something or someone in your life is no longer serving you. This card gives you permission to release it without guilt.", guidance: "What would you stop doing if you admitted you don't actually have to?" },
+  { emoji: "🔥", name: "The Burn It Down", meaning: "A structure needs to fall. This might be an external situation or an internal belief. Destruction precedes creation.", guidance: "What are you maintaining out of fear rather than love?" },
+  { emoji: "🪞", name: "The Mirror", meaning: "What you're reacting to in someone else is showing you something about yourself. This isn't comfortable, but it's useful.", guidance: "What quality in others triggers you most? Where might you possess it too?" },
+  { emoji: "🌙", name: "The Wait", meaning: "Not yet. The timing isn't right and forcing it will cost you. Trust that the delay has purpose.", guidance: "What would patience look like right now?" },
+  { emoji: "⚡", name: "The Impulse", meaning: "Act now. Your first instinct is correct. Overthinking is the enemy today.", guidance: "What do you already know the answer to?" },
+  { emoji: "🎭", name: "The Mask", meaning: "You're performing a version of yourself that isn't true. Who are you protecting? What would happen if you stopped?", guidance: "Where in your life are you being inauthentic to keep the peace?" },
+  { emoji: "🌊", name: "The Overwhelm", meaning: "You're carrying too much. This card isn't asking you to push through—it's asking you to put something down.", guidance: "What's one thing you can remove from your plate today?" },
+  { emoji: "🗝️", name: "The Answer", meaning: "You already know. The information you need is not external. Sit quietly and let it surface.", guidance: "If you trusted yourself completely, what would you do?" },
+  { emoji: "🎪", name: "The Circus", meaning: "Everything feels chaotic because it IS chaotic. Stop trying to make it make sense. Just survive the show.", guidance: "What can you laugh at instead of crying about?" },
+  { emoji: "💎", name: "The Worth", meaning: "You are undervaluing yourself. Your time, your work, your presence. The price you're asking is too low.", guidance: "Where are you giving yourself away for free?" },
+  { emoji: "🚪", name: "The Exit", meaning: "A door is available. You don't have to stay. Leaving is not failure.", guidance: "What would you walk away from if you weren't afraid of judgment?" },
+  { emoji: "🌱", name: "The Seed", meaning: "Something is beginning. It's too early to see results. Keep watering it anyway.", guidance: "What are you nurturing that hasn't shown growth yet?" },
+  { emoji: "👁️", name: "The Seen", meaning: "You want to be witnessed. This is not vanity—it's human. Let yourself be visible today.", guidance: "Where are you hiding that you could be showing up?" }
+];
+
+// Emoji options
+const emojiOptions = ["✨", "🔮", "🌙", "⭐", "💀", "🦋", "🌸", "🔥", "💎", "🗡️", "👑", "🌊", "🌿", "🦊", "🐍", "🕯️", "📿", "🎭", "💫", "🖤"];
+
+// State
+let state = {
+  deck: [],
+  history: []
+};
+
+// Load state
+function loadState() {
+  const saved = localStorage.getItem("chaosTarot");
+  if (saved) {
+    state = JSON.parse(saved);
+  }
+}
+
+function saveState() {
+  localStorage.setItem("chaosTarot", JSON.stringify(state));
+}
+
+// Init
+function init() {
+  loadState();
+  initStars();
+  setupTabs();
+  setupEmojiPicker();
+  setupPull();
+  setupDeck();
+  setupHistory();
+  renderDeck();
+  renderHistory();
+  updatePullButton();
+}
+
+function initStars() {
+  const container = document.getElementById("stars");
+  for (let i = 0; i < 60; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 3 + "s";
+    star.style.animationDuration = (2 + Math.random() * 2) + "s";
+    container.appendChild(star);
+  }
+}
+
+function setupTabs() {
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      tab.classList.add("active");
+      document.getElementById("panel-" + tab.dataset.tab).classList.add("active");
+    });
+  });
+}
+
+function setupEmojiPicker() {
+  const picker = document.getElementById("emojiPicker");
+  picker.innerHTML = emojiOptions.map(e => `<button class="emoji-btn" data-emoji="${e}">${e}</button>`).join("");
+  
+  picker.querySelectorAll(".emoji-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("cardEmoji").value = btn.dataset.emoji;
+      picker.querySelectorAll(".emoji-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+    });
+  });
+}
+
+function setupPull() {
+  const pullBtn = document.getElementById("pullBtn");
+  const drawAgainBtn = document.getElementById("drawAgainBtn");
+  const deckVisual = document.getElementById("deckVisual");
+  
+  pullBtn.addEventListener("click", pullCard);
+  drawAgainBtn.addEventListener("click", resetPull);
+  deckVisual.addEventListener("click", () => {
+    if (state.deck.length > 0) pullCard();
+  });
+}
+
+function pullCard() {
+  if (state.deck.length === 0) {
+    showToast("Add cards to your deck first!");
+    return;
+  }
+  
+  // Random card
+  const card = state.deck[Math.floor(Math.random() * state.deck.length)];
+  
+  // Add to history
+  state.history.unshift({
+    ...card,
+    pulledAt: new Date().toISOString()
+  });
+  if (state.history.length > 50) state.history.pop();
+  saveState();
+  
+  // Show reveal
+  document.getElementById("pullSection").style.display = "none";
+  document.getElementById("revealedSection").classList.add("show");
+  
+  document.getElementById("revealedEmoji").textContent = card.emoji;
+  document.getElementById("revealedName").textContent = card.name;
+  document.getElementById("revealedMeaning").textContent = card.meaning;
+  document.getElementById("revealedGuidance").textContent = card.guidance || "Sit with this card. Let it speak to you.";
+  
+  renderHistory();
+}
+
+function resetPull() {
+  document.getElementById("revealedSection").classList.remove("show");
+  document.getElementById("pullSection").style.display = "block";
+}
+
+function updatePullButton() {
+  const btn = document.getElementById("pullBtn");
+  if (state.deck.length === 0) {
+    btn.textContent = "Add Cards First";
+    btn.disabled = true;
+  } else {
+    btn.textContent = "Draw a Card";
+    btn.disabled = false;
+  }
+}
+
+function setupDeck() {
+  document.getElementById("addCardBtn").addEventListener("click", addCard);
+  document.getElementById("starterBtn").addEventListener("click", loadStarter);
+}
+
+function addCard() {
+  const name = document.getElementById("cardName").value.trim();
+  const emoji = document.getElementById("cardEmoji").value.trim() || "✦";
+  const meaning = document.getElementById("cardMeaning").value.trim();
+  const guidance = document.getElementById("cardGuidance").value.trim();
+  
+  if (!name) {
+    showToast("Give your card a name");
+    return;
+  }
+  
+  if (!meaning) {
+    showToast("What does this card mean?");
+    return;
+  }
+  
+  state.deck.push({ name, emoji, meaning, guidance });
+  saveState();
+  
+  // Clear form
+  document.getElementById("cardName").value = "";
+  document.getElementById("cardEmoji").value = "";
+  document.getElementById("cardMeaning").value = "";
+  document.getElementById("cardGuidance").value = "";
+  document.querySelectorAll(".emoji-btn").forEach(b => b.classList.remove("selected"));
+  
+  renderDeck();
+  updatePullButton();
+  showToast(`${emoji} ${name} added to deck`);
+}
+
+function loadStarter() {
+  if (state.deck.length > 0) {
+    if (!confirm("This will add starter cards to your existing deck. Continue?")) return;
+  }
+  
+  starterDeck.forEach(card => {
+    // Avoid duplicates
+    if (!state.deck.find(c => c.name === card.name)) {
+      state.deck.push(card);
+    }
+  });
+  
+  saveState();
+  renderDeck();
+  updatePullButton();
+  showToast("Starter deck loaded!");
+}
+
+function renderDeck() {
+  const list = document.getElementById("deckList");
+  const starterSection = document.getElementById("starterSection");
+  
+  if (state.deck.length === 0) {
+    list.innerHTML = '<div class="deck-empty">Your deck is empty.<br>Create your first card above.</div>';
+    starterSection.style.display = "block";
+  } else {
+    starterSection.style.display = state.deck.length < 5 ? "block" : "none";
+    
+    list.innerHTML = state.deck.map((card, i) => `
+      <div class="deck-item">
+        <span class="deck-item-emoji">${card.emoji}</span>
+        <div class="deck-item-content">
+          <div class="deck-item-name">${card.name}</div>
+          <div class="deck-item-meaning">${card.meaning}</div>
+        </div>
+        <button class="deck-item-delete" data-index="${i}">×</button>
+      </div>
+    `).join("");
+    
+    // Delete handlers
+    list.querySelectorAll(".deck-item-delete").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const index = parseInt(btn.dataset.index);
+        const card = state.deck[index];
+        if (confirm(`Remove "${card.name}" from your deck?`)) {
+          state.deck.splice(index, 1);
+          saveState();
+          renderDeck();
+          updatePullButton();
+          showToast("Card removed");
+        }
+      });
+    });
+  }
+  
+  document.getElementById("deckCount").textContent = state.deck.length > 0 
+    ? `${state.deck.length} card${state.deck.length === 1 ? '' : 's'} in deck` 
+    : "";
+}
+
+function setupHistory() {
+  document.getElementById("clearHistoryBtn").addEventListener("click", () => {
+    if (state.history.length === 0) {
+      showToast("No history to clear");
+      return;
+    }
+    if (confirm("Clear all pull history?")) {
+      state.history = [];
+      saveState();
+      renderHistory();
+      showToast("History cleared");
+    }
+  });
+}
+
+function renderHistory() {
+  const list = document.getElementById("historyList");
+  
+  if (state.history.length === 0) {
+    list.innerHTML = '<div class="history-empty">No cards pulled yet.<br>The deck awaits.</div>';
+    return;
+  }
+  
+  list.innerHTML = state.history.map(pull => {
+    const date = new Date(pull.pulledAt);
+    const dateStr = date.toLocaleDateString('en-US', { 
+      weekday: 'short', 
+      month: 'short', 
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+    
+    return `
+      <div class="history-card">
+        <div class="history-date">${dateStr}</div>
+        <div class="history-pull">
+          <span class="history-emoji">${pull.emoji}</span>
+          <span class="history-name">${pull.name}</span>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+init();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
