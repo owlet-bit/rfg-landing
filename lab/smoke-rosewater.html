@@ -1,0 +1,2813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Smoke & Rosewater</title>
+<style>
+:root {
+  --velvet: #0a0809;
+  --velvet-mid: #141213;
+  --velvet-surface: #1c1819;
+  --velvet-raised: #252122;
+  --gold-deep: #6b5533;
+  --gold-dim: #8b7355;
+  --gold: #c9a66b;
+  --gold-bright: #e8d4a8;
+  --gold-glow: rgba(201, 166, 107, 0.4);
+  --silver: #9a9a9e;
+  --rose-deep: #5c3a40;
+  --rose: #c8a8a4;
+  --rose-bright: #e8d0cc;
+  --rose-glow: rgba(200, 168, 164, 0.3);
+  --olive-mark: #7a8a78;
+  --text: #e8e4e0;
+  --text-dim: #9a9498;
+  --text-faint: #5a5558;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  background: var(--velvet);
+  color: var(--text);
+  min-height: 100vh;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* Deep velvet background with light pools */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse 120% 60% at 15% 5%, rgba(92, 58, 64, 0.2) 0%, transparent 40%),
+    radial-gradient(ellipse 100% 50% at 85% 95%, rgba(107, 85, 51, 0.15) 0%, transparent 40%),
+    radial-gradient(ellipse 80% 80% at 50% 50%, rgba(200, 168, 164, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 70% 20%, rgba(201, 166, 107, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 20% 80%, rgba(152, 168, 152, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: ambientShift 20s ease-in-out infinite alternate;
+}
+
+@keyframes ambientShift {
+  0% { opacity: 1; }
+  100% { opacity: 0.85; }
+}
+
+/* Velvet texture overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ornamental dividers */
+.ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--gold-dim);
+  font-size: 0.875rem;
+  margin: 2rem 0;
+  opacity: 0.5;
+}
+
+.ornament::before,
+.ornament::after {
+  content: "";
+  flex: 1;
+  max-width: 4rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+/* Header - ornate jewelry case lid */
+.header {
+  text-align: center;
+  padding: 3.5rem 1.5rem 2.5rem;
+  position: relative;
+  background:
+    radial-gradient(ellipse 80% 100% at 50% 0%, rgba(139, 115, 85, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(92, 58, 64, 0.08) 0%, transparent 50%);
+}
+
+/* Top ornament */
+.header::before {
+  content: "- - -";
+  position: absolute;
+  top: 0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.5rem;
+  letter-spacing: 0.5em;
+  color: var(--gold-dim);
+  opacity: 0.5;
+}
+
+/* Bottom border with glow */
+.header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-deep) 15%,
+    var(--gold) 50%,
+    var(--gold-deep) 85%,
+    transparent);
+  box-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold-glow);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--gold-bright);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.375rem;
+  text-shadow:
+    0 0 60px var(--rose-glow),
+    0 0 30px var(--gold-glow),
+    0 2px 4px rgba(0,0,0,0.8);
+  animation: titleGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 60px var(--rose-glow), 0 0 30px var(--gold-glow), 0 2px 4px rgba(0,0,0,0.8); }
+  100% { text-shadow: 0 0 80px var(--rose-glow), 0 0 50px var(--gold-glow), 0 2px 4px rgba(0,0,0,0.8); }
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.05em;
+}
+
+.season-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg,
+    rgba(92, 58, 64, 0.5) 0%,
+    rgba(107, 85, 51, 0.4) 50%,
+    rgba(92, 58, 64, 0.5) 100%);
+  border: 1px solid var(--rose-deep);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 4px 20px rgba(0,0,0,0.4),
+    0 0 30px rgba(92, 58, 64, 0.3);
+  position: relative;
+}
+
+.season-badge::before,
+.season-badge::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dim) 100%);
+  transform: rotate(45deg);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.season-text {
+  font-size: 0.875rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--rose-bright);
+  text-shadow: 0 0 20px var(--rose-glow);
+}
+
+/* Navigation - ornate tabs */
+.nav {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.nav::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.3), transparent);
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  color: var(--text-faint);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  min-height: 48px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+.nav-btn::before {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  transition: all 0.4s ease;
+  transform: translateX(-50%);
+  box-shadow: 0 0 10px var(--gold-glow);
+  opacity: 0;
+}
+
+.nav-btn:hover {
+  color: var(--text-dim);
+  border-color: rgba(139, 115, 85, 0.2);
+  background: rgba(139, 115, 85, 0.05);
+}
+
+.nav-btn:hover::before {
+  width: 60%;
+  opacity: 0.5;
+}
+
+.nav-btn.active {
+  color: var(--gold);
+  border-color: rgba(139, 115, 85, 0.3);
+  background: linear-gradient(180deg, rgba(139, 115, 85, 0.1) 0%, transparent 100%);
+}
+
+.nav-btn.active::before {
+  width: 100%;
+  opacity: 1;
+}
+
+/* Panels - jewel cases */
+.panel {
+  display: none;
+  padding: 2rem 1.5rem 4rem;
+  animation: fadeIn 0.5s ease;
+  max-width: 42rem;
+  margin: 0 auto;
+  position: relative;
+}
+
+.panel.active { display: block; }
+
+/* Ornate panel frame */
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 2rem;
+  border: 1px solid rgba(201, 166, 107, 0.15);
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, rgba(201, 166, 107, 0.08) 0%, transparent 3%),
+    linear-gradient(225deg, rgba(201, 166, 107, 0.08) 0%, transparent 3%),
+    linear-gradient(315deg, rgba(201, 166, 107, 0.08) 0%, transparent 3%),
+    linear-gradient(45deg, rgba(201, 166, 107, 0.08) 0%, transparent 3%);
+}
+
+/* Corner flourishes */
+.panel::after {
+  content: "◈ ◈ ◈";
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold-dim);
+  opacity: 0.3;
+  font-size: 0.75rem;
+  letter-spacing: 0.75em;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Section headers - ornate with flourishes */
+.section-header {
+  text-align: center;
+  margin: 3rem 0 2rem;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+.section-title {
+  font-size: 0.9375rem;
+  font-weight: normal;
+  color: var(--gold);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 0 1.5rem;
+  background: var(--velvet);
+  position: relative;
+  z-index: 1;
+  text-shadow: 0 0 20px var(--gold-glow);
+}
+
+.section-header::before,
+.section-header::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  width: 30%;
+  max-width: 120px;
+}
+
+.section-header::before {
+  left: 5%;
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+.section-header::after {
+  right: 5%;
+  background: linear-gradient(90deg, var(--gold-dim), transparent);
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+.section-subtitle {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-top: 0.625rem;
+  letter-spacing: 0.02em;
+}
+
+/* Prose - illuminated manuscript feel */
+.prose {
+  max-width: 34rem;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  text-align: justify;
+  hyphens: auto;
+  padding: 2rem 1.75rem;
+  background: linear-gradient(135deg,
+    rgba(35, 31, 32, 0.9) 0%,
+    rgba(26, 23, 24, 0.7) 100%);
+  border: 1px solid rgba(139, 115, 85, 0.2);
+  position: relative;
+  box-shadow:
+    inset 0 0 60px rgba(0,0,0,0.3),
+    0 10px 40px rgba(0,0,0,0.4);
+}
+
+/* Top gold border with glow */
+.prose::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--gold-deep) 10%,
+    var(--gold) 25%,
+    var(--gold-bright) 50%,
+    var(--gold) 75%,
+    var(--gold-deep) 90%,
+    transparent 100%);
+  box-shadow: 0 0 20px var(--gold-glow), 0 0 40px var(--gold-glow);
+}
+
+/* Bottom gold border */
+.prose::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--gold-deep) 10%,
+    var(--gold) 25%,
+    var(--gold-bright) 50%,
+    var(--gold) 75%,
+    var(--gold-deep) 90%,
+    transparent 100%);
+  box-shadow: 0 0 20px var(--gold-glow);
+}
+
+/* Corner ornaments for prose - created via box-shadow trick */
+.prose-wrapper {
+  position: relative;
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+.prose-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  opacity: 0.6;
+}
+
+.prose-corner::before,
+.prose-corner::after {
+  content: "";
+  position: absolute;
+  background: var(--gold-dim);
+}
+
+.prose-corner::before {
+  width: 100%;
+  height: 2px;
+}
+
+.prose-corner::after {
+  width: 2px;
+  height: 100%;
+}
+
+.prose-corner.tl { top: -4px; left: -4px; }
+.prose-corner.tl::before { top: 0; left: 0; }
+.prose-corner.tl::after { top: 0; left: 0; }
+
+.prose-corner.tr { top: -4px; right: -4px; }
+.prose-corner.tr::before { top: 0; right: 0; }
+.prose-corner.tr::after { top: 0; right: 0; }
+
+.prose-corner.bl { bottom: -4px; left: -4px; }
+.prose-corner.bl::before { bottom: 0; left: 0; }
+.prose-corner.bl::after { bottom: 0; left: 0; }
+
+.prose-corner.br { bottom: -4px; right: -4px; }
+.prose-corner.br::before { bottom: 0; right: 0; }
+.prose-corner.br::after { bottom: 0; right: 0; }
+
+.prose p {
+  margin-bottom: 1.25rem;
+  text-indent: 1.5rem;
+}
+
+.prose p:first-child {
+  text-indent: 0;
+}
+
+.prose p:first-child::first-letter {
+  font-size: 3.5rem;
+  float: left;
+  line-height: 0.75;
+  padding-right: 0.75rem;
+  padding-top: 0.3rem;
+  color: var(--rose);
+  font-style: italic;
+  text-shadow: 2px 2px 0 var(--rose-deep);
+}
+
+/* Source Pigments - specimen case */
+.specimens {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.625rem;
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+  background:
+    linear-gradient(180deg, rgba(20, 18, 19, 0.95) 0%, rgba(10, 8, 9, 0.98) 100%);
+  border: 2px solid rgba(139, 115, 85, 0.25);
+  position: relative;
+  box-shadow:
+    inset 0 0 40px rgba(0,0,0,0.4),
+    0 8px 30px rgba(0,0,0,0.5);
+}
+
+/* Gold trim at top */
+.specimens::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-deep) 20%,
+    var(--gold) 50%,
+    var(--gold-deep) 80%,
+    transparent);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+/* Decorative bottom element */
+.specimens::after {
+  content: "◈";
+  position: absolute;
+  bottom: -0.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--gold-dim);
+  font-size: 0.75rem;
+  background: var(--velvet);
+  padding: 0 0.5rem;
+  opacity: 0.5;
+}
+
+.specimen {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem;
+  background: var(--velvet-surface);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 52px;
+  border: 1px solid transparent;
+}
+
+.specimen:active {
+  transform: scale(0.98);
+  border-color: var(--gold-dim);
+}
+
+.specimen-stone {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow:
+    inset 0 -3px 6px rgba(0,0,0,0.5),
+    inset 0 3px 6px rgba(255,255,255,0.15),
+    0 2px 6px rgba(0,0,0,0.6);
+  position: relative;
+}
+
+.specimen-stone::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 6px;
+  height: 4px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  transform: rotate(-30deg);
+}
+
+.specimen-label {
+  flex: 1;
+  min-width: 0;
+}
+
+.specimen-source {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.125rem;
+}
+
+.specimen-name {
+  font-size: 0.875rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Palette - gems in velvet tray */
+.palette-group {
+  margin-bottom: 2rem;
+}
+
+.palette-label {
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.gems {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 0.5rem;
+  padding: 1.5rem 1rem;
+  background:
+    linear-gradient(180deg, rgba(20, 18, 19, 0.95) 0%, rgba(10, 8, 9, 0.98) 100%),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(201, 166, 107, 0.02) 10px,
+      rgba(201, 166, 107, 0.02) 20px
+    );
+  border: 1px solid rgba(139, 115, 85, 0.2);
+  position: relative;
+  box-shadow:
+    inset 0 2px 10px rgba(0,0,0,0.5),
+    inset 0 -2px 10px rgba(0,0,0,0.3),
+    0 4px 20px rgba(0,0,0,0.4);
+}
+
+/* Velvet tray inner glow */
+.gems::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(201, 166, 107, 0.3) 20%,
+    rgba(201, 166, 107, 0.5) 50%,
+    rgba(201, 166, 107, 0.3) 80%,
+    transparent);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+.gem {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow:
+    inset 0 -10px 15px rgba(0,0,0,0.6),
+    inset 0 10px 15px rgba(255,255,255,0.12),
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 6px 20px rgba(0,0,0,0.6),
+    0 2px 4px rgba(0,0,0,0.4);
+  transform-style: preserve-3d;
+  overflow: hidden;
+}
+
+/* Main highlight */
+.gem::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 14px;
+  height: 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+/* Shimmer effect */
+.gem::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(255,255,255,0.1) 45%,
+    rgba(255,255,255,0.2) 50%,
+    rgba(255,255,255,0.1) 55%,
+    transparent 60%
+  );
+  animation: gemShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes gemShimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+/* Staggered shimmer for variation */
+.gem-wrap:nth-child(2n) .gem::after { animation-delay: 0.5s; }
+.gem-wrap:nth-child(3n) .gem::after { animation-delay: 1s; }
+.gem-wrap:nth-child(4n) .gem::after { animation-delay: 1.5s; }
+.gem-wrap:nth-child(5n) .gem::after { animation-delay: 2s; }
+.gem-wrap:nth-child(7n) .gem::after { animation-delay: 0.75s; }
+.gem-wrap:nth-child(11n) .gem::after { animation-delay: 2.5s; }
+
+/* Vary shimmer duration for organic feel */
+.gem-wrap:nth-child(3n+1) .gem::after { animation-duration: 4.5s; }
+.gem-wrap:nth-child(5n+2) .gem::after { animation-duration: 3.5s; }
+.gem-wrap:nth-child(7n+3) .gem::after { animation-duration: 5s; }
+
+.gem:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 -10px 15px rgba(0,0,0,0.6),
+    inset 0 10px 15px rgba(255,255,255,0.15),
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 10px 30px rgba(0,0,0,0.5),
+    0 0 20px rgba(201, 166, 107, 0.2);
+}
+
+.gem:active {
+  transform: scale(0.94) translateY(1px);
+  box-shadow:
+    inset 0 -6px 10px rgba(0,0,0,0.6),
+    inset 0 6px 10px rgba(255,255,255,0.1),
+    0 2px 8px rgba(0,0,0,0.5);
+}
+
+/* Favorite star - needs to override ::after */
+.gem.favorite {
+  box-shadow:
+    inset 0 -10px 15px rgba(0,0,0,0.6),
+    inset 0 10px 15px rgba(255,255,255,0.12),
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 6px 20px rgba(0,0,0,0.6),
+    0 0 15px var(--gold-glow);
+}
+
+.gem.favorite::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  background: radial-gradient(circle, var(--gold-bright) 20%, var(--gold) 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--gold), 0 0 25px var(--gold-glow);
+  animation: starPulse 2s ease-in-out infinite;
+  transform: none;
+}
+
+@keyframes starPulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 15px var(--gold), 0 0 25px var(--gold-glow); }
+  50% { transform: scale(1.15); box-shadow: 0 0 20px var(--gold), 0 0 35px var(--gold-glow); }
+}
+
+.gem.in-compare {
+  box-shadow:
+    inset 0 -10px 15px rgba(0,0,0,0.6),
+    inset 0 10px 15px rgba(255,255,255,0.12),
+    0 0 0 3px var(--gold),
+    0 0 25px var(--gold-glow),
+    0 6px 20px rgba(0,0,0,0.6);
+}
+
+.gem.olive-friendly {
+  border: 2px solid var(--olive-mark);
+  box-shadow:
+    inset 0 -10px 15px rgba(0,0,0,0.6),
+    inset 0 10px 15px rgba(255,255,255,0.12),
+    0 6px 20px rgba(0,0,0,0.6),
+    0 0 10px rgba(122, 138, 120, 0.3);
+}
+
+/* Gem with visible name */
+.gem-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 52px;
+}
+
+.gem-name {
+  font-size: 0.6875rem;
+  color: var(--text-faint);
+  text-align: center;
+  line-height: 1.2;
+  max-width: 56px;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Instruction hints */
+.hint {
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(135deg,
+    rgba(35, 31, 32, 0.6) 0%,
+    rgba(26, 23, 24, 0.4) 100%);
+  border-left: 2px solid var(--rose-deep);
+  border-right: 2px solid var(--rose-deep);
+  position: relative;
+}
+
+.hint::before {
+  content: "·";
+  position: absolute;
+  left: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rose);
+  font-size: 1.5rem;
+  line-height: 0;
+}
+
+.hint::after {
+  content: "·";
+  position: absolute;
+  right: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--rose);
+  font-size: 1.5rem;
+  line-height: 0;
+}
+
+/* Compare frame - like a jeweler's loupe tray */
+.compare-frame {
+  max-width: 22rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(28, 24, 25, 0.95) 0%, rgba(20, 18, 19, 0.98) 100%);
+  border: 2px solid rgba(139, 115, 85, 0.3);
+  position: relative;
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.3),
+    0 8px 30px rgba(0,0,0,0.5),
+    0 0 0 1px rgba(201, 166, 107, 0.1);
+}
+
+/* Top ornate border */
+.compare-frame::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: 1rem;
+  right: 1rem;
+  height: 4px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-deep) 15%,
+    var(--gold) 40%,
+    var(--gold-bright) 50%,
+    var(--gold) 60%,
+    var(--gold-deep) 85%,
+    transparent);
+  box-shadow: 0 0 15px var(--gold-glow);
+}
+
+/* Bottom ornate border */
+.compare-frame::after {
+  content: "⬥ ⬥ ⬥";
+  position: absolute;
+  bottom: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.625rem;
+  color: var(--gold-dim);
+  letter-spacing: 0.5em;
+  background: var(--velvet);
+  padding: 0 1rem;
+  opacity: 0.6;
+}
+
+.compare-slots {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.compare-slot {
+  flex: 1;
+  aspect-ratio: 1;
+  background: var(--velvet);
+  border: 1px dashed var(--text-faint);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 90px;
+  position: relative;
+  overflow: hidden;
+}
+
+.compare-slot.filled {
+  border-style: solid;
+  border-color: rgba(139, 115, 85, 0.4);
+  box-shadow:
+    inset 0 -10px 20px rgba(0,0,0,0.4),
+    inset 0 10px 20px rgba(255,255,255,0.05);
+}
+
+.compare-slot .placeholder {
+  font-size: 0.875rem;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.compare-slot .slot-name {
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.9);
+  margin-top: auto;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.5);
+  width: 100%;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+}
+
+.verdict-box {
+  text-align: center;
+  padding: 1rem;
+  background: var(--velvet);
+  border: 1px solid rgba(139, 115, 85, 0.2);
+}
+
+.verdict-title {
+  font-size: 1rem;
+  color: var(--gold);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+.verdict-text {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.btn-secondary {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.875rem;
+  background: transparent;
+  border: 1px solid var(--text-faint);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 48px;
+}
+
+.btn-secondary:hover {
+  border-color: var(--rose-deep);
+  color: var(--rose);
+}
+
+/* Makeup Section - the crown jewel */
+.makeup-card {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg,
+    rgba(35, 31, 32, 0.95) 0%,
+    rgba(26, 23, 24, 0.85) 100%);
+  border: 1px solid rgba(200, 168, 164, 0.2);
+  position: relative;
+  box-shadow:
+    inset 0 0 40px rgba(0,0,0,0.2),
+    0 8px 30px rgba(0,0,0,0.4);
+}
+
+/* Top rose gold accent line with glow */
+.makeup-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--rose-deep) 15%,
+    var(--rose) 35%,
+    var(--rose-bright) 50%,
+    var(--rose) 65%,
+    var(--rose-deep) 85%,
+    transparent 100%);
+  box-shadow: 0 0 20px var(--rose-glow), 0 0 40px var(--rose-glow);
+}
+
+/* Corner diamonds */
+.makeup-card::after {
+  content: "◇";
+  position: absolute;
+  top: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--rose);
+  font-size: 0.875rem;
+  background: var(--velvet);
+  padding: 0 0.5rem;
+  text-shadow: 0 0 10px var(--rose-glow);
+}
+
+.makeup-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(139, 115, 85, 0.15);
+}
+
+.makeup-title {
+  font-size: 1.125rem;
+  color: var(--rose-bright);
+  font-style: italic;
+}
+
+.makeup-category {
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+.makeup-swatches {
+  display: flex;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.makeup-swatch {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  box-shadow:
+    inset 0 -4px 8px rgba(0,0,0,0.4),
+    inset 0 4px 8px rgba(255,255,255,0.15),
+    0 3px 8px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease;
+}
+
+.makeup-swatch::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  width: 8px;
+  height: 5px;
+  background: rgba(255,255,255,0.35);
+  border-radius: 50%;
+  transform: rotate(-25deg);
+}
+
+.makeup-swatch:active {
+  transform: scale(0.9);
+}
+
+.makeup-swatch.olive-friendly::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #98A898 0%, #7E7068 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(152, 168, 152, 0.6);
+}
+
+.makeup-swatch-name {
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.makeup-swatch:hover .makeup-swatch-name,
+.makeup-swatch:focus .makeup-swatch-name {
+  opacity: 1;
+}
+
+.makeup-guidance {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+  font-style: italic;
+  padding: 0.75rem;
+  background: rgba(15, 13, 14, 0.5);
+  border-left: 2px solid var(--rose-deep);
+}
+
+.makeup-tip {
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(107, 85, 51, 0.1);
+  border: 1px solid rgba(139, 115, 85, 0.2);
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+
+.makeup-tip strong {
+  color: var(--gold);
+  font-weight: normal;
+}
+
+/* Metals Guide */
+.metals-showcase {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(20, 18, 19, 0.6) 0%, transparent 100%);
+  border: 1px solid rgba(139, 115, 85, 0.1);
+  position: relative;
+}
+
+.metals-showcase::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 2rem;
+  right: 2rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+}
+
+.metal-card {
+  padding: 1.25rem 1rem;
+  background: linear-gradient(180deg,
+    rgba(28, 24, 25, 0.9) 0%,
+    rgba(20, 18, 19, 0.95) 100%);
+  border: 1px solid rgba(139, 115, 85, 0.25);
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.03),
+    0 4px 15px rgba(0,0,0,0.3);
+}
+
+.metal-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.05),
+    0 8px 25px rgba(0,0,0,0.4),
+    0 0 20px var(--gold-glow);
+}
+
+.metal-card.recommended {
+  border-color: var(--gold);
+  background: linear-gradient(180deg,
+    rgba(139, 115, 85, 0.2) 0%,
+    rgba(28, 24, 25, 0.95) 100%);
+  box-shadow:
+    inset 0 0 30px rgba(201, 166, 107, 0.1),
+    0 4px 15px rgba(0,0,0,0.3),
+    0 0 25px rgba(201, 166, 107, 0.15);
+}
+
+.metal-card.recommended::before {
+  content: "★";
+  position: absolute;
+  top: -0.625rem;
+  right: -0.25rem;
+  color: var(--gold);
+  font-size: 1rem;
+  text-shadow: 0 0 10px var(--gold-glow);
+}
+
+.metal-swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin: 0 auto 0.75rem;
+  position: relative;
+  box-shadow:
+    inset 0 -8px 15px rgba(0,0,0,0.5),
+    inset 0 8px 15px rgba(255,255,255,0.25),
+    0 6px 20px rgba(0,0,0,0.5);
+  overflow: hidden;
+}
+
+/* Main highlight */
+.metal-swatch::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: 18px;
+  height: 12px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.2) 50%, transparent 100%);
+  border-radius: 50%;
+}
+
+/* Shimmer sweep animation */
+.metal-swatch::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 35%,
+    rgba(255,255,255,0.15) 45%,
+    rgba(255,255,255,0.3) 50%,
+    rgba(255,255,255,0.15) 55%,
+    transparent 65%
+  );
+  animation: metalShimmer 3s ease-in-out infinite;
+}
+
+@keyframes metalShimmer {
+  0% { transform: translateX(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) rotate(45deg); }
+}
+
+.metal-name {
+  font-size: 0.9375rem;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.metal-verdict {
+  font-size: 0.8125rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.metal-guidance {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  background: var(--velvet-surface);
+  border: 1px solid rgba(139, 115, 85, 0.15);
+}
+
+.metal-guidance-title {
+  font-size: 1rem;
+  color: var(--gold);
+  font-style: italic;
+  margin-bottom: 0.75rem;
+}
+
+.metal-guidance-text {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+
+/* Tools Section */
+.tool-block {
+  margin-bottom: 2.5rem;
+}
+
+/* Mood Translation */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.625rem;
+  max-width: 26rem;
+  margin: 0 auto 1.5rem;
+}
+
+.mood-btn {
+  padding: 1rem;
+  background: var(--velvet-surface);
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 52px;
+}
+
+.mood-btn:hover {
+  background: var(--velvet-raised);
+  color: var(--text);
+  border-color: rgba(139, 115, 85, 0.2);
+}
+
+.mood-btn.active {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  background: rgba(139, 115, 85, 0.15);
+}
+
+.mood-result {
+  max-width: 26rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(180deg,
+    rgba(28, 24, 25, 0.95) 0%,
+    rgba(20, 18, 19, 0.98) 100%);
+  border: 1px solid rgba(139, 115, 85, 0.3);
+  display: none;
+  position: relative;
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.2),
+    0 6px 25px rgba(0,0,0,0.4);
+}
+
+.mood-result::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-dim) 30%,
+    var(--gold) 50%,
+    var(--gold-dim) 70%,
+    transparent);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.mood-result.visible { display: block; }
+
+.mood-result-title {
+  font-size: 1rem;
+  color: var(--gold);
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.mood-colors {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mood-gem {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow:
+    inset 0 -4px 8px rgba(0,0,0,0.4),
+    inset 0 4px 8px rgba(255,255,255,0.12),
+    0 2px 8px rgba(0,0,0,0.5);
+  transition: transform 0.2s ease;
+}
+
+.mood-gem:active {
+  transform: scale(0.9);
+}
+
+.mood-guidance {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  text-align: center;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* Outfit Autopsy */
+.autopsy-inputs {
+  display: flex;
+  gap: 0.625rem;
+  max-width: 22rem;
+  margin: 0 auto 1rem;
+  justify-content: center;
+}
+
+.autopsy-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.autopsy-picker-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid var(--text-faint);
+  position: relative;
+  background: var(--velvet);
+}
+
+.autopsy-picker-wrap input[type="color"] {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  cursor: pointer;
+  border: none;
+}
+
+.autopsy-label {
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  max-width: 22rem;
+  margin: 1rem auto;
+  padding: 1rem;
+  background: linear-gradient(180deg,
+    var(--rose-deep) 0%,
+    #4a2a30 50%,
+    #3a1a20 100%);
+  border: 1px solid var(--rose);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  min-height: 48px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 4px 15px rgba(0,0,0,0.4);
+}
+
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--rose-bright), transparent);
+  opacity: 0.5;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(180deg,
+    #7a5a60 0%,
+    var(--rose-deep) 50%,
+    #4a2a30 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.15),
+    0 6px 20px rgba(0,0,0,0.5),
+    0 0 20px var(--rose-glow);
+  transform: translateY(-1px);
+}
+
+.autopsy-result {
+  max-width: 26rem;
+  margin: 1.5rem auto 0;
+  padding: 1.25rem;
+  background: var(--velvet-surface);
+  border: 1px solid rgba(107, 74, 80, 0.35);
+  display: none;
+}
+
+.autopsy-result.visible { display: block; }
+
+.autopsy-diagnosis {
+  font-size: 1.0625rem;
+  color: var(--rose);
+  font-style: italic;
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.autopsy-explanation {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+
+.autopsy-fix {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  padding: 1rem;
+  background: var(--velvet);
+  border-left: 3px solid var(--gold-dim);
+}
+
+.autopsy-fix strong {
+  color: var(--gold);
+  font-weight: normal;
+}
+
+/* Test External Color */
+.test-frame {
+  max-width: 22rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(180deg,
+    rgba(28, 24, 25, 0.95) 0%,
+    rgba(20, 18, 19, 0.98) 100%);
+  border: 1px solid rgba(139, 115, 85, 0.3);
+  position: relative;
+  box-shadow:
+    inset 0 0 25px rgba(0,0,0,0.2),
+    0 6px 25px rgba(0,0,0,0.4);
+}
+
+.test-frame::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-dim) 30%,
+    var(--gold) 50%,
+    var(--gold-dim) 70%,
+    transparent);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.test-input-row {
+  display: flex;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+}
+
+.test-hex-input {
+  flex: 1;
+  background: var(--velvet);
+  border: 1px solid var(--text-faint);
+  color: var(--text);
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  font-size: 0.9375rem;
+  padding: 0.875rem 1rem;
+  min-height: 48px;
+}
+
+.test-hex-input:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+}
+
+.test-hex-input::placeholder {
+  color: var(--text-faint);
+}
+
+.test-picker-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--text-faint);
+}
+
+.test-picker-wrap input[type="color"] {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  top: -50%;
+  left: -50%;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-gold {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(180deg,
+    var(--gold) 0%,
+    var(--gold-dim) 50%,
+    var(--gold-deep) 100%);
+  border: 1px solid var(--gold-bright);
+  color: var(--velvet);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  min-height: 48px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.3),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 4px 15px rgba(0,0,0,0.4),
+    0 0 15px var(--gold-glow);
+}
+
+.btn-gold::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 15%;
+  right: 15%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+}
+
+.btn-gold:hover {
+  background: linear-gradient(180deg,
+    var(--gold-bright) 0%,
+    var(--gold) 50%,
+    var(--gold-dim) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.4),
+    inset 0 -2px 0 rgba(0,0,0,0.2),
+    0 6px 20px rgba(0,0,0,0.5),
+    0 0 25px var(--gold-glow);
+  transform: translateY(-1px);
+}
+
+.test-result {
+  margin-top: 1.25rem;
+  display: none;
+}
+
+.test-result.visible { display: block; }
+
+.test-preview {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--velvet);
+}
+
+.test-swatch {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  box-shadow:
+    inset 0 -6px 12px rgba(0,0,0,0.4),
+    inset 0 6px 12px rgba(255,255,255,0.1);
+}
+
+.test-score-wrap {
+  flex: 1;
+}
+
+.test-score {
+  font-size: 2rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.test-verdict {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+.test-analysis {
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: var(--velvet);
+  border-left: 2px solid var(--gold-dim);
+}
+
+.test-actions {
+  display: flex;
+  gap: 0.625rem;
+}
+
+.test-action-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: transparent;
+  border: 1px solid var(--text-faint);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 48px;
+}
+
+.test-action-btn:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+}
+
+/* Favorites */
+.favorites-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-faint);
+  font-style: italic;
+  background: linear-gradient(180deg,
+    rgba(20, 18, 19, 0.6) 0%,
+    rgba(10, 8, 9, 0.8) 100%);
+  border: 1px dashed rgba(139, 115, 85, 0.3);
+  position: relative;
+}
+
+.favorites-empty::before {
+  content: "◇ ◇ ◇";
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--gold-dim);
+  opacity: 0.4;
+  font-size: 0.75rem;
+  letter-spacing: 0.5em;
+}
+
+.favorites-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 24rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+  background: linear-gradient(180deg,
+    rgba(20, 18, 19, 0.95) 0%,
+    rgba(10, 8, 9, 0.98) 100%);
+  border: 1px solid rgba(139, 115, 85, 0.25);
+  position: relative;
+  box-shadow:
+    inset 0 0 30px rgba(0,0,0,0.3),
+    0 6px 25px rgba(0,0,0,0.4);
+}
+
+.favorites-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent,
+    var(--gold-dim) 30%,
+    var(--gold) 50%,
+    var(--gold-dim) 70%,
+    transparent);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.favorite-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 64px;
+}
+
+.favorite-item:active {
+  transform: scale(0.95);
+}
+
+.favorite-gem {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  position: relative;
+  box-shadow:
+    inset 0 -5px 10px rgba(0,0,0,0.5),
+    inset 0 5px 10px rgba(255,255,255,0.15),
+    0 0 15px var(--gold-glow),
+    0 3px 10px rgba(0,0,0,0.4);
+  overflow: hidden;
+}
+
+.favorite-gem::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  width: 8px;
+  height: 5px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.5) 0%, transparent 100%);
+  border-radius: 50%;
+}
+
+.favorite-name {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  text-align: center;
+  max-width: 64px;
+  line-height: 1.2;
+}
+
+/* Export section */
+.export-section {
+  max-width: 22rem;
+  margin: 2.5rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(139, 115, 85, 0.2);
+}
+
+.export-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 0.625rem;
+  background: transparent;
+  border: 1px solid var(--text-faint);
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-height: 56px;
+}
+
+.export-btn:hover {
+  border-color: var(--gold-dim);
+  color: var(--text);
+}
+
+.export-btn span {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+  margin-top: 0.25rem;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: linear-gradient(135deg,
+    var(--gold-bright) 0%,
+    var(--gold) 50%,
+    var(--gold-dim) 100%);
+  color: var(--velvet);
+  padding: 0.875rem 2rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow:
+    0 4px 20px rgba(0,0,0,0.5),
+    0 0 30px var(--gold-glow),
+    inset 0 1px 0 rgba(255,255,255,0.3);
+  border: 1px solid var(--gold-bright);
+  letter-spacing: 0.05em;
+}
+
+.toast.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 400px) {
+  .gems { gap: 0.5rem 0.375rem; }
+  .gem { width: 44px; height: 44px; }
+  .gem-wrap { min-width: 48px; }
+  .gem-name { font-size: 0.625rem; max-width: 48px; }
+  .specimens { grid-template-columns: 1fr; }
+  .mood-grid { grid-template-columns: 1fr; }
+  .metals-showcase { grid-template-columns: 1fr; }
+  .makeup-swatches { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<header class="header">
+  <h1 class="title">Smoke & Rosewater</h1>
+  <p class="subtitle">A Personal Color Analysis</p>
+  <div class="season-badge">
+    <span class="season-text">Soft Summer</span>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="nav-btn active" data-panel="analysis">Analysis</button>
+  <button class="nav-btn" data-panel="palette">Palette</button>
+  <button class="nav-btn" data-panel="makeup">Makeup</button>
+  <button class="nav-btn" data-panel="metals">Metals</button>
+  <button class="nav-btn" data-panel="tools">Tools</button>
+</nav>
+
+<!-- Analysis Panel -->
+<div class="panel active" id="analysis">
+  <div class="prose">
+    <p>Your coloring lives in the space between - not warm, not cool, but the quiet place where both dissolve into softness. Your skin holds the memory of roses left to dry in a cool room, parchment touched by time, a translucency that reveals the blue-green rivers beneath. There is nothing sharp here, nothing that demands; instead, a quality of absorption, as if colors that approach you are gentled, their edges worn smooth.</p>
+    <p>Your eyes are perhaps your most telling feature - not green, not gray, not gold, but all three in conversation, shifting with the light like water over stones. They speak to the complexity of your neutral undertone, that neither-warm-nor-cool quality that allows you to borrow from both kingdoms without fully belonging to either. Your hair echoes this diplomacy: ash at the root, warming toward honey at the ends, a gradient that reveals your skin's adaptability.</p>
+    <p>You are Soft Summer in the truest sense - not the washed-out version often misrepresented, but the genuinely sophisticated season that requires colors to meet it halfway. Too bright and you disappear; too muted and you fade; too warm and something goes sour. Your palette is one of restraint made luxurious, of subtlety as a form of power.</p>
+  </div>
+
+  <div class="section-header">
+    <span class="section-title">Source Pigments</span>
+    <span class="section-subtitle">The colors extracted from you</span>
+  </div>
+  <div class="specimens" id="specimens"></div>
+</div>
+
+<!-- Palette Panel -->
+<div class="panel" id="palette">
+  <div class="hint">Tap to copy hex. Double-tap to save to favorites.</div>
+  <div id="palette-container"></div>
+</div>
+
+<!-- Makeup Panel -->
+<div class="panel" id="makeup">
+  <div class="hint">Tap any swatch to copy. Colors with a green dot work specifically because of your olive undertone.</div>
+
+  <div class="makeup-card" id="lips-section">
+    <div class="makeup-header">
+      <span class="makeup-title">Lips</span>
+      <span class="makeup-category">Your Shades</span>
+    </div>
+    <div class="makeup-swatches" id="lip-swatches"></div>
+    <div class="makeup-guidance">
+      Your natural lip color is a soft rose-brown - honor it. Because of your olive undertone, you can wear warmer nudes and muted terracottas that would look wrong on a purely cool person. These earth tones echo what's already in your skin. Dusty roses and mauves are safe; warm nudes and soft terracotta are your secret weapons.
+    </div>
+    <div class="makeup-tip">
+      <strong>Your olive advantage:</strong> Warm Nude and Muted Terracotta work on you specifically because they harmonize with the green-gold in your skin. Most Soft Summers can't wear these.
+    </div>
+  </div>
+
+  <div class="makeup-card" id="blush-section">
+    <div class="makeup-header">
+      <span class="makeup-title">Blush</span>
+      <span class="makeup-category">Your Shades</span>
+    </div>
+    <div class="makeup-swatches" id="blush-swatches"></div>
+    <div class="makeup-guidance">
+      Your natural flush is a soft dusty rose. But here's what makes you different: your olive undertone means soft coral actually works as blush on you - it adds warmth without clashing because it speaks to the yellow-green already in your skin. Most Soft Summers would look feverish in coral; you look sun-touched.
+    </div>
+    <div class="makeup-tip">
+      <strong>Olive trick:</strong> Soft Coral as blush, placed slightly higher on cheekbones, gives you a warm glow that reads natural. Stark pink reads artificial; soft coral reads like you just came in from outside.
+    </div>
+  </div>
+
+  <div class="makeup-card" id="eyes-section">
+    <div class="makeup-header">
+      <span class="makeup-title">Eyes</span>
+      <span class="makeup-category">Your Shades</span>
+    </div>
+    <div class="makeup-swatches" id="eye-swatches"></div>
+    <div class="makeup-guidance">
+      Your eyes contain gray, green, and gold - and your olive skin means khaki and sage shadows look incredibly natural on you. These greens bring out the green in your eyes while harmonizing with your undertone. Forest green in the outer corner adds depth without drama. Most eyeshadow advice tells Soft Summers to avoid green - but your olive undertone makes it one of your best options.
+    </div>
+    <div class="makeup-tip">
+      <strong>Your secret:</strong> Soft Khaki all over the lid, Forest Green in the outer V, Cocoa in the crease. This warm-leaning combination looks muddy on most Soft Summers but stunning on you because of your olive quality.
+    </div>
+  </div>
+
+  <div class="makeup-card" id="bronzer-section">
+    <div class="makeup-header">
+      <span class="makeup-title">Bronzer & Contour</span>
+      <span class="makeup-category">Your Shades</span>
+    </div>
+    <div class="makeup-swatches" id="bronzer-swatches"></div>
+    <div class="makeup-guidance">
+      Here's where your olive undertone really shines: you can wear actual bronzer where most Soft Summers can only wear taupe contour. Look for olive-toned or khaki bronzers - they have that green-brown quality that matches what's in your skin. Orange bronzer still fails, but olive-bronze looks like a real tan on you.
+    </div>
+    <div class="makeup-tip">
+      <strong>The difference:</strong> Orange bronze = wrong. Olive bronze (khaki-brown with green undertone) = your face but sun-kissed. This is genuinely bespoke to your coloring.
+    </div>
+  </div>
+</div>
+
+<!-- Metals Panel -->
+<div class="panel" id="metals">
+  <div class="hint">Your metals matter as much as your colors.</div>
+
+  <div class="metals-showcase" id="metals-showcase"></div>
+
+  <div class="metal-guidance">
+    <div class="metal-guidance-title">The Metal Rules</div>
+    <div class="metal-guidance-text">
+      Your neutral-cool undertone gives you range, but not unlimited range. Bright yellow gold fights your coolness - it reads jarring, like someone else's jewelry on your body. Rose gold works because it bridges warm and cool. Silver and pewter honor your gray undertones. Antiqued gold (with its tarnished, muted quality) works where bright gold fails.
+      <br><br>
+      For everyday: silver or pewter.
+      <br>
+      For warmth: rose gold.
+      <br>
+      For statement pieces: antiqued gold or mixed metals.
+      <br>
+      To avoid: bright polished yellow gold, especially large pieces near the face.
+    </div>
+  </div>
+</div>
+
+<!-- Tools Panel -->
+<div class="panel" id="tools">
+
+  <div class="tool-block">
+    <div class="section-header">
+      <span class="section-title">Compare</span>
+      <span class="section-subtitle">Test how two palette colors work together</span>
+    </div>
+    <div class="hint">From the Palette tab, tap colors to add them here</div>
+    <div class="compare-frame">
+      <div class="compare-slots">
+        <div class="compare-slot" id="slot-1"><span class="placeholder">Tap a color</span></div>
+        <div class="compare-slot" id="slot-2"><span class="placeholder">Tap a color</span></div>
+      </div>
+      <div class="verdict-box" id="verdict">
+        <div class="verdict-title">Awaiting two colors</div>
+        <div class="verdict-text">Add colors from your palette to see their relationship.</div>
+      </div>
+      <button class="btn-secondary" id="clear-compare">Clear</button>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="section-header">
+      <span class="section-title">Mood Translation</span>
+      <span class="section-subtitle">Colors for how you want to feel</span>
+    </div>
+    <div class="mood-grid" id="mood-grid"></div>
+    <div class="mood-result" id="mood-result">
+      <div class="mood-result-title" id="mood-title"></div>
+      <div class="mood-colors" id="mood-colors"></div>
+      <div class="mood-guidance" id="mood-guidance"></div>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="section-header">
+      <span class="section-title">Outfit Autopsy</span>
+      <span class="section-subtitle">Diagnose why an outfit failed</span>
+    </div>
+    <div class="autopsy-inputs">
+      <div class="autopsy-input">
+        <div class="autopsy-picker-wrap"><input type="color" id="autopsy-1" value="#888888"></div>
+        <span class="autopsy-label">Color 1</span>
+      </div>
+      <div class="autopsy-input">
+        <div class="autopsy-picker-wrap"><input type="color" id="autopsy-2" value="#888888"></div>
+        <span class="autopsy-label">Color 2</span>
+      </div>
+      <div class="autopsy-input">
+        <div class="autopsy-picker-wrap"><input type="color" id="autopsy-3" value="#888888"></div>
+        <span class="autopsy-label">Color 3</span>
+      </div>
+    </div>
+    <button class="btn-primary" id="autopsy-btn">Diagnose This Outfit</button>
+    <div class="autopsy-result" id="autopsy-result">
+      <div class="autopsy-diagnosis" id="autopsy-diagnosis"></div>
+      <div class="autopsy-explanation" id="autopsy-explanation"></div>
+      <div class="autopsy-fix" id="autopsy-fix"></div>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="section-header">
+      <span class="section-title">Test External Color</span>
+      <span class="section-subtitle">Check if a color works for you</span>
+    </div>
+    <div class="test-frame">
+      <div class="test-input-row">
+        <input type="text" class="test-hex-input" id="test-hex" placeholder="#000000" maxlength="7">
+        <div class="test-picker-wrap"><input type="color" id="test-picker" value="#888888"></div>
+      </div>
+      <button class="btn-gold" id="test-btn">Analyze</button>
+      <div class="test-result" id="test-result">
+        <div class="test-preview">
+          <div class="test-swatch" id="test-swatch"></div>
+          <div class="test-score-wrap">
+            <div class="test-score" id="test-score"></div>
+            <div class="test-verdict" id="test-verdict-label"></div>
+          </div>
+        </div>
+        <div class="test-analysis" id="test-analysis"></div>
+        <div class="test-actions">
+          <button class="test-action-btn" id="test-save">Save to Favorites</button>
+          <button class="test-action-btn" id="test-clear">Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tool-block">
+    <div class="section-header">
+      <span class="section-title">Favorites</span>
+      <span class="section-subtitle">Your saved colors</span>
+    </div>
+    <div id="favorites-container">
+      <div class="favorites-empty">Double-tap any swatch to save it here</div>
+    </div>
+  </div>
+
+  <div class="export-section">
+    <div class="section-header">
+      <span class="section-title">Export</span>
+    </div>
+    <button class="export-btn" id="export-json">Export Full Palette (JSON)<span>All colors with metadata</span></button>
+    <button class="export-btn" id="export-fav-json">Export Favorites (JSON)<span>Your saved colors only</span></button>
+    <button class="export-btn" id="export-text">Copy as Text List<span>Simple hex list for sharing</span></button>
+  </div>
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Data
+const sourcePigments = [
+  { source: "Skin Base", name: "Rose Parchment", hex: "#E6D4C8" },
+  { source: "Translucency", name: "Cool Undertone", hex: "#D8C8C4" },
+  { source: "Natural Flush", name: "Dusty Rose", hex: "#D4A0A0" },
+  { source: "Lips", name: "Soft Mauve", hex: "#B89090" },
+  { source: "Hair Root", name: "Ash Mushroom", hex: "#9A8A78" },
+  { source: "Hair Length", name: "Honey Wheat", hex: "#C8B898" },
+  { source: "Eyes Primary", name: "Sage Gray", hex: "#889888" },
+  { source: "Eyes Inner", name: "Olive Gold", hex: "#A49468" },
+  { source: "Brows", name: "Soft Umber", hex: "#6E6058" },
+  { source: "Veins", name: "River Blue", hex: "#6890A0" }
+];
+
+// Palette with olive-friendly markers for colors that work because of your olive undertone
+const paletteData = {
+  "Neutrals": [
+    { hex: "#F2EDE8", name: "Soft White" },
+    { hex: "#F5F0E8", name: "Warm White" },
+    { hex: "#D4D0CC", name: "Light Gray" },
+    { hex: "#A8A8AC", name: "Silver Gray" },
+    { hex: "#9E9088", name: "Medium Taupe", olive: true },
+    { hex: "#A89894", name: "Rose Taupe" },
+    { hex: "#7E7068", name: "Cocoa Gray", olive: true },
+    { hex: "#585450", name: "Soft Charcoal" },
+    { hex: "#484444", name: "Deep Charcoal" },
+    { hex: "#6E7478", name: "Blue Gray" },
+    { hex: "#B0A898", name: "Greige", olive: true },
+    { hex: "#8E8880", name: "Stone" }
+  ],
+  "Near-Neutrals": [
+    { hex: "#C8A8A4", name: "Dusty Rose" },
+    { hex: "#A8909C", name: "Mauve" },
+    { hex: "#A8A0B4", name: "Dusty Lavender" },
+    { hex: "#98A898", name: "Soft Sage", olive: true },
+    { hex: "#9898A0", name: "Dove Gray" },
+    { hex: "#D4B8B4", name: "Muted Blush" },
+    { hex: "#C4B0A8", name: "Warm Greige", olive: true },
+    { hex: "#A8A090", name: "Soft Khaki", olive: true },
+    { hex: "#9098AC", name: "Muted Periwinkle" },
+    { hex: "#B0A8B8", name: "Greyed Lilac" }
+  ],
+  "Soft Lights": [
+    { hex: "#E8D0CC", name: "Powder Pink" },
+    { hex: "#E4D0C4", name: "Soft Peach", olive: true },
+    { hex: "#E0C8C8", name: "Pale Rose" },
+    { hex: "#D8D4E0", name: "Icy Lavender" },
+    { hex: "#C8D8D0", name: "Soft Mint", olive: true },
+    { hex: "#C8D4DC", name: "Pale Blue" },
+    { hex: "#EAE0D8", name: "Cream Rose" },
+    { hex: "#C4D4D0", name: "Light Seafoam", olive: true },
+    { hex: "#E4E0C8", name: "Soft Lemon", olive: true },
+    { hex: "#C4D8D8", name: "Pale Aqua" }
+  ],
+  "Muted Accents": [
+    { hex: "#688888", name: "Soft Teal", olive: true },
+    { hex: "#C8988C", name: "Muted Coral", olive: true },
+    { hex: "#7890A0", name: "Dusty Blue" },
+    { hex: "#A07078", name: "Soft Raspberry" },
+    { hex: "#C08080", name: "Muted Watermelon" },
+    { hex: "#70988C", name: "Soft Jade", olive: true },
+    { hex: "#987890", name: "Dusty Orchid" },
+    { hex: "#B89080", name: "Muted Terracotta", olive: true },
+    { hex: "#6898A0", name: "Grayed Turquoise", olive: true },
+    { hex: "#C49098", name: "Soft Rose" },
+    { hex: "#D0A098", name: "Muted Coral Pink", olive: true },
+    { hex: "#6880A0", name: "Slate Blue" }
+  ],
+  "Depth Colors": [
+    { hex: "#784050", name: "Soft Burgundy" },
+    { hex: "#604858", name: "Deep Plum" },
+    { hex: "#486858", name: "Forest Green", olive: true },
+    { hex: "#404858", name: "Charcoal Navy" },
+    { hex: "#38606C", name: "Deep Teal", olive: true },
+    { hex: "#704858", name: "Muted Wine" },
+    { hex: "#486050", name: "Evergreen", olive: true },
+    { hex: "#584848", name: "Soft Espresso" },
+    { hex: "#4A4244", name: "Cool Cocoa" },
+    { hex: "#5C4C48", name: "Ashy Chocolate", olive: true },
+    { hex: "#584858", name: "Soft Eggplant" },
+    { hex: "#485060", name: "Deep Slate" },
+    { hex: "#584048", name: "Blackened Rose" }
+  ],
+  "Metallics": [
+    { hex: "#C0C0C4", name: "Soft Silver" },
+    { hex: "#C8A898", name: "Rose Gold", olive: true },
+    { hex: "#888890", name: "Pewter" },
+    { hex: "#B0A080", name: "Antiqued Gold", olive: true }
+  ]
+};
+
+// Makeup colors derived from your analysis
+// Note: Your olive undertone means certain warm earth tones work that wouldn't on a purely cool person
+const makeupData = {
+  lips: [
+    { hex: "#B89090", name: "Your Natural" },
+    { hex: "#C8A8A4", name: "Dusty Rose" },
+    { hex: "#A8909C", name: "Soft Mauve" },
+    { hex: "#B89080", name: "Warm Nude", olive: true },
+    { hex: "#A07078", name: "Soft Berry" },
+    { hex: "#987890", name: "Dusty Orchid" },
+    { hex: "#C8988C", name: "Muted Terracotta", olive: true },
+    { hex: "#784050", name: "Deep Berry" }
+  ],
+  blush: [
+    { hex: "#D4A0A0", name: "Your Flush" },
+    { hex: "#C8A8A4", name: "Dusty Rose" },
+    { hex: "#D4B8B4", name: "Soft Pink" },
+    { hex: "#D0A098", name: "Soft Coral", olive: true },
+    { hex: "#C49098", name: "Soft Rose" },
+    { hex: "#A8909C", name: "Mauve" }
+  ],
+  eyes: [
+    { hex: "#9E9088", name: "Soft Taupe" },
+    { hex: "#A8A090", name: "Soft Khaki", olive: true },
+    { hex: "#A8909C", name: "Mauve" },
+    { hex: "#98A898", name: "Sage Green", olive: true },
+    { hex: "#C8A8A4", name: "Dusty Rose" },
+    { hex: "#585450", name: "Soft Charcoal" },
+    { hex: "#604858", name: "Deep Plum" },
+    { hex: "#486858", name: "Forest Green", olive: true },
+    { hex: "#38606C", name: "Deep Teal" },
+    { hex: "#7E7068", name: "Cocoa" },
+    { hex: "#B0A8B8", name: "Greyed Lilac" }
+  ],
+  bronzer: [
+    { hex: "#9E9088", name: "Taupe Contour" },
+    { hex: "#A8A090", name: "Olive Bronze", olive: true },
+    { hex: "#8E8880", name: "Cool Shadow" },
+    { hex: "#7E7068", name: "Soft Sculpt" },
+    { hex: "#A89894", name: "Rose Taupe" }
+  ]
+};
+
+// Metals data
+const metalsData = [
+  { hex: "#C0C0C4", name: "Soft Silver", verdict: "Best", description: "Your everyday metal" },
+  { hex: "#888890", name: "Pewter", verdict: "Excellent", description: "Sophisticated understatement" },
+  { hex: "#C8A898", name: "Rose Gold", verdict: "Great", description: "When you want warmth" },
+  { hex: "#B0A080", name: "Antiqued Gold", verdict: "Works", description: "Muted enough to harmonize" }
+];
+
+const moods = [
+  { name: "Quiet Authority", colors: ["#404858", "#F2EDE8", "#9E9088", "#C8A8A4"], guidance: "Lead with charcoal navy. White at face. Dusty rose as the only warmth." },
+  { name: "Soft Power", colors: ["#604858", "#D4B8B4", "#A8A8AC", "#7E7068"], guidance: "Deep plum grounds you. Blush softens. Silver catches light. Cocoa anchors." },
+  { name: "Invisible Armor", colors: ["#585450", "#9E9088", "#7E7068", "#A8A8AC"], guidance: "All neutrals. Nothing bright. You observe without being observed." },
+  { name: "Approachable Warmth", colors: ["#C8D8D0", "#E4D0C4", "#98A898", "#C8A898"], guidance: "Mint and peach together. Sage to ground. Rose gold as accent only." },
+  { name: "Romantic Darkness", colors: ["#38606C", "#604858", "#D8D4E0", "#C8A8A4"], guidance: "Deep teal meets plum. Icy lavender as surprise. Dusty rose lip." },
+  { name: "Clean Detachment", colors: ["#F2EDE8", "#D4D0CC", "#A8A8AC", "#7890A0"], guidance: "White, gray, silver, dusty blue. Nothing warm. Cool distance." }
+];
+
+// State
+let favorites = JSON.parse(localStorage.getItem("smoke-favorites") || "[]");
+let compareSlots = [null, null];
+let testColor = null;
+
+// Utilities
+function hexToRgb(hex) {
+  const r = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return r ? { r: parseInt(r[1], 16), g: parseInt(r[2], 16), b: parseInt(r[3], 16) } : null;
+}
+
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  if (max === min) { h = s = 0; }
+  else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  return { h: h * 360, s: s * 100, l: l * 100 };
+}
+
+function colorDistance(hex1, hex2) {
+  const a = hexToRgb(hex1), b = hexToRgb(hex2);
+  return Math.sqrt(Math.pow(a.r - b.r, 2) + Math.pow(a.g - b.g, 2) + Math.pow(a.b - b.b, 2));
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("visible");
+  setTimeout(() => t.classList.remove("visible"), 2000);
+}
+
+function copyText(text) {
+  if (navigator.clipboard) { navigator.clipboard.writeText(text); }
+  else {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+  }
+}
+
+function saveFavorites() {
+  localStorage.setItem("smoke-favorites", JSON.stringify(favorites));
+}
+
+// Render functions
+function renderSpecimens() {
+  const c = document.getElementById("specimens");
+  c.innerHTML = sourcePigments.map(p => `
+    <div class="specimen" data-hex="${p.hex}">
+      <div class="specimen-stone" style="background:${p.hex}"></div>
+      <div class="specimen-label">
+        <div class="specimen-source">${p.source}</div>
+        <div class="specimen-name">${p.name}</div>
+      </div>
+    </div>
+  `).join("");
+  c.querySelectorAll(".specimen").forEach(el => {
+    el.addEventListener("click", () => {
+      copyText(el.dataset.hex);
+      showToast("Copied " + el.dataset.hex);
+    });
+  });
+}
+
+function renderPalette() {
+  const c = document.getElementById("palette-container");
+  c.innerHTML = Object.entries(paletteData).map(([group, colors]) => `
+    <div class="palette-group">
+      <div class="palette-label">${group}</div>
+      <div class="gems">
+        ${colors.map(col => `
+          <div class="gem-wrap">
+            <div class="gem ${favorites.some(f => f.hex === col.hex) ? "favorite" : ""} ${col.olive ? "olive-friendly" : ""}"
+                 data-hex="${col.hex}" data-name="${col.name}" data-olive="${col.olive || false}"
+                 style="background:${col.hex}"></div>
+            <span class="gem-name">${col.name}${col.olive ? " *" : ""}</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+  `).join("");
+  bindGemEvents();
+}
+
+function bindGemEvents() {
+  document.querySelectorAll(".gem").forEach(gem => {
+    let taps = 0, timer = null;
+    gem.addEventListener("click", () => {
+      taps++;
+      if (taps === 1) {
+        timer = setTimeout(() => {
+          singleTap(gem);
+          taps = 0;
+        }, 280);
+      } else {
+        clearTimeout(timer);
+        doubleTap(gem);
+        taps = 0;
+      }
+    });
+  });
+}
+
+function singleTap(gem) {
+  const hex = gem.dataset.hex;
+  const name = gem.dataset.name;
+  if (!compareSlots[0]) {
+    compareSlots[0] = { hex, name };
+    fillSlot(1, hex, name);
+    gem.classList.add("in-compare");
+    showToast("Added " + name);
+  } else if (!compareSlots[1]) {
+    compareSlots[1] = { hex, name };
+    fillSlot(2, hex, name);
+    gem.classList.add("in-compare");
+    showToast("Added " + name);
+    generateVerdict();
+  } else {
+    copyText(hex);
+    showToast("Copied " + name);
+  }
+}
+
+function doubleTap(gem) {
+  const hex = gem.dataset.hex;
+  const name = gem.dataset.name;
+  const idx = favorites.findIndex(f => f.hex === hex);
+  if (idx > -1) {
+    favorites.splice(idx, 1);
+    gem.classList.remove("favorite");
+    showToast("Removed " + name);
+  } else {
+    favorites.push({ hex, name });
+    gem.classList.add("favorite");
+    showToast("Saved " + name);
+  }
+  saveFavorites();
+  renderFavorites();
+}
+
+function fillSlot(num, hex, name) {
+  const slot = document.getElementById("slot-" + num);
+  slot.style.background = hex;
+  slot.classList.add("filled");
+  slot.innerHTML = `<span class="slot-name">${name || hex}</span>`;
+}
+
+function clearCompare() {
+  compareSlots = [null, null];
+  document.querySelectorAll(".gem.in-compare").forEach(g => g.classList.remove("in-compare"));
+  [1, 2].forEach(n => {
+    const slot = document.getElementById("slot-" + n);
+    slot.style.background = "";
+    slot.classList.remove("filled");
+    slot.innerHTML = `<span class="placeholder">Tap a color</span>`;
+  });
+  document.getElementById("verdict").innerHTML = `
+    <div class="verdict-title">Awaiting two colors</div>
+    <div class="verdict-text">Add colors from your palette to see their relationship.</div>
+  `;
+}
+
+function generateVerdict() {
+  const c1 = compareSlots[0], c2 = compareSlots[1];
+  const dist = colorDistance(c1.hex, c2.hex);
+  const hsl1 = rgbToHsl(...Object.values(hexToRgb(c1.hex)));
+  const hsl2 = rgbToHsl(...Object.values(hexToRgb(c2.hex)));
+
+  const valueDiff = Math.abs(hsl1.l - hsl2.l);
+  const chromaDiff = Math.abs(hsl1.s - hsl2.s);
+  const warm1 = hsl1.h > 15 && hsl1.h < 75;
+  const warm2 = hsl2.h > 15 && hsl2.h < 75;
+
+  let title, text;
+
+  if (dist < 50) {
+    title = "Subtle Harmony";
+    text = "Close neighbors - use for tonal depth and layering. They create visual quiet together.";
+  } else if (warm1 === warm2 && chromaDiff < 20) {
+    title = "Natural Companions";
+    text = valueDiff > 25
+      ? "Same temperature, good value contrast. The lighter one draws the eye - position strategically."
+      : "Very similar overall. Add a darker neutral to anchor, or they may float.";
+  } else if (warm1 !== warm2) {
+    title = "Intentional Tension";
+    text = "Different temperatures create electricity. Let one dominate (70/30). The cooler shade near your face is safer.";
+  } else if (valueDiff > 30) {
+    title = "Strong Contrast";
+    text = "High value difference creates drama. The lighter color pulls focus - position it where you want attention.";
+  } else {
+    title = "Requires Mediation";
+    text = "These want different things. Separate with a neutral, or use one as a small accent only.";
+  }
+
+  document.getElementById("verdict").innerHTML = `
+    <div class="verdict-title">${title}</div>
+    <div class="verdict-text">${text}</div>
+  `;
+}
+
+function renderMakeup() {
+  const renderSwatches = (colors) => colors.map(col => `
+    <div class="makeup-swatch ${col.olive ? 'olive-friendly' : ''}" style="background:${col.hex}" data-hex="${col.hex}" data-name="${col.name}">
+      <span class="makeup-swatch-name">${col.name}${col.olive ? ' *' : ''}</span>
+    </div>
+  `).join("");
+
+  document.getElementById("lip-swatches").innerHTML = renderSwatches(makeupData.lips);
+  document.getElementById("blush-swatches").innerHTML = renderSwatches(makeupData.blush);
+  document.getElementById("eye-swatches").innerHTML = renderSwatches(makeupData.eyes);
+  document.getElementById("bronzer-swatches").innerHTML = renderSwatches(makeupData.bronzer);
+
+  // Bind click events
+  document.querySelectorAll(".makeup-swatch").forEach(swatch => {
+    swatch.addEventListener("click", () => {
+      copyText(swatch.dataset.hex);
+      const name = swatch.dataset.name;
+      showToast("Copied " + swatch.dataset.hex + (swatch.classList.contains('olive-friendly') ? " (olive-friendly)" : ""));
+    });
+  });
+}
+
+function renderMetals() {
+  const c = document.getElementById("metals-showcase");
+  c.innerHTML = metalsData.map((metal, i) => `
+    <div class="metal-card ${i < 2 ? "recommended" : ""}" data-hex="${metal.hex}">
+      <div class="metal-swatch" style="background: linear-gradient(135deg, ${metal.hex} 0%, ${adjustBrightness(metal.hex, -20)} 100%)"></div>
+      <div class="metal-name">${metal.name}</div>
+      <div class="metal-verdict">${metal.verdict}</div>
+    </div>
+  `).join("");
+
+  c.querySelectorAll(".metal-card").forEach(card => {
+    card.addEventListener("click", () => {
+      copyText(card.dataset.hex);
+      showToast("Copied " + card.dataset.hex);
+    });
+  });
+}
+
+function adjustBrightness(hex, amount) {
+  const rgb = hexToRgb(hex);
+  const r = Math.max(0, Math.min(255, rgb.r + amount));
+  const g = Math.max(0, Math.min(255, rgb.g + amount));
+  const b = Math.max(0, Math.min(255, rgb.b + amount));
+  return "#" + [r, g, b].map(x => x.toString(16).padStart(2, "0")).join("");
+}
+
+function renderMoods() {
+  const c = document.getElementById("mood-grid");
+  c.innerHTML = moods.map((m, i) => `
+    <button class="mood-btn" data-mood="${i}">${m.name}</button>
+  `).join("");
+  c.querySelectorAll(".mood-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      c.querySelectorAll(".mood-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      showMoodResult(parseInt(btn.dataset.mood));
+    });
+  });
+}
+
+function showMoodResult(idx) {
+  const m = moods[idx];
+  const result = document.getElementById("mood-result");
+  document.getElementById("mood-title").textContent = m.name;
+  document.getElementById("mood-colors").innerHTML = m.colors.map(hex => `
+    <div class="mood-gem" style="background:${hex}" data-hex="${hex}"></div>
+  `).join("");
+  document.getElementById("mood-guidance").textContent = m.guidance;
+  result.classList.add("visible");
+
+  result.querySelectorAll(".mood-gem").forEach(gem => {
+    gem.addEventListener("click", () => {
+      copyText(gem.dataset.hex);
+      showToast("Copied " + gem.dataset.hex);
+    });
+  });
+}
+
+function diagnoseOutfit() {
+  const colors = [
+    document.getElementById("autopsy-1").value,
+    document.getElementById("autopsy-2").value,
+    document.getElementById("autopsy-3").value
+  ];
+
+  const hsls = colors.map(hex => rgbToHsl(...Object.values(hexToRgb(hex))));
+  const skinBase = "#E6D4C8";
+
+  let diagnosis, explanation, fix;
+
+  const highSat = hsls.filter(h => h.s > 50).length;
+  const allWarm = hsls.every(h => h.h > 20 && h.h < 80);
+  const mixedTemp = hsls.some(h => h.h > 20 && h.h < 80) && hsls.some(h => h.h < 20 || h.h > 200);
+  const lowContrast = Math.max(...hsls.map(h => h.l)) - Math.min(...hsls.map(h => h.l)) < 20;
+  const tooFarFromSkin = colors.some(c => colorDistance(c, skinBase) > 200);
+
+  if (highSat >= 2) {
+    diagnosis = "Chroma Overload";
+    explanation = "Too many saturated colors competing. Your soft coloring gets lost - the clothes wear you.";
+    fix = "<strong>Fix:</strong> Keep only one saturated piece. Mute the others. Your power is restraint.";
+  } else if (allWarm) {
+    diagnosis = "Temperature Drift";
+    explanation = "Everything skews warm, but your undertone is neutral-cool. This makes you look tired or sallow.";
+    fix = "<strong>Fix:</strong> Swap one piece for something cool - gray, blue, or rose. Break the warm spell.";
+  } else if (mixedTemp && lowContrast) {
+    diagnosis = "Muddy Middle";
+    explanation = "Warm and cool mixed with no value contrast. The eye has nowhere to rest - it reads confused.";
+    fix = "<strong>Fix:</strong> Commit to one temperature OR add contrast. A dark anchor gives focus.";
+  } else if (lowContrast) {
+    diagnosis = "Value Collapse";
+    explanation = "Everything is the same lightness. Without contrast, you disappear into a flat wash.";
+    fix = "<strong>Fix:</strong> Add depth. Swap one piece for something significantly darker or lighter.";
+  } else if (tooFarFromSkin) {
+    diagnosis = "Alien Territory";
+    explanation = "One color is very far from your natural pigments. It creates dissonance on your body.";
+    fix = "<strong>Fix:</strong> Move that color away from your face - as a shoe, bag, or bottom.";
+  } else {
+    diagnosis = "Subtle Disharmony";
+    explanation = "Nothing obviously wrong, but something feels off. The colors may not be in conversation.";
+    fix = "<strong>Fix:</strong> Swap the middle piece for something that bridges the other two.";
+  }
+
+  const result = document.getElementById("autopsy-result");
+  document.getElementById("autopsy-diagnosis").textContent = diagnosis;
+  document.getElementById("autopsy-explanation").textContent = explanation;
+  document.getElementById("autopsy-fix").innerHTML = fix;
+  result.classList.add("visible");
+}
+
+function analyzeColor(hex) {
+  const rgb = hexToRgb(hex);
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+  let score = 100;
+  if (hsl.s > 60) score -= (hsl.s - 60) * 0.8;
+  if (hsl.l < 15 || hsl.l > 90) score -= 20;
+  if (hsl.h > 60 && hsl.h < 180) score -= 10;
+  if (hsl.s < 40) score += 10;
+  score = Math.max(0, Math.min(100, Math.round(score)));
+
+  let label, analysis;
+  if (score >= 80) {
+    label = "Excellent Match";
+    analysis = "This honors your neutral-cool undertone and soft chroma. It would flatter near your face.";
+  } else if (score >= 60) {
+    label = "Workable";
+    analysis = "Could work with consideration. Best away from face or balanced with palette colors.";
+  } else if (score >= 40) {
+    label = "Use with Care";
+    analysis = "Creates tension with your coloring. Reserve for small accents or find a more muted version.";
+  } else {
+    label = "Not Recommended";
+    analysis = "Likely to overwhelm your soft coloring or clash with your undertone.";
+  }
+
+  return { score, label, analysis };
+}
+
+function showTestResult(hex) {
+  testColor = hex;
+  const result = analyzeColor(hex);
+  document.getElementById("test-swatch").style.background = hex;
+  document.getElementById("test-score").textContent = result.score + "%";
+  document.getElementById("test-verdict-label").textContent = result.label;
+  document.getElementById("test-analysis").textContent = result.analysis;
+  document.getElementById("test-result").classList.add("visible");
+}
+
+function renderFavorites() {
+  const c = document.getElementById("favorites-container");
+  if (favorites.length === 0) {
+    c.innerHTML = `<div class="favorites-empty">Double-tap any swatch to save it here</div>`;
+    return;
+  }
+  c.innerHTML = `<div class="favorites-grid">${favorites.map(f => `
+    <div class="favorite-item" data-hex="${f.hex}">
+      <div class="favorite-gem" style="background:${f.hex}"></div>
+      <div class="favorite-name">${f.name || 'Custom'}</div>
+    </div>
+  `).join("")}</div>`;
+
+  c.querySelectorAll(".favorite-item").forEach(item => {
+    item.addEventListener("click", () => {
+      copyText(item.dataset.hex);
+      showToast("Copied " + item.dataset.hex);
+    });
+  });
+}
+
+// Event bindings
+document.querySelectorAll(".nav-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+  });
+});
+
+document.getElementById("clear-compare").addEventListener("click", clearCompare);
+document.getElementById("autopsy-btn").addEventListener("click", diagnoseOutfit);
+
+document.getElementById("test-hex").addEventListener("input", e => {
+  let v = e.target.value;
+  if (v && !v.startsWith("#")) v = "#" + v;
+  if (/^#[0-9A-Fa-f]{6}$/.test(v)) document.getElementById("test-picker").value = v;
+});
+
+document.getElementById("test-picker").addEventListener("input", e => {
+  document.getElementById("test-hex").value = e.target.value;
+});
+
+document.getElementById("test-btn").addEventListener("click", () => {
+  let hex = document.getElementById("test-hex").value;
+  if (!hex.startsWith("#")) hex = "#" + hex;
+  if (/^#[0-9A-Fa-f]{6}$/.test(hex)) showTestResult(hex);
+  else showToast("Enter valid hex");
+});
+
+document.getElementById("test-save").addEventListener("click", () => {
+  if (testColor && !favorites.some(f => f.hex === testColor)) {
+    favorites.push({ hex: testColor, name: "Custom" });
+    saveFavorites();
+    renderFavorites();
+    showToast("Saved to favorites");
+  }
+});
+
+document.getElementById("test-clear").addEventListener("click", () => {
+  testColor = null;
+  document.getElementById("test-result").classList.remove("visible");
+  document.getElementById("test-hex").value = "";
+});
+
+document.getElementById("export-json").addEventListener("click", () => {
+  const data = { title: "Smoke & Rosewater", season: "Soft Summer", sourcePigments, palette: paletteData, makeup: makeupData, metals: metalsData };
+  copyText(JSON.stringify(data, null, 2));
+  showToast("Copied JSON");
+});
+
+document.getElementById("export-fav-json").addEventListener("click", () => {
+  copyText(JSON.stringify({ favorites }, null, 2));
+  showToast("Copied favorites");
+});
+
+document.getElementById("export-text").addEventListener("click", () => {
+  const list = Object.entries(paletteData).map(([g, cols]) =>
+    `${g}:\n${cols.map(c => `  ${c.hex} - ${c.name}`).join("\n")}`
+  ).join("\n\n");
+  copyText(list);
+  showToast("Copied text list");
+});
+
+[1, 2].forEach(n => {
+  document.getElementById("slot-" + n).addEventListener("click", () => {
+    if (compareSlots[n - 1]) {
+      const hex = compareSlots[n - 1].hex;
+      document.querySelectorAll(`.gem[data-hex="${hex}"]`).forEach(g => g.classList.remove("in-compare"));
+      compareSlots[n - 1] = null;
+      const slot = document.getElementById("slot-" + n);
+      slot.style.background = "";
+      slot.classList.remove("filled");
+      slot.innerHTML = `<span class="placeholder">Tap a color</span>`;
+    }
+  });
+});
+
+// Initialize
+renderSpecimens();
+renderPalette();
+renderMakeup();
+renderMetals();
+renderMoods();
+renderFavorites();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
