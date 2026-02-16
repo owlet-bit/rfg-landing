@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartography of Mist</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--deep:#12141a;
+--deeper:#0a0b0f;
+--surface:#1a1d24;
+--surface-up:#242830;
+--rose:#B08080;
+--rose-soft:#987878;
+--rose-glow:rgba(176,128,128,0.5);
+--sage:#8B9A8F;
+--sage-glow:rgba(139,154,143,0.4);
+--slate:#7A8898;
+--slate-glow:rgba(122,136,152,0.4);
+--teal:#5B7B78;
+--lavender:#9080A0;
+--bone:#E8E3DE;
+--text:#D5CEC7;
+--text-dim:#8A8580;
+--border:rgba(139,154,143,0.2);
+--border-bright:rgba(176,128,128,0.4);
+}
+
+@keyframes softGlow{
+0%,100%{box-shadow:0 0 8px var(--rose-glow),inset 0 0 2px rgba(255,255,255,0.05)}
+50%{box-shadow:0 0 20px var(--rose-glow),0 0 40px var(--rose-glow),inset 0 0 4px rgba(255,255,255,0.1)}
+}
+@keyframes borderPulse{
+0%,100%{border-color:var(--border)}
+50%{border-color:var(--rose)}
+}
+@keyframes shimmer{
+0%{background-position:-200% center}
+100%{background-position:200% center}
+}
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-4px)}
+}
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(12px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+html{font-size:16px;scroll-behavior:smooth}
+body{
+font-family:Georgia,"Times New Roman",serif;
+background:var(--deeper);
+background-image:
+radial-gradient(ellipse at 20% 0%,rgba(139,154,143,0.08) 0%,transparent 50%),
+radial-gradient(ellipse at 80% 100%,rgba(176,128,128,0.06) 0%,transparent 50%);
+color:var(--text);
+min-height:100vh;
+line-height:1.6;
+}
+
+::selection{background:var(--rose);color:var(--deeper)}
+
+.container{max-width:740px;margin:0 auto;padding:0 1.25rem 5rem}
+
+/* Header */
+.header{
+text-align:center;
+padding:5rem 2rem 4rem;
+position:relative;
+}
+.header::before{
+content:"";
+position:absolute;
+top:50%;left:50%;
+width:300px;height:300px;
+background:radial-gradient(circle,var(--rose-glow) 0%,transparent 70%);
+transform:translate(-50%,-50%);
+animation:softGlow 4s ease-in-out infinite;
+pointer-events:none;
+opacity:0.5;
+}
+.header-season{
+font-size:0.625rem;
+letter-spacing:0.4em;
+text-transform:uppercase;
+color:var(--sage);
+margin-bottom:1rem;
+}
+.header-title{
+font-size:2.75rem;
+font-weight:300;
+letter-spacing:0.08em;
+margin-bottom:0.5rem;
+background:linear-gradient(135deg,var(--bone) 0%,var(--rose) 50%,var(--bone) 100%);
+background-size:200% auto;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+animation:shimmer 8s linear infinite;
+}
+.header-sub{
+font-style:italic;
+color:var(--text-dim);
+font-size:1rem;
+}
+
+/* Sections */
+section{
+margin-bottom:3rem;
+animation:fadeUp 0.6s ease backwards;
+}
+section:nth-child(2){animation-delay:0.1s}
+section:nth-child(3){animation-delay:0.15s}
+section:nth-child(4){animation-delay:0.2s}
+
+.section-box{
+background:var(--surface);
+border:1px solid var(--border);
+padding:2rem 1.5rem;
+position:relative;
+}
+.section-box::before{
+content:"";
+position:absolute;
+top:0;left:2rem;right:2rem;
+height:1px;
+background:linear-gradient(90deg,transparent,var(--rose),transparent);
+opacity:0.5;
+}
+
+.section-head{
+display:flex;
+align-items:center;
+gap:1rem;
+margin-bottom:1.5rem;
+}
+.section-num{
+font-size:0.6875rem;
+color:var(--rose);
+letter-spacing:0.1em;
+}
+.section-title{
+font-size:0.6875rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--text-dim);
+}
+.section-line{
+flex:1;
+height:1px;
+background:linear-gradient(90deg,var(--border),transparent);
+}
+
+/* Analysis */
+.analysis{
+font-size:1.0625rem;
+line-height:1.8;
+}
+.analysis p{margin-bottom:1.25rem;text-indent:1.5rem}
+.analysis p:first-of-type{text-indent:0}
+.analysis p:first-of-type::first-letter{
+font-size:3.75rem;
+float:left;
+line-height:0.8;
+margin-right:0.5rem;
+margin-top:0.1rem;
+color:var(--rose);
+text-shadow:0 0 30px var(--rose-glow);
+}
+
+/* Pigments */
+.pigments{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+gap:0.75rem;
+}
+.pigment{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:0.625rem;
+text-align:center;
+cursor:pointer;
+transition:all 0.3s ease;
+}
+.pigment:hover{
+border-color:var(--rose);
+box-shadow:0 0 20px var(--rose-glow);
+transform:translateY(-2px);
+}
+.pigment-color{
+aspect-ratio:1;
+margin-bottom:0.5rem;
+position:relative;
+}
+.pigment-color::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 50%);
+pointer-events:none;
+}
+.pigment-name{
+font-size:0.5rem;
+letter-spacing:0.08em;
+text-transform:uppercase;
+color:var(--text-dim);
+margin-bottom:0.125rem;
+}
+.pigment-hex{
+font-family:monospace;
+font-size:0.5rem;
+color:var(--slate);
+}
+
+/* Palette */
+.palette-intro{
+text-align:center;
+font-style:italic;
+color:var(--text-dim);
+margin-bottom:2rem;
+font-size:0.875rem;
+}
+.palette-group{margin-bottom:2rem}
+.palette-label{
+font-size:0.5625rem;
+letter-spacing:0.2em;
+text-transform:uppercase;
+color:var(--sage);
+margin-bottom:0.75rem;
+padding-bottom:0.375rem;
+border-bottom:1px solid var(--border);
+}
+.palette-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(38px,1fr));
+gap:4px;
+}
+.swatch{
+aspect-ratio:1;
+cursor:pointer;
+position:relative;
+border:1px solid rgba(255,255,255,0.05);
+transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.swatch::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 50%);
+pointer-events:none;
+opacity:0;
+transition:opacity 0.3s;
+}
+.swatch:hover{
+transform:scale(1.25) translateY(-4px);
+z-index:10;
+box-shadow:0 8px 25px rgba(0,0,0,0.4),0 0 25px var(--rose-glow);
+}
+.swatch:hover::after{opacity:1}
+.swatch.fav{animation:softGlow 2.5s ease-in-out infinite}
+.swatch.fav::before{
+content:"";
+position:absolute;
+top:3px;right:3px;
+width:5px;height:5px;
+background:var(--bone);
+border-radius:50%;
+box-shadow:0 0 6px var(--bone);
+z-index:2;
+}
+.swatch-tip{
+position:absolute;
+bottom:calc(100% + 8px);
+left:50%;
+transform:translateX(-50%) scale(0.9);
+background:var(--surface-up);
+border:1px solid var(--border-bright);
+padding:0.5rem 0.75rem;
+font-size:0.5625rem;
+white-space:nowrap;
+opacity:0;
+pointer-events:none;
+transition:all 0.25s ease;
+z-index:100;
+box-shadow:0 4px 20px rgba(0,0,0,0.4);
+}
+.swatch:hover .swatch-tip{opacity:1;transform:translateX(-50%) scale(1)}
+
+/* Favorites */
+.fav-empty{
+text-align:center;
+padding:2.5rem;
+border:1px dashed var(--border);
+color:var(--text-dim);
+font-style:italic;
+position:relative;
+}
+.fav-empty::before{
+content:"";
+position:absolute;
+top:50%;left:50%;
+width:120px;height:120px;
+background:radial-gradient(circle,var(--sage-glow) 0%,transparent 70%);
+transform:translate(-50%,-50%);
+animation:softGlow 4s ease-in-out infinite;
+pointer-events:none;
+}
+.fav-grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(60px,1fr));
+gap:0.75rem;
+}
+.fav-item{text-align:center;animation:fadeUp 0.4s ease backwards}
+.fav-swatch{
+aspect-ratio:1;
+margin-bottom:0.375rem;
+cursor:pointer;
+position:relative;
+border:1px solid var(--border);
+animation:softGlow 3s ease-in-out infinite;
+}
+.fav-swatch::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.12) 0%,transparent 50%);
+pointer-events:none;
+}
+.fav-name{font-size:0.5rem;color:var(--text-dim)}
+.fav-remove{
+position:absolute;
+top:-6px;right:-6px;
+width:18px;height:18px;
+background:var(--deep);
+border:1px solid var(--border);
+color:var(--text-dim);
+font-size:0.625rem;
+cursor:pointer;
+display:none;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+}
+.fav-swatch:hover .fav-remove{display:flex}
+.fav-remove:hover{background:var(--rose);color:var(--deep)}
+
+/* Compare */
+.compare-box{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1.5rem;
+}
+.compare-slots{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:1.5rem;
+margin-bottom:1.5rem;
+}
+.compare-slot{
+width:80px;height:80px;
+background:var(--deep);
+border:2px dashed var(--border);
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:0.5rem;
+letter-spacing:0.1em;
+text-transform:uppercase;
+color:var(--text-dim);
+transition:all 0.4s ease;
+position:relative;
+}
+.compare-slot::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.08) 0%,transparent 50%);
+pointer-events:none;
+opacity:0;
+}
+.compare-slot.filled{border-style:solid;border-color:var(--rose)}
+.compare-slot.filled::after{opacity:1}
+.compare-slot.sel{
+border-color:var(--sage);
+animation:borderPulse 1.5s ease-in-out infinite;
+box-shadow:0 0 30px var(--sage-glow);
+}
+.compare-vs{font-style:italic;color:var(--text-dim);font-size:0.75rem}
+.compare-reading{
+text-align:center;
+font-style:italic;
+min-height:2.5rem;
+font-size:0.9375rem;
+line-height:1.6;
+}
+.compare-reading:empty::before{
+content:"Select two colors to divine their relationship...";
+color:var(--text-dim);
+}
+.btn{
+background:transparent;
+border:1px solid var(--border);
+color:var(--text-dim);
+padding:0.625rem 1.5rem;
+font-family:inherit;
+font-size:0.5rem;
+letter-spacing:0.15em;
+text-transform:uppercase;
+cursor:pointer;
+transition:all 0.3s ease;
+}
+.btn:hover{
+border-color:var(--rose);
+color:var(--text);
+box-shadow:0 0 15px var(--rose-glow);
+}
+.compare-clear{display:block;margin:1.25rem auto 0}
+
+/* Looks */
+.looks-grid{display:grid;gap:1.25rem}
+.look{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1.25rem;
+position:relative;
+transition:all 0.3s ease;
+}
+.look:hover{border-color:var(--sage);box-shadow:0 4px 25px rgba(0,0,0,0.3)}
+.look-head{
+display:flex;
+justify-content:space-between;
+align-items:baseline;
+margin-bottom:1rem;
+padding-bottom:0.5rem;
+border-bottom:1px solid var(--border);
+}
+.look-title{font-size:1rem;font-style:italic}
+.look-when{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage)}
+.look-colors{display:flex;gap:0.5rem;margin-bottom:1rem}
+.look-color{
+width:38px;height:38px;
+position:relative;
+border:1px solid rgba(255,255,255,0.08);
+transition:all 0.3s ease;
+}
+.look-color::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);
+pointer-events:none;
+}
+.look-color:hover{transform:scale(1.15);box-shadow:0 0 15px var(--rose-glow)}
+.look-role{
+position:absolute;
+top:calc(100% + 4px);
+left:50%;
+transform:translateX(-50%);
+font-size:0.4375rem;
+letter-spacing:0.05em;
+text-transform:uppercase;
+color:var(--text-dim);
+white-space:nowrap;
+}
+.look-desc{font-size:0.8125rem;color:var(--text-dim);line-height:1.6;margin-top:1.25rem}
+
+/* Lab */
+.lab-tabs{
+display:flex;
+flex-wrap:wrap;
+gap:0;
+margin-bottom:1.5rem;
+border:1px solid var(--border);
+background:var(--deep);
+}
+.lab-tab{
+flex:1;
+min-width:70px;
+background:transparent;
+border:none;
+border-right:1px solid var(--border);
+color:var(--text-dim);
+padding:0.75rem 0.5rem;
+font-family:inherit;
+font-size:0.5rem;
+letter-spacing:0.1em;
+text-transform:uppercase;
+cursor:pointer;
+transition:all 0.3s ease;
+}
+.lab-tab:last-child{border-right:none}
+.lab-tab:hover{background:var(--surface);color:var(--text)}
+.lab-tab.on{
+background:var(--surface);
+color:var(--rose);
+box-shadow:inset 0 -2px 0 var(--rose);
+}
+.lab-panel{display:none;animation:fadeUp 0.4s ease}
+.lab-panel.on{display:block}
+.lab-intro{
+font-style:italic;
+color:var(--text-dim);
+margin-bottom:1.5rem;
+font-size:0.875rem;
+}
+
+/* Lighting */
+.light-tabs{
+display:flex;
+flex-wrap:wrap;
+gap:0;
+margin-bottom:1rem;
+border:1px solid var(--border);
+}
+.light-tab{
+flex:1;
+min-width:60px;
+background:var(--deep);
+border:none;
+border-right:1px solid var(--border);
+color:var(--text-dim);
+padding:0.625rem;
+font-family:inherit;
+font-size:0.4375rem;
+letter-spacing:0.08em;
+text-transform:uppercase;
+cursor:pointer;
+transition:all 0.3s;
+}
+.light-tab:last-child{border-right:none}
+.light-tab:hover,.light-tab.on{background:var(--surface);color:var(--text)}
+.light-stage{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(44px,1fr));
+gap:0.375rem;
+padding:1.5rem;
+background:var(--deep);
+border:1px solid var(--border);
+transition:all 0.5s ease;
+}
+.light-stage.golden{filter:sepia(0.2) saturate(1.15) brightness(1.05);background:#1a1814}
+.light-stage.overcast{filter:saturate(0.75) brightness(0.9);background:#141618}
+.light-stage.fluorescent{filter:hue-rotate(-8deg) saturate(0.8) brightness(1.1);background:#16181a}
+.light-stage.candle{filter:sepia(0.35) saturate(1.1) brightness(0.8);background:#1a1610}
+.light-chip{
+aspect-ratio:1;
+border:1px solid rgba(255,255,255,0.05);
+transition:all 0.3s;
+}
+.light-chip:hover{transform:scale(1.1);box-shadow:0 0 12px var(--rose-glow)}
+
+/* Zones */
+.zone{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1rem;
+margin-bottom:0.75rem;
+display:grid;
+grid-template-columns:140px 1fr;
+gap:1rem;
+align-items:center;
+}
+.zone-info{}
+.zone-name{font-size:0.875rem;margin-bottom:0.25rem}
+.zone-use{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim)}
+.zone-chips{display:flex;flex-wrap:wrap;gap:0.25rem}
+.zone-chip{
+width:28px;height:28px;
+border:1px solid rgba(255,255,255,0.05);
+transition:all 0.3s;
+cursor:pointer;
+}
+.zone-chip:hover{transform:scale(1.2);box-shadow:0 0 12px var(--rose-glow)}
+
+/* Makeup */
+.makeup-container{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem}
+.makeup-face{display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1rem}
+.makeup-reset{margin-top:0.5rem;font-size:0.4375rem;padding:0.5rem 1rem}
+.makeup-face-shape{
+width:140px;height:180px;
+background:linear-gradient(180deg,#E8D5CB 0%,#D9C9BC 100%);
+border-radius:50% 50% 45% 45%;
+position:relative;
+box-shadow:0 4px 30px rgba(0,0,0,0.3),inset 0 -10px 30px rgba(0,0,0,0.1);
+}
+.makeup-brow{
+position:absolute;
+width:24px;height:4px;
+background:#7A6B5E;
+border-radius:2px;
+top:54px;
+}
+.makeup-brow-l{left:32px;transform:rotate(-8deg)}
+.makeup-brow-r{right:32px;transform:rotate(8deg)}
+.makeup-lid{
+position:absolute;
+width:30px;height:10px;
+background:linear-gradient(180deg,#9A918A 0%,#B8AFA6 100%);
+border-radius:50% 50% 0 0;
+top:62px;
+}
+.makeup-lid-l{left:29px}
+.makeup-lid-r{right:29px}
+.makeup-eye{
+position:absolute;
+width:26px;height:13px;
+background:#fff;
+border-radius:0 0 50% 50%;
+top:72px;
+overflow:hidden;
+box-shadow:inset 0 2px 4px rgba(0,0,0,0.15);
+}
+.makeup-eye::before{
+content:"";
+position:absolute;
+width:12px;height:12px;
+background:radial-gradient(circle at 40% 40%,#7D9080 0%,#5A6B5E 100%);
+border-radius:50%;
+top:0px;
+left:50%;
+transform:translateX(-50%);
+box-shadow:inset 2px 2px 3px rgba(0,0,0,0.3);
+}
+.makeup-eye::after{
+content:"";
+position:absolute;
+width:5px;height:5px;
+background:#1a1a1a;
+border-radius:50%;
+top:3px;
+left:50%;
+transform:translateX(-50%);
+}
+.makeup-eye-l{left:30px}
+.makeup-eye-r{right:30px}
+.makeup-blush{
+position:absolute;
+width:35px;height:25px;
+background:radial-gradient(ellipse,rgba(212,165,160,0.5) 0%,transparent 70%);
+border-radius:50%;
+top:100px;
+}
+.makeup-blush-l{left:12px}
+.makeup-blush-r{right:12px}
+.makeup-lip{
+position:absolute;
+width:40px;height:18px;
+background:linear-gradient(180deg,#C4A099 0%,#B08080 100%);
+border-radius:40% 40% 50% 50%;
+bottom:35px;
+left:50%;
+transform:translateX(-50%);
+box-shadow:inset 0 2px 3px rgba(255,255,255,0.2);
+}
+.makeup-palettes{}
+.makeup-section{margin-bottom:1.25rem}
+.makeup-label{font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage);margin-bottom:0.375rem}
+.makeup-desc{font-size:0.5625rem;color:var(--text-dim);margin-bottom:0.625rem;font-style:italic}
+.makeup-colors{display:flex;flex-wrap:wrap;gap:0.375rem}
+.makeup-color{
+width:32px;height:32px;
+border:1px solid rgba(255,255,255,0.08);
+cursor:pointer;
+transition:all 0.3s;
+position:relative;
+}
+.makeup-color::after{
+content:"";position:absolute;inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 50%);
+pointer-events:none;
+}
+.makeup-color:hover{transform:scale(1.2);box-shadow:0 0 15px var(--rose-glow)}
+.makeup-color.on{
+transform:scale(1.15);
+box-shadow:0 0 15px var(--rose-glow),0 0 25px var(--rose-glow);
+border-color:var(--bone);
+}
+.makeup-looks{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1.25rem;
+}
+.makeup-look-label{font-size:0.625rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--sage);margin-bottom:1rem}
+.makeup-look-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem}
+.makeup-look{
+background:var(--surface);
+border:1px solid var(--border);
+padding:1rem;
+transition:all 0.3s;
+cursor:pointer;
+}
+.makeup-look:hover{border-color:var(--rose);box-shadow:0 0 15px var(--rose-glow)}
+.makeup-look-name{font-size:0.875rem;font-style:italic;margin-bottom:0.75rem}
+.makeup-look-colors{display:flex;gap:0.5rem;margin-bottom:0.5rem}
+.makeup-look-swatch{width:28px;height:28px;position:relative}
+.makeup-look-swatch::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none}
+.makeup-look-role{
+position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%);
+font-size:0.375rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;
+}
+.makeup-look-vibe{font-size:0.5625rem;color:var(--text-dim);margin-top:0.75rem}
+
+/* Armor */
+.armor-scenarios{display:grid;gap:1rem}
+.armor-card{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1.25rem;
+position:relative;
+overflow:hidden;
+transition:all 0.3s;
+}
+.armor-card::before{
+content:"";position:absolute;top:0;left:0;right:0;height:2px;
+background:linear-gradient(90deg,transparent,var(--rose),transparent);
+opacity:0;transition:opacity 0.3s;
+}
+.armor-card:hover{border-color:var(--rose)}
+.armor-card:hover::before{opacity:0.7}
+.armor-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.75rem}
+.armor-name{font-size:1rem;font-style:italic}
+.armor-when{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--slate)}
+.armor-colors{display:flex;gap:0.5rem;margin-bottom:0.75rem}
+.armor-swatch{
+width:36px;height:36px;
+border:1px solid rgba(255,255,255,0.08);
+position:relative;
+transition:all 0.3s;
+cursor:pointer;
+}
+.armor-swatch::after{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);pointer-events:none}
+.armor-swatch:hover{transform:scale(1.1);box-shadow:0 0 12px var(--rose-glow)}
+.armor-swatch-label{
+position:absolute;top:calc(100% + 3px);left:50%;transform:translateX(-50%);
+font-size:0.4375rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;
+}
+.armor-desc{font-size:0.8125rem;color:var(--text-dim);line-height:1.6}
+.armor-psych{font-size:0.625rem;color:var(--sage);margin-top:0.75rem;font-style:italic}
+.armor-note{
+margin-top:1.5rem;
+padding:1rem;
+background:var(--deep);
+border-left:2px solid var(--sage);
+font-size:0.75rem;
+color:var(--text-dim);
+font-style:italic;
+}
+
+/* Essence */
+.essence-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.essence{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1rem;
+text-align:center;
+transition:all 0.3s;
+}
+.essence:hover{border-color:var(--rose);box-shadow:0 0 20px var(--rose-glow)}
+.essence-color{
+width:100%;
+aspect-ratio:2/1;
+margin-bottom:0.75rem;
+position:relative;
+}
+.essence-color::after{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(255,255,255,0.1) 0%,transparent 50%);
+pointer-events:none;
+}
+.essence-name{font-size:0.75rem;font-style:italic;margin-bottom:0.375rem}
+.essence-desc{font-size:0.5625rem;color:var(--text-dim);line-height:1.5}
+
+/* Compress */
+.compress-tabs{
+display:flex;
+gap:0;
+margin-bottom:1rem;
+border:1px solid var(--border);
+}
+.compress-tab{
+flex:1;
+background:var(--deep);
+border:none;
+border-right:1px solid var(--border);
+color:var(--text-dim);
+padding:0.75rem;
+font-family:inherit;
+font-size:0.75rem;
+cursor:pointer;
+transition:all 0.3s;
+}
+.compress-tab:last-child{border-right:none}
+.compress-tab:hover,.compress-tab.on{background:var(--surface);color:var(--text)}
+.compress-out{
+display:flex;
+flex-wrap:wrap;
+gap:0.75rem;
+justify-content:center;
+padding:1.5rem;
+background:var(--surface-up);
+border:1px solid var(--border);
+}
+.compress-item{text-align:center;animation:fadeUp 0.3s ease backwards}
+.compress-chip{
+width:44px;height:44px;
+margin-bottom:0.375rem;
+border:1px solid rgba(255,255,255,0.05);
+transition:all 0.3s;
+}
+.compress-chip:hover{transform:scale(1.1);box-shadow:0 0 15px var(--rose-glow)}
+.compress-name{font-size:0.4375rem;letter-spacing:0.05em;text-transform:uppercase;color:var(--text-dim)}
+
+/* Autopsy */
+.autopsy-upload{text-align:center;margin-bottom:1.25rem}
+.autopsy-or{display:block;margin-top:0.75rem;font-size:0.5rem;color:var(--text-dim);font-style:italic}
+.autopsy-canvas-wrap{margin-bottom:1.25rem;text-align:center;display:none}
+#autopsyCanvas{max-width:100%;border:1px solid var(--border);cursor:crosshair}
+.autopsy-hint{font-size:0.5rem;color:var(--text-dim);margin-top:0.5rem;font-style:italic}
+.autopsy-slots{display:flex;flex-wrap:wrap;gap:0.625rem;justify-content:center;margin-bottom:1rem}
+.autopsy-slot{
+width:50px;height:50px;
+background:var(--deep);
+border:2px dashed var(--border);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:1rem;
+color:var(--text-dim);
+transition:all 0.3s;
+}
+.autopsy-slot.filled{border-style:solid;border-color:var(--rose)}
+.autopsy-hex-row{display:flex;gap:0.5rem;justify-content:center;margin-bottom:1.25rem}
+.autopsy-hex{
+width:70px;
+background:var(--deep);
+border:1px solid var(--border);
+color:var(--text);
+padding:0.5rem;
+font-family:monospace;
+font-size:0.75rem;
+text-align:center;
+}
+.autopsy-hex:focus{outline:none;border-color:var(--rose)}
+.autopsy-actions{display:flex;gap:0.5rem;justify-content:center}
+.autopsy-result{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1.25rem;
+margin-top:1.25rem;
+font-size:0.875rem;
+line-height:1.7;
+animation:fadeUp 0.4s ease;
+}
+.autopsy-result:empty{display:none}
+
+/* Wardrobe */
+.ward-row{margin-bottom:1.25rem}
+.ward-label{font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem}
+.ward-opts{display:flex;flex-wrap:wrap;gap:0.375rem}
+.ward-chip{
+width:34px;height:34px;
+cursor:pointer;
+border:2px solid transparent;
+transition:all 0.3s;
+}
+.ward-chip:hover{transform:scale(1.15);box-shadow:0 0 12px var(--rose-glow)}
+.ward-chip.on{border-color:var(--bone);box-shadow:0 0 20px var(--sage-glow)}
+.ward-preview{
+background:var(--surface-up);
+border:1px solid var(--border);
+padding:1.5rem;
+text-align:center;
+margin-top:1rem;
+}
+.ward-fig{display:flex;flex-direction:column;align-items:center;gap:2px;margin-bottom:1rem}
+.ward-part{transition:all 0.4s}
+.ward-head{width:32px;height:32px;border-radius:50%;background:#E8D5CB}
+.ward-top{width:50px;height:42px;background:var(--surface)}
+.ward-bot{width:42px;height:52px;background:var(--surface)}
+.ward-shoe{width:42px;height:14px;background:var(--surface)}
+.ward-verdict{font-size:0.8125rem;font-style:italic;color:var(--text-dim)}
+
+/* Export */
+.export-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:0.5rem}
+
+/* Toast */
+.toast{
+position:fixed;
+bottom:2rem;
+left:50%;
+transform:translateX(-50%) translateY(80px);
+background:var(--surface);
+color:var(--text);
+padding:0.875rem 1.75rem;
+font-size:0.75rem;
+border:1px solid var(--rose);
+box-shadow:0 0 30px var(--rose-glow);
+opacity:0;
+transition:all 0.4s ease;
+z-index:1000;
+}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+
+@media(max-width:500px){
+.zone{grid-template-columns:1fr;gap:0.5rem}
+.essence-grid{grid-template-columns:1fr}
+.makeup-container{grid-template-columns:1fr}
+.makeup-face{margin-bottom:1rem}
+}
+@media(min-width:580px){
+.looks-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="header">
+<div class="header-season">Soft Summer</div>
+<h1 class="header-title">Cartography of Mist</h1>
+<p class="header-sub">A Personal Color Analysis</p>
+</header>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">I</span><span class="section-title">The Reading</span><span class="section-line"></span></div>
+<div class="analysis">
+<p>There is a quietness to this coloring that demands attention precisely because it does not ask for it. The skin holds a secret: beneath the fair, peachy-pink surface lives a ghost of gray-green, the faintest olive cast that cools and softens every color it encounters. This is not warm coloring pretending to be cool, nor cool coloring yearning for warmth. It is something rarer—a genuine neutrality that leans toward the overcast sky, toward the color of fog rolling through eucalyptus groves at dawn.</p>
+<p>The eyes are the map's legend: gray-green as lichen on stone, ringed with blue-gray like the sky before rain, yet hiding a starburst of muted gold around the pupil—the only true warmth in the natural palette, kept secret in the center of the iris. The natural hair confirms the cool hypothesis: ash brown with no warmth to speak of, the color of driftwood left too long in salt water.</p>
+<p>This is Soft Summer coloring: light in value, muted in chroma, low in contrast, painted in watercolors rather than oils. The palette that serves it best is one of grayed, diffused colors—sea glass and stone, eucalyptus and fog, dusty rose and weathered silver.</p>
+</div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">II</span><span class="section-title">Source Pigments</span><span class="section-line"></span></div>
+<div class="pigments" id="pigments"></div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">III</span><span class="section-title">The Palette</span><span class="section-line"></span></div>
+<p class="palette-intro">Click to copy · Double-click to collect</p>
+<div id="palette"></div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">IV</span><span class="section-title">Collection</span><span class="section-line"></span></div>
+<div id="favs"></div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">V</span><span class="section-title">Comparison</span><span class="section-line"></span></div>
+<div class="compare-box">
+<div class="compare-slots">
+<div class="compare-slot" id="cmp0">First</div>
+<span class="compare-vs">vs</span>
+<div class="compare-slot" id="cmp1">Second</div>
+</div>
+<div class="compare-reading" id="cmpRead"></div>
+<button class="btn compare-clear" id="cmpClear">Clear</button>
+</div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">VI</span><span class="section-title">Styled Looks</span><span class="section-line"></span></div>
+<div class="looks-grid" id="looks"></div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">VII</span><span class="section-title">Laboratory</span><span class="section-line"></span></div>
+<div class="lab-tabs">
+<button class="lab-tab on" data-p="lighting">Lighting</button>
+<button class="lab-tab" data-p="zones">Zones</button>
+<button class="lab-tab" data-p="makeup">Makeup</button>
+<button class="lab-tab" data-p="armor">Armor</button>
+<button class="lab-tab" data-p="essence">Essence</button>
+<button class="lab-tab" data-p="compress">Compress</button>
+<button class="lab-tab" data-p="autopsy">Autopsy</button>
+<button class="lab-tab" data-p="wardrobe">Wardrobe</button>
+</div>
+
+<div class="lab-panel on" id="p-lighting">
+<p class="lab-intro">See why colors betray you at night.</p>
+<div class="light-tabs">
+<button class="light-tab on" data-l="natural">Daylight</button>
+<button class="light-tab" data-l="golden">Golden</button>
+<button class="light-tab" data-l="overcast">Overcast</button>
+<button class="light-tab" data-l="fluorescent">Fluorescent</button>
+<button class="light-tab" data-l="candle">Candle</button>
+</div>
+<div class="light-stage" id="lightStage"></div>
+</div>
+
+<div class="lab-panel" id="p-zones">
+<p class="lab-intro">Some colors belong near your face. Others at a distance.</p>
+<div id="zones"></div>
+</div>
+
+<div class="lab-panel" id="p-makeup">
+<p class="lab-intro">Your face as canvas. Click any color to copy.</p>
+<div class="makeup-container">
+<div class="makeup-face">
+<div class="makeup-face-shape">
+<div class="makeup-brow makeup-brow-l"></div>
+<div class="makeup-brow makeup-brow-r"></div>
+<div class="makeup-lid makeup-lid-l"></div>
+<div class="makeup-lid makeup-lid-r"></div>
+<div class="makeup-eye makeup-eye-l"></div>
+<div class="makeup-eye makeup-eye-r"></div>
+<div class="makeup-blush makeup-blush-l"></div>
+<div class="makeup-blush makeup-blush-r"></div>
+<div class="makeup-lip"></div>
+</div>
+<button class="btn makeup-reset" id="mkReset">Reset Face</button>
+</div>
+<div class="makeup-palettes">
+<div class="makeup-section">
+<div class="makeup-label">Lips</div>
+<div class="makeup-desc">Your natural lip is #C4A099. Stay within two steps.</div>
+<div class="makeup-colors" id="mkLips"></div>
+</div>
+<div class="makeup-section">
+<div class="makeup-label">Eyes</div>
+<div class="makeup-desc">Soft, diffused. No hard lines or shimmer.</div>
+<div class="makeup-colors" id="mkEyes"></div>
+</div>
+<div class="makeup-section">
+<div class="makeup-label">Cheeks</div>
+<div class="makeup-desc">Cool pink, never orange. Blend until invisible.</div>
+<div class="makeup-colors" id="mkCheeks"></div>
+</div>
+</div>
+</div>
+<div class="makeup-looks">
+<div class="makeup-look-label">Complete Looks</div>
+<div class="makeup-look-grid" id="mkLooks"></div>
+</div>
+</div>
+
+<div class="lab-panel" id="p-armor">
+<p class="lab-intro">Confrontation Armor. When you need to feel protected, powerful, untouchable.</p>
+<div class="armor-scenarios" id="armorScenarios"></div>
+<div class="armor-note">These aren't about looking aggressive. They're about feeling contained, boundaried, protected while remaining authentically you.</div>
+</div>
+
+<div class="lab-panel" id="p-essence">
+<p class="lab-intro">Your palette distilled to its emotional core.</p>
+<div class="essence-grid">
+<div class="essence"><div class="essence-color" style="background:linear-gradient(135deg,#8B9A8F,#7D9080)"></div><div class="essence-name">The Ghost</div><div class="essence-desc">Gray-green beneath your skin. Your secret undertone.</div></div>
+<div class="essence"><div class="essence-color" style="background:linear-gradient(135deg,#B08080,#987878)"></div><div class="essence-name">The Warmth</div><div class="essence-desc">Dusty rose. The only heat your palette tolerates.</div></div>
+<div class="essence"><div class="essence-color" style="background:linear-gradient(135deg,#9A918A,#7D756F)"></div><div class="essence-name">The Anchor</div><div class="essence-desc">Taupe-mushroom. Your neutral that isn't beige.</div></div>
+<div class="essence"><div class="essence-color" style="background:linear-gradient(135deg,#D0D8DC,#C8D4D0)"></div><div class="essence-name">The Light</div><div class="essence-desc">Cool mist. Where your brightness lives.</div></div>
+</div>
+</div>
+
+<div class="lab-panel" id="p-compress">
+<p class="lab-intro">The ruthless minimum.</p>
+<div class="compress-tabs">
+<button class="compress-tab" data-n="5">5</button>
+<button class="compress-tab" data-n="10">10</button>
+<button class="compress-tab on" data-n="15">15</button>
+</div>
+<div class="compress-out" id="compressOut"></div>
+</div>
+
+<div class="lab-panel" id="p-autopsy">
+<p class="lab-intro">Upload a photo of a failed outfit. Click to sample. Discover why.</p>
+<div class="autopsy-upload">
+<input type="file" id="autFile" accept="image/*" style="display:none">
+<button class="btn" id="autUpload">Upload Photo</button>
+<span class="autopsy-or">or enter hex codes below</span>
+</div>
+<div class="autopsy-canvas-wrap" id="autWrap">
+<canvas id="autCanvas"></canvas>
+<p class="autopsy-hint">Click anywhere to sample a color</p>
+</div>
+<div class="autopsy-slots">
+<div class="autopsy-slot" data-i="0">+</div>
+<div class="autopsy-slot" data-i="1">+</div>
+<div class="autopsy-slot" data-i="2">+</div>
+<div class="autopsy-slot" data-i="3">+</div>
+</div>
+<div class="autopsy-hex-row">
+<input type="text" class="autopsy-hex" placeholder="#hex" maxlength="7" data-i="0">
+<input type="text" class="autopsy-hex" placeholder="#hex" maxlength="7" data-i="1">
+<input type="text" class="autopsy-hex" placeholder="#hex" maxlength="7" data-i="2">
+<input type="text" class="autopsy-hex" placeholder="#hex" maxlength="7" data-i="3">
+</div>
+<div class="autopsy-actions">
+<button class="btn" id="autClear">Clear</button>
+<button class="btn" id="autDiag">Diagnose</button>
+</div>
+<div class="autopsy-result" id="autResult"></div>
+</div>
+
+<div class="lab-panel" id="p-wardrobe">
+<p class="lab-intro">Build an outfit. See it breathe.</p>
+<div id="wardBuild"></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="section-box">
+<div class="section-head"><span class="section-num">VIII</span><span class="section-title">Export</span><span class="section-line"></span></div>
+<div class="export-grid">
+<button class="btn" id="expJSON">Palette JSON</button>
+<button class="btn" id="expText">Palette Text</button>
+<button class="btn" id="expFavJSON">Favorites JSON</button>
+<button class="btn" id="expFavText">Favorites Text</button>
+</div>
+</div>
+</section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const pigments=[{n:"Skin Base",h:"#E8D5CB"},{n:"Skin Shadow",h:"#D9C9BC"},{n:"Natural Flush",h:"#D4A5A0"},{n:"Lips",h:"#C4A099"},{n:"Hair",h:"#8B7B6B"},{n:"Eyes Primary",h:"#7D9080"},{n:"Eyes Gold",h:"#A08050"},{n:"Brows",h:"#7A6B5E"},{n:"Veins Blue",h:"#6B8291"},{n:"Veins Green",h:"#7A9484"}];
+
+const groups={
+Neutrals:[{h:"#F5F0EB",n:"Ivory"},{h:"#E8E3DE",n:"Morning Mist"},{h:"#D5CEC7",n:"Greige"},{h:"#B8AFA6",n:"Stone"},{h:"#9A918A",n:"Taupe"},{h:"#7D756F",n:"Mushroom"},{h:"#6B6460",n:"Cocoa Gray"},{h:"#524D4A",n:"Charcoal Brown"},{h:"#4A4745",n:"Soft Charcoal"},{h:"#363433",n:"Soft Black"}],
+"Near-Neutrals":[{h:"#C9B8A8",n:"Soft Camel"},{h:"#B5A799",n:"Stone"},{h:"#A89A8C",n:"Driftwood"},{h:"#8B9A8F",n:"Sage Gray"},{h:"#7A8B8C",n:"Blue-Gray"},{h:"#9A8B82",n:"Warm Taupe"},{h:"#B0A090",n:"Soft Khaki"},{h:"#8C8578",n:"Olive Gray"}],
+"Soft Colors":[{h:"#D4C4C0",n:"Dusty Rose"},{h:"#C8D4D0",n:"Soft Mint"},{h:"#D0D8DC",n:"Ice Blue"},{h:"#E0D4C8",n:"Soft Peach"},{h:"#D8D0D4",n:"Lavender Gray"},{h:"#C4CCC8",n:"Sea Glass"},{h:"#DCD4CC",n:"Cream"},{h:"#C8C4BC",n:"Putty"}],
+"Medium Depths":[{h:"#B08080",n:"Dusty Rose Med"},{h:"#8BA098",n:"Soft Teal"},{h:"#7890A0",n:"Soft Denim"},{h:"#9080A0",n:"Muted Lavender"},{h:"#A09078",n:"Camel Med"},{h:"#889088",n:"Eucalyptus"},{h:"#7A8898",n:"Slate Blue"},{h:"#987878",n:"Mauve"},{h:"#6B8B8B",n:"Soft Spruce"},{h:"#A89080",n:"Soft Terra"}],
+Accents:[{h:"#8B6B70",n:"Dusty Raspberry"},{h:"#6B7B8B",n:"Steel Blue"},{h:"#5B7B78",n:"Deep Teal"},{h:"#7B6B80",n:"Plum Gray"},{h:"#6B8070",n:"Forest Sage"},{h:"#987070",n:"Soft Berry"},{h:"#607080",n:"Blue Spruce"},{h:"#7B8B7B",n:"Soft Olive"},{h:"#806B6B",n:"Cocoa Rose"},{h:"#506B70",n:"Deep Aqua"}],
+Depths:[{h:"#4B5058",n:"Charcoal Blue"},{h:"#584B4B",n:"Burgundy Brown"},{h:"#4B5B5B",n:"Deep Spruce"},{h:"#5B4B58",n:"Eggplant Gray"}]
+};
+
+const looks=[
+{t:"The Soft Authority",w:"Presentation",c:[{h:"#4A4745",r:"Blazer"},{h:"#D0D8DC",r:"Blouse"},{h:"#7A8898",r:"Trouser"},{h:"#B08080",r:"Lip"},{h:"#363433",r:"Shoe"}],d:"Power without aggression. Soft charcoal grounds, ice blue opens the face."},
+{t:"Fog and Lichen",w:"Weekend",c:[{h:"#8B9A8F",r:"Sweater"},{h:"#B8AFA6",r:"Pant"},{h:"#6B8070",r:"Jacket"},{h:"#C4A099",r:"Lip"},{h:"#A89A8C",r:"Boot"}],d:"Monochromatic greens and grays that echo your eye color."},
+{t:"Muted Romance",w:"Evening",c:[{h:"#584B4B",r:"Dress"},{h:"#D4C4C0",r:"Wrap"},{h:"#8B6B70",r:"Lip"},{h:"#7B6B80",r:"Shadow"},{h:"#9A918A",r:"Shoe"}],d:"Burgundy brown is dramatic but soft. Plum brings out the green in your eyes."},
+{t:"The Invisibility Cloak",w:"Observation",c:[{h:"#B8AFA6",r:"Top"},{h:"#9A918A",r:"Bottom"},{h:"#B5A799",r:"Jacket"},{h:"#C4A099",r:"Lip"},{h:"#7D756F",r:"Shoe"}],d:"When you need to watch, not be watched. Strategically unremarkable."},
+{t:"Sea Glass Morning",w:"Creative",c:[{h:"#C8D4D0",r:"Top"},{h:"#F5F0EB",r:"Bottom"},{h:"#8BA098",r:"Cardigan"},{h:"#D4A5A0",r:"Lip"},{h:"#C4CCC8",r:"Acc"}],d:"Light and airy for flow states. Nothing competes with your thinking."}
+];
+
+const allC=Object.values(groups).flat();
+let fav={},cmp=[null,null],cmpSel=null,aut=[null,null,null,null],ward={top:null,bot:null,shoe:null};
+let autCtx=null;
+
+document.addEventListener("DOMContentLoaded",()=>{
+try{fav=JSON.parse(localStorage.getItem("carto-fav"))||{}}catch(e){}
+renderPigments();renderPalette();renderFavs();renderLooks();renderLight();renderZones();renderMakeup();renderArmor();renderCompress(15);renderWard();setup();
+});
+
+function renderPigments(){document.getElementById("pigments").innerHTML=pigments.map(p=>`<div class="pigment" data-hex="${p.h}"><div class="pigment-color" style="background:${p.h}"></div><div class="pigment-name">${p.n}</div><div class="pigment-hex">${p.h}</div></div>`).join("")}
+
+function renderPalette(){document.getElementById("palette").innerHTML=Object.entries(groups).map(([g,cs])=>`<div class="palette-group"><div class="palette-label">${g}</div><div class="palette-grid">${cs.map(c=>`<div class="swatch ${fav[c.h]?"fav":""}" style="background:${c.h}" data-hex="${c.h}" data-name="${c.n}"><span class="swatch-tip">${c.n}<br>${c.h}</span></div>`).join("")}</div></div>`).join("")}
+
+function renderFavs(){const f=Object.entries(fav);document.getElementById("favs").innerHTML=f.length?`<div class="fav-grid">${f.map(([h,n],i)=>`<div class="fav-item" style="animation-delay:${i*.05}s"><div class="fav-swatch" style="background:${h}" data-hex="${h}"><button class="fav-remove" data-hex="${h}">×</button></div><div class="fav-name">${n}</div></div>`).join("")}</div>`:'<div class="fav-empty">Your collection awaits. Double-click any color to begin.</div>'}
+
+function renderLooks(){document.getElementById("looks").innerHTML=looks.map(l=>`<div class="look"><div class="look-head"><span class="look-title">${l.t}</span><span class="look-when">${l.w}</span></div><div class="look-colors">${l.c.map(c=>`<div class="look-color" style="background:${c.h}"><span class="look-role">${c.r}</span></div>`).join("")}</div><p class="look-desc">${l.d}</p></div>`).join("")}
+
+function renderLight(){const cs=["#F5F0EB","#D5CEC7","#B8AFA6","#8B9A8F","#B08080","#7890A0","#6B8070","#987878","#584B4B","#4B5058"];document.getElementById("lightStage").innerHTML=cs.map(h=>`<div class="light-chip" style="background:${h}"></div>`).join("")}
+
+function renderZones(){const z=[{n:"Face Colors",u:"Near complexion",c:["#D4C4C0","#C8D4D0","#D0D8DC","#E0D4C8","#B08080","#8BA098","#D8D0D4"]},{n:"Body Colors",u:"Tops, jackets",c:["#8B9A8F","#7890A0","#9080A0","#889088","#987878","#6B8B8B","#A89080","#7A8898"]},{n:"Distance Colors",u:"Pants, coats",c:["#B8AFA6","#9A918A","#7D756F","#524D4A","#4A4745","#363433","#584B4B","#4B5B5B"]},{n:"Extremity Colors",u:"Shoes, bags",c:["#6B6460","#A89A8C","#B5A799","#8C8578","#4B5058","#5B4B58","#506B70"]}];document.getElementById("zones").innerHTML=z.map(x=>`<div class="zone"><div class="zone-info"><div class="zone-name">${x.n}</div><div class="zone-use">${x.u}</div></div><div class="zone-chips">${x.c.map(h=>`<div class="zone-chip" style="background:${h}" data-hex="${h}"></div>`).join("")}</div></div>`).join("")}
+
+function renderMakeup(){
+const lips=[
+{h:"#C4A099",n:"Your Natural"},{h:"#D4A5A0",n:"Flush"},{h:"#B08080",n:"Dusty Rose"},{h:"#987878",n:"Mauve"},
+{h:"#8B6B70",n:"Raspberry"},{h:"#806B6B",n:"Cocoa Rose"},{h:"#987070",n:"Soft Berry"},{h:"#C9B8A8",n:"Nude"}
+];
+const eyes=[
+{h:"#9A918A",n:"Taupe"},{h:"#7D756F",n:"Mushroom"},{h:"#8B9A8F",n:"Sage"},{h:"#7A8898",n:"Slate"},
+{h:"#7B6B80",n:"Plum Gray"},{h:"#6B7B8B",n:"Steel"},{h:"#A89A8C",n:"Driftwood"},{h:"#5B4B58",n:"Eggplant"}
+];
+const cheeks=[
+{h:"#D4A5A0",n:"Natural Flush"},{h:"#D4C4C0",n:"Whisper"},{h:"#C8D4D0",n:"Mint Frost"},{h:"#B08080",n:"Dusty Rose"}
+];
+const mkLooks=[
+{n:"The Effortless",v:"Barely there. Enhanced, not made up.",c:[{h:"#C4A099",r:"Lip"},{h:"#9A918A",r:"Lid"},{h:"#D4A5A0",r:"Cheek"}]},
+{n:"Soft Authority",v:"Polished for presentations.",c:[{h:"#B08080",r:"Lip"},{h:"#7A8898",r:"Lid"},{h:"#D4C4C0",r:"Cheek"}]},
+{n:"Evening Mist",v:"Romantic but restrained.",c:[{h:"#987878",r:"Lip"},{h:"#7B6B80",r:"Lid"},{h:"#B08080",r:"Cheek"}]},
+{n:"The Invisibility",v:"Present but unremarkable.",c:[{h:"#C9B8A8",r:"Lip"},{h:"#A89A8C",r:"Lid"},{h:"#D4C4C0",r:"Cheek"}]}
+];
+document.getElementById("mkLips").innerHTML=lips.map(c=>`<div class="makeup-color" style="background:${c.h}" data-hex="${c.h}" data-type="lip" title="${c.n}"></div>`).join("");
+document.getElementById("mkEyes").innerHTML=eyes.map(c=>`<div class="makeup-color" style="background:${c.h}" data-hex="${c.h}" data-type="eye" title="${c.n}"></div>`).join("");
+document.getElementById("mkCheeks").innerHTML=cheeks.map(c=>`<div class="makeup-color" style="background:${c.h}" data-hex="${c.h}" data-type="cheek" title="${c.n}"></div>`).join("");
+document.getElementById("mkLooks").innerHTML=mkLooks.map(l=>`<div class="makeup-look" data-lip="${l.c[0].h}" data-eye="${l.c[1].h}" data-cheek="${l.c[2].h}"><div class="makeup-look-name">${l.n}</div><div class="makeup-look-colors">${l.c.map(c=>`<div class="makeup-look-swatch" style="background:${c.h}"><span class="makeup-look-role">${c.r}</span></div>`).join("")}</div><div class="makeup-look-vibe">${l.v}</div></div>`).join("");
+
+// Makeup click handlers
+document.querySelectorAll(".makeup-color").forEach(c=>{
+c.onclick=e=>{
+e.stopPropagation();
+const hex=c.dataset.hex;
+const type=c.dataset.type;
+applyMakeup(type,hex);
+c.parentElement.querySelectorAll(".makeup-color").forEach(x=>x.classList.remove("on"));
+c.classList.add("on");
+toast("Applied "+c.title);
+}
+});
+
+// Complete look click handlers  
+document.querySelectorAll(".makeup-look").forEach(l=>{
+l.onclick=()=>{
+applyMakeup("lip",l.dataset.lip);
+applyMakeup("eye",l.dataset.eye);
+applyMakeup("cheek",l.dataset.cheek);
+document.querySelectorAll(".makeup-color").forEach(c=>c.classList.remove("on"));
+document.querySelectorAll(".makeup-color").forEach(c=>{
+if(c.dataset.hex===l.dataset.lip||c.dataset.hex===l.dataset.eye||c.dataset.hex===l.dataset.cheek)c.classList.add("on");
+});
+toast("Applied "+l.querySelector(".makeup-look-name").textContent);
+}
+});
+
+// Reset button
+document.getElementById("mkReset").onclick=()=>{
+document.querySelector(".makeup-lip").style.background="linear-gradient(180deg,#C4A099 0%,#B08080 100%)";
+document.querySelectorAll(".makeup-lid").forEach(e=>{e.style.background="linear-gradient(180deg,#9A918A 0%,#B8AFA6 100%)"});
+document.querySelectorAll(".makeup-blush").forEach(b=>{b.style.background="radial-gradient(ellipse,rgba(212,165,160,0.5) 0%,transparent 70%)"});
+document.querySelectorAll(".makeup-color").forEach(c=>c.classList.remove("on"));
+toast("Reset to natural");
+};
+}
+
+function applyMakeup(type,hex){
+if(type==="lip"){
+document.querySelector(".makeup-lip").style.background=`linear-gradient(180deg,${hex} 0%,${adjustColor(hex,-15)} 100%)`;
+}else if(type==="eye"){
+document.querySelectorAll(".makeup-lid").forEach(e=>{
+e.style.background=`linear-gradient(180deg,${hex} 0%,${adjustColor(hex,20)} 100%)`;
+});
+}else if(type==="cheek"){
+document.querySelectorAll(".makeup-blush").forEach(b=>{
+b.style.background=`radial-gradient(ellipse,${hex}88 0%,transparent 70%)`;
+});
+}
+}
+
+function adjustColor(hex,amt){
+const r=hexRgb(hex);
+const clamp=v=>Math.max(0,Math.min(255,v+amt));
+return "#"+[clamp(r.r),clamp(r.g),clamp(r.b)].map(v=>v.toString(16).padStart(2,"0")).join("");
+}
+
+function renderArmor(){
+const scenarios=[
+{n:"The Difficult Conversation",w:"HR, boundaries, breakups",
+c:[{h:"#4A4745",r:"Base"},{h:"#363433",r:"Anchor"},{h:"#7A8898",r:"Buffer"},{h:"#B08080",r:"Self"}],
+d:"Dark neutrals create a visual boundary. The slate blue keeps you approachable but contained. One touch of your rose says 'I'm still me, but I'm protected.'",
+p:"Monochrome reduces cognitive load for others. They focus on your words, not your colors."},
+{n:"The Hostile Room",w:"Unfriendly meetings, skeptics",
+c:[{h:"#363433",r:"Dominant"},{h:"#4B5058",r:"Support"},{h:"#D0D8DC",r:"Face"},{h:"#524D4A",r:"Ground"}],
+d:"Near-black with charcoal blue reads as serious without aggressive. Ice blue near your face keeps you from looking closed off.",
+p:"Dark colors absorb energy rather than reflecting it. You become harder to read."},
+{n:"The Performance",w:"Presentations, all eyes on you",
+c:[{h:"#584B4B",r:"Base"},{h:"#D4C4C0",r:"Opening"},{h:"#8B6B70",r:"Accent"},{h:"#4A4745",r:"Ground"}],
+d:"Burgundy brown commands attention without shouting. Dusty rose near your face invites connection. The contrast says 'I belong here.'",
+p:"Strategic color placement guides where people look. Light near face = eye contact."},
+{n:"The Aftermath",w:"Post-conflict, recovery days",
+c:[{h:"#8B9A8F",r:"Cocoon"},{h:"#B8AFA6",r:"Soft"},{h:"#C8D4D0",r:"Breath"},{h:"#9A918A",r:"Ground"}],
+d:"All sage and stone. Nothing demanding. These colors ask nothing of you and signal to others that you're in restoration mode.",
+p:"Muted colors lower cortisol responses in others. You create calm around yourself."},
+{n:"The Invisible Shield",w:"When you need to observe, not engage",
+c:[{h:"#9A918A",r:"All"},{h:"#B8AFA6",r:"Over"},{h:"#A89A8C",r:"Variant"},{h:"#7D756F",r:"Depth"}],
+d:"Tonal dressing in your most neutral neutrals. You become background. Present but not a target.",
+p:"Visual monotony causes the eye to slide past. Strategic unremarkability."}
+];
+document.getElementById("armorScenarios").innerHTML=scenarios.map(s=>`<div class="armor-card"><div class="armor-header"><span class="armor-name">${s.n}</span><span class="armor-when">${s.w}</span></div><div class="armor-colors">${s.c.map(c=>`<div class="armor-swatch" style="background:${c.h}" data-hex="${c.h}"><span class="armor-swatch-label">${c.r}</span></div>`).join("")}</div><p class="armor-desc">${s.d}</p><p class="armor-psych">${s.p}</p></div>`).join("");
+}
+
+function renderCompress(n){const sets={5:[{h:"#F5F0EB",n:"Light"},{h:"#9A918A",n:"Mid"},{h:"#363433",n:"Dark"},{h:"#8B9A8F",n:"Sage"},{h:"#B08080",n:"Rose"}],10:[{h:"#F5F0EB",n:"Light"},{h:"#D5CEC7",n:"Greige"},{h:"#9A918A",n:"Taupe"},{h:"#524D4A",n:"Charcoal"},{h:"#363433",n:"Dark"},{h:"#8B9A8F",n:"Sage"},{h:"#7890A0",n:"Denim"},{h:"#B08080",n:"Rose"},{h:"#C9B8A8",n:"Camel"},{h:"#6B8070",n:"Forest"}],15:[{h:"#F5F0EB",n:"Ivory"},{h:"#D5CEC7",n:"Greige"},{h:"#B8AFA6",n:"Stone"},{h:"#9A918A",n:"Taupe"},{h:"#6B6460",n:"Cocoa"},{h:"#4A4745",n:"Charcoal"},{h:"#363433",n:"Black"},{h:"#8B9A8F",n:"Sage"},{h:"#7890A0",n:"Denim"},{h:"#B08080",n:"Rose"},{h:"#C9B8A8",n:"Camel"},{h:"#6B8070",n:"Forest"},{h:"#987878",n:"Mauve"},{h:"#5B7B78",n:"Teal"},{h:"#584B4B",n:"Wine"}]};document.getElementById("compressOut").innerHTML=(sets[n]||sets[15]).map((c,i)=>`<div class="compress-item" style="animation-delay:${i*.04}s"><div class="compress-chip" style="background:${c.h}"></div><div class="compress-name">${c.n}</div></div>`).join("")}
+
+function renderWard(){
+const tops=[{h:"#D4C4C0",n:"Dusty Rose"},{h:"#C8D4D0",n:"Soft Mint"},{h:"#D0D8DC",n:"Ice Blue"},{h:"#E0D4C8",n:"Soft Peach"},{h:"#D8D0D4",n:"Lavender Gray"},{h:"#B08080",n:"Dusty Rose Med"},{h:"#8BA098",n:"Soft Teal"},{h:"#7890A0",n:"Soft Denim"},{h:"#9080A0",n:"Muted Lavender"},{h:"#987878",n:"Mauve"},{h:"#8B9A8F",n:"Sage"},{h:"#F5F0EB",n:"Ivory"},{h:"#889088",n:"Eucalyptus"}];
+const bots=[{h:"#9A918A",n:"Taupe"},{h:"#7D756F",n:"Mushroom"},{h:"#6B6460",n:"Cocoa"},{h:"#524D4A",n:"Charcoal Brown"},{h:"#4A4745",n:"Soft Charcoal"},{h:"#363433",n:"Soft Black"},{h:"#7890A0",n:"Soft Denim"},{h:"#6B8B8B",n:"Soft Spruce"},{h:"#584B4B",n:"Burgundy Brown"},{h:"#4B5B5B",n:"Deep Spruce"},{h:"#8C8578",n:"Olive Gray"}];
+const shoes=[{h:"#6B6460",n:"Cocoa"},{h:"#524D4A",n:"Charcoal Brown"},{h:"#363433",n:"Soft Black"},{h:"#584B4B",n:"Burgundy Brown"},{h:"#4B5058",n:"Charcoal Blue"},{h:"#9A918A",n:"Taupe"},{h:"#A89A8C",n:"Driftwood"},{h:"#5B4B58",n:"Eggplant"},{h:"#5B7B78",n:"Deep Teal"},{h:"#B08080",n:"Dusty Rose"}];
+document.getElementById("wardBuild").innerHTML=`<div class="ward-row"><div class="ward-label">Top</div><div class="ward-opts" data-t="top">${tops.map(c=>`<div class="ward-chip" style="background:${c.h}" data-hex="${c.h}" title="${c.n}"></div>`).join("")}</div></div><div class="ward-row"><div class="ward-label">Bottom</div><div class="ward-opts" data-t="bot">${bots.map(c=>`<div class="ward-chip" style="background:${c.h}" data-hex="${c.h}" title="${c.n}"></div>`).join("")}</div></div><div class="ward-row"><div class="ward-label">Shoe</div><div class="ward-opts" data-t="shoe">${shoes.map(c=>`<div class="ward-chip" style="background:${c.h}" data-hex="${c.h}" title="${c.n}"></div>`).join("")}</div></div><div class="ward-preview"><div class="ward-fig"><div class="ward-part ward-head"></div><div class="ward-part ward-top" id="wTop"></div><div class="ward-part ward-bot" id="wBot"></div><div class="ward-part ward-shoe" id="wShoe"></div></div><div class="ward-verdict" id="wVerdict">Select colors above</div></div>`;
+}
+
+function setup(){
+document.addEventListener("click",e=>{
+const sw=e.target.closest("[data-hex]");
+if(sw&&!e.target.classList.contains("fav-remove")){
+if(cmpSel!==null){selectCmp(sw.dataset.hex);return}
+copy(sw.dataset.hex);toast("Copied "+sw.dataset.hex);
+}
+});
+document.addEventListener("dblclick",e=>{const sw=e.target.closest(".swatch,.pigment");if(sw)toggleFav(sw.dataset.hex,sw.dataset.name)});
+document.addEventListener("click",e=>{if(e.target.classList.contains("fav-remove")){delete fav[e.target.dataset.hex];save();renderFavs();updMarkers();toast("Removed")}});
+
+document.getElementById("cmp0").onclick=()=>startCmp(0);
+document.getElementById("cmp1").onclick=()=>startCmp(1);
+document.getElementById("cmpClear").onclick=clearCmp;
+
+document.querySelectorAll(".lab-tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".lab-tab").forEach(x=>x.classList.remove("on"));document.querySelectorAll(".lab-panel").forEach(x=>x.classList.remove("on"));t.classList.add("on");document.getElementById("p-"+t.dataset.p).classList.add("on")});
+document.querySelectorAll(".light-tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".light-tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");const s=document.getElementById("lightStage");s.className="light-stage";if(t.dataset.l!=="natural")s.classList.add(t.dataset.l)});
+document.querySelectorAll(".compress-tab").forEach(t=>t.onclick=()=>{document.querySelectorAll(".compress-tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");renderCompress(+t.dataset.n)});
+
+setupAutopsy();
+
+document.getElementById("wardBuild").addEventListener("click",e=>{const c=e.target.closest(".ward-chip");if(c){const t=c.parentElement.dataset.t;c.parentElement.querySelectorAll(".ward-chip").forEach(x=>x.classList.remove("on"));c.classList.add("on");ward[t]=c.dataset.hex;updWard()}});
+
+document.getElementById("expJSON").onclick=()=>{dl({title:"Cartography of Mist",season:"Soft Summer",palette:groups},"palette.json");toast("Exported")};
+document.getElementById("expText").onclick=()=>{let t="CARTOGRAPHY OF MIST - Soft Summer\n\n";Object.entries(groups).forEach(([g,cs])=>{t+=g.toUpperCase()+"\n"+cs.map(c=>c.h+" - "+c.n).join("\n")+"\n\n"});copy(t);toast("Copied")};
+document.getElementById("expFavJSON").onclick=()=>{dl({favorites:Object.entries(fav).map(([h,n])=>({hex:h,name:n}))},"favorites.json");toast("Exported")};
+document.getElementById("expFavText").onclick=()=>{if(!Object.keys(fav).length){toast("No favorites");return}copy("COLLECTED\n\n"+Object.entries(fav).map(([h,n])=>h+" - "+n).join("\n"));toast("Copied")};
+}
+
+function setupAutopsy(){
+const file=document.getElementById("autFile"),btn=document.getElementById("autUpload"),canvas=document.getElementById("autCanvas"),wrap=document.getElementById("autWrap");
+btn.onclick=()=>file.click();
+file.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const img=new Image();img.onload=()=>{const maxW=480,scale=img.width>maxW?maxW/img.width:1;canvas.width=img.width*scale;canvas.height=img.height*scale;autCtx=canvas.getContext("2d",{willReadFrequently:true});autCtx.drawImage(img,0,0,canvas.width,canvas.height);wrap.style.display="block"};img.src=ev.target.result};r.readAsDataURL(f)};
+canvas.onclick=e=>{if(!autCtx)return;const rect=canvas.getBoundingClientRect(),x=Math.floor((e.clientX-rect.left)*(canvas.width/rect.width)),y=Math.floor((e.clientY-rect.top)*(canvas.height/rect.height)),p=autCtx.getImageData(x,y,1,1).data,hex="#"+[p[0],p[1],p[2]].map(v=>v.toString(16).padStart(2,"0")).join("");addAut(hex)};
+document.querySelectorAll(".autopsy-hex").forEach(inp=>{inp.oninput=e=>{let v=e.target.value;if(v&&!v.startsWith("#"))v="#"+v;if(/^#[0-9a-fA-F]{6}$/.test(v)){const i=+e.target.dataset.i;aut[i]=v;const s=document.querySelector(`.autopsy-slot[data-i="${i}"]`);s.style.background=v;s.textContent="";s.classList.add("filled")}}});
+document.getElementById("autClear").onclick=clearAut;
+document.getElementById("autDiag").onclick=diagnose;
+}
+
+function addAut(hex){const i=aut.findIndex(c=>c===null);if(i===-1){toast("All slots full");return}aut[i]=hex;const s=document.querySelector(`.autopsy-slot[data-i="${i}"]`);s.style.background=hex;s.textContent="";s.classList.add("filled");document.querySelectorAll(".autopsy-hex")[i].value=hex;toast("Sampled "+hex)}
+function clearAut(){aut=[null,null,null,null];document.querySelectorAll(".autopsy-slot").forEach(s=>{s.style.background="";s.textContent="+";s.classList.remove("filled")});document.querySelectorAll(".autopsy-hex").forEach(inp=>{inp.value=""});document.getElementById("autResult").innerHTML=""}
+
+function diagnose(){const cs=aut.filter(Boolean);if(cs.length<2){toast("Add at least 2 colors");return}const as=cs.map(h=>{const r=hexRgb(h),hsl=rgbHsl(r);return{h,r,hsl,warm:(r.r-r.b)>15,cool:(r.b-r.r)>15}});let d=[];
+const wc=as.filter(a=>a.warm).length,cc=as.filter(a=>a.cool).length;
+if(wc>0&&cc>0)d.push("<strong>Undertone clash:</strong> Mixing warm and cool creates tension. For Soft Summer, lean cool or neutral.");
+const lits=as.map(a=>a.hsl.l),litR=Math.max(...lits)-Math.min(...lits);
+if(litR<15)d.push("<strong>Value collapse:</strong> All colors too similar in lightness ("+Math.round(litR)+"% range). Add contrast.");
+else if(litR>60)d.push("<strong>Value jump:</strong> Extreme contrast ("+Math.round(litR)+"%) can look harsh. Bridge with mid-tones.");
+const sats=as.map(a=>a.hsl.s),maxS=Math.max(...sats);
+if(maxS>50)d.push("<strong>Chroma alert:</strong> One color is saturated ("+Math.round(maxS)+"%). Soft Summer thrives under 40%.");
+if(Math.max(...sats)-Math.min(...sats)>35)d.push("<strong>Chroma mismatch:</strong> Mixing muted with saturated makes muted look muddy.");
+const ph=allC.map(c=>c.h.toLowerCase()),out=cs.filter(c=>!ph.includes(c.toLowerCase()));
+if(out.length===cs.length)d.push("<strong>All outside palette:</strong> None of these are in your Soft Summer palette.");
+else if(out.length)d.push("<strong>Outsiders:</strong> "+out.join(", ")+" may clash with your undertones.");
+if(!d.length)d.push("<strong>No obvious issues.</strong> Check proportions, texture, or how it sits against your skin.");
+document.getElementById("autResult").innerHTML=d.map(x=>"<p style='margin-bottom:.75rem'>"+x+"</p>").join("")}
+
+function updWard(){const{top,bot,shoe}=ward;if(top)document.getElementById("wTop").style.background=top;if(bot)document.getElementById("wBot").style.background=bot;if(shoe)document.getElementById("wShoe").style.background=shoe;const sel=[top,bot,shoe].filter(Boolean);if(sel.length>=2){const as=sel.map(h=>{const r=hexRgb(h);return{w:(r.r-r.b)>15,l:rgbHsl(r).l}});const cool=as.every(a=>!a.w);const range=Math.max(...as.map(a=>a.l))-Math.min(...as.map(a=>a.l));document.getElementById("wVerdict").textContent=cool&&range>25?"Harmonious. Good contrast.":cool?"Coherent, but could use more contrast.":"Temperature mixing—proceed with awareness."}}
+
+function copy(t){navigator.clipboard.writeText(t).catch(()=>{const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();document.execCommand("copy");document.body.removeChild(a)})}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2000)}
+function toggleFav(h,n){if(fav[h]){delete fav[h];toast("Removed")}else{fav[h]=n||h;toast("Collected")}save();renderFavs();updMarkers()}
+function save(){try{localStorage.setItem("carto-fav",JSON.stringify(fav))}catch(e){}}
+function updMarkers(){document.querySelectorAll(".swatch").forEach(s=>s.classList.toggle("fav",!!fav[s.dataset.hex]))}
+function startCmp(i){cmpSel=i;document.querySelectorAll(".compare-slot").forEach(s=>s.classList.remove("sel"));document.getElementById("cmp"+i).classList.add("sel");toast("Select a color")}
+function selectCmp(h){cmp[cmpSel]=h;const s=document.getElementById("cmp"+cmpSel);s.style.background=h;s.textContent="";s.classList.add("filled");s.classList.remove("sel");cmpSel=null;if(cmp[0]&&cmp[1])verdict()}
+function clearCmp(){cmp=[null,null];cmpSel=null;[0,1].forEach(i=>{const s=document.getElementById("cmp"+i);s.style.background="";s.textContent=i?"Second":"First";s.classList.remove("filled","sel")});document.getElementById("cmpRead").textContent=""}
+function verdict(){const[h1,h2]=cmp;const r1=hexRgb(h1),r2=hexRgb(h2);const l1=rgbHsl(r1).l,l2=rgbHsl(r2).l;const w1=(r1.r-r1.b)>15,w2=(r2.r-r2.b)>15;let v;if(w1!==w2)v="Undertone tension. These pull in opposite directions.";else if(Math.abs(l1-l2)<12)v="Value collision. Too similar in lightness—they blur.";else if(Math.abs(l1-l2)>40)v="Strong contrast. Clear hierarchy.";else v="Compatible. They coexist in conversation.";document.getElementById("cmpRead").textContent=v}
+function dl(d,f){const b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});const u=URL.createObjectURL(b);const a=document.createElement("a");a.href=u;a.download=f;a.click();URL.revokeObjectURL(u)}
+function hexRgb(h){const m=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);return m?{r:parseInt(m[1],16),g:parseInt(m[2],16),b:parseInt(m[3],16)}:{r:0,g:0,b:0}}
+function rgbHsl(c){let r=c.r/255,g=c.g/255,b=c.b/255;const max=Math.max(r,g,b),min=Math.min(r,g,b);let h,s,l=(max+min)/2;if(max===min){h=s=0}else{const d=max-min;s=l>.5?d/(2-max-min):d/(max+min);switch(max){case r:h=((g-b)/d+(g<b?6:0))/6;break;case g:h=((b-r)/d+2)/6;break;case b:h=((r-g)/d+4)/6;break}}return{h:h*360,s:s*100,l:l*100}}
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
