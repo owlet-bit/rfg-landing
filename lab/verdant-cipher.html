@@ -1,0 +1,2093 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Verdant Cipher - A Personal Chromatic Archive</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --parchment: #F7F3EB;
+  --aged-paper: #EDE6D6;
+  --ink: #2C2A26;
+  --faded-ink: #5C564A;
+  --gold-leaf: #C4A35A;
+  --gold-bright: #D4B86A;
+  --moss: #6B7355;
+  --deep-moss: #4A5240;
+  --blush: #D4A5A5;
+  --wine: #8B4A5E;
+  --sage: #9CAF88;
+  --shadow: rgba(44, 42, 38, 0.12);
+  --glow: rgba(196, 163, 90, 0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+@keyframes gentleFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes copyFlash {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 var(--gold-leaf); }
+  50% { transform: scale(1.1); box-shadow: 0 0 20px 5px var(--gold-leaf); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 transparent; }
+}
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  background: var(--parchment);
+  color: var(--ink);
+  line-height: 1.7;
+  min-height: 100vh;
+  font-size: 16px;
+}
+
+.archive-container {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Header */
+.archive-header {
+  background: linear-gradient(180deg, var(--aged-paper) 0%, var(--parchment) 100%);
+  border-bottom: 1px solid var(--gold-leaf);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.archive-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-leaf), transparent);
+}
+
+.archive-title {
+  font-size: 1.75rem;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.archive-subtitle {
+  font-size: 0.875rem;
+  color: var(--faded-ink);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.archive-seal {
+  width: 60px;
+  height: 60px;
+  margin: 1rem auto;
+  border: 2px solid var(--gold-leaf);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--gold-leaf);
+  background: var(--parchment);
+  box-shadow: 0 0 0 4px var(--parchment), 0 0 0 5px var(--gold-leaf);
+}
+
+/* Navigation */
+.archive-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: var(--aged-paper);
+  border-bottom: 1px solid rgba(196, 163, 90, 0.3);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-tab {
+  padding: 0.75rem 1rem;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--gold-leaf);
+  color: var(--faded-ink);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-tab:hover, .nav-tab.active {
+  background: var(--gold-leaf);
+  color: var(--parchment);
+}
+
+/* Sections */
+.archive-section {
+  display: none;
+  padding: 2rem 1.5rem;
+  animation: fadeIn 0.5s ease;
+}
+
+.archive-section.active {
+  display: block;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 1rem;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 1px;
+  background: var(--gold-leaf);
+}
+
+/* Analysis Section */
+.analysis-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.analysis-paragraph {
+  text-indent: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+  color: var(--ink);
+}
+
+.analysis-paragraph:first-letter {
+  font-size: 2.5rem;
+  float: left;
+  line-height: 1;
+  margin-right: 0.5rem;
+  color: var(--gold-leaf);
+  font-weight: normal;
+}
+
+.season-badge {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+  margin: 2rem 0;
+}
+
+.season-name {
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--wine);
+  margin-bottom: 0.5rem;
+}
+
+.season-note {
+  font-size: 0.875rem;
+  color: var(--faded-ink);
+  font-style: italic;
+}
+
+/* Source Pigments */
+.pigment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.pigment-card {
+  background: var(--parchment);
+  border: 1px solid rgba(196, 163, 90, 0.4);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pigment-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.pigment-swatch {
+  width: 100%;
+  height: 60px;
+  border: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.pigment-swatch.copied {
+  animation: copyFlash 0.4s ease;
+}
+
+.pigment-swatch.favorited::after {
+  content: "\2665";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: var(--wine);
+  font-size: 1rem;
+  text-shadow: 0 0 2px white;
+}
+
+.pigment-name {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faded-ink);
+  margin-bottom: 0.25rem;
+}
+
+.pigment-hex {
+  font-size: 0.875rem;
+  font-family: "Courier New", monospace;
+  color: var(--ink);
+}
+
+.pigment-desc {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--faded-ink);
+  margin-top: 0.5rem;
+}
+
+/* Main Palette */
+.palette-group {
+  margin-bottom: 2rem;
+}
+
+.group-title {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gold-leaf);
+  text-align: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(196, 163, 90, 0.3);
+}
+
+.swatch-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.swatch {
+  aspect-ratio: 1;
+  min-height: 44px;
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.swatch:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px var(--shadow);
+  z-index: 10;
+}
+
+.swatch.copied {
+  animation: copyFlash 0.4s ease;
+}
+
+.swatch.favorited::after {
+  content: "\2665";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  color: white;
+  font-size: 0.75rem;
+  text-shadow: 0 0 3px rgba(0,0,0,0.5);
+}
+
+.swatch-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--parchment);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 100;
+  pointer-events: none;
+}
+
+.swatch:hover .swatch-tooltip {
+  display: block;
+}
+
+/* Looks Section */
+.look-card {
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.look-header {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(196, 163, 90, 0.3);
+}
+
+.look-title {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--wine);
+  margin-bottom: 0.25rem;
+}
+
+.look-occasion {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faded-ink);
+}
+
+.look-swatches {
+  display: flex;
+  height: 50px;
+}
+
+.look-swatch {
+  flex: 1;
+  cursor: pointer;
+  position: relative;
+  transition: flex 0.3s ease;
+}
+
+.look-swatch:hover {
+  flex: 2;
+}
+
+.look-description {
+  padding: 1rem;
+  font-size: 0.875rem;
+  color: var(--ink);
+  font-style: italic;
+}
+
+/* Compare Section */
+.compare-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.compare-slots {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.compare-slot {
+  flex: 1;
+  aspect-ratio: 1;
+  min-height: 120px;
+  border: 2px dashed var(--gold-leaf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--faded-ink);
+  text-align: center;
+  padding: 1rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.compare-slot.filled {
+  border-style: solid;
+}
+
+.compare-slot.active {
+  box-shadow: 0 0 0 3px var(--gold-bright);
+}
+
+.compare-verdict {
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+  padding: 1.5rem;
+  text-align: center;
+  min-height: 100px;
+}
+
+.verdict-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--gold-leaf);
+  margin-bottom: 0.75rem;
+}
+
+.verdict-text {
+  font-size: 0.875rem;
+  color: var(--ink);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+.compare-clear {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--faded-ink);
+  color: var(--faded-ink);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.compare-clear:hover {
+  background: var(--ink);
+  color: var(--parchment);
+  border-color: var(--ink);
+}
+
+/* Favorites Section */
+.favorites-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--faded-ink);
+  font-style: italic;
+}
+
+.favorites-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+.favorite-item {
+  text-align: center;
+}
+
+.favorite-swatch {
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(0,0,0,0.1);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  position: relative;
+}
+
+.favorite-swatch::after {
+  content: "\2665";
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  color: var(--wine);
+  font-size: 0.75rem;
+  text-shadow: 0 0 2px white;
+}
+
+.favorite-name {
+  font-size: 0.625rem;
+  color: var(--faded-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Export Section */
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 300px;
+  margin: 0 auto 2rem;
+}
+
+.export-btn {
+  padding: 1rem;
+  min-height: 44px;
+  background: var(--ink);
+  border: none;
+  color: var(--parchment);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.export-btn:hover {
+  background: var(--gold-leaf);
+  color: var(--ink);
+}
+
+.export-preview {
+  background: var(--ink);
+  color: var(--aged-paper);
+  padding: 1rem;
+  font-family: "Courier New", monospace;
+  font-size: 0.75rem;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Time of Day Feature */
+.time-selector {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.time-btn {
+  padding: 0.75rem 1rem;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--gold-leaf);
+  color: var(--faded-ink);
+  font-family: inherit;
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.time-btn:hover, .time-btn.active {
+  background: var(--gold-leaf);
+  color: var(--parchment);
+}
+
+.time-palette {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+}
+
+.time-recommendation {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--aged-paper);
+  border: 1px solid rgba(196, 163, 90, 0.3);
+  margin-top: 1.5rem;
+  font-style: italic;
+  color: var(--ink);
+  font-size: 0.875rem;
+}
+
+/* Harmony Wheel */
+.harmony-container {
+  text-align: center;
+}
+
+.harmony-wheel {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto 1.5rem;
+  position: relative;
+  border-radius: 50%;
+  background: conic-gradient(
+    #E8D5D5 0deg 30deg,
+    #D4A5A5 30deg 60deg,
+    #C4A35A 60deg 90deg,
+    #9CAF88 90deg 120deg,
+    #6B7355 120deg 150deg,
+    #8B9D83 150deg 180deg,
+    #A5B5C5 180deg 210deg,
+    #8B8FAA 210deg 240deg,
+    #8B4A5E 240deg 270deg,
+    #A06070 270deg 300deg,
+    #C5A5A0 300deg 330deg,
+    #D8C5C0 330deg 360deg
+  );
+  border: 3px solid var(--gold-leaf);
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.harmony-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: var(--parchment);
+  border-radius: 50%;
+  border: 2px solid var(--gold-leaf);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.625rem;
+  color: var(--faded-ink);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.harmony-legend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.harmony-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--faded-ink);
+}
+
+.harmony-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Undertone Analyzer */
+.undertone-visual {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.undertone-bar {
+  width: 30px;
+  height: 150px;
+  position: relative;
+  border: 1px solid var(--gold-leaf);
+}
+
+.undertone-indicator {
+  position: absolute;
+  left: -8px;
+  right: -8px;
+  height: 4px;
+  background: var(--ink);
+  transition: top 0.5s ease;
+}
+
+.undertone-label {
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-top: 0.5rem;
+  color: var(--faded-ink);
+}
+
+.undertone-result {
+  text-align: center;
+  padding: 1.5rem;
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+}
+
+.undertone-title {
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--wine);
+  margin-bottom: 0.5rem;
+}
+
+.undertone-desc {
+  font-size: 0.875rem;
+  color: var(--ink);
+}
+
+/* Shopping Oracle */
+.oracle-input-group {
+  margin-bottom: 1.5rem;
+}
+
+.oracle-label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--faded-ink);
+  margin-bottom: 0.5rem;
+}
+
+.oracle-input {
+  width: 100%;
+  padding: 0.75rem;
+  min-height: 44px;
+  border: 1px solid var(--gold-leaf);
+  background: var(--parchment);
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+}
+
+.oracle-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--gold-bright);
+}
+
+.oracle-result {
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.oracle-verdict {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.oracle-explanation {
+  font-size: 0.875rem;
+  color: var(--ink);
+  font-style: italic;
+}
+
+.oracle-matches {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.oracle-match {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Color Story Generator */
+.story-display {
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  min-height: 200px;
+}
+
+.story-title {
+  font-size: 1.125rem;
+  font-style: italic;
+  color: var(--wine);
+  margin-bottom: 1rem;
+}
+
+.story-text {
+  font-size: 0.9375rem;
+  color: var(--ink);
+  line-height: 1.8;
+  font-style: italic;
+}
+
+.story-colors {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.story-color {
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+.story-generate {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  min-height: 44px;
+  background: var(--wine);
+  border: none;
+  color: var(--parchment);
+  font-family: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.story-generate:hover {
+  background: var(--ink);
+}
+
+/* Season Siblings */
+.siblings-intro {
+  text-align: center;
+  font-style: italic;
+  color: var(--faded-ink);
+  margin-bottom: 2rem;
+  font-size: 0.875rem;
+}
+
+.sibling-card {
+  background: var(--aged-paper);
+  border: 1px solid rgba(196, 163, 90, 0.4);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.sibling-name {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--wine);
+  margin-bottom: 0.5rem;
+}
+
+.sibling-desc {
+  font-size: 0.8125rem;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
+}
+
+.sibling-swatches {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.sibling-swatch {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+
+/* Toast Notification */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--ink);
+  color: var(--parchment);
+  padding: 1rem 1.5rem;
+  font-size: 0.875rem;
+  z-index: 1000;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Seasonal Light Simulation */
+.light-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.light-btn {
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--moss);
+  color: var(--faded-ink);
+  font-family: inherit;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.light-btn:hover, .light-btn.active {
+  background: var(--moss);
+  color: var(--parchment);
+}
+
+.light-preview {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+  margin-bottom: 1rem;
+}
+
+.light-face {
+  width: 100px;
+  height: 120px;
+  border-radius: 50% 50% 45% 45%;
+  transition: all 0.5s ease;
+  position: relative;
+}
+
+.light-description {
+  text-align: center;
+  font-style: italic;
+  font-size: 0.875rem;
+  color: var(--ink);
+  padding: 1rem;
+  background: var(--aged-paper);
+  border: 1px solid rgba(196, 163, 90, 0.3);
+}
+
+/* Micro-season Feature */
+.microseason-display {
+  text-align: center;
+  padding: 2rem;
+  background: var(--aged-paper);
+  border: 1px solid var(--gold-leaf);
+  margin-bottom: 1.5rem;
+}
+
+.microseason-title {
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--wine);
+  margin-bottom: 0.5rem;
+}
+
+.microseason-subtitle {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--gold-leaf);
+  margin-bottom: 1rem;
+}
+
+.microseason-desc {
+  font-size: 0.875rem;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.microseason-nav {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.microseason-btn {
+  padding: 0.75rem 1.5rem;
+  min-height: 44px;
+  background: transparent;
+  border: 1px solid var(--gold-leaf);
+  color: var(--faded-ink);
+  font-family: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.microseason-btn:hover {
+  background: var(--gold-leaf);
+  color: var(--parchment);
+}
+
+/* Footer */
+.archive-footer {
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid rgba(196, 163, 90, 0.3);
+  margin-top: 2rem;
+}
+
+.footer-text {
+  font-size: 0.75rem;
+  color: var(--faded-ink);
+  font-style: italic;
+}
+
+/* Desktop enhancements */
+@media (min-width: 768px) {
+  .archive-header {
+    padding: 3rem 2rem;
+  }
+  
+  .archive-title {
+    font-size: 2.25rem;
+  }
+  
+  .archive-section {
+    padding: 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .pigment-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .swatch-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  
+  .favorites-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+  
+  .compare-slots {
+    gap: 2rem;
+  }
+  
+  .time-palette {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="archive-container">
+  <header class="archive-header">
+    <div class="archive-seal">&phi;</div>
+    <h1 class="archive-title">The Verdant Cipher</h1>
+    <p class="archive-subtitle">A Personal Chromatic Archive</p>
+  </header>
+
+  <nav class="archive-nav">
+    <button class="nav-tab active" data-section="analysis">Analysis</button>
+    <button class="nav-tab" data-section="pigments">Source</button>
+    <button class="nav-tab" data-section="palette">Palette</button>
+    <button class="nav-tab" data-section="looks">Looks</button>
+    <button class="nav-tab" data-section="time">Time</button>
+    <button class="nav-tab" data-section="light">Light</button>
+    <button class="nav-tab" data-section="oracle">Oracle</button>
+    <button class="nav-tab" data-section="story">Story</button>
+    <button class="nav-tab" data-section="harmony">Harmony</button>
+    <button class="nav-tab" data-section="siblings">Kin</button>
+    <button class="nav-tab" data-section="compare">Compare</button>
+    <button class="nav-tab" data-section="favorites">Favorites</button>
+    <button class="nav-tab" data-section="export">Export</button>
+  </nav>
+
+  <!-- Analysis Section -->
+  <section class="archive-section active" id="analysis">
+    <h2 class="section-title">The Reading</h2>
+    <div class="analysis-content">
+      <p class="analysis-paragraph">Your coloring possesses the quality of light filtered through cathedral glass-neither wholly warm nor cool, but transmuted. The green-hazel of your eyes contains an inner ring of antique gold surrounded by sage and soft teal, creating the effect of sunlight through forest canopy. This verdant center is your chromatic anchor, the cipher from which all else derives. Your skin carries the translucency of fine porcelain, yet beneath lies the faintest whisper of honey-a neutral-cool foundation with warm luminosity that emerges in golden hour and vanishes under fluorescent light.</p>
+      
+      <p class="analysis-paragraph">The dimensional quality of your hair tells the fuller story: champagne and wheat at the crown giving way to darker ash at the roots, touched with the faintest strawberry undertone when sunlit. This is not simply "blonde" but a study in gradation, in the way light transforms pigment. Your natural flush carries cool pink-the shade of wild roses, not peaches-while your lips echo a sophisticated mauve-rose that bridges your warm and cool elements. The veins at your wrist run distinctly blue-violet, the tell of cool undertone that your surface warmth disguises.</p>
+      
+      <p class="analysis-paragraph">You exist in the liminal space between Summer's gentle diffusion and the sharper clarity that wants to emerge in your features. Your is a coloring that photographs differently in every light because it genuinely shifts-cool and ethereal in shadow, warm and golden in sun. This mutability is not confusion but complexity, the mark of coloring that refuses simple categorization and rewards those who dress it with equal nuance.</p>
+      
+      <div class="season-badge">
+        <div class="season-name">Soft Summer with Warm Influence</div>
+        <div class="season-note">A liminal palette: the muted, greyed quality of Summer meeting unexpected golden warmth at the surface-cool at the root, sun-touched at the bloom.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Source Pigments -->
+  <section class="archive-section" id="pigments">
+    <h2 class="section-title">Source Pigments</h2>
+    <div class="pigment-grid" id="pigmentGrid"></div>
+  </section>
+
+  <!-- Main Palette -->
+  <section class="archive-section" id="palette">
+    <h2 class="section-title">The Wearable Archive</h2>
+    <div id="paletteGroups"></div>
+  </section>
+
+  <!-- Looks Section -->
+  <section class="archive-section" id="looks">
+    <h2 class="section-title">Chromatic Compositions</h2>
+    <div id="looksContainer"></div>
+  </section>
+
+  <!-- Time of Day -->
+  <section class="archive-section" id="time">
+    <h2 class="section-title">The Hours</h2>
+    <p style="text-align: center; font-style: italic; color: var(--faded-ink); margin-bottom: 1.5rem; font-size: 0.875rem;">Your palette shifts with the day. Select an hour to see which colors serve you best.</p>
+    <div class="time-selector">
+      <button class="time-btn active" data-time="dawn">Dawn</button>
+      <button class="time-btn" data-time="morning">Morning</button>
+      <button class="time-btn" data-time="midday">Midday</button>
+      <button class="time-btn" data-time="golden">Golden Hour</button>
+      <button class="time-btn" data-time="evening">Evening</button>
+      <button class="time-btn" data-time="night">Night</button>
+    </div>
+    <div class="time-palette" id="timePalette"></div>
+    <div class="time-recommendation" id="timeRec"></div>
+  </section>
+
+  <!-- Seasonal Light -->
+  <section class="archive-section" id="light">
+    <h2 class="section-title">Seasonal Light</h2>
+    <p style="text-align: center; font-style: italic; color: var(--faded-ink); margin-bottom: 1.5rem; font-size: 0.875rem;">How your coloring transforms across the year's changing light.</p>
+    <div class="light-controls">
+      <button class="light-btn active" data-light="spring">Spring Equinox</button>
+      <button class="light-btn" data-light="summer">Summer Solstice</button>
+      <button class="light-btn" data-light="autumn">Autumn Equinox</button>
+      <button class="light-btn" data-light="winter">Winter Solstice</button>
+    </div>
+    <div class="light-preview" id="lightPreview">
+      <div class="light-face" id="lightFace"></div>
+    </div>
+    <div class="light-description" id="lightDesc"></div>
+  </section>
+
+  <!-- Shopping Oracle -->
+  <section class="archive-section" id="oracle">
+    <h2 class="section-title">The Shopping Oracle</h2>
+    <p style="text-align: center; font-style: italic; color: var(--faded-ink); margin-bottom: 1.5rem; font-size: 0.875rem;">Enter any hex code to divine whether it belongs in your collection.</p>
+    <div class="oracle-input-group">
+      <label class="oracle-label">Enter a Hex Code</label>
+      <input type="text" class="oracle-input" id="oracleInput" placeholder="#8B4A5E" maxlength="7">
+    </div>
+    <div class="oracle-result" id="oracleResult">
+      <div class="oracle-verdict">Awaiting your query...</div>
+      <div class="oracle-explanation">Enter a color to receive your verdict</div>
+    </div>
+  </section>
+
+  <!-- Color Story -->
+  <section class="archive-section" id="story">
+    <h2 class="section-title">The Chromatic Tale</h2>
+    <div class="story-display" id="storyDisplay">
+      <div class="story-title">Press below to generate your color narrative...</div>
+      <div class="story-text"></div>
+      <div class="story-colors" id="storyColors"></div>
+    </div>
+    <button class="story-generate" id="storyBtn">Divine a New Tale</button>
+  </section>
+
+  <!-- Harmony -->
+  <section class="archive-section" id="harmony">
+    <h2 class="section-title">Personal Harmony Wheel</h2>
+    <div class="harmony-container">
+      <div class="harmony-wheel">
+        <div class="harmony-center">Your Spectrum</div>
+      </div>
+      <div class="harmony-legend">
+        <div class="harmony-item"><div class="harmony-dot" style="background: #E8D5D5;"></div>Blush Whisper</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #D4A5A5;"></div>Rose Dusk</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #C4A35A;"></div>Antique Gold</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #9CAF88;"></div>Sage Mist</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #6B7355;"></div>Deep Moss</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #8B9D83;"></div>Eucalyptus</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #A5B5C5;"></div>Cool Slate</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #8B8FAA;"></div>Lavender Grey</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #8B4A5E;"></div>Wine Shadow</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #A06070;"></div>Dusty Rose</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #C5A5A0;"></div>Faded Peony</div>
+        <div class="harmony-item"><div class="harmony-dot" style="background: #D8C5C0;"></div>Pearl Blush</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Season Siblings -->
+  <section class="archive-section" id="siblings">
+    <h2 class="section-title">Chromatic Kin</h2>
+    <p class="siblings-intro">The neighboring seasons that share your qualities, and where you might borrow when the mood strikes.</p>
+    <div id="siblingsContainer"></div>
+  </section>
+
+  <!-- Compare Section -->
+  <section class="archive-section" id="compare">
+    <h2 class="section-title">The Comparison</h2>
+    <p style="text-align: center; font-style: italic; color: var(--faded-ink); margin-bottom: 1.5rem; font-size: 0.875rem;">Tap any swatch in your palette, then tap a slot below to compare two colors.</p>
+    <div class="compare-container">
+      <div class="compare-slots">
+        <div class="compare-slot" id="slot1" data-slot="1">Tap a swatch, then tap here</div>
+        <div class="compare-slot" id="slot2" data-slot="2">Tap a swatch, then tap here</div>
+      </div>
+      <div class="compare-verdict" id="compareVerdict">
+        <div class="verdict-title">The Verdict</div>
+        <div class="verdict-text">Select two colors to compare their relationship within your palette.</div>
+      </div>
+      <button class="compare-clear" id="compareClear">Clear Comparison</button>
+    </div>
+  </section>
+
+  <!-- Favorites Section -->
+  <section class="archive-section" id="favorites">
+    <h2 class="section-title">Your Treasured Hues</h2>
+    <div id="favoritesContainer">
+      <div class="favorites-empty">
+        <div class="favorites-empty-icon">&hearts;</div>
+        <p>Double-tap any swatch to mark it as a favorite.<br>Your treasures will appear here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Export Section -->
+  <section class="archive-section" id="export">
+    <h2 class="section-title">Archive & Share</h2>
+    <div class="export-options">
+      <button class="export-btn" id="exportJson">Export Full Palette as JSON</button>
+      <button class="export-btn" id="exportFavJson">Export Favorites as JSON</button>
+      <button class="export-btn" id="exportText">Copy Palette as Text</button>
+      <button class="export-btn" id="exportFavText">Copy Favorites as Text</button>
+    </div>
+    <div class="export-preview" id="exportPreview">Your exported data will appear here...</div>
+  </section>
+
+  <footer class="archive-footer">
+    <p class="footer-text">The Verdant Cipher - A chromatic archive composed for Lauren<br>Crafted with devotion to the art of color</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ==================== DATA ====================
+
+const sourcePigments = [
+  { name: "Eye: Golden Center", hex: "#A89460", desc: "The amber sunburst around your pupil" },
+  { name: "Eye: Sage Ring", hex: "#7D8B6A", desc: "The muted green of your mid-iris" },
+  { name: "Eye: Outer Teal", hex: "#6B8080", desc: "The cool grey-teal at the iris edge" },
+  { name: "Skin: Porcelain Base", hex: "#F0E4DC", desc: "Your lightest highlight tone" },
+  { name: "Skin: Neutral Mid", hex: "#E5D5C8", desc: "The predominant skin tone" },
+  { name: "Skin: Warm Undertone", hex: "#E8D4BC", desc: "The golden glow that emerges in sun" },
+  { name: "Hair: Champagne Light", hex: "#D4C4A8", desc: "The brightest pieces framing your face" },
+  { name: "Hair: Wheat Mid", hex: "#B8A080", desc: "Your predominant hair color" },
+  { name: "Hair: Ash Root", hex: "#8C7B68", desc: "The cooler tone at your roots" },
+  { name: "Lip: Natural Mauve", hex: "#B8909A", desc: "Your bare lip color" },
+  { name: "Flush: Rose Cool", hex: "#D4A5A5", desc: "The cool pink of your natural blush" },
+  { name: "Vein: Blue-Violet", hex: "#8080A0", desc: "The tell of your cool undertone" }
+];
+
+const paletteGroups = {
+  "Neutral Anchors": [
+    { name: "Aged Ivory", hex: "#F5F0E6" },
+    { name: "Parchment", hex: "#EDE6D6" },
+    { name: "Stone", hex: "#C5BCAC" },
+    { name: "Taupe Mist", hex: "#A89B8C" },
+    { name: "Greige", hex: "#9C9080" },
+    { name: "Charcoal Soft", hex: "#5C564A" }
+  ],
+  "Verdant Core": [
+    { name: "Sage Whisper", hex: "#C5D4BC" },
+    { name: "Eucalyptus", hex: "#9CAF88" },
+    { name: "Moss Light", hex: "#8B9D83" },
+    { name: "Soft Olive", hex: "#8C9070" },
+    { name: "Deep Moss", hex: "#6B7355" },
+    { name: "Forest Shadow", hex: "#4A5240" }
+  ],
+  "Rose Dynasty": [
+    { name: "Blush Whisper", hex: "#E8D5D5" },
+    { name: "Dusty Rose", hex: "#D4A5A5" },
+    { name: "Mauve Mist", hex: "#C5A0A8" },
+    { name: "Rose Dusk", hex: "#B8909A" },
+    { name: "Berry Soft", hex: "#A06070" },
+    { name: "Wine Shadow", hex: "#8B4A5E" }
+  ],
+  "Cool Waters": [
+    { name: "Ice Blue", hex: "#D5E0E8" },
+    { name: "Soft Slate", hex: "#A5B5C5" },
+    { name: "Pewter", hex: "#909BA8" },
+    { name: "Storm Cloud", hex: "#7080A0" },
+    { name: "Dusk Blue", hex: "#607080" },
+    { name: "Deep Teal", hex: "#4A6068" }
+  ],
+  "Warm Accents": [
+    { name: "Champagne", hex: "#E8DCC8" },
+    { name: "Soft Gold", hex: "#D4C4A0" },
+    { name: "Antique Brass", hex: "#C4A35A" },
+    { name: "Burnished Gold", hex: "#A88C50" },
+    { name: "Warm Cocoa", hex: "#8C7060" },
+    { name: "Bronze Deep", hex: "#705840" }
+  ],
+  "Lavender Twilight": [
+    { name: "Lavender Mist", hex: "#DCD5E8" },
+    { name: "Wisteria", hex: "#B8A8C8" },
+    { name: "Soft Violet", hex: "#9890A8" },
+    { name: "Plum Dust", hex: "#8B8090" },
+    { name: "Amethyst Grey", hex: "#706878" },
+    { name: "Deep Orchid", hex: "#604858" }
+  ],
+  "Earth Tones": [
+    { name: "Sand", hex: "#D8CCC0" },
+    { name: "Clay", hex: "#C0A898" },
+    { name: "Terracotta Soft", hex: "#B89888" },
+    { name: "Rose Brown", hex: "#A08078" },
+    { name: "Cocoa Rose", hex: "#886868" },
+    { name: "Umber", hex: "#685048" }
+  ]
+};
+
+const looks = [
+  {
+    title: "The Scholar's Garden",
+    occasion: "Intellectual Gathering",
+    colors: ["#6B7355", "#E8D5D5", "#C4A35A", "#F5F0E6", "#8B4A5E"],
+    description: "Deep moss velvet blazer over blush silk, antique gold jewelry catching candlelight. A wine lip whispers of evening lectures and old libraries."
+  },
+  {
+    title: "Coastal Reverie",
+    occasion: "Summer Day",
+    colors: ["#A5B5C5", "#F5F0E6", "#9CAF88", "#D4C4A0", "#D4A5A5"],
+    description: "Soft slate linen against ivory, sage accents like sea glass. Champagne metallics and the barest rose on cheeks-effortless and sun-touched."
+  },
+  {
+    title: "Autumn Manuscript",
+    occasion: "Evening Event",
+    colors: ["#8B4A5E", "#D4C4A0", "#4A5240", "#B8909A", "#705840"],
+    description: "Wine and forest create depth, softened by antique gold and mauve. Bronze accents evoke illuminated manuscripts-rich but never garish."
+  },
+  {
+    title: "Morning Mist",
+    occasion: "Professional",
+    colors: ["#C5BCAC", "#D5E0E8", "#8B9D83", "#E8D5D5", "#5C564A"],
+    description: "Stone and ice blue create quiet authority, eucalyptus adds life. Soft charcoal grounds the palette while blush keeps it approachable."
+  },
+  {
+    title: "The Perfumer's Study",
+    occasion: "Romantic Evening",
+    colors: ["#B8A8C8", "#E8DCC8", "#A06070", "#6B7355", "#C4A35A"],
+    description: "Wisteria and champagne create ethereal romance, grounded by berry and moss. Gold jewelry like bottled sunlight-mysterious and inviting."
+  },
+  {
+    title: "Victorian Greenhouse",
+    occasion: "Garden Party",
+    colors: ["#C5D4BC", "#E8D5D5", "#8C9070", "#D4A5A5", "#A89B8C"],
+    description: "Sage whisper dress with blush undertones, soft olive cardigan. Dusty rose lips and taupe accessories-as if dressed by the garden itself."
+  },
+  {
+    title: "Winter Solstice",
+    occasion: "Holiday Formal",
+    colors: ["#604858", "#F5F0E6", "#C4A35A", "#8B4A5E", "#D5E0E8"],
+    description: "Deep orchid velvet against ivory silk, gold leaf catching firelight. Wine accents and ice blue details-opulent but not overwhelming."
+  }
+];
+
+const timeOfDay = {
+  dawn: {
+    colors: ["#E8D5D5", "#D5E0E8", "#C5D4BC", "#DCD5E8", "#F5F0E6", "#B8A8C8", "#A5B5C5", "#D4A5A5"],
+    rec: "In the soft, diffused light of dawn, your cool undertones emerge. Favor your softest pastels-blush, sage whisper, lavender mist. Avoid anything too warm or saturated; let the light do the work."
+  },
+  morning: {
+    colors: ["#9CAF88", "#C5BCAC", "#D4A5A5", "#A5B5C5", "#E8DCC8", "#8B9D83", "#B8909A", "#D8CCC0"],
+    rec: "Morning light reveals your true neutral quality. Your greens and roses shine now. This is when eucalyptus, dusty rose, and soft gold feel most natural-clear but not harsh."
+  },
+  midday: {
+    colors: ["#6B7355", "#C5BCAC", "#A89B8C", "#909BA8", "#8C9070", "#A08078", "#5C564A", "#7080A0"],
+    rec: "Harsh midday sun can wash you out. Reach for your more saturated, grounded colors-deep moss, pewter, soft olive. These anchor you against the bleaching effect of overhead light."
+  },
+  golden: {
+    colors: ["#C4A35A", "#D4C4A0", "#A88C50", "#B8909A", "#8B4A5E", "#E8DCC8", "#A06070", "#705840"],
+    rec: "Your golden hour glory! This is when your warm undertones sing. Antique brass, champagne, wine shadow-the light transforms you into something from a Renaissance painting. Lean into warmth."
+  },
+  evening: {
+    colors: ["#8B4A5E", "#6B7355", "#B8A8C8", "#4A5240", "#A06070", "#604858", "#706878", "#4A6068"],
+    rec: "Evening's cool, artificial light suits your deeper tones. Wine, forest shadow, deep orchid-these create drama without overwhelming. Your roses and purples become mysteriously rich."
+  },
+  night: {
+    colors: ["#604858", "#4A5240", "#5C564A", "#4A6068", "#685048", "#706878", "#8B4A5E", "#607080"],
+    rec: "Under candlelight and low evening light, your darkest tones come alive. Deep orchid, forest shadow, umber-these create intimate drama. Add gold jewelry to catch the flicker."
+  }
+};
+
+const seasonalLight = {
+  spring: {
+    skinTone: "#F0E4DC",
+    overlay: "rgba(255, 250, 230, 0.2)",
+    desc: "In spring's fresh, clear light, your skin reads its most neutral-the porcelain quality emerges pure. Your greens harmonize with budding leaves, your roses with cherry blossoms. This light reveals your Soft Summer nature most clearly."
+  },
+  summer: {
+    skinTone: "#E8D4BC",
+    overlay: "rgba(255, 220, 180, 0.25)",
+    desc: "Summer sun awakens your golden undertones. You appear warmer, more honeyed-this is when people might mistake you for a Warm season. Embrace your gold accents now; they feel native rather than borrowed."
+  },
+  autumn: {
+    skinTone: "#E5D5C8",
+    overlay: "rgba(220, 200, 170, 0.2)",
+    desc: "Autumn's golden-hour quality flatters you deeply. The warm-cool balance of this season's light mirrors your own complexity. Your wines, mosses, and golds feel inevitable. This is your power season."
+  },
+  winter: {
+    skinTone: "#F0E8E8",
+    overlay: "rgba(220, 230, 240, 0.15)",
+    desc: "Winter's blue-toned light emphasizes your cool undertones. Your skin appears most porcelain, almost luminous. Lean into your soft slates, lavenders, and cool roses-they glow against this backdrop."
+  }
+};
+
+const siblings = [
+  {
+    name: "True Summer",
+    desc: "Your closest kin. Where you share the cool, muted quality but they lack your golden warmth. Borrow their coolest roses and softest blues when you want pure freshness.",
+    colors: ["#A5B5C5", "#D4A5A5", "#8B9D83", "#B8A8C8"]
+  },
+  {
+    name: "Soft Autumn",
+    desc: "Your warm-side neighbor. They share your mutedness but lean golden where you lean cool. Borrow their deeper olives and warm taupes for autumn richness.",
+    colors: ["#A89B8C", "#8C9070", "#C0A898", "#8C7060"]
+  },
+  {
+    name: "Light Summer",
+    desc: "Your ethereal cousin. Higher contrast, cooler, but sharing your delicate quality. Borrow their icy pastels for the softest, most angelic moments.",
+    colors: ["#D5E0E8", "#DCD5E8", "#C5D4BC", "#E8D5D5"]
+  }
+];
+
+const colorStories = [
+  {
+    title: "The Letter Never Sent",
+    text: "She wore moss velvet the day she decided not to mail it. The wine-dark seal remained unbroken, pressed with her grandmother's ring. Outside, the garden bloomed in roses she would later press between pages of poetry.",
+    colors: ["#6B7355", "#8B4A5E", "#D4A5A5", "#C4A35A"]
+  },
+  {
+    title: "Autumn in the Conservatory",
+    text: "Glass walls held the last warmth of October. Her champagne silk caught afternoon light while she catalogued pressed ferns in antique gold frames. The eucalyptus she'd planted years ago had finally bloomed.",
+    colors: ["#E8DCC8", "#C4A35A", "#9CAF88", "#B8909A"]
+  },
+  {
+    title: "The Midnight Appointment",
+    text: "They met where the lavender grew wild against crumbling stone. Her dress-deep orchid, barely visible in moonlight-rustled against forgotten pathways. She carried something wrapped in ivory linen.",
+    colors: ["#B8A8C8", "#604858", "#F5F0E6", "#4A5240"]
+  },
+  {
+    title: "Portrait of the Artist",
+    text: "The painter mixed slate and rose, searching for the exact shade of her subject's gaze. Forest shadow for the velvet chair. Antique gold for the locket she refused to remove.",
+    colors: ["#A5B5C5", "#D4A5A5", "#4A5240", "#C4A35A"]
+  },
+  {
+    title: "The Inherited Garden",
+    text: "Three generations of women had tended these beds. She knelt in soft olive linen, hands deep in earth, planting bulbs that would bloom in colors her grandmother had chosen decades ago.",
+    colors: ["#8C9070", "#6B7355", "#D4A5A5", "#E8DCC8"]
+  }
+];
+
+// ==================== STATE ====================
+
+let favorites = JSON.parse(localStorage.getItem("verdantCipherFavorites") || "{}");
+let selectedForCompare = null;
+let compareSlot1 = null;
+let compareSlot2 = null;
+
+// ==================== FUNCTIONS ====================
+
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2000);
+}
+
+function saveFavorites() {
+  localStorage.setItem("verdantCipherFavorites", JSON.stringify(favorites));
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    showToast("Copied: " + text);
+  }).catch(() => {
+    showToast("Copy failed");
+  });
+}
+
+function toggleFavorite(hex, name) {
+  if (favorites[hex]) {
+    delete favorites[hex];
+    showToast("Removed from favorites");
+  } else {
+    favorites[hex] = name;
+    showToast("Added to favorites: " + name);
+  }
+  saveFavorites();
+  renderFavorites();
+  updateFavoriteIndicators();
+}
+
+function updateFavoriteIndicators() {
+  document.querySelectorAll("[data-hex]").forEach(el => {
+    const hex = el.dataset.hex;
+    if (favorites[hex]) {
+      el.classList.add("favorited");
+    } else {
+      el.classList.remove("favorited");
+    }
+  });
+}
+
+function createSwatchElement(color, className = "swatch") {
+  const swatch = document.createElement("div");
+  swatch.className = className;
+  swatch.style.backgroundColor = color.hex;
+  swatch.dataset.hex = color.hex;
+  swatch.dataset.name = color.name;
+  
+  if (favorites[color.hex]) {
+    swatch.classList.add("favorited");
+  }
+  
+  const tooltip = document.createElement("div");
+  tooltip.className = "swatch-tooltip";
+  tooltip.textContent = color.name + " " + color.hex;
+  swatch.appendChild(tooltip);
+  
+  swatch.addEventListener("click", (e) => {
+    swatch.classList.add("copied");
+    setTimeout(() => swatch.classList.remove("copied"), 400);
+    copyToClipboard(color.hex);
+    selectedForCompare = { hex: color.hex, name: color.name };
+  });
+  
+  swatch.addEventListener("dblclick", (e) => {
+    e.preventDefault();
+    toggleFavorite(color.hex, color.name);
+  });
+  
+  return swatch;
+}
+
+function renderSourcePigments() {
+  const grid = document.getElementById("pigmentGrid");
+  grid.innerHTML = "";
+  
+  sourcePigments.forEach(pigment => {
+    const card = document.createElement("div");
+    card.className = "pigment-card";
+    
+    const swatch = document.createElement("div");
+    swatch.className = "pigment-swatch";
+    swatch.style.backgroundColor = pigment.hex;
+    swatch.dataset.hex = pigment.hex;
+    swatch.dataset.name = pigment.name;
+    
+    if (favorites[pigment.hex]) {
+      swatch.classList.add("favorited");
+    }
+    
+    swatch.addEventListener("click", () => {
+      swatch.classList.add("copied");
+      setTimeout(() => swatch.classList.remove("copied"), 400);
+      copyToClipboard(pigment.hex);
+      selectedForCompare = { hex: pigment.hex, name: pigment.name };
+    });
+    
+    swatch.addEventListener("dblclick", (e) => {
+      e.preventDefault();
+      toggleFavorite(pigment.hex, pigment.name);
+    });
+    
+    const name = document.createElement("div");
+    name.className = "pigment-name";
+    name.textContent = pigment.name;
+    
+    const hex = document.createElement("div");
+    hex.className = "pigment-hex";
+    hex.textContent = pigment.hex;
+    
+    const desc = document.createElement("div");
+    desc.className = "pigment-desc";
+    desc.textContent = pigment.desc;
+    
+    card.appendChild(swatch);
+    card.appendChild(name);
+    card.appendChild(hex);
+    card.appendChild(desc);
+    grid.appendChild(card);
+  });
+}
+
+function renderPalette() {
+  const container = document.getElementById("paletteGroups");
+  container.innerHTML = "";
+  
+  Object.entries(paletteGroups).forEach(([groupName, colors]) => {
+    const group = document.createElement("div");
+    group.className = "palette-group";
+    
+    const title = document.createElement("div");
+    title.className = "group-title";
+    title.textContent = groupName;
+    group.appendChild(title);
+    
+    const grid = document.createElement("div");
+    grid.className = "swatch-grid";
+    
+    colors.forEach(color => {
+      grid.appendChild(createSwatchElement(color));
+    });
+    
+    group.appendChild(grid);
+    container.appendChild(group);
+  });
+}
+
+function renderLooks() {
+  const container = document.getElementById("looksContainer");
+  container.innerHTML = "";
+  
+  looks.forEach(look => {
+    const card = document.createElement("div");
+    card.className = "look-card";
+    
+    const header = document.createElement("div");
+    header.className = "look-header";
+    
+    const title = document.createElement("div");
+    title.className = "look-title";
+    title.textContent = look.title;
+    
+    const occasion = document.createElement("div");
+    occasion.className = "look-occasion";
+    occasion.textContent = look.occasion;
+    
+    header.appendChild(title);
+    header.appendChild(occasion);
+    
+    const swatches = document.createElement("div");
+    swatches.className = "look-swatches";
+    
+    look.colors.forEach(hex => {
+      const swatch = document.createElement("div");
+      swatch.className = "look-swatch";
+      swatch.style.backgroundColor = hex;
+      swatch.addEventListener("click", () => {
+        copyToClipboard(hex);
+        showToast("Copied: " + hex);
+      });
+      swatches.appendChild(swatch);
+    });
+    
+    const desc = document.createElement("div");
+    desc.className = "look-description";
+    desc.textContent = look.description;
+    
+    card.appendChild(header);
+    card.appendChild(swatches);
+    card.appendChild(desc);
+    container.appendChild(card);
+  });
+}
+
+function renderTimeOfDay(time) {
+  const data = timeOfDay[time];
+  const palette = document.getElementById("timePalette");
+  palette.innerHTML = "";
+  
+  data.colors.forEach(hex => {
+    const swatch = document.createElement("div");
+    swatch.className = "swatch";
+    swatch.style.backgroundColor = hex;
+    swatch.addEventListener("click", () => {
+      copyToClipboard(hex);
+      showToast("Copied: " + hex);
+    });
+    palette.appendChild(swatch);
+  });
+  
+  document.getElementById("timeRec").textContent = data.rec;
+}
+
+function renderSeasonalLight(season) {
+  const data = seasonalLight[season];
+  const preview = document.getElementById("lightPreview");
+  const face = document.getElementById("lightFace");
+  
+  preview.style.background = data.overlay;
+  face.style.backgroundColor = data.skinTone;
+  
+  document.getElementById("lightDesc").textContent = data.desc;
+}
+
+function renderFavorites() {
+  const container = document.getElementById("favoritesContainer");
+  const entries = Object.entries(favorites);
+  
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="favorites-empty"><div class="favorites-empty-icon">&hearts;</div><p>Double-tap any swatch to mark it as a favorite.<br>Your treasures will appear here.</p></div>';
+    return;
+  }
+  
+  container.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.className = "favorites-grid";
+  
+  entries.forEach(([hex, name]) => {
+    const item = document.createElement("div");
+    item.className = "favorite-item";
+    
+    const swatch = document.createElement("div");
+    swatch.className = "favorite-swatch";
+    swatch.style.backgroundColor = hex;
+    swatch.addEventListener("click", () => {
+      copyToClipboard(hex);
+      showToast("Copied: " + hex);
+    });
+    swatch.addEventListener("dblclick", () => {
+      toggleFavorite(hex, name);
+    });
+    
+    const nameEl = document.createElement("div");
+    nameEl.className = "favorite-name";
+    nameEl.textContent = name;
+    
+    item.appendChild(swatch);
+    item.appendChild(nameEl);
+    grid.appendChild(item);
+  });
+  
+  container.appendChild(grid);
+}
+
+function renderSiblings() {
+  const container = document.getElementById("siblingsContainer");
+  container.innerHTML = "";
+  
+  siblings.forEach(sibling => {
+    const card = document.createElement("div");
+    card.className = "sibling-card";
+    
+    const name = document.createElement("div");
+    name.className = "sibling-name";
+    name.textContent = sibling.name;
+    
+    const desc = document.createElement("div");
+    desc.className = "sibling-desc";
+    desc.textContent = sibling.desc;
+    
+    const swatches = document.createElement("div");
+    swatches.className = "sibling-swatches";
+    
+    sibling.colors.forEach(hex => {
+      const swatch = document.createElement("div");
+      swatch.className = "sibling-swatch";
+      swatch.style.backgroundColor = hex;
+      swatches.appendChild(swatch);
+    });
+    
+    card.appendChild(name);
+    card.appendChild(desc);
+    card.appendChild(swatches);
+    container.appendChild(card);
+  });
+}
+
+function hexToRgb(hex) {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : null;
+}
+
+function getColorProperties(hex) {
+  const rgb = hexToRgb(hex);
+  if (!rgb) return null;
+  
+  const r = rgb.r / 255, g = rgb.g / 255, b = rgb.b / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  
+  return { h: h * 360, s: s * 100, l: l * 100, rgb };
+}
+
+function analyzeColorForPalette(hex) {
+  const props = getColorProperties(hex);
+  if (!props) return { verdict: "Invalid", explanation: "Could not parse color." };
+  
+  const { h, s, l } = props;
+  
+  // Check saturation (soft summer = muted)
+  const isMuted = s < 50;
+  
+  // Check if cool-leaning
+  const isCool = (h >= 180 && h <= 300) || h < 30 || h > 330;
+  const isNeutral = (h >= 30 && h < 90) || (h >= 150 && h < 180);
+  
+  // Check value range (soft summer = medium value)
+  const isRightValue = l >= 25 && l <= 75;
+  
+  let score = 0;
+  let reasons = [];
+  
+  if (isMuted) {
+    score += 2;
+    reasons.push("beautifully muted");
+  } else if (s < 65) {
+    score += 1;
+    reasons.push("slightly more saturated than ideal");
+  } else {
+    reasons.push("too vivid for your palette");
+  }
+  
+  if (isCool || isNeutral) {
+    score += 2;
+    reasons.push(isCool ? "cool undertone aligns with yours" : "neutral enough to work");
+  } else {
+    score += 0.5;
+    reasons.push("warm-leaning, use as accent only");
+  }
+  
+  if (isRightValue) {
+    score += 1;
+    reasons.push("perfect depth");
+  } else if (l < 25) {
+    score += 0.5;
+    reasons.push("quite dark-use for drama");
+  } else {
+    score += 0.5;
+    reasons.push("very light-use for highlights");
+  }
+  
+  let verdict, symbol;
+  if (score >= 4.5) {
+    verdict = "Perfect Harmony";
+    symbol = "\u2713\u2713";
+  } else if (score >= 3.5) {
+    verdict = "Strong Match";
+    symbol = "\u2713";
+  } else if (score >= 2.5) {
+    verdict = "Proceed with Care";
+    symbol = "\u223C";
+  } else {
+    verdict = "Not Recommended";
+    symbol = "\u2717";
+  }
+  
+  return {
+    verdict: symbol + " " + verdict,
+    explanation: reasons.join("; ") + "."
+  };
+}
+
+function compareColors(hex1, hex2) {
+  const props1 = getColorProperties(hex1);
+  const props2 = getColorProperties(hex2);
+  
+  if (!props1 || !props2) return "Unable to analyze these colors.";
+  
+  const hueDiff = Math.abs(props1.h - props2.h);
+  const satDiff = Math.abs(props1.s - props2.s);
+  const lightDiff = Math.abs(props1.l - props2.l);
+  
+  let relationship = "";
+  
+  if (hueDiff < 30 || hueDiff > 330) {
+    if (lightDiff > 25) {
+      relationship = "These are tonal siblings-same family, different depths. Wear them together for sophisticated monochrome.";
+    } else {
+      relationship = "Very close relatives. Choose one as the star; the other may create visual noise.";
+    }
+  } else if (hueDiff > 150 && hueDiff < 210) {
+    relationship = "Complementary opposites. They will energize each other-use one as the main event, the other as a striking accent.";
+  } else if ((hueDiff > 90 && hueDiff < 150) || (hueDiff > 210 && hueDiff < 270)) {
+    relationship = "Split complementary territory. They create visual interest without stark contrast-excellent for layered looks.";
+  } else {
+    relationship = "Analogous neighbors on your color wheel. They flow naturally together for effortless harmony.";
+  }
+  
+  if (satDiff > 30) {
+    relationship += " Note the saturation contrast: use the more vivid as your focal point.";
+  }
+  
+  return relationship;
+}
+
+function generateStory() {
+  const story = colorStories[Math.floor(Math.random() * colorStories.length)];
+  const display = document.getElementById("storyDisplay");
+  const colorsDiv = document.getElementById("storyColors");
+  
+  display.querySelector(".story-title").textContent = story.title;
+  display.querySelector(".story-text").textContent = story.text;
+  
+  colorsDiv.innerHTML = "";
+  story.colors.forEach(hex => {
+    const color = document.createElement("div");
+    color.className = "story-color";
+    color.style.backgroundColor = hex;
+    colorsDiv.appendChild(color);
+  });
+}
+
+function getAllColors() {
+  const all = [];
+  sourcePigments.forEach(p => all.push({ name: p.name, hex: p.hex }));
+  Object.entries(paletteGroups).forEach(([group, colors]) => {
+    colors.forEach(c => all.push({ name: c.name, hex: c.hex, group }));
+  });
+  return all;
+}
+
+function exportAsJson(data) {
+  return JSON.stringify(data, null, 2);
+}
+
+function exportAsText(data) {
+  return data.map(c => c.name + ": " + c.hex).join("\n");
+}
+
+// ==================== EVENT LISTENERS ====================
+
+document.querySelectorAll(".nav-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".archive-section").forEach(s => s.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.section).classList.add("active");
+  });
+});
+
+document.querySelectorAll(".time-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".time-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderTimeOfDay(btn.dataset.time);
+  });
+});
+
+document.querySelectorAll(".light-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".light-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderSeasonalLight(btn.dataset.light);
+  });
+});
+
+document.getElementById("oracleInput").addEventListener("input", (e) => {
+  let val = e.target.value.trim();
+  if (val && !val.startsWith("#")) val = "#" + val;
+  
+  if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+    const result = analyzeColorForPalette(val);
+    const resultDiv = document.getElementById("oracleResult");
+    resultDiv.innerHTML = '<div class="oracle-verdict">' + result.verdict + '</div><div class="oracle-explanation">' + result.explanation + '</div><div class="oracle-matches"><div class="oracle-match" style="background:' + val + '"></div></div>';
+  }
+});
+
+document.querySelectorAll(".compare-slot").forEach(slot => {
+  slot.addEventListener("click", () => {
+    if (!selectedForCompare) {
+      showToast("First tap a swatch to select it");
+      return;
+    }
+    
+    const slotNum = slot.dataset.slot;
+    slot.style.backgroundColor = selectedForCompare.hex;
+    slot.textContent = "";
+    slot.classList.add("filled");
+    
+    if (slotNum === "1") {
+      compareSlot1 = selectedForCompare;
+    } else {
+      compareSlot2 = selectedForCompare;
+    }
+    
+    if (compareSlot1 && compareSlot2) {
+      const verdict = compareColors(compareSlot1.hex, compareSlot2.hex);
+      document.querySelector("#compareVerdict .verdict-text").textContent = verdict;
+    }
+  });
+});
+
+document.getElementById("compareClear").addEventListener("click", () => {
+  compareSlot1 = null;
+  compareSlot2 = null;
+  document.querySelectorAll(".compare-slot").forEach(slot => {
+    slot.style.backgroundColor = "";
+    slot.textContent = "Tap a swatch, then tap here";
+    slot.classList.remove("filled");
+  });
+  document.querySelector("#compareVerdict .verdict-text").textContent = "Select two colors to compare their relationship within your palette.";
+});
+
+document.getElementById("storyBtn").addEventListener("click", generateStory);
+
+document.getElementById("exportJson").addEventListener("click", () => {
+  const data = getAllColors();
+  const json = exportAsJson(data);
+  document.getElementById("exportPreview").textContent = json;
+  navigator.clipboard.writeText(json).then(() => showToast("Full palette JSON copied!"));
+});
+
+document.getElementById("exportFavJson").addEventListener("click", () => {
+  const data = Object.entries(favorites).map(([hex, name]) => ({ name, hex }));
+  const json = exportAsJson(data);
+  document.getElementById("exportPreview").textContent = json;
+  navigator.clipboard.writeText(json).then(() => showToast("Favorites JSON copied!"));
+});
+
+document.getElementById("exportText").addEventListener("click", () => {
+  const data = getAllColors();
+  const text = exportAsText(data);
+  document.getElementById("exportPreview").textContent = text;
+  navigator.clipboard.writeText(text).then(() => showToast("Full palette text copied!"));
+});
+
+document.getElementById("exportFavText").addEventListener("click", () => {
+  const data = Object.entries(favorites).map(([hex, name]) => ({ name, hex }));
+  const text = exportAsText(data);
+  document.getElementById("exportPreview").textContent = text;
+  navigator.clipboard.writeText(text).then(() => showToast("Favorites text copied!"));
+});
+
+// ==================== INITIALIZE ====================
+
+renderSourcePigments();
+renderPalette();
+renderLooks();
+renderTimeOfDay("dawn");
+renderSeasonalLight("spring");
+renderFavorites();
+renderSiblings();
+generateStory();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
