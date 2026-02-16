@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Moonlit Grimoire</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--void:#0A0A0C;--night:#12121A;--shadow:#1A1A24;--smoke:#2A2A38;--silver:#8890A0;--moonlight:#C8CCD8;--gold:#C4A870;--gold-bright:#D4BC8A;--rose:#A07080;--ruby:#903050}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:Georgia,serif;background:var(--void);color:var(--moonlight);line-height:1.7;min-height:100vh}
+::selection{background:var(--gold);color:var(--void)}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--night)}
+::-webkit-scrollbar-thumb{background:var(--smoke)}
+
+.caps{text-transform:uppercase;letter-spacing:0.2em;font-size:0.7em}
+
+.grimoire-cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;background:radial-gradient(ellipse at center,var(--shadow) 0%,var(--night) 40%,var(--void) 100%)}
+.sigil{font-size:3rem;color:var(--gold);margin-bottom:2rem}
+.archive-mark{font-size:0.5rem;letter-spacing:0.4em;color:var(--silver);margin-bottom:1rem}
+.grimoire-title{font-size:clamp(2rem,8vw,4rem);font-weight:normal;margin-bottom:0.5rem;color:var(--moonlight)}
+.grimoire-subtitle{font-style:italic;color:var(--silver);margin-bottom:3rem}
+.season-seal{padding:1rem 2rem;border:1px solid var(--gold);font-size:0.6rem;letter-spacing:0.25em;color:var(--gold)}
+.scroll-invoke{position:absolute;bottom:3rem;font-size:0.55rem;letter-spacing:0.3em;color:var(--silver)}
+
+.chapter{padding:4rem 1.5rem;position:relative}
+.chapter::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.chapter-num{font-size:0.5rem;letter-spacing:0.4em;color:var(--gold);margin-bottom:0.5rem;display:block}
+.chapter-title{font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--silver);margin-bottom:2.5rem}
+.chapter-alt{background:linear-gradient(180deg,var(--night) 0%,var(--shadow) 50%,var(--night) 100%)}
+
+.analysis-text{max-width:650px;margin:0 auto}
+.analysis-text p{margin-bottom:1.5rem;text-align:justify;font-size:0.95rem}
+.analysis-text p:first-of-type::first-letter{font-size:4rem;float:left;line-height:0.8;margin-right:0.5rem;color:var(--gold)}
+
+.pigments-cabinet{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:var(--smoke);max-width:900px;margin:0 auto;border:1px solid var(--smoke)}
+.pigment-vial{background:var(--night);padding:1rem;cursor:pointer;transition:background 0.3s}
+.pigment-vial:hover{background:var(--shadow)}
+.vial-color{height:60px;margin:-1rem -1rem 1rem -1rem}
+.vial-label{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);margin-bottom:0.25rem}
+.vial-name{font-style:italic;font-size:0.85rem;margin-bottom:0.25rem}
+.vial-hex{font-family:monospace;font-size:0.6rem;color:var(--silver)}
+
+.palette-nav{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:2.5rem}
+.nav-btn{background:transparent;border:1px solid var(--smoke);padding:0.75rem 1.25rem;font-family:Georgia,serif;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);cursor:pointer;transition:all 0.3s;min-height:44px}
+.nav-btn:hover{border-color:var(--silver)}
+.nav-btn.active{background:var(--gold);border-color:var(--gold);color:var(--void)}
+
+.color-family{margin-bottom:3rem}
+.family-header{display:flex;align-items:center;gap:1.5rem;margin-bottom:1.5rem}
+.family-line{flex:1;height:1px;background:linear-gradient(90deg,var(--gold),transparent)}
+.family-name{font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold)}
+.family-count{font-size:0.5rem;color:var(--silver)}
+
+.jewels{display:grid;grid-template-columns:repeat(auto-fill,minmax(75px,1fr));gap:4px}
+.jewel{aspect-ratio:1;position:relative;cursor:pointer;transition:transform 0.2s;min-width:75px}
+.jewel:hover{transform:scale(1.05);z-index:10}
+.jewel-face{width:100%;height:100%}
+.jewel-info{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.85));padding:0.5rem 0.25rem 0.25rem;opacity:0;transition:opacity 0.2s}
+.jewel:hover .jewel-info{opacity:1}
+.jewel-name{font-size:0.45rem;color:white;display:block;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jewel-hex{font-family:monospace;font-size:0.45rem;color:rgba(255,255,255,0.7);display:block;text-align:center}
+.jewel.fav::before{content:"\2605";position:absolute;top:3px;right:3px;color:var(--gold);font-size:0.6rem;z-index:10}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gold);color:var(--void);padding:0.75rem 1.5rem;font-size:0.75rem;z-index:10001;transition:transform 0.3s}
+.toast.visible{transform:translateX(-50%) translateY(0)}
+
+.compare-stage{display:flex;gap:1.5rem;justify-content:center;margin-bottom:2rem;flex-wrap:wrap}
+.compare-plinth{width:150px;height:150px;border:1px solid var(--smoke);display:flex;align-items:center;justify-content:center;position:relative;background:var(--night)}
+.compare-plinth.filled{border-color:var(--gold)}
+.compare-plinth-color{position:absolute;inset:4px}
+.compare-plinth-label{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);background:var(--night);padding:0.25rem 0.5rem;z-index:1}
+.compare-plinth.filled .compare-plinth-label{position:absolute;bottom:8px;background:rgba(10,10,12,0.9)}
+.compare-plinth-hex{font-family:monospace;font-size:0.55rem;position:absolute;top:8px;background:rgba(10,10,12,0.9);padding:0.125rem 0.375rem;z-index:1}
+.compare-reading{max-width:550px;margin:0 auto;text-align:center;min-height:100px;padding:1.5rem;background:var(--night);border:1px solid var(--smoke)}
+.reading-text{font-style:italic;font-size:0.95rem;line-height:1.8;color:var(--silver)}
+.clear-btn{margin-top:1.5rem;background:transparent;border:1px solid var(--smoke);padding:0.75rem 1.5rem;font-family:Georgia,serif;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);cursor:pointer;min-height:44px}
+.clear-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+.looks-gallery{display:grid;gap:1.5rem;max-width:900px;margin:0 auto}
+@media(min-width:640px){.looks-gallery{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:900px){.looks-gallery{grid-template-columns:repeat(3,1fr)}}
+.look-plate{background:var(--night);border:1px solid var(--smoke);padding:1.5rem;transition:border-color 0.3s}
+.look-plate:hover{border-color:var(--gold)}
+.look-num{font-size:0.45rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:0.5rem}
+.look-title{font-size:1.1rem;margin-bottom:0.25rem;font-weight:normal}
+.look-occasion{font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);margin-bottom:1rem}
+.look-swatches{display:flex;gap:3px;margin-bottom:1rem}
+.look-swatch{flex:1;height:50px;position:relative}
+.look-swatch-label{position:absolute;bottom:0;left:0;right:0;background:rgba(10,10,12,0.85);font-size:0.45rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem;text-align:center}
+.look-desc{font-size:0.8rem;color:var(--silver);line-height:1.6}
+
+.favorites-vault{min-height:200px}
+.vault-empty{text-align:center;padding:4rem 2rem;border:1px dashed var(--smoke)}
+.vault-empty-sigil{font-size:2rem;color:var(--gold);margin-bottom:1rem;opacity:0.5}
+.vault-empty-text{font-style:italic;color:var(--silver)}
+.vault-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:4px}
+.vault-jewel{aspect-ratio:1;position:relative;cursor:pointer}
+.vault-jewel-color{width:100%;height:100%}
+.vault-jewel-name{position:absolute;bottom:0;left:0;right:0;background:var(--night);padding:0.375rem;font-size:0.5rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vault-jewel-remove{position:absolute;top:4px;right:4px;width:24px;height:24px;background:var(--void);color:var(--moonlight);border:1px solid var(--smoke);font-size:0.7rem;cursor:pointer;opacity:0;transition:opacity 0.2s}
+.vault-jewel:hover .vault-jewel-remove{opacity:1}
+
+.time-display{text-align:center;margin-bottom:2rem}
+.time-label{font-size:0.5rem;letter-spacing:0.3em;color:var(--gold);margin-bottom:0.5rem}
+.time-clock{font-size:2.5rem;margin-bottom:0.25rem}
+.time-lighting{font-style:italic;color:var(--silver)}
+.time-phases{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem}
+.time-jewels{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;max-width:400px;margin:0 auto}
+.time-jewel{aspect-ratio:1;transition:filter 0.5s}
+
+.ritual-stage{display:flex;flex-direction:column;align-items:center;gap:2rem}
+@media(min-width:640px){.ritual-stage{flex-direction:row;justify-content:center}}
+.ritual-figure{width:180px;height:240px;position:relative}
+.ritual-drape{position:absolute;inset:0;clip-path:polygon(50% 0%,62% 8%,68% 18%,65% 28%,72% 35%,100% 100%,0% 100%,28% 35%,35% 28%,32% 18%,38% 8%);transition:background 0.3s}
+.ritual-face{position:absolute;top:3%;left:50%;transform:translateX(-50%);width:45px;height:55px;background:linear-gradient(180deg,#E0D0C4,#D8C8BC);border-radius:50% 50% 45% 45%}
+.ritual-choices{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:240px}
+.ritual-choice{width:52px;height:52px;border:3px solid transparent;cursor:pointer;transition:border-color 0.2s,transform 0.2s;background-clip:padding-box}
+.ritual-choice:hover{transform:scale(1.08)}
+.ritual-choice.active{border-color:var(--gold)}
+.ritual-verdict{text-align:center;max-width:400px;margin-top:1.5rem}
+.ritual-rating{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.5rem}
+.ritual-rating.divine{color:#70A080}
+.ritual-rating.flattering{color:var(--gold)}
+.ritual-rating.caution{color:#C07050}
+.ritual-note{font-style:italic;font-size:0.85rem;color:var(--silver);line-height:1.7}
+
+.oracle-question{font-style:italic;font-size:1.25rem;text-align:center;margin-bottom:2rem}
+.oracle-moods{display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center;margin-bottom:2rem}
+.mood-card{background:var(--night);border:1px solid var(--smoke);padding:1rem 1.5rem;font-family:Georgia,serif;font-size:0.85rem;color:var(--silver);cursor:pointer;min-height:44px;display:flex;align-items:center;gap:0.75rem;transition:all 0.3s}
+.mood-card:hover{border-color:var(--gold);color:var(--gold)}
+.mood-gem{width:20px;height:20px}
+.oracle-prophecy{background:var(--night);border:1px solid var(--smoke);padding:2rem;max-width:500px;margin:0 auto;text-align:center}
+.prophecy-date{font-size:0.5rem;letter-spacing:0.25em;color:var(--gold);margin-bottom:1rem}
+.prophecy-text{font-style:italic;font-size:0.95rem;line-height:1.8;color:var(--silver);margin-bottom:1.5rem}
+.prophecy-gems{display:flex;gap:0.5rem;justify-content:center}
+.prophecy-gem{width:45px;height:45px;cursor:pointer;transition:transform 0.2s}
+.prophecy-gem:hover{transform:scale(1.1)}
+
+.metals-shrine{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:1.5rem;max-width:600px;margin:0 auto 2rem}
+.metal-idol{text-align:center}
+.metal-face{width:100%;height:80px;margin-bottom:0.75rem}
+.metal-name{font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);margin-bottom:0.25rem}
+.metal-verdict{font-style:italic;font-size:0.75rem}
+.metals-wisdom{text-align:center;max-width:550px;margin:0 auto}
+.metals-wisdom p{font-style:italic;color:var(--silver);font-size:0.9rem;line-height:1.8}
+
+.extractor-chamber{max-width:500px;margin:0 auto}
+.upload-altar{border:2px dashed var(--smoke);padding:3rem 2rem;text-align:center;cursor:pointer;transition:border-color 0.3s}
+.upload-altar:hover{border-color:var(--gold)}
+.upload-sigil{font-size:2rem;color:var(--gold);margin-bottom:1rem}
+.upload-text{font-style:italic;color:var(--silver);margin-bottom:0.5rem}
+.upload-hint{font-size:0.6rem;color:var(--smoke)}
+.upload-input{display:none}
+.extracted-preview{margin-top:2rem;display:none}
+.preview-image{width:100%;max-height:300px;object-fit:contain;margin-bottom:1rem;border:1px solid var(--smoke)}
+.extracted-colors{display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center;margin-bottom:1.5rem}
+.extracted-swatch{width:60px;height:60px;cursor:pointer;position:relative;transition:transform 0.2s}
+.extracted-swatch:hover{transform:scale(1.1)}
+.extracted-hex{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.8);font-family:monospace;font-size:0.5rem;padding:0.25rem;text-align:center;color:white}
+.extractor-result{background:var(--night);border:1px solid var(--smoke);padding:1.5rem;text-align:center;margin-top:1rem}
+
+.shopping-counter{max-width:450px;margin:0 auto}
+.shopping-input-row{display:flex;gap:0.5rem;margin-bottom:1rem}
+.shopping-hex-input{flex:1;padding:0.875rem 1rem;border:1px solid var(--smoke);background:var(--night);font-family:monospace;font-size:0.9rem;color:var(--moonlight);min-height:44px}
+.shopping-hex-input:focus{outline:none;border-color:var(--gold)}
+.shopping-check-btn{background:var(--gold);color:var(--void);border:none;padding:0.875rem 1.5rem;font-family:Georgia,serif;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;min-height:44px}
+.shopping-result{text-align:center;min-height:180px;padding:1.5rem;background:var(--night);border:1px solid var(--smoke)}
+.shopping-preview{width:100px;height:100px;margin:0 auto 1rem}
+.shopping-verdict{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.5rem}
+.shopping-verdict.yes{color:#70A080}
+.shopping-verdict.close{color:var(--gold)}
+.shopping-verdict.no{color:#A07070}
+.shopping-reason{font-style:italic;font-size:0.85rem;color:var(--silver);line-height:1.6;margin-bottom:1rem}
+.shopping-nearest{margin-top:1rem}
+.shopping-nearest-label{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--silver);margin-bottom:0.5rem}
+.shopping-nearest-row{display:flex;gap:0.5rem;justify-content:center}
+.shopping-match{width:45px;height:45px;cursor:pointer;transition:transform 0.2s}
+.shopping-match:hover{transform:scale(1.1)}
+
+.export-altar{display:flex;flex-wrap:wrap;gap:0.75rem;justify-content:center}
+.export-btn{background:var(--gold);color:var(--void);border:none;padding:0.875rem 1.5rem;font-family:Georgia,serif;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;min-height:44px}
+.export-btn.secondary{background:transparent;border:1px solid var(--gold);color:var(--gold)}
+
+.grimoire-end{text-align:center;padding:4rem 2rem;background:var(--night);border-top:1px solid var(--smoke)}
+.end-sigil{font-size:1.5rem;color:var(--gold);margin-bottom:1rem}
+.end-text{font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--silver);margin-bottom:0.5rem}
+.end-date{font-style:italic;font-size:0.75rem;color:var(--smoke)}
+
+.modal-veil{position:fixed;inset:0;background:rgba(10,10,12,0.95);z-index:10002;display:none;align-items:center;justify-content:center;padding:1rem}
+.modal-veil.visible{display:flex}
+.modal-tome{background:var(--night);border:1px solid var(--smoke);max-width:550px;width:100%;max-height:85vh;overflow-y:auto;padding:2rem;position:relative}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--silver);width:44px;height:44px}
+.modal-title{font-size:1rem;letter-spacing:0.1em;margin-bottom:1.5rem;font-weight:normal}
+.export-scroll{background:var(--shadow);padding:1rem;font-family:monospace;font-size:0.65rem;max-height:350px;overflow-y:auto;white-space:pre-wrap;word-break:break-all}
+.copy-tome-btn{margin-top:1rem;background:var(--gold);color:var(--void);border:none;padding:0.875rem;font-family:Georgia,serif;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;width:100%;min-height:44px}
+</style>
+</head>
+<body>
+<header class="grimoire-cover">
+<div class="sigil">&#9830;</div>
+<span class="archive-mark caps">Arcanum Coloris No. 001</span>
+<h1 class="grimoire-title">Moonlit Sage & Rose</h1>
+<p class="grimoire-subtitle">A Grimoire of Personal Color</p>
+<div class="season-seal caps">True Summer | Cool Winter Cusp</div>
+<span class="scroll-invoke caps">Descend to Begin</span>
+</header>
+
+<section class="chapter">
+<span class="chapter-num caps">I</span>
+<h2 class="chapter-title">The Reading</h2>
+<div class="analysis-text">
+<p>Your coloring possesses a rare quality that the old masters would have labored to capture: a luminous translucency that speaks of northern light filtered through morning mist. The skin carries the cool, porcelain quality of True Summer, yet reveals unexpected depth in its capacity for drama. The veins trace blue-violet beneath your skin, speaking unambiguously of cool undertones, yet something subtle allows warmth to visit without overstaying.</p>
+<p>Your eyes are the key. That extraordinary grey-green iris, sage at the rim deepening to seafoam, lit from within by a starburst of amber around the pupil. This is not simple coloring. It is heterochromatic, mutable, responsive. In cool colors, your eyes read as crystalline grey-green; in warm colors, the amber asserts itself. This mutability is your gift.</p>
+<p>The hair confirms the story: cool ash at the root warming to honey and gilt at the ends. Your natural lip carries a dusty rose with mauve depth. Your flush runs cool pink, never peach. All of this places you precisely where Summer meets Winter: soft enough to wear Summer's muted poetry, but possessed of enough contrast to borrow Winter's sapphires and rubies when you wish to command a room.</p>
+</div>
+</section>
+
+<section class="chapter chapter-alt">
+<span class="chapter-num caps">II</span>
+<h2 class="chapter-title">Source Pigments</h2>
+<div class="pigments-cabinet" id="pigments"></div>
+</section>
+
+<section class="chapter">
+<span class="chapter-num caps">III</span>
+<h2 class="chapter-title">The Complete Palette</h2>
+<nav class="palette-nav" id="paletteNav"></nav>
+<div id="paletteContainer"></div>
+</section>
+
+<section class="chapter chapter-alt">
+<span class="chapter-num caps">IV</span>
+<h2 class="chapter-title">The Comparison</h2>
+<p style="text-align:center;font-style:italic;color:var(--silver);margin-bottom:2rem">Tap any jewel to examine it here</p>
+<div class="compare-stage">
+<div class="compare-plinth" id="slot1"><span class="compare-plinth-label">First</span></div>
+<div class="compare-plinth" id="slot2"><span class="compare-plinth-label">Second</span></div>
+</div>
+<div class="compare-reading" id="verdict"><p class="reading-text">Select two colors to divine their relationship.</p></div>
+<div style="text-align:center"><button class="clear-btn" id="clearCompare">Clear</button></div>
+</section>
+
+<section class="chapter">
+<span class="chapter-num caps">V</span>
+<h2 class="chapter-title">Styled Incantations</h2>
+<div class="looks-gallery" id="looksGallery"></div>
+</section>
+
+<section class="chapter chapter-alt">
+<span class="chapter-num caps">VI</span>
+<h2 class="chapter-title">Your Vault</h2>
+<div class="favorites-vault" id="favoritesVault"></div>
+</section>
+
+<section class="chapter">
+<span class="chapter-num caps">VII</span>
+<h2 class="chapter-title">Light Alchemy</h2>
+<div class="time-display">
+<p class="time-label">Current Hour</p>
+<p class="time-clock" id="timeClock">--:--</p>
+<p class="time-lighting" id="timeLighting">Divining...</p>
+</div>
+<div class="time-phases" id="timePhases"></div>
+<div class="time-jewels" id="timeJewels"></div>
+</section>
+
+<section class="chapter chapter-alt">
+<span class="chapter-num caps">VIII</span>
+<h2 class="chapter-title">The Draping Ritual</h2>
+<p style="text-align:center;font-style:italic;color:var(--silver);margin-bottom:2rem">Tap a color to see how it flatters you</p>
+<div class="ritual-stage">
+<div class="ritual-figure">
+<div class="ritual-drape" id="ritualDrape" style="background:#902840"></div>
+<div class="ritual-face"></div>
+</div>
+<div>
+<div class="ritual-choices" id="ritualChoices"></div>
+</div>
+</div>
+<div class="ritual-verdict" id="ritualVerdict">
+<p class="ritual-rating divine">Divine Match</p>
+<p class="ritual-note">Ruby is YOUR red. Cool, deep, dramatic. It makes your skin luminous.</p>
+</div>
+</section>
+
+<section class="chapter">
+<span class="chapter-num caps">IX</span>
+<h2 class="chapter-title">The Mood Oracle</h2>
+<p class="oracle-question">What energy do you wish to invoke today?</p>
+<div class="oracle-moods" id="oracleMoods"></div>
+<div class="oracle-prophecy">
+<p class="prophecy-date" id="prophecyDate"></p>
+<p class="prophecy-text" id="prophecyText">Select a mood to receive your prescription.</p>
+<div class="prophecy-gems" id="prophecyGems"></div>
+</div>
+</section>
+
+<section class="chapter chapter-alt">
+<span class="chapter-num caps">X</span>
+<h2 class="chapter-title">Metal Affinities</h2>
+<div class="metals-shrine">
+<div class="metal-idol"><div class="metal-face" style="background:linear-gradient(135deg,#B0B0B8 0%,#E0E0E8 50%,#909098 100%)"></div><p class="metal-name">Silver</p><p class="metal-verdict">Primary</p></div>
+<div class="metal-idol"><div class="metal-face" style="background:linear-gradient(135deg,#C8B898 0%,#E8DCC8 50%,#A89878 100%)"></div><p class="metal-name">Aged Gold</p><p class="metal-verdict">Excellent</p></div>
+<div class="metal-idol"><div class="metal-face" style="background:linear-gradient(135deg,#C0A8A0 0%,#E0D0C8 50%,#A08880 100%)"></div><p class="metal-name">Rose Gold</p><p class="metal-verdict">Beautiful</p></div>
+<div class="metal-idol"><div class="metal-face" style="background:linear-gradient(135deg,#C0C0C8 0%,#F0F0F8 50%,#A0A0A8 100%)"></div><p class="metal-name">White Gold</p><p class="metal-verdict">Excellent</p></div>
+<div class="metal-idol"><div class="metal-face" style="background:linear-gradient(135deg,#D0A850 0%,#F0D080 50%,#B08830 100%)"></div><p class="metal-name">Bright Gold</p><p class="metal-verdict">Sparingly</p></div>
+</div>
+<div class="metals-wisdom"><p>Your complex undertones grant unusual metal versatility. Silver remains your purest match, but that whisper of warmth means soft, aged golds feel surprisingly natural. Rose gold bridges beautifully. Reserve bright yellow gold for small accents.</p></div>
+</section>
+
+<section class="chapter">
+<span class="chapter-num caps">XI</span>
+<h2 class="chapter-title">Color Extraction</h2>
+<p style="text-align:center;font-style:italic;color:var(--silver);margin-bottom:2rem">Upload any image to extract and check its colors</p>
+<div class="extractor-chamber">
+<div class="upload-altar" id="uploadAltar">
+<div class="upload-sigil">&#8853;</div>
+<p class="upload-text">Drop an image or tap to upload</p>
+<p class="upload-hint">JPG, PNG, WEBP</p>
+<input type="file" class="upload-input" id="uploadInput" accept="image/*">
+</div>
+<div class="extracted-preview" id="extractedPreview">
+<img class="preview-image" id="previewImage" alt="Preview">
+<p style="text-align:center;font-size:0.7rem;color:var(--silver);margin-bottom:1rem">Tap image to sample, or use extracted palette:</p>
+<div class="extracted-colors" id="extractedColors"></div>
+<div class="extractor-result" id="extractorResult"></div>
+</div>
+</div>
+</section>
+
+<section class="chapter chapter-alt">
+<span class="chapter-num caps">XII</span>
+<h2 class="chapter-title">Shopping Companion</h2>
+<p style="text-align:center;font-style:italic;color:var(--silver);margin-bottom:2rem">Enter a hex code to check against your palette</p>
+<div class="shopping-counter">
+<div class="shopping-input-row">
+<input type="text" class="shopping-hex-input" id="shoppingInput" placeholder="#HEXCODE" maxlength="7">
+<button class="shopping-check-btn" id="shoppingCheck">Check</button>
+</div>
+<div class="shopping-result" id="shoppingResult"><p style="font-style:italic;color:var(--silver)">Enter a hex code to analyze.</p></div>
+</div>
+</section>
+
+<section class="chapter">
+<span class="chapter-num caps">XIII</span>
+<h2 class="chapter-title">Export Your Grimoire</h2>
+<div class="export-altar">
+<button class="export-btn" id="exportFullJSON">Full (JSON)</button>
+<button class="export-btn" id="exportFullText">Full (Text)</button>
+<button class="export-btn secondary" id="exportFavJSON">Vault (JSON)</button>
+<button class="export-btn secondary" id="exportFavText">Vault (Text)</button>
+</div>
+</section>
+
+<footer class="grimoire-end">
+<div class="end-sigil">&#10022;</div>
+<p class="end-text">The Moonlit Grimoire</p>
+<p class="end-date">Compiled January 2026</p>
+</footer>
+
+<div class="toast" id="toast">Copied</div>
+
+<div class="modal-veil" id="modalVeil">
+<div class="modal-tome">
+<button class="modal-close" id="modalClose">&times;</button>
+<h3 class="modal-title" id="modalTitle">Export</h3>
+<div id="modalContent"></div>
+</div>
+</div>
+
+<script>
+var pigments=[
+{area:"Skin Highlight",name:"Moonstone",hex:"#E0D8D0"},
+{area:"Skin Shadow",name:"Violet Veil",hex:"#C0B0B8"},
+{area:"Cheek Flush",name:"Rose Frost",hex:"#D0A0A8"},
+{area:"Hair Root",name:"Ash Cathedral",hex:"#888078"},
+{area:"Hair Mid",name:"Honeyed Page",hex:"#B0986C"},
+{area:"Hair End",name:"Gilt Edge",hex:"#C8B080"},
+{area:"Eye Limbal",name:"Sage Smoke",hex:"#708070"},
+{area:"Eye Iris",name:"Sea Glass",hex:"#889890"},
+{area:"Eye Center",name:"Amber Star",hex:"#A89058"},
+{area:"Lips",name:"Dusty Bloom",hex:"#C0989C"},
+{area:"Vein",name:"Twilight",hex:"#7888A0"},
+{area:"Brow",name:"Umber Ash",hex:"#807068"}
+];
+
+var palette={
+blacks:[
+{name:"True Black",hex:"#0A0A0C"},{name:"Ink Black",hex:"#101014"},{name:"Onyx",hex:"#18181C"},
+{name:"Obsidian",hex:"#1C1C22"},{name:"Raven",hex:"#202028"},{name:"Charcoal",hex:"#282830"},
+{name:"Graphite",hex:"#303038"},{name:"Storm",hex:"#3C3C48"},{name:"Smoke",hex:"#484858"}
+],
+greys:[
+{name:"Pewter",hex:"#505060"},{name:"Steel",hex:"#606878"},{name:"Slate",hex:"#687080"},
+{name:"Pigeon",hex:"#788898"},{name:"Silver Mist",hex:"#8898A8"},{name:"Moonstone",hex:"#98A0B0"},
+{name:"Cloud",hex:"#A8B0B8"},{name:"Pearl",hex:"#B8C0C8"},{name:"Platinum",hex:"#D0D4DC"},
+{name:"Silver White",hex:"#E0E4E8"}
+],
+whites:[
+{name:"Ivory",hex:"#F0E8E0"},{name:"Cream",hex:"#F4EDE4"},{name:"Bone China",hex:"#E8E4E0"},
+{name:"Soft White",hex:"#F0EDE8"},{name:"Snow",hex:"#F4F0EC"},{name:"Pure White",hex:"#FAFAFA"},
+{name:"Blush White",hex:"#F8F0F0"},{name:"Blue White",hex:"#F0F4F8"}
+],
+navies:[
+{name:"Midnight",hex:"#101828"},{name:"Navy Black",hex:"#182030"},{name:"Deep Navy",hex:"#1C2840"},
+{name:"True Navy",hex:"#203050"},{name:"Royal Navy",hex:"#284060"},{name:"Admiral",hex:"#304870"},
+{name:"Steel Blue",hex:"#3C5878"},{name:"Storm Navy",hex:"#405880"},{name:"Dusk",hex:"#486088"}
+],
+blues:[
+{name:"Sapphire Deep",hex:"#1C3868"},{name:"Cobalt",hex:"#2850A0"},{name:"Royal Blue",hex:"#3060B0"},
+{name:"Cornflower",hex:"#5080C8"},{name:"Periwinkle",hex:"#7090C8"},{name:"Wedgwood",hex:"#6888B8"},
+{name:"Delft",hex:"#5878A8"},{name:"Sky Grey",hex:"#88A0B8"},{name:"Ice Blue",hex:"#A8C0D0"},
+{name:"Powder",hex:"#B8D0E0"},{name:"Arctic",hex:"#C8DCE8"}
+],
+teals:[
+{name:"Deep Teal",hex:"#184048"},{name:"Ocean",hex:"#205058"},{name:"Teal",hex:"#286068"},
+{name:"Sea Teal",hex:"#307078"},{name:"Lagoon",hex:"#408888"},{name:"Seafoam Deep",hex:"#509090"},
+{name:"Aqua Grey",hex:"#6098A0"},{name:"Seafoam",hex:"#78A8A8"},{name:"Spa",hex:"#90B8B8"},
+{name:"Mint Ice",hex:"#A8C8C8"}
+],
+greens:[
+{name:"Forest Dark",hex:"#1C3028"},{name:"Evergreen",hex:"#284038"},{name:"Hunter",hex:"#305040"},
+{name:"Forest",hex:"#406050"},{name:"Malachite",hex:"#387858"},{name:"Emerald",hex:"#288060"},
+{name:"Jade",hex:"#508868"},{name:"Sage Dark",hex:"#607860"},{name:"Sage",hex:"#708868"},
+{name:"Eucalyptus",hex:"#809880"},{name:"Celadon",hex:"#90A890"},{name:"Mint",hex:"#A0B8A0"},
+{name:"Sea Glass",hex:"#B0C8B8"}
+],
+purples:[
+{name:"Aubergine Black",hex:"#201820"},{name:"Plum Dark",hex:"#302030"},{name:"Aubergine",hex:"#402840"},
+{name:"Deep Purple",hex:"#483058"},{name:"Plum",hex:"#584060"},{name:"Grape",hex:"#604870"},
+{name:"Amethyst Dark",hex:"#685080"},{name:"Amethyst",hex:"#786090"},{name:"Wisteria",hex:"#8870A0"},
+{name:"Lavender",hex:"#9880A8"},{name:"Lilac",hex:"#A890B8"},{name:"Mauve Mist",hex:"#B8A0C0"},
+{name:"Heather",hex:"#C0A8C0"}
+],
+pinks:[
+{name:"Burgundy Black",hex:"#281018"},{name:"Wine Dark",hex:"#401828"},{name:"Burgundy",hex:"#582030"},
+{name:"Claret",hex:"#682838"},{name:"Wine",hex:"#783848"},{name:"Berry",hex:"#884858"},
+{name:"Raspberry",hex:"#985068"},{name:"Mulberry",hex:"#906070"},{name:"Dusty Rose Dark",hex:"#987080"},
+{name:"Mauve",hex:"#A08090"},{name:"Rose Grey",hex:"#B090A0"},{name:"Dusty Rose",hex:"#C0A0A8"},
+{name:"Blush",hex:"#D0B0B8"},{name:"Shell Pink",hex:"#E0C8C8"},{name:"Rose Quartz",hex:"#E8D0D0"}
+],
+reds:[
+{name:"Oxblood",hex:"#401820"},{name:"Crimson Dark",hex:"#601828"},{name:"Crimson",hex:"#802030"},
+{name:"Ruby",hex:"#902840"},{name:"Garnet",hex:"#A03048"},{name:"Cherry",hex:"#A83850"},
+{name:"Raspberry Red",hex:"#B04058"},{name:"Cool Red",hex:"#B84860"},{name:"Rose Red",hex:"#C05868"},
+{name:"Watermelon",hex:"#C86878"}
+],
+corals:[
+{name:"Terra Rose",hex:"#A06060"},{name:"Canyon",hex:"#B07070"},{name:"Dusty Coral",hex:"#C08080"},
+{name:"Soft Coral",hex:"#D09090"},{name:"Peach Pink",hex:"#D8A0A0"},{name:"Blush Coral",hex:"#E0B0B0"}
+],
+golds:[
+{name:"Bronze Dark",hex:"#705838"},{name:"Antique Bronze",hex:"#806840"},{name:"Bronze",hex:"#907850"},
+{name:"Antique Gold",hex:"#A08858"},{name:"Old Gold",hex:"#B09860"},{name:"Champagne",hex:"#C0A870"},
+{name:"Gilt",hex:"#C8B078"},{name:"Soft Gold",hex:"#D0C090"},{name:"Pale Gold",hex:"#E0D0A8"}
+],
+browns:[
+{name:"Espresso",hex:"#282018"},{name:"Dark Chocolate",hex:"#382820"},{name:"Chocolate",hex:"#483828"},
+{name:"Cocoa",hex:"#584830"},{name:"Coffee",hex:"#685840"},{name:"Taupe Dark",hex:"#786850"},
+{name:"Taupe",hex:"#888070"},{name:"Greige",hex:"#989088"},{name:"Mushroom",hex:"#A8A098"},
+{name:"Stone",hex:"#B8B0A8"}
+]
+};
+
+var looks=[
+{title:"The Scholar",occasion:"Dissertation Defense",colors:[{hex:"#203050",role:"Blazer"},{hex:"#F0E8E0",role:"Blouse"},{hex:"#C8B078",role:"Jewelry"},{hex:"#902840",role:"Lip"}],desc:"True navy blazer with ivory silk. Antique gold pin. Ruby lip for authority."},
+{title:"The Sorceress",occasion:"Evening Performance",colors:[{hex:"#302030",role:"Velvet"},{hex:"#786090",role:"Silk"},{hex:"#C8C8C8",role:"Silver"},{hex:"#A03048",role:"Lip"}],desc:"Plum velvet over amethyst silk. Sterling silver. Garnet lip."},
+{title:"The Naturalist",occasion:"Wildlife Center",colors:[{hex:"#708868",role:"Henley"},{hex:"#F0EDE8",role:"Tee"},{hex:"#406050",role:"Vest"},{hex:"#C0989C",role:"Lip"}],desc:"Sage henley under hunter green vest. Natural lip."},
+{title:"The Executive",occasion:"Client Meeting",colors:[{hex:"#303038",role:"Suit"},{hex:"#5878A8",role:"Shell"},{hex:"#B8C0C8",role:"Scarf"},{hex:"#783848",role:"Lip"}],desc:"Charcoal suit, Delft shell, pearl scarf. Wine lip."},
+{title:"The Romantic",occasion:"Dinner Date",colors:[{hex:"#584060",role:"Dress"},{hex:"#D0D4DC",role:"Jewelry"},{hex:"#D0B0B8",role:"Wrap"},{hex:"#985068",role:"Lip"}],desc:"Plum slip dress. Platinum jewelry. Blush wrap. Raspberry lip."},
+{title:"The Minimalist",occasion:"Gallery Opening",colors:[{hex:"#0A0A0C",role:"Trousers"},{hex:"#FAFAFA",role:"Sweater"},{hex:"#184048",role:"Coat"},{hex:"#A08858",role:"Jewelry"}],desc:"Black trousers, white cashmere, deep teal coat. Gold cuff."}
+];
+
+var moods={
+commanding:{colors:["#101828","#902840","#C8B078"],text:"Command the room in midnight navy with ruby lip and gilt at your ears."},
+serene:{colors:["#90B8B8","#F0EDE8","#A8C0D0"],text:"Wrap yourself in spa blue and soft white. Colors of still water."},
+creative:{colors:["#584060","#708868","#A08858"],text:"Plum and sage are unlikely allies until they meet on you. Add antique gold."},
+powerful:{colors:["#0A0A0C","#902840","#D0D4DC"],text:"True black anchors. Ruby ignites. Platinum gleams."},
+romantic:{colors:["#C0A0A8","#E8D0D0","#786090"],text:"Dusty rose and rose quartz wrapped in amethyst shadows."}
+};
+
+var drapeTests=[
+{hex:"#902840",v:"divine",note:"Ruby is YOUR red. Cool, deep, dramatic. It makes your skin luminous."},
+{hex:"#203050",v:"divine",note:"True navy: sophisticated, authoritative, infinitely flattering."},
+{hex:"#786090",v:"divine",note:"Amethyst brings out the violet undertones in your skin beautifully."},
+{hex:"#708868",v:"divine",note:"Sage mirrors your eyes and creates serene, natural harmony."},
+{hex:"#184048",v:"divine",note:"Deep teal honors your cool undertones while adding drama."},
+{hex:"#F0E8E0",v:"divine",note:"Ivory is your white. It glows against your skin where pure white can be stark."},
+{hex:"#584060",v:"divine",note:"Plum is power. It intensifies your eyes and warms your complexion."},
+{hex:"#0A0A0C",v:"divine",note:"Yes, you can wear black. Your contrast level holds its own beautifully."},
+{hex:"#288060",v:"divine",note:"Emerald brings out the green in your eyes. A jewel tone that treats you like a jewel."},
+{hex:"#A03048",v:"divine",note:"Garnet: deep, cool, bloody. You wear it like a crown."},
+{hex:"#C8B078",v:"flattering",note:"Soft gold works thanks to your hair warmth. Pair with cool colors."},
+{hex:"#D0B0B8",v:"flattering",note:"Blush pink is soft and romantic. Save it for approachable moments."},
+{hex:"#6888B8",v:"divine",note:"Wedgwood blue: classic, refined, and beautifully cool on you."},
+{hex:"#FF6B00",v:"caution",note:"Pure orange overwhelms your cool undertones. Avoid near your face."},
+{hex:"#FFD700",v:"caution",note:"Bright yellow gold casts a sallow reflection. Your golds should be muted."},
+{hex:"#50A030",v:"caution",note:"Yellow-green fights your coloring. Stick to blue-based greens like sage and teal."}
+];
+
+var lights={
+dawn:{f:"sepia(0.1) brightness(0.93) hue-rotate(-10deg)",n:"Rose-gold dawn"},
+morning:{f:"brightness(1.02) saturate(0.95)",n:"Clear morning"},
+noon:{f:"brightness(1.08) contrast(1.03)",n:"Bright midday"},
+golden:{f:"sepia(0.18) brightness(0.98) hue-rotate(8deg) saturate(1.1)",n:"Golden hour"},
+evening:{f:"brightness(0.88) saturate(0.88)",n:"Soft twilight"},
+candlelight:{f:"sepia(0.25) brightness(0.82) saturate(0.85)",n:"Candlelight"},
+fluorescent:{f:"brightness(1.05) saturate(0.8) hue-rotate(-3deg)",n:"Fluorescent"},
+incandescent:{f:"sepia(0.15) brightness(0.9) saturate(0.9)",n:"Incandescent"}
+};
+
+var favorites=JSON.parse(localStorage.getItem("grimFav")||"[]");
+var compare=[null,null];
+
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.classList.add("visible");setTimeout(function(){t.classList.remove("visible")},2000)}
+function copy(t){navigator.clipboard.writeText(t).then(function(){toast("Copied: "+t)})}
+function hexToRgb(h){var r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null}
+function rgbToHex(r,g,b){return"#"+[r,g,b].map(function(x){var h=Math.max(0,Math.min(255,Math.round(x))).toString(16);return h.length===1?"0"+h:h}).join("")}
+function colorDist(h1,h2){var a=hexToRgb(h1),b=hexToRgb(h2);if(!a||!b)return 999;return Math.sqrt(Math.pow(a.r-b.r,2)+Math.pow(a.g-b.g,2)+Math.pow(a.b-b.b,2))}
+function allColors(){var a=[];Object.keys(palette).forEach(function(g){palette[g].forEach(function(x){a.push({name:x.name,hex:x.hex,group:g})})});return a}
+function closest(hex,n){n=n||3;return allColors().map(function(c){return{name:c.name,hex:c.hex,group:c.group,dist:colorDist(hex,c.hex)}}).sort(function(a,b){return a.dist-b.dist}).slice(0,n)}
+function checkPalette(hex){var c=closest(hex,1)[0];if(c.dist<25)return{v:"yes",c:c};if(c.dist<50)return{v:"close",c:c};return{v:"no",c:c}}
+function saveFav(){localStorage.setItem("grimFav",JSON.stringify(favorites))}
+function isFav(hex){return favorites.some(function(f){return f.hex===hex})}
+function toggleFav(hex,name){var i=favorites.findIndex(function(f){return f.hex===hex});if(i>-1){favorites.splice(i,1);toast("Removed")}else{favorites.push({hex:hex,name:name});toast("Saved")}saveFav();renderFav();updateFavMarks()}
+function updateFavMarks(){document.querySelectorAll(".jewel").forEach(function(j){j.classList.toggle("fav",isFav(j.dataset.hex))})}
+
+function renderPigments(){
+document.getElementById("pigments").innerHTML=pigments.map(function(p){return '<div class="pigment-vial" data-hex="'+p.hex+'"><div class="vial-color" style="background:'+p.hex+'"></div><p class="vial-label">'+p.area+'</p><p class="vial-name">'+p.name+'</p><p class="vial-hex">'+p.hex+'</p></div>'}).join("");
+document.querySelectorAll(".pigment-vial").forEach(function(v){v.onclick=function(){copy(v.dataset.hex)};v.ondblclick=function(){toggleFav(v.dataset.hex,v.querySelector(".vial-name").textContent)}})
+}
+
+function renderPaletteNav(){
+var groups=Object.keys(palette);
+document.getElementById("paletteNav").innerHTML='<button class="nav-btn active" data-g="all">All ('+allColors().length+')</button>'+groups.map(function(g){return '<button class="nav-btn" data-g="'+g+'">'+g+' ('+palette[g].length+')</button>'}).join("");
+document.querySelectorAll(".nav-btn").forEach(function(b){b.onclick=function(){document.querySelectorAll(".nav-btn").forEach(function(x){x.classList.remove("active")});b.classList.add("active");renderPalette(b.dataset.g)}})
+}
+
+function renderPalette(f){
+f=f||"all";
+var con=document.getElementById("paletteContainer");
+var groups=f==="all"?Object.keys(palette):[f];
+con.innerHTML=groups.map(function(g){return '<div class="color-family"><div class="family-header"><span class="family-line"></span><span class="family-name">'+g+'</span><span class="family-count">('+palette[g].length+')</span><span class="family-line"></span></div><div class="jewels">'+palette[g].map(function(c){return '<div class="jewel '+(isFav(c.hex)?"fav":"")+'" data-hex="'+c.hex+'" data-name="'+c.name+'"><div class="jewel-face" style="background:'+c.hex+'"></div><div class="jewel-info"><span class="jewel-name">'+c.name+'</span><span class="jewel-hex">'+c.hex+'</span></div></div>'}).join("")+'</div></div>'}).join("");
+con.querySelectorAll(".jewel").forEach(function(j){j.onclick=function(){addCompare(j.dataset.hex,j.dataset.name);copy(j.dataset.hex)};j.ondblclick=function(e){e.preventDefault();toggleFav(j.dataset.hex,j.dataset.name)}})
+}
+
+function renderLooks(){
+document.getElementById("looksGallery").innerHTML=looks.map(function(l,i){return '<div class="look-plate"><p class="look-num caps">Look '+String(i+1).padStart(2,"0")+'</p><h3 class="look-title">'+l.title+'</h3><p class="look-occasion caps">'+l.occasion+'</p><div class="look-swatches">'+l.colors.map(function(c){return '<div class="look-swatch" style="background:'+c.hex+'"><span class="look-swatch-label">'+c.role+'</span></div>'}).join("")+'</div><p class="look-desc">'+l.desc+'</p></div>'}).join("")
+}
+
+function renderFav(){
+var con=document.getElementById("favoritesVault");
+if(!favorites.length){con.innerHTML='<div class="vault-empty"><div class="vault-empty-sigil">\u2605</div><p class="vault-empty-text">Double-tap any jewel to save it here.</p></div>';return}
+con.innerHTML='<div class="vault-grid">'+favorites.map(function(f){return '<div class="vault-jewel" data-hex="'+f.hex+'"><div class="vault-jewel-color" style="background:'+f.hex+'"></div><span class="vault-jewel-name">'+f.name+'</span><button class="vault-jewel-remove" data-hex="'+f.hex+'">&times;</button></div>'}).join("")+'</div>';
+con.querySelectorAll(".vault-jewel").forEach(function(j){j.onclick=function(e){if(!e.target.classList.contains("vault-jewel-remove"))copy(j.dataset.hex)}});
+con.querySelectorAll(".vault-jewel-remove").forEach(function(b){b.onclick=function(e){e.stopPropagation();favorites=favorites.filter(function(f){return f.hex!==b.dataset.hex});saveFav();renderFav();updateFavMarks();toast("Removed")}})
+}
+
+function addCompare(hex,name){if(!compare[0]){compare[0]={hex:hex,name:name};updateCompare()}else if(!compare[1]&&compare[0].hex!==hex){compare[1]={hex:hex,name:name};updateCompare();genVerdict()}}
+function updateCompare(){
+var s1=document.getElementById("slot1"),s2=document.getElementById("slot2");
+if(compare[0]){s1.classList.add("filled");s1.innerHTML='<div class="compare-plinth-color" style="background:'+compare[0].hex+'"></div><span class="compare-plinth-hex">'+compare[0].hex+'</span><span class="compare-plinth-label">'+compare[0].name+'</span>'}else{s1.classList.remove("filled");s1.innerHTML='<span class="compare-plinth-label">First</span>'}
+if(compare[1]){s2.classList.add("filled");s2.innerHTML='<div class="compare-plinth-color" style="background:'+compare[1].hex+'"></div><span class="compare-plinth-hex">'+compare[1].hex+'</span><span class="compare-plinth-label">'+compare[1].name+'</span>'}else{s2.classList.remove("filled");s2.innerHTML='<span class="compare-plinth-label">Second</span>'}
+}
+function genVerdict(){
+var v=document.getElementById("verdict");if(!compare[0]||!compare[1]){v.innerHTML='<p class="reading-text">Select two colors to divine their relationship.</p>';return}
+var d=colorDist(compare[0].hex,compare[1].hex);
+var txt=d<50?"A tonal pairing: these colors share a family and create sophisticated harmony.":d<100?"An harmonious pairing with enough distinction to create interest.":"A bold contrast with creative potential. Use one as an accent.";
+v.innerHTML='<p class="reading-text">'+txt+'</p>'
+}
+function clearCompare(){compare=[null,null];updateCompare();document.getElementById("verdict").innerHTML='<p class="reading-text">Select two colors to divine their relationship.</p>'}
+
+function initTime(){
+var upd=function(){var n=new Date(),h=n.getHours(),m=String(n.getMinutes()).padStart(2,"0");document.getElementById("timeClock").textContent=h+":"+m;var l=h>=5&&h<7?"dawn":h>=7&&h<10?"morning":h>=10&&h<15?"noon":h>=15&&h<18?"golden":h>=18&&h<21?"evening":"candlelight";document.getElementById("timeLighting").textContent=lights[l].n;applyLight(l)};
+upd();setInterval(upd,60000);
+var phases=Object.keys(lights);
+document.getElementById("timePhases").innerHTML=phases.map(function(p){return '<button class="nav-btn" data-t="'+p+'">'+p+'</button>'}).join("");
+document.querySelectorAll("#timePhases .nav-btn").forEach(function(b){b.onclick=function(){document.querySelectorAll("#timePhases .nav-btn").forEach(function(x){x.classList.remove("active")});b.classList.add("active");applyLight(b.dataset.t)}});
+var jewels=["#902840","#203050","#708868","#786090","#C8B078","#184048","#0A0A0C","#F0E8E0","#A03048","#D0B0B8"];
+document.getElementById("timeJewels").innerHTML=jewels.map(function(c){return '<div class="time-jewel" style="background:'+c+'"></div>'}).join("")
+}
+function applyLight(t){document.querySelectorAll(".time-jewel").forEach(function(j){j.style.filter=lights[t].f})}
+
+function initDrape(){
+document.getElementById("ritualChoices").innerHTML=drapeTests.map(function(d){return '<div class="ritual-choice" data-hex="'+d.hex+'" data-v="'+d.v+'" data-note="'+d.note+'" style="background:'+d.hex+'"></div>'}).join("");
+document.querySelectorAll(".ritual-choice").forEach(function(c){c.onclick=function(){document.querySelectorAll(".ritual-choice").forEach(function(x){x.classList.remove("active")});c.classList.add("active");document.getElementById("ritualDrape").style.background=c.dataset.hex;var labs={divine:"Divine Match",flattering:"Flattering",caution:"Proceed with Caution"};document.getElementById("ritualVerdict").innerHTML='<p class="ritual-rating '+c.dataset.v+'">'+labs[c.dataset.v]+'</p><p class="ritual-note">'+c.dataset.note+'</p>'}});
+document.querySelector(".ritual-choice").click()
+}
+
+function initMoods(){
+document.getElementById("oracleMoods").innerHTML=Object.keys(moods).map(function(m){var d=moods[m];return '<button class="mood-card" data-m="'+m+'"><span class="mood-gem" style="background:'+d.colors[0]+'"></span>'+m.charAt(0).toUpperCase()+m.slice(1)+'</button>'}).join("");
+document.querySelectorAll(".mood-card").forEach(function(b){b.onclick=function(){var d=moods[b.dataset.m];document.getElementById("prophecyDate").textContent=new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});document.getElementById("prophecyText").textContent=d.text;document.getElementById("prophecyGems").innerHTML=d.colors.map(function(c){return '<div class="prophecy-gem" style="background:'+c+'" onclick="copy(\''+c+'\')"></div>'}).join("")}})
+}
+
+function initExtractor(){
+var altar=document.getElementById("uploadAltar"),input=document.getElementById("uploadInput"),preview=document.getElementById("extractedPreview"),img=document.getElementById("previewImage");
+altar.onclick=function(){input.click()};
+altar.ondragover=function(e){e.preventDefault()};
+altar.ondrop=function(e){e.preventDefault();if(e.dataTransfer.files[0])processImage(e.dataTransfer.files[0])};
+input.onchange=function(){if(input.files[0])processImage(input.files[0])};
+img.onclick=function(e){var rect=img.getBoundingClientRect();var x=(e.clientX-rect.left)/rect.width;var y=(e.clientY-rect.top)/rect.height;sampleColor(x,y)}
+}
+function processImage(file){
+var reader=new FileReader();
+reader.onload=function(e){
+document.getElementById("previewImage").src=e.target.result;
+document.getElementById("extractedPreview").style.display="block";
+extractColors(e.target.result)
+};
+reader.readAsDataURL(file)
+}
+function extractColors(src){
+var img=new Image();
+img.onload=function(){
+var canvas=document.createElement("canvas");var ctx=canvas.getContext("2d");
+var size=100;canvas.width=size;canvas.height=size;
+ctx.drawImage(img,0,0,size,size);
+var data=ctx.getImageData(0,0,size,size).data;
+var colors={};
+for(var i=0;i<data.length;i+=4){
+var r=Math.round(data[i]/32)*32;var g=Math.round(data[i+1]/32)*32;var b=Math.round(data[i+2]/32)*32;
+var key=r+","+g+","+b;colors[key]=(colors[key]||0)+1
+}
+var sorted=Object.keys(colors).map(function(k){return[k,colors[k]]}).sort(function(a,b){return b[1]-a[1]}).slice(0,8);
+var hexes=sorted.map(function(entry){var parts=entry[0].split(",").map(Number);return rgbToHex(parts[0],parts[1],parts[2])});
+document.getElementById("extractedColors").innerHTML=hexes.map(function(h){return '<div class="extracted-swatch" style="background:'+h+'" onclick="analyzeExtracted(\''+h+'\')"><span class="extracted-hex">'+h+'</span></div>'}).join("");
+analyzeExtracted(hexes[0])
+};
+img.src=src
+}
+function sampleColor(x,y){
+var img=document.getElementById("previewImage");
+var canvas=document.createElement("canvas");var ctx=canvas.getContext("2d");
+canvas.width=img.naturalWidth;canvas.height=img.naturalHeight;
+var tempImg=new Image();
+tempImg.onload=function(){
+ctx.drawImage(tempImg,0,0);
+var px=Math.floor(x*img.naturalWidth);var py=Math.floor(y*img.naturalHeight);
+var data=ctx.getImageData(px,py,1,1).data;
+var hex=rgbToHex(data[0],data[1],data[2]);
+analyzeExtracted(hex);copy(hex)
+};
+tempImg.src=img.src
+}
+function analyzeExtracted(hex){
+var result=checkPalette(hex);var cl=closest(hex,3);
+var msgs={yes:"This color is in your palette!",close:"Close to your palette. Could work.",no:"Outside your range. See alternatives below."};
+document.getElementById("extractorResult").innerHTML='<div style="width:60px;height:60px;background:'+hex+';margin:0 auto 1rem"></div><p class="shopping-verdict '+result.v+'">'+(result.v==="yes"?"IN PALETTE":result.v==="close"?"CLOSE":"OUTSIDE")+'</p><p style="font-style:italic;color:var(--silver);font-size:0.85rem;margin-bottom:1rem">'+msgs[result.v]+'</p><p style="font-size:0.5rem;color:var(--silver);margin-bottom:0.5rem">NEAREST:</p><div style="display:flex;gap:0.5rem;justify-content:center">'+cl.map(function(c){return '<div style="width:40px;height:40px;background:'+c.hex+';cursor:pointer" title="'+c.name+'" onclick="copy(\''+c.hex+'\')"></div>'}).join("")+'</div>'
+}
+
+function initShopping(){
+var inp=document.getElementById("shoppingInput"),btn=document.getElementById("shoppingCheck"),res=document.getElementById("shoppingResult");
+var analyze=function(){
+var hex=inp.value.trim().toUpperCase();if(!hex.startsWith("#"))hex="#"+hex;
+if(!/^#[0-9A-F]{6}$/i.test(hex)){res.innerHTML='<p style="color:#A07070">Enter a valid hex code</p>';return}
+var result=checkPalette(hex);var cl=closest(hex,3);
+var msgs={yes:"This color belongs in your palette.",close:"Close to your range. Could work.",no:"Outside your optimal range."};
+var labs={yes:"IN PALETTE",close:"CLOSE MATCH",no:"OUTSIDE RANGE"};
+res.innerHTML='<div class="shopping-preview" style="background:'+hex+'"></div><p class="shopping-verdict '+result.v+'">'+labs[result.v]+'</p><p class="shopping-reason">'+msgs[result.v]+'</p><div class="shopping-nearest"><p class="shopping-nearest-label">Nearest:</p><div class="shopping-nearest-row">'+cl.map(function(c){return '<div class="shopping-match" style="background:'+c.hex+'" title="'+c.name+'" onclick="copy(\''+c.hex+'\')"></div>'}).join("")+'</div></div>'
+};
+btn.onclick=analyze;inp.onkeypress=function(e){if(e.key==="Enter")analyze()}
+}
+
+function initExports(){
+document.getElementById("exportFullJSON").onclick=function(){showModal("Full (JSON)",genJSON())};
+document.getElementById("exportFullText").onclick=function(){showModal("Full (Text)",genText())};
+document.getElementById("exportFavJSON").onclick=function(){if(!favorites.length){toast("Vault empty");return}showModal("Vault (JSON)",JSON.stringify({favorites:favorites},null,2))};
+document.getElementById("exportFavText").onclick=function(){if(!favorites.length){toast("Vault empty");return}showModal("Vault (Text)",favorites.map(function(f){return f.name+": "+f.hex}).join("\n"))}
+}
+function genJSON(){return JSON.stringify({title:"Moonlit Sage & Rose",season:"True Summer | Cool Winter Cusp",created:new Date().toISOString(),pigments:pigments,palette:palette,looks:looks},null,2)}
+function genText(){
+var t="THE MOONLIT GRIMOIRE\nMoonlit Sage & Rose\nTrue Summer | Cool Winter Cusp\n\nSOURCE PIGMENTS\n----------------------------------------\n";
+pigments.forEach(function(p){t+=p.area+": "+p.name+" ("+p.hex+")\n"});
+t+="\nPALETTE ("+allColors().length+" colors)\n----------------------------------------\n";
+Object.keys(palette).forEach(function(g){t+="\n"+g.toUpperCase()+" ("+palette[g].length+")\n";palette[g].forEach(function(x){t+="  "+x.name+": "+x.hex+"\n"})});
+return t
+}
+function showModal(title,content){
+document.getElementById("modalTitle").textContent=title;
+document.getElementById("modalContent").innerHTML='<div class="export-scroll">'+content+'</div><button class="copy-tome-btn" id="copyBtn">Copy</button>';
+document.getElementById("copyBtn").onclick=function(){navigator.clipboard.writeText(content).then(function(){toast("Copied")})};
+document.getElementById("modalVeil").classList.add("visible")
+}
+function initModal(){
+document.getElementById("modalClose").onclick=function(){document.getElementById("modalVeil").classList.remove("visible")};
+document.getElementById("modalVeil").onclick=function(e){if(e.target.id==="modalVeil")document.getElementById("modalVeil").classList.remove("visible")}
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+renderPigments();renderPaletteNav();renderPalette();renderLooks();renderFav();
+document.getElementById("clearCompare").onclick=clearCompare;
+initTime();initDrape();initMoods();initExtractor();initShopping();initExports();initModal()
+});
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
