@@ -1,0 +1,3476 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sea-Glass Halo & Hazel Ember - Personal Palette Artifact</title>
+  <style>
+    :root{
+      /* Core pigments (observed / inferred) */
+      --ink:#0f1417;
+      --paper:#fbfbfa;
+
+      --skin-ivory:#f4e6e1;
+      --skin-porcelain:#f0ddda;
+      --flush-rose:#d98b9a;
+      --lip-berry-rose:#b85f73;
+
+      --hair-ash-blonde:#8a7a70;
+      --hair-beige-ash:#a5958a;
+      --brow-taupe:#6e615a;
+
+      --eye-hazel-green:#7b8d52;
+      --eye-olive-shadow:#566238;
+      --eye-amber-fleck:#b38a45;
+      --lash-charcoal:#2b2f33;
+
+      --vein-blue:#6e90b7;
+      --vein-teal:#4f8c86;
+
+      /* UI drawn from pigments */
+      --bg1: radial-gradient(1200px 800px at 10% 0%, rgba(110,144,183,.22), rgba(15,20,23,0) 60%),
+             radial-gradient(900px 900px at 90% 10%, rgba(217,139,154,.20), rgba(15,20,23,0) 55%),
+             radial-gradient(1200px 900px at 40% 110%, rgba(79,140,134,.18), rgba(15,20,23,0) 60%),
+             linear-gradient(180deg, #0c1012, #0b0f10 45%, #070a0b);
+
+      --card: rgba(251,251,250,.06);
+      --card2: rgba(251,251,250,.085);
+      --stroke: rgba(251,251,250,.12);
+      --stroke2: rgba(251,251,250,.18);
+      --softShadow: 0 18px 40px rgba(0,0,0,.45);
+
+      --text: rgba(251,251,250,.92);
+      --muted: rgba(251,251,250,.70);
+      --muted2: rgba(251,251,250,.55);
+      --danger: #ff6b6b;
+
+      --radius: 22px;
+      --radius2: 28px;
+
+      --tap: 44px;
+
+      --ease: cubic-bezier(.2,.9,.2,1);
+      --ease2: cubic-bezier(.16,1,.3,1);
+
+      --glass: blur(10px);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      background: var(--bg1);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      letter-spacing: .1px;
+      overflow-x:hidden;
+    }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 18px 14px 120px;
+    }
+
+    .top{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      padding: 10px 0 12px;
+      backdrop-filter: var(--glass);
+      -webkit-backdrop-filter: var(--glass);
+      background: linear-gradient(180deg, rgba(7,10,11,.86), rgba(7,10,11,.55) 55%, rgba(7,10,11,0));
+    }
+
+    .mast{
+      display:flex;
+      gap: 12px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+
+    .sigil{
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 30%, rgba(110,144,183,.55), rgba(217,139,154,.18) 50%, rgba(15,20,23,.55)),
+                  linear-gradient(135deg, rgba(251,251,250,.18), rgba(251,251,250,0));
+      border: 1px solid var(--stroke);
+      box-shadow: 0 10px 24px rgba(0,0,0,.35);
+      position: relative;
+      overflow:hidden;
+    }
+    .sigil::after{
+      content:"";
+      position:absolute; inset:-40%;
+      background: conic-gradient(from 180deg, rgba(217,139,154,.0), rgba(217,139,154,.30), rgba(110,144,183,.28), rgba(79,140,134,.18), rgba(217,139,154,.0));
+      animation: slowSpin 10s linear infinite;
+      opacity:.9;
+    }
+    @keyframes slowSpin{
+      to{ transform: rotate(360deg); }
+    }
+
+    h1{
+      font-family: ui-serif, "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.15;
+      letter-spacing: .2px;
+      font-weight: 680;
+    }
+
+    .sub{
+      margin-top: 6px;
+      font-size: 14px;
+      line-height: 1.35;
+      color: var(--muted);
+      max-width: 55ch;
+    }
+
+    .pillRow{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      padding-top: 2px;
+    }
+
+    .pill{
+      min-height: var(--tap);
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(251,251,250,.05);
+      color: var(--text);
+      font-size: 14px;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.25);
+      cursor:pointer;
+      user-select:none;
+      transition: transform .2s var(--ease), border-color .2s var(--ease), background .2s var(--ease);
+      white-space: nowrap;
+    }
+    .pill:active{ transform: translateY(1px) scale(.99); }
+    .pill:hover{ border-color: var(--stroke2); background: rgba(251,251,250,.075); }
+    .pill .dot{
+      width: 14px; height: 14px; border-radius: 99px;
+      border: 1px solid rgba(251,251,250,.18);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+    }
+
+    .grid{
+      display:grid;
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    @media (min-width: 840px){
+      .grid{
+        grid-template-columns: 1.2fr .8fr;
+        align-items: start;
+      }
+      .top{ padding: 12px 0 14px; }
+      h1{ font-size: 22px; }
+      .wrap{ padding: 18px 18px 120px; }
+    }
+
+    .card{
+      border-radius: var(--radius2);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, rgba(251,251,250,.08), rgba(251,251,250,.04));
+      box-shadow: var(--softShadow);
+      overflow:hidden;
+      position: relative;
+    }
+
+    .cardInner{
+      padding: 16px 14px;
+    }
+    @media (min-width: 840px){
+      .cardInner{ padding: 18px 18px; }
+    }
+
+    .cardTitle{
+      display:flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .cardTitle h2{
+      margin:0;
+      font-size: 16px;
+      letter-spacing: .2px;
+      font-weight: 650;
+    }
+    .tiny{
+      font-size: 12px;
+      color: var(--muted2);
+      line-height: 1.3;
+    }
+
+    .analysis p{
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      line-height: 1.55;
+      color: rgba(251,251,250,.86);
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: rgba(251,251,250,.05);
+      min-height: var(--tap);
+    }
+    .badge strong{
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .badge span{
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+    }
+
+    .badgeRow{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      align-items: stretch;
+    }
+    @media (min-width: 520px){
+      .badgeRow{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    .badgeRow .badge{
+      width: 100%;
+      justify-content: flex-start;
+    }
+
+    .sectionDivider{
+      height:1px;
+      background: linear-gradient(90deg, rgba(251,251,250,0), rgba(251,251,250,.18), rgba(251,251,250,0));
+      margin: 14px 0;
+    }
+
+    .pigments{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    @media (min-width: 540px){
+      .pigments{ grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+    }
+
+    .pig{
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: rgba(251,251,250,.04);
+      padding: 12px 12px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: var(--tap);
+    }
+    .pigLeft{
+      display:flex;
+      align-items:center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .sw{
+      width: 22px; height: 22px;
+      border-radius: 8px;
+      border: 1px solid rgba(251,251,250,.18);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      flex: 0 0 auto;
+    }
+    .pigTxt{
+      min-width: 0;
+    }
+    .pigName{
+      font-size: 14px;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .pigMeta{
+      font-size: 12px;
+      color: var(--muted2);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      margin-top: 2px;
+    }
+    .hex{
+      white-space: nowrap;
+      flex: 0 0 auto;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: rgba(251,251,250,.82);
+      border: 1px solid rgba(251,251,250,.12);
+      background: rgba(0,0,0,.18);
+      padding: 8px 10px;
+      border-radius: 999px;
+      min-height: 38px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      transition: transform .2s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+    }
+    .hex:hover{ border-color: rgba(251,251,250,.2); background: rgba(0,0,0,.25); }
+    .hex:active{ transform: translateY(1px) scale(.99); }
+
+    /* Palette */
+    .paletteControls{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .seg{
+      display:inline-flex;
+      border:1px solid var(--stroke);
+      border-radius: 999px;
+      overflow:hidden;
+      background: rgba(0,0,0,.16);
+    }
+    .seg button{
+      min-height: var(--tap);
+      padding: 10px 12px;
+      background: transparent;
+      color: var(--muted);
+      border:0;
+      font-size: 14px;
+      cursor:pointer;
+      transition: background .2s var(--ease), color .2s var(--ease);
+    }
+    .seg button[aria-pressed="true"]{
+      background: rgba(251,251,250,.08);
+      color: var(--text);
+    }
+
+    .studyHint{
+      flex: 1 1 100%;
+      border: 1px dashed rgba(251,251,250,.22);
+      border-radius: 18px;
+      padding: 12px 12px;
+      background: rgba(0,0,0,.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .studyHintTitle{
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: .2px;
+    }
+    .studyHintBody{
+      font-size: 13px;
+      color: var(--muted2);
+      line-height: 1.35;
+      flex: 1 1 220px;
+      min-width: 180px;
+    }
+.studyHintTop{
+  display:flex;
+  width: 100%;
+  gap: 10px;
+  align-items:flex-start;
+  justify-content: space-between;
+}
+.studyTools{
+  width: 100%;
+  display:flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+.tool{
+  border: 1px solid rgba(251,251,250,.10);
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(251,251,250,.03);
+}
+.toolLabel{
+  font-size: 13px;
+  color: rgba(251,251,250,.84);
+  margin-bottom: 8px;
+  letter-spacing: .01em;
+}
+.toolRow{
+  display:flex;
+  gap: 10px;
+  align-items:center;
+  flex-wrap: wrap;
+}
+.toolRow .input{
+  flex: 1 1 140px;
+  min-width: 160px;
+}
+.toolRow .btn{
+  flex: 0 0 auto;
+  min-width: 84px;
+}
+.file{
+  flex: 1 1 220px;
+  min-width: 220px;
+  height: 44px;
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(251,251,250,.14);
+  background: rgba(0,0,0,.18);
+  color: rgba(251,251,250,.82);
+  outline: none;
+}
+.file::-webkit-file-upload-button{
+  height: 36px;
+  border: 1px solid rgba(251,251,250,.16);
+  background: rgba(251,251,250,.06);
+  color: rgba(251,251,250,.84);
+  border-radius: 12px;
+  padding: 0 10px;
+  margin-right: 10px;
+}
+.externalTray{
+  margin-top: 10px;
+  display:flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 46px;
+  align-items: center;
+}
+.extChip{
+      width: 100%;
+      min-height: var(--tap);
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      background: rgba(251,251,250,.04);
+      color: var(--text);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.28);
+      cursor:pointer;
+      text-align:left;
+    }
+.extChip:active{ transform: scale(.98); }
+.extDot{
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.26);
+  flex: 0 0 auto;
+}
+.extMeta{
+      display:flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+.extName{
+      font-weight: 720;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+.extSub{
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+.extTag{
+      flex: 0 0 auto;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(251,251,250,.16);
+      background: rgba(0,0,0,.18);
+      font-size: 12px;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      min-width: 92px;
+      text-align:center;
+    }
+
+
+    .input{
+      flex: 1 1 200px;
+      min-width: 160px;
+      border-radius: 16px;
+      border: 1px solid var(--stroke);
+      background: rgba(251,251,250,.04);
+      min-height: var(--tap);
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+    .input:focus{ border-color: rgba(251,251,250,.22); }
+
+    .swatchGrid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+    @media (min-width: 420px){
+      .swatchGrid{ grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (min-width: 840px){
+      .swatchGrid{ grid-template-columns: repeat(7, 1fr); }
+    }
+
+    .chip{
+      border-radius: 18px;
+      border: 1px solid rgba(251,251,250,.12);
+      background: rgba(0,0,0,.12);
+      overflow:hidden;
+      cursor:pointer;
+      user-select:none;
+      min-height: 68px;
+      position: relative;
+      transition: transform .18s var(--ease), border-color .18s var(--ease);
+    }
+    .chip:hover{ border-color: rgba(251,251,250,.22); transform: translateY(-1px); }
+    .chip:active{ transform: translateY(0px) scale(.99); }
+
+    .chipTop{
+      height: 44px;
+      border-bottom: 1px solid rgba(251,251,250,.10);
+      position: relative;
+    }
+    .chipTop::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(140px 60px at 30% 30%, rgba(251,251,250,.18), rgba(251,251,250,0) 65%);
+      pointer-events:none;
+      opacity:.85;
+    }
+
+    .chipBot{
+      padding: 8px 8px 10px;
+      display:flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .chipName{
+      font-size: 12px;
+      color: rgba(251,251,250,.86);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      line-height: 1.2;
+    }
+    .chipHex{
+      font-size: 11px;
+      color: var(--muted2);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      line-height: 1.2;
+    }
+
+    .star{
+      position:absolute;
+      right: 8px;
+      top: 8px;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      border: 1px solid rgba(251,251,250,.14);
+      background: rgba(0,0,0,.25);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 14px;
+      opacity: .0;
+      transform: scale(.9);
+      transition: opacity .18s var(--ease), transform .18s var(--ease), background .18s var(--ease);
+    }
+    .chip:hover .star{ opacity:.92; transform: scale(1); }
+    .chip[data-fav="true"] .star{
+      opacity: 1;
+      transform: scale(1);
+      background: rgba(217,139,154,.22);
+      border-color: rgba(217,139,154,.30);
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(7,10,11,.86);
+      border: 1px solid rgba(251,251,250,.18);
+      border-radius: 999px;
+      padding: 12px 14px;
+      font-size: 14px;
+      color: var(--text);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,.45);
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .22s var(--ease), transform .22s var(--ease);
+      min-height: var(--tap);
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      max-width: calc(100vw - 24px);
+      z-index: 999;
+    }
+    .toast.show{
+      opacity: 1;
+      transform: translateX(-50%) translateY(-2px);
+    }
+    .toast .tDot{
+      width: 12px; height: 12px; border-radius: 99px;
+      border: 1px solid rgba(251,251,250,.18);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      flex: 0 0 auto;
+    }
+    .toast .tMsg{
+      min-width: 0;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Compare */
+    .compare{
+      display:grid;
+      gap: 12px;
+    }
+    .compareRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .pick{
+      border-radius: 20px;
+      border: 1px solid var(--stroke);
+      background: rgba(251,251,250,.04);
+      padding: 12px;
+      min-height: 140px;
+      position: relative;
+      overflow:hidden;
+    }
+    .pick .big{
+      height: 76px;
+      border-radius: 18px;
+      border: 1px solid rgba(251,251,250,.14);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      position: relative;
+    }
+    .pick .big::after{
+      content:"";
+      position:absolute; inset:0;
+      background: radial-gradient(180px 70px at 30% 25%, rgba(251,251,250,.18), rgba(251,251,250,0) 60%);
+      opacity:.9;
+      pointer-events:none;
+    }
+    .pick .meta{
+      margin-top: 10px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .pick .meta .name{
+      font-size: 14px;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .pick .meta .code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-size: 12px;
+      color: var(--muted);
+      border: 1px solid rgba(251,251,250,.12);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,.18);
+      min-height: 38px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+    }
+
+    .verdict{
+      border-radius: 20px;
+      border: 1px solid rgba(251,251,250,.14);
+      background: linear-gradient(180deg, rgba(251,251,250,.05), rgba(0,0,0,.10));
+      padding: 12px 12px;
+      min-height: var(--tap);
+    }
+    .verdict .vTitle{
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .verdict .vBody{
+      font-size: 14px;
+      line-height: 1.45;
+      color: rgba(251,251,250,.86);
+    }
+
+    /* Looks */
+    .looks{
+      display:grid;
+      gap: 10px;
+    }
+    .look{
+      border-radius: 22px;
+      border: 1px solid rgba(251,251,250,.14);
+      background: rgba(0,0,0,.14);
+      overflow:hidden;
+      min-height: 150px;
+    }
+    .lookTop{
+      padding: 12px 12px 10px;
+      display:flex;
+      align-items:flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .lookTop h3{
+      margin:0;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: .2px;
+    }
+    .lookTop .tag{
+      font-size: 12px;
+      color: rgba(251,251,250,.78);
+      border: 1px solid rgba(251,251,250,.14);
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(251,251,250,.04);
+      min-height: 38px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      white-space: nowrap;
+    }
+    .lookSwatches{
+      display:flex;
+      gap: 10px;
+      padding: 0 12px 12px;
+      flex-wrap: wrap;
+    }
+    .mini{
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      border: 1px solid rgba(251,251,250,.14);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.18);
+      cursor:pointer;
+    }
+    .lookBody{
+      padding: 0 12px 14px;
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(251,251,250,.86);
+    }
+
+    /* Drawer / modal */
+    .overlay{
+      position: fixed;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .22s var(--ease);
+      z-index: 80;
+    }
+    .overlay.show{ opacity:1; pointer-events:auto; }
+
+    .drawer{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: -8px;
+      transform: translateY(100%);
+      transition: transform .26s var(--ease2);
+      z-index: 90;
+      padding: 10px 10px 14px;
+    }
+    .drawer.show{ transform: translateY(0%); }
+.drawer.peek{ pointer-events: none; }
+    .drawer.peek .drawerPanel{ pointer-events: auto; max-height: 46vh; }
+    .drawer.peek .drawerPanel .drawerBody{ max-height: calc(46vh - 56px); overflow:auto; -webkit-overflow-scrolling: touch; }
+    .drawerPanel{
+      border-radius: 26px;
+      border: 1px solid rgba(251,251,250,.18);
+      background: rgba(7,10,11,.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 30px 60px rgba(0,0,0,.55);
+      overflow:hidden;
+      max-height: 78vh;
+      display:flex;
+      flex-direction: column;
+    }
+    .drawerHead{
+      padding: 12px 12px 10px;
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid rgba(251,251,250,.12);
+    }
+    .drawerHead .title{
+      font-size: 14px;
+      font-weight: 750;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .iconBtn{
+      min-width: var(--tap);
+      min-height: var(--tap);
+      border-radius: 16px;
+      border: 1px solid rgba(251,251,250,.14);
+      background: rgba(251,251,250,.05);
+      color: var(--text);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 16px;
+      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
+    }
+    .iconBtn:active{ transform: translateY(1px) scale(.99); }
+    .iconBtn:hover{ background: rgba(251,251,250,.08); border-color: rgba(251,251,250,.2); }
+
+    .drawerBody{
+      padding: 12px;
+      overflow:auto;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .btn{
+      min-height: var(--tap);
+      padding: 10px 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(251,251,250,.14);
+      background: rgba(251,251,250,.06);
+      color: var(--text);
+      font-size: 14px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      transition: transform .18s var(--ease), background .18s var(--ease), border-color .18s var(--ease);
+      user-select:none;
+    }
+    .btn:hover{ background: rgba(251,251,250,.085); border-color: rgba(251,251,250,.2); }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+    .btn.primary{
+      background: rgba(110,144,183,.18);
+      border-color: rgba(110,144,183,.28);
+    }
+    .btn.danger{
+      background: rgba(255,107,107,.14);
+      border-color: rgba(255,107,107,.22);
+    }
+
+    .kv{
+      display:grid;
+      gap: 10px;
+    }
+    .kvRow{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid rgba(251,251,250,.12);
+      background: rgba(0,0,0,.18);
+      padding: 10px 10px;
+      border-radius: 18px;
+      min-height: var(--tap);
+    }
+    .kvRow .k{
+      font-size: 13px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+    }
+    .kvRow .v{
+      font-size: 13px;
+      color: rgba(251,251,250,.86);
+      text-align:right;
+      white-space: nowrap;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    }
+
+    /* Ambient */
+    .ambient{
+      position: fixed;
+      inset:0;
+      pointer-events:none;
+      z-index: 0;
+      opacity: .75;
+    }
+    .grain{
+      position:absolute;
+      inset:-20%;
+      background:
+        radial-gradient(1px 1px at 10% 20%, rgba(251,251,250,.12), rgba(251,251,250,0) 60%),
+        radial-gradient(1px 1px at 70% 40%, rgba(251,251,250,.10), rgba(251,251,250,0) 60%),
+        radial-gradient(1px 1px at 40% 80%, rgba(251,251,250,.08), rgba(251,251,250,0) 60%),
+        radial-gradient(1px 1px at 90% 15%, rgba(251,251,250,.07), rgba(251,251,250,0) 60%);
+      opacity: .35;
+      transform: rotate(8deg);
+      animation: drift 12s linear infinite;
+      filter: blur(.15px);
+    }
+    @keyframes drift{
+      0%{ transform: translate3d(-2%, -2%, 0) rotate(8deg); }
+      50%{ transform: translate3d(2%, 1%, 0) rotate(8deg); }
+      100%{ transform: translate3d(-2%, -2%, 0) rotate(8deg); }
+    }
+
+    /* Small helper */
+    .srOnly{
+      position:absolute;
+      width:1px;height:1px;
+      padding:0;margin:-1px;
+      overflow:hidden;clip:rect(0,0,0,0);
+      border:0;
+    }
+
+    /* Empty states */
+    .empty{
+      border-radius: 22px;
+      border: 1px dashed rgba(251,251,250,.18);
+      background: rgba(0,0,0,.16);
+      padding: 14px 12px;
+      color: rgba(251,251,250,.78);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Footer bar */
+    .bar{
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      padding: 10px 10px 14px;
+      z-index: 30;
+      background: linear-gradient(180deg, rgba(7,10,11,0), rgba(7,10,11,.62) 35%, rgba(7,10,11,.86));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .barInner{
+      max-width: 980px;
+      margin: 0 auto;
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+    }
+    .bar .btn{ flex: 1 1 auto; justify-content: center; }
+    .bar .btn.secondary{ background: rgba(251,251,250,.04); }
+  
+    .studyClearRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    @media (max-width: 420px){
+      .studyClearRow{ grid-template-columns: 1fr; }
+    }
+    .btn.ghost{
+      background: rgba(251,251,250,.06);
+      border: 1px solid rgba(251,251,250,.14);
+      color: rgba(251,251,250,.86);
+    }
+    .btn.danger{
+      background: rgba(255,107,107,.14);
+      border: 1px solid rgba(255,107,107,.35);
+      color: rgba(251,251,250,.92);
+    }
+    .extFav{
+      width: 44px; height: 44px;
+      display:grid; place-items:center;
+      border-radius: 14px;
+      border: 1px solid rgba(251,251,250,.14);
+      background: rgba(251,251,250,.05);
+      color: rgba(251,251,250,.78);
+      flex: 0 0 auto;
+      transition: transform .14s var(--ease), background .14s var(--ease), border-color .14s var(--ease), color .14s var(--ease);
+    }
+    .extFav[aria-pressed="true"]{
+      background: rgba(217,139,154,.18);
+      border-color: rgba(217,139,154,.45);
+      color: rgba(251,251,250,.92);
+      transform: translateY(-1px);
+    }
+    .extChip{
+      display:flex !important;
+      gap: 10px;
+      align-items:center;
+      justify-content: space-between;
+    }
+
+</style>
+</head>
+
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="grain"></div>
+  </div>
+
+  <div class="wrap">
+    <div class="top">
+      <div class="mast">
+        <div style="display:flex; gap:12px; align-items:flex-start;">
+          <div class="sigil" aria-hidden="true"></div>
+          <div>
+            <h1>Sea-Glass Halo & Hazel Ember</h1>
+            <div class="sub">A personal color artifact generated from your uploaded images: cool-leaning, softly muted, with green-hazel fire inside a pale porcelain field.</div>
+          </div>
+        </div>
+
+        <div class="pillRow">
+          <div class="pill" id="pillSeason" title="Season placement">
+            <div class="dot" style="background: var(--eye-hazel-green)"></div>
+            <span><strong>Season:</strong> Soft Summer (12-season)</span>
+          </div>
+          <button class="pill" id="pillLight" title="Simulate light context">
+            <div class="dot" style="background: var(--vein-blue)"></div>
+            <span>Light Lab</span>
+          </button>
+          <button class="pill" id="pillExport" title="Export palette + favorites">
+            <div class="dot" style="background: var(--flush-rose)"></div>
+            <span>Export</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <section class="card">
+        <div class="cardInner">
+          <div class="cardTitle">
+            <h2>Analysis</h2>
+            <div class="tiny">Poetic, precise. Built to be used.</div>
+          </div>
+
+          <div class="analysis" id="analysisText">
+            <p>Your coloring reads like pale moonlit stone warmed from beneath: an even porcelain base with a rose flush that arrives softly, not loud. In the brighter images, the skin stays coherent instead of turning yellow; in dimmer ones it keeps its clarity rather than going gray, which is a signature of cool-neutral undertone with gentle saturation.</p>
+            <p>The hair sits in ash-beige territory (not golden), and your eyes are the main drama: hazel-green with olive shadow and amber flecks. That combination loves muted, cool-leaning color with a little botanical depth. When you wear high-saturation warm reds, you still look striking (because you are), but the most harmonious effect happens when the color feels like it has been softened by mist.</p>
+            <p><strong>Placement:</strong> <span id="seasonLine">Soft Summer (12-season)</span> - because your overall contrast is medium, your undertone is cool-neutral, and your best colors are softened rather than icy-bright or golden-warm.</p>
+          </div>
+
+          <div class="sectionDivider"></div>
+
+          <div class="badgeRow">
+            <div class="badge">
+              <div class="dot" style="background: var(--skin-porcelain)"></div>
+              <div>
+                <div><strong>Undertone</strong> <span>cool-neutral</span></div>
+                <div class="tiny">rosy porcelain, not peach</div>
+              </div>
+            </div>
+
+            <div class="badge">
+              <div class="dot" style="background: var(--eye-hazel-green)"></div>
+              <div>
+                <div><strong>Contrast</strong> <span>medium</span></div>
+                <div class="tiny">defined brows + light skin</div>
+              </div>
+            </div>
+
+            <div class="badge">
+              <div class="dot" style="background: var(--hair-ash-blonde)"></div>
+              <div>
+                <div><strong>Chroma</strong> <span>soft</span></div>
+                <div class="tiny">mist over pigment</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sectionDivider"></div>
+
+          <div class="cardTitle" style="margin-bottom:10px;">
+            <h2>Source Pigments</h2>
+            <div class="tiny">Click hex to copy.</div>
+          </div>
+
+          <div class="pigments" id="pigments"></div>
+
+        </div>
+      </section>
+
+      <aside class="card">
+        <div class="cardInner">
+          <div class="cardTitle">
+            <h2>Delights</h2>
+            <div class="tiny">Tools for color-obsessed brains.</div>
+          </div>
+
+          <div class="kv" id="delightKVs"></div>
+
+          <div class="sectionDivider"></div>
+
+          <div class="cardTitle" style="margin-bottom:10px;">
+            <h2>Compare</h2>
+            <div class="tiny">Pick any two swatches.</div>
+          </div>
+
+          <div class="compare">
+            <div class="compareRow">
+              <div class="pick" id="pickA">
+                <div class="big" id="bigA" style="background: var(--skin-ivory)"></div>
+                <div class="meta">
+                  <div class="name" id="nameA">Pick A</div>
+                  <div class="code" id="codeA">#f4e6e1</div>
+                </div>
+              </div>
+              <div class="pick" id="pickB">
+                <div class="big" id="bigB" style="background: var(--eye-hazel-green)"></div>
+                <div class="meta">
+                  <div class="name" id="nameB">Pick B</div>
+                  <div class="code" id="codeB">#7b8d52</div>
+                </div>
+              </div>
+            </div>
+            <div class="verdict">
+              <div class="vTitle" id="verdictTitle">Verdict</div>
+              <div class="vBody" id="verdictBody">Tap any swatch to load A, then tap another to load B. The verdict will tell you which is closer to your pigments and how to wear them.</div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <section class="card" style="grid-column: 1 / -1;">
+        <div class="cardInner">
+          <div class="cardTitle">
+            <h2>Wearable Palette</h2>
+            <div class="tiny">Tap to copy. Double-tap to favorite.</div>
+          </div>
+
+          <div class="paletteControls">
+            <div class="seg" role="group" aria-label="Palette view">
+            <button id="segAll" aria-pressed="true">All</button>
+              <button id="segFav" aria-pressed="false">Favorites</button>
+              <button id="segStudy" aria-pressed="false">Study</button>
+            </div>
+
+            <div class="studyHint" id="studyHint" hidden>
+  <div class="studyHintTop">
+    <div>
+      <div class="studyHintTitle">Study mode</div>
+      <div class="studyHintBody">Boundary colors: very close to your pigments (likely yes) and the colors that fight them (likely no). Tap any swatch to send it to Compare.</div>
+    </div>
+    <button class="btn" id="studyHowBtn" type="button">How to use Study</button>
+  </div>
+
+  <div class="studyTools" aria-label="Study tools">
+    <div class="tool">
+      <div class="toolLabel">Test a color outside the palette</div>
+      <div class="toolRow">
+        <input class="input" id="studyHexInput" inputmode="text" autocomplete="off" placeholder="#rrggbb or rrggbb" />
+        <input class="input" id="studyNameInput" inputmode="text" autocomplete="off" placeholder="Optional name" />
+        <button class="btn" id="studyAddBtn" type="button">Add</button>
+      </div>
+      <div class="toolHelp tiny" id="studyHexHelpNotice">Add any hex to see if it belongs in your field. Tap the result to send it to Compare, double-tap to favorite.</div>
+
+      <div class="studyClearRow" role="group" aria-label="Clear Study colors">
+        <button class="btn ghost" id="studyClearTested" type="button">Clear Tested</button>
+        <button class="btn ghost" id="studyClearExtracted" type="button">Clear Extracted</button>
+        <button class="btn danger" id="studyClearAll" type="button">Clear All</button>
+      </div>
+
+<div class="externalTray" id="studyExternalTray" aria-live="polite"></div>
+    </div>
+
+    <div class="tool">
+      <div class="toolLabel">Pull colors from a photo</div>
+      <div class="toolRow">
+        <input class="file" id="studyImgInput" type="file" accept="image/*" />
+        <button class="btn" id="studyPickBtn" type="button">Eyedropper</button>
+        <button class="btn" id="studyExtractBtn" type="button">Extract</button>
+      </div>
+      <div class="toolHelp tiny">Upload any photo (a garment, lipstick swatch, Sephora screenshot). Extract makes a small set of dominant colors. Tap one to test it.</div>
+      <div class="externalTray" id="studyExtractedTray" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+
+<input class="input" id="search" placeholder="Search... by name (e.g., 'mauve', 'teal', 'stone')" autocomplete="off" /> placeholder="Search swatches by name (e.g., 'mauve', 'teal', 'stone')" autocomplete="off" />
+
+            <div class="seg" role="group" aria-label="Sorting">
+              <button id="sortHue" aria-pressed="true" title="Sort by hue-like ordering">Hue</button>
+              <button id="sortLight" aria-pressed="false" title="Sort by lightness">Light</button>
+              <button id="sortTemp" aria-pressed="false" title="Sort by temperature">Temp</button>
+            </div>
+          </div>
+
+          <div id="groupedPalette"></div>
+        </div>
+      </section>
+
+      <section class="card" style="grid-column: 1 / -1;">
+        <div class="cardInner">
+          <div class="cardTitle">
+            <h2>Looks</h2>
+            <div class="tiny">Outfits + makeup stories keyed to your pigments.</div>
+          </div>
+
+          <div class="looks" id="looks"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="bar">
+    <div class="barInner">
+      <button class="btn secondary" id="btnRandom" title="Serendipity: shuffle, but with taste.">Serendipity</button>
+      <button class="btn primary" id="btnDecision" title="Decision Run: pick a scenario and get a recommendation.">Decision Run</button>
+      <button class="btn" id="btnStudio" title="Studio: build a micro-palette of 5 and save it.">Studio</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <div class="tDot" id="toastDot"></div>
+    <div class="tMsg" id="toastMsg">Copied</div>
+  </div>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="drawer" id="drawer" aria-hidden="true">
+    <div class="drawerPanel">
+      <div class="drawerHead">
+        <div class="title" id="drawerTitle">Panel</div>
+        <button class="iconBtn" id="drawerClose" aria-label="Close">✕</button>
+      </div>
+      <div class="drawerBody" id="drawerBody"></div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      "use strict";
+
+      /* --------- Utilities --------- */
+      function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+      function hexToRgb(hex){
+        var h = (hex || "").replace("#","").trim();
+        if(h.length === 3){ h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2]; }
+        var n = parseInt(h, 16);
+        return { r:(n>>16)&255, g:(n>>8)&255, b:n&255 };
+      }
+      function rgbToHex(r,g,b){
+        function to(x){ var s = clamp(Math.round(x),0,255).toString(16); return s.length===1 ? "0"+s : s; }
+        return "#"+to(r)+to(g)+to(b);
+      }
+      function rgbToHsl(r,g,b){
+        r/=255; g/=255; b/=255;
+        var max = Math.max(r,g,b), min = Math.min(r,g,b);
+        var h,s,l = (max+min)/2;
+        if(max === min){ h=0; s=0; }
+        else{
+          var d = max-min;
+          s = l>0.5 ? d/(2-max-min) : d/(max+min);
+          switch(max){
+            case r: h = (g-b)/d + (g<b ? 6 : 0); break;
+            case g: h = (b-r)/d + 2; break;
+            case b: h = (r-g)/d + 4; break;
+          }
+          h/=6;
+        }
+        return { h:h*360, s:s*100, l:l*100 };
+      }
+      function hslToRgb(h,s,l){
+        h/=360; s/=100; l/=100;
+        var r,g,b;
+        if(s===0){ r=g=b=l; }
+        else{
+          function hue2rgb(p,q,t){
+            if(t<0) t+=1;
+            if(t>1) t-=1;
+            if(t<1/6) return p+(q-p)*6*t;
+            if(t<1/2) return q;
+            if(t<2/3) return p+(q-p)*(2/3 - t)*6;
+            return p;
+          }
+          var q = l < 0.5 ? l*(1+s) : l + s - l*s;
+          var p = 2*l - q;
+          r = hue2rgb(p,q,h+1/3);
+          g = hue2rgb(p,q,h);
+          b = hue2rgb(p,q,h-1/3);
+        }
+        return { r:Math.round(r*255), g:Math.round(g*255), b:Math.round(b*255) };
+      }
+      function mix(hex1, hex2, t){
+        var a = hexToRgb(hex1), b = hexToRgb(hex2);
+        var r = a.r + (b.r - a.r)*t;
+        var g = a.g + (b.g - a.g)*t;
+        var bb = a.b + (b.b - a.b)*t;
+        return rgbToHex(r,g,bb);
+      }
+      function luminance(hex){
+        var c = hexToRgb(hex);
+        function chan(v){
+          v/=255;
+          return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4);
+        }
+        var r = chan(c.r), g = chan(c.g), b = chan(c.b);
+        return 0.2126*r + 0.7152*g + 0.0722*b;
+      }
+      function contrast(hexA, hexB){
+        var L1 = luminance(hexA) + 0.05;
+        var L2 = luminance(hexB) + 0.05;
+        return L1 > L2 ? L1/L2 : L2/L1;
+      }
+      function temperatureHint(hex){
+        var c = hexToRgb(hex);
+        var warm = (c.r - c.b);
+        if(warm > 18) return "warm";
+        if(warm < -18) return "cool";
+        return "neutral";
+      }
+      function softnessHint(hex){
+        var hsl = rgbToHsl(hexToRgb(hex).r, hexToRgb(hex).g, hexToRgb(hex).b);
+        if(hsl.s < 22) return "soft";
+        if(hsl.s > 45) return "bright";
+        return "balanced";
+      }
+      function nowId(){ return String(Date.now()) + String(Math.floor(Math.random()*1000)); }
+
+      function toast(msg, dotHex){
+        var el = document.getElementById("toast");
+        var d = document.getElementById("toastDot");
+        var m = document.getElementById("toastMsg");
+        d.style.background = dotHex || "rgba(251,251,250,.7)";
+        m.textContent = msg;
+        el.classList.add("show");
+        clearTimeout(toast._t);
+        toast._t = setTimeout(function(){ el.classList.remove("show"); }, 1400);
+      }
+
+      async function copy(text){
+        try{
+          await navigator.clipboard.writeText(text);
+          return true;
+        }catch(e){
+          try{
+            var ta = document.createElement("textarea");
+            ta.value = text;
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            var ok = document.execCommand("copy");
+            document.body.removeChild(ta);
+            return ok;
+          }catch(e2){
+            return false;
+          }
+        }
+      }
+
+      /* --------- Data Model --------- */
+      var sourcePigments = [
+        { key:"skin-ivory", name:"Ivory Base", hex:"#f4e6e1", desc:"pale ivory with a cool veil" },
+        { key:"skin-porcelain", name:"Porcelain Highlight", hex:"#f0ddda", desc:"soft porcelain, not yellow" },
+        { key:"flush-rose", name:"Rose Flush", hex:"#d98b9a", desc:"cool rose bloom" },
+        { key:"lip-berry-rose", name:"Lip Pigment", hex:"#b85f73", desc:"berry-rose, gentle depth" },
+
+        { key:"hair-ash-blonde", name:"Ash Blonde Shadow", hex:"#8a7a70", desc:"ash-beige, muted" },
+        { key:"hair-beige-ash", name:"Beige Ash Midtone", hex:"#a5958a", desc:"soft beige with ash" },
+        { key:"brow-taupe", name:"Brow Taupe", hex:"#6e615a", desc:"neutral-cool structure" },
+
+        { key:"eye-hazel-green", name:"Hazel Green Iris", hex:"#7b8d52", desc:"green-hazel center" },
+        { key:"eye-olive-shadow", name:"Olive Shadow Ring", hex:"#566238", desc:"deep botanical olive" },
+        { key:"eye-amber-fleck", name:"Amber Flecks", hex:"#b38a45", desc:"warm sparks inside cool field" },
+        { key:"lash-charcoal", name:"Lash Charcoal", hex:"#2b2f33", desc:"soft charcoal definition" },
+
+        { key:"vein-blue", name:"Vein Blue", hex:"#6e90b7", desc:"blue-leaning vein read" },
+        { key:"vein-teal", name:"Vein Teal", hex:"#4f8c86", desc:"blue-green vein nuance" }
+      ];
+
+      var paletteGroups = [
+        {
+          name:"Sea-Glass Neutrals",
+          items:[
+            { name:"Moonstone Chalk", hex:"#f6f1ef" },
+            { name:"Porcelain Mist", hex:"#f0e6e4" },
+            { name:"Cool Oat Silk", hex:"#e7dad5" },
+            { name:"Linen Moon", hex:"#dfd0cb" },
+            { name:"Pebble Blush", hex:"#d9c0be" },
+            { name:"Ash Petal", hex:"#cbb5b2" },
+            { name:"Greige Veil", hex:"#bcaeaa" },
+            { name:"Mushroom Smoke", hex:"#a99b96" },
+            { name:"Taupe Drift", hex:"#8f827c" },
+            { name:"Graphite Lace", hex:"#3a3f45" }
+          ]
+        },
+        {
+          name:"Rosewater & Mauves",
+          items:[
+            { name:"Rosewater", hex:"#e7b6bf" },
+            { name:"Heirloom Blush", hex:"#dca0ab" },
+            { name:"Dried Peony", hex:"#c98393" },
+            { name:"Mauve Ritual", hex:"#b07186" },
+            { name:"Berry Satin", hex:"#a05c74" },
+            { name:"Plum Whisper", hex:"#7c4a5a" },
+            { name:"Fig Shadow", hex:"#5a3a44" },
+            { name:"Thorn Wine", hex:"#6b2f3f" }
+          ]
+        },
+        {
+          name:"Hazel Botanicals",
+          items:[
+            { name:"Iris Hazel", hex:"#7b8d52" },
+            { name:"Fern Ash", hex:"#6f7e4b" },
+            { name:"Sage Smoke", hex:"#7a8f82" },
+            { name:"Eucalyptus Veil", hex:"#6d8b86" },
+            { name:"Juniper", hex:"#486a63" },
+            { name:"Olive Shadow", hex:"#566238" },
+            { name:"Moss Ink", hex:"#2f3f35" }
+          ]
+        },
+        {
+          name:"Sea-Blues & Teals",
+          items:[
+            { name:"Vein Blue", hex:"#6e90b7" },
+            { name:"Slate Tide", hex:"#5f7894" },
+            { name:"Denim Dusk", hex:"#3f5f7a" },
+            { name:"Deep Fjord", hex:"#24495f" },
+            { name:"Teal Vein", hex:"#4f8c86" },
+            { name:"Sea-Glass", hex:"#7db0aa" },
+            { name:"Blue-Gray Iris", hex:"#6d7f8f" },
+            { name:"Storm Silk", hex:"#2b3a43" }
+          ]
+        },
+        {
+          name:"Twilight Purples",
+          items:[
+            { name:"Lilac Ash", hex:"#b6a7c8" },
+            { name:"Wisteria Smoke", hex:"#9b86b2" },
+            { name:"Orchid Dusk", hex:"#7f6a9f" },
+            { name:"Aubergine Veil", hex:"#4d3d5e" },
+            { name:"Ink Violet", hex:"#2a2038" }
+          ]
+        },
+        {
+          name:"Soft Metals",
+          items:[
+            { name:"Antique Silver", hex:"#cfd2d6" },
+            { name:"Pearl Steel", hex:"#b7bcc3" },
+            { name:"Gunmetal Mist", hex:"#6a6f77" },
+            { name:"Charcoal", hex:"#2b2f33" },
+            { name:"Pewter Night", hex:"#3a3f45" }
+          ]
+        }
+      ];
+
+      var looks = [
+        {
+          name:"Sea-Glass Siren",
+          tag:"Everyday power",
+          swatches:["#f0e6e4","#7db0aa","#6e615a","#3f5f7a","#b07186"],
+          body:"A soft ivory knit or bodysuit with sea-glass trousers (or denim in Denim Dusk). Keep hardware in antique silver. Makeup: mauve-rose lip, hazy taupe-brow, whisper of sage along lower lash to echo the iris."
+        },
+        {
+          name:"Botanical Noir",
+          tag:"Night",
+          swatches:["#2b2f33","#566238","#7c4a5a","#b7bcc3","#f4e6e1"],
+          body:"Charcoal slip dress or tailored set with a Juniper/Olive accent (bag, heel, or liner). Add a cool berry lip and a soft pewter shimmer. The contrast stays controlled but lethal."
+        },
+        {
+          name:"Rosewood Ceremony",
+          tag:"Date",
+          swatches:["#dfd0cb","#c98393","#a05c74","#6f7e4b","#cfd2d6"],
+          body:"Greige coat, rose-mauve dress, silver jewelry. Blush: Heirloom Blush. Eyes: a thin olive shadow tightlined, lashes in charcoal. It reads romantic without turning sweet."
+        },
+        {
+          name:"Storm-Silk Minimalism",
+          tag:"Work",
+          swatches:["#cfd2d6","#6d7f8f","#3a3f45","#e7dad5","#5f7894"],
+          body:"Pearl steel blouse, blue-gray trousers, graphite shoes. Keep makeup cool and clean: satin lip in Rosewater, subtle taupe contour, and a single line of slate along the upper lash."
+        },
+        {
+          name:"Twilight Orchid",
+          tag:"Editorial",
+          swatches:["#f6f1ef","#9b86b2","#4d3d5e","#b85f73","#6a6f77"],
+          body:"Ivory base with Wisteria Smoke statement piece. Add a berry satin lip and a soft violet shadow blurred upward. The overall effect: moonlit, strange, expensive."
+        }
+      ];
+
+      /* --------- Favorites (persist) --------- */
+      var STORE_KEY = "rfg_palette_favs_v1";
+      function loadFavs(){
+        try{
+          var raw = localStorage.getItem(STORE_KEY);
+          if(!raw) return {};
+          var obj = JSON.parse(raw);
+          if(!obj || typeof obj !== "object") return {};
+          return obj;
+        }catch(e){ return {}; }
+      }
+      function saveFavs(favs){
+        try{ localStorage.setItem(STORE_KEY, JSON.stringify(favs)); }catch(e){}
+      }
+      var favs = loadFavs();
+
+      /* --------- Build flattened palette --------- */
+      function flattenPalette(){
+        var out = [];
+        paletteGroups.forEach(function(g){
+          g.items.forEach(function(it){
+            out.push({ group:g.name, name:it.name, hex:it.hex });
+          });
+        });
+        return out;
+      }
+      var allSwatches = flattenPalette();
+
+      /* --------- Render Pigments --------- */
+      function renderPigments(){
+        var host = document.getElementById("pigments");
+        host.innerHTML = "";
+        sourcePigments.forEach(function(p){
+          var row = document.createElement("div");
+          row.className = "pig";
+          var left = document.createElement("div");
+          left.className = "pigLeft";
+          var sw = document.createElement("div");
+          sw.className = "sw";
+          sw.style.background = p.hex;
+          var txt = document.createElement("div");
+          txt.className = "pigTxt";
+          var nm = document.createElement("div");
+          nm.className = "pigName";
+          nm.textContent = p.name;
+          var meta = document.createElement("div");
+          meta.className = "pigMeta";
+          meta.textContent = p.desc;
+          txt.appendChild(nm);
+          txt.appendChild(meta);
+          left.appendChild(sw);
+          left.appendChild(txt);
+
+          var hex = document.createElement("div");
+          hex.className = "hex";
+          hex.textContent = p.hex.toLowerCase();
+          hex.addEventListener("click", async function(){
+            var ok = await copy(p.hex.toLowerCase());
+            toast(ok ? "Copied "+p.hex.toLowerCase() : "Copy failed", p.hex);
+          });
+
+          row.appendChild(left);
+          row.appendChild(hex);
+          host.appendChild(row);
+        });
+      }
+
+      /* --------- Sorting / Filtering --------- */
+      var viewMode = "all";  // all | fav | study
+      var sortMode = "hue";  // hue | light | temp
+
+      function sortSwatches(list){
+        var arr = list.slice();
+        if(sortMode === "hue"){
+          arr.sort(function(a,b){
+            var ah = rgbToHsl(hexToRgb(a.hex).r, hexToRgb(a.hex).g, hexToRgb(a.hex).b);
+            var bh = rgbToHsl(hexToRgb(b.hex).r, hexToRgb(b.hex).g, hexToRgb(b.hex).b);
+            if(ah.h !== bh.h) return ah.h - bh.h;
+            if(ah.l !== bh.l) return ah.l - bh.l;
+            return ah.s - bh.s;
+          });
+        }else if(sortMode === "light"){
+          arr.sort(function(a,b){
+            var al = rgbToHsl(hexToRgb(a.hex).r, hexToRgb(a.hex).g, hexToRgb(a.hex).b).l;
+            var bl = rgbToHsl(hexToRgb(b.hex).r, hexToRgb(b.hex).g, hexToRgb(b.hex).b).l;
+            return bl - al;
+          });
+        }else{
+          arr.sort(function(a,b){
+            var at = temperatureHint(a.hex);
+            var bt = temperatureHint(b.hex);
+            var map = { "cool":0, "neutral":1, "warm":2 };
+            if(map[at] !== map[bt]) return map[at]-map[bt];
+            return contrast(a.hex, "#000000") - contrast(b.hex, "#000000");
+          });
+        }
+        return arr;
+      }
+
+      function filterSwatches(list, q){
+        q = (q||"").trim().toLowerCase();
+        if(!q) return list;
+        return list.filter(function(s){
+          return s.name.toLowerCase().indexOf(q) !== -1 || s.group.toLowerCase().indexOf(q) !== -1 || s.hex.toLowerCase().indexOf(q) !== -1;
+        });
+      }
+
+      function inFavs(s){
+        return !!favs[s.hex.toLowerCase()];
+      }
+
+      /* --------- Render Palette --------- */
+      function renderPalette(){
+        var container = document.getElementById("groupedPalette");
+        container.innerHTML = "";
+
+        var q = document.getElementById("search").value || "";
+        var list = allSwatches.slice();
+
+        if(viewMode === "fav"){
+          list = list.filter(function(s){ return inFavs(s); });
+
+          // Also include favorites that aren't in the main wearable palette (Study / outside hexes)
+          var allHexSet = {};
+          allSwatches.forEach(function(s){ allHexSet[s.hex.toLowerCase()] = true; });
+          var extras = [];
+          Object.keys(favs).forEach(function(hx){
+            if(!allHexSet[hx]){
+              var f = favs[hx];
+              extras.push({ name: f.name || hx, hex: hx, group: "Study Favorites" });
+            }
+          });
+          if(extras.length){
+            list = extras.concat(list);
+          }
+        }
+        if(viewMode === "study"){
+          list = list.filter(function(s){
+            // Study mode: show "near pigments" and "risky outliers"
+            var score = pigmentClosenessScore(s.hex);
+            return score > 0.62 || score < 0.40;
+          });
+        }
+
+        list = filterSwatches(list, q);
+        list = sortSwatches(list);
+
+        if(list.length === 0){
+          var empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = viewMode === "fav"
+            ? "Your favorites are empty. Double-tap any swatch to mark it as yours."
+            : "No matches. Try searching a mood: 'mauve', 'storm', 'sea', 'olive'.";
+          container.appendChild(empty);
+          return;
+        }
+
+        // Group by group name in current ordering but preserve names
+        var groups = {};
+        var order = [];
+        list.forEach(function(s){
+          if(!groups[s.group]){ groups[s.group]=[]; order.push(s.group); }
+          groups[s.group].push(s);
+        });
+
+        order.forEach(function(gName){
+          var card = document.createElement("div");
+          card.className = "card";
+          card.style.marginBottom = "14px";
+          var inner = document.createElement("div");
+          inner.className = "cardInner";
+
+          var title = document.createElement("div");
+          title.className = "cardTitle";
+          var h = document.createElement("h2");
+          h.textContent = gName;
+          var tiny = document.createElement("div");
+          tiny.className = "tiny";
+          tiny.textContent = groupHint(gName);
+          title.appendChild(h);
+          title.appendChild(tiny);
+
+          var grid = document.createElement("div");
+          grid.className = "swatchGrid";
+
+          groups[gName].forEach(function(s){
+            var chip = document.createElement("div");
+            chip.className = "chip";
+            chip.dataset.hex = s.hex.toLowerCase();
+            chip.dataset.name = s.name;
+            chip.dataset.group = s.group;
+            chip.dataset.fav = inFavs(s) ? "true" : "false";
+
+            var top = document.createElement("div");
+            top.className = "chipTop";
+            top.style.background = s.hex;
+
+            var star = document.createElement("div");
+            star.className = "star";
+            star.textContent = "✶";
+            top.appendChild(star);
+
+            var bot = document.createElement("div");
+            bot.className = "chipBot";
+            var nm = document.createElement("div");
+            nm.className = "chipName";
+            nm.textContent = s.name;
+            var hx = document.createElement("div");
+            hx.className = "chipHex";
+            hx.textContent = s.hex.toLowerCase();
+            bot.appendChild(nm);
+            bot.appendChild(hx);
+
+            chip.appendChild(top);
+            chip.appendChild(bot);
+
+            // Single click: copy + also feed compare
+            chip.addEventListener("click", async function(e){
+              var ok = await copy(s.hex.toLowerCase());
+              toast(ok ? "Copied "+s.hex.toLowerCase() : "Copy failed", s.hex);
+              feedCompare(s);
+              pulseDelight("copied", s.hex);
+            });
+
+            // Double click / double tap: favorite
+            var lastTap = 0;
+            chip.addEventListener("touchend", function(e){
+              var t = Date.now();
+              if(t - lastTap < 320){
+                toggleFav(s);
+                e.preventDefault();
+              }
+              lastTap = t;
+            }, { passive:false });
+
+            chip.addEventListener("dblclick", function(e){
+              toggleFav(s);
+              e.preventDefault();
+            });
+
+            // Long press: open mini inspector
+            var pressT = null;
+            chip.addEventListener("pointerdown", function(){
+              pressT = setTimeout(function(){
+                openInspector(s);
+              }, 460);
+            });
+            chip.addEventListener("pointerup", function(){ clearTimeout(pressT); });
+            chip.addEventListener("pointercancel", function(){ clearTimeout(pressT); });
+            chip.addEventListener("pointerleave", function(){ clearTimeout(pressT); });
+
+            grid.appendChild(chip);
+          });
+
+          inner.appendChild(title);
+          inner.appendChild(grid);
+          card.appendChild(inner);
+          container.appendChild(card);
+        });
+      }
+
+      function groupHint(name){
+        var map = {
+          "Sea-Glass Neutrals":"Base wardrobe anchors. Your quiet luxury.",
+          "Rosewater & Mauves":"Your blush family - romantic, never peachy.",
+          "Hazel Botanicals":"Echo your eyes. Botanical depth without warmth.",
+          "Sea-Blues & Teals":"Vein-friendly blues that make you look expensive.",
+          "Twilight Purples":"Editorial shadow tones. Soft drama.",
+          "Soft Metals":"Jewelry + leather + eyeliner territory."
+        };
+        return map[name] || "";
+      }
+
+      /* --------- Favorite logic --------- */
+      function toggleFav(s){
+        var hex = s.hex.toLowerCase();
+        if(favs[hex]){
+          delete favs[hex];
+          toast("Unfavorited "+s.name, s.hex);
+        }else{
+          favs[hex] = { name:s.name, group:s.group, added: Date.now() };
+          toast("Favorited "+s.name, s.hex);
+        }
+        saveFavs(favs);
+        renderPalette();
+        renderDelights();
+      }
+
+      /* --------- Compare --------- */
+      var compareState = { a:null, b:null, next:"a" };
+
+      function feedCompare(s){
+        if(compareState.next === "a"){
+          compareState.a = s;
+          compareState.next = "b";
+        }else{
+          compareState.b = s;
+          compareState.next = "a";
+        }
+        renderCompare();
+      }
+
+      function renderCompare(){
+        var a = compareState.a || { name:"Pick A", hex:"#f4e6e1" };
+        var b = compareState.b || { name:"Pick B", hex:"#7b8d52" };
+
+        document.getElementById("bigA").style.background = a.hex;
+        document.getElementById("nameA").textContent = a.name;
+        document.getElementById("codeA").textContent = a.hex.toLowerCase();
+
+        document.getElementById("bigB").style.background = b.hex;
+        document.getElementById("nameB").textContent = b.name;
+        document.getElementById("codeB").textContent = b.hex.toLowerCase();
+
+        // verdict
+        var v = compareVerdict(a.hex, b.hex);
+        document.getElementById("verdictTitle").textContent = v.title;
+        document.getElementById("verdictBody").textContent = v.body;
+      }
+
+      function pigmentClosenessScore(hex){
+        // closeness to your pigments: average of similarity to skin/hair/eye families
+        var pigments = ["#f4e6e1","#f0ddda","#d98b9a","#b85f73","#8a7a70","#a5958a","#6e615a","#7b8d52","#566238","#6e90b7","#4f8c86","#2b2f33"];
+        var rgb = hexToRgb(hex);
+        function dist(a,b){
+          var ar = hexToRgb(a), br = hexToRgb(b);
+          var dr = ar.r - br.r, dg = ar.g - br.g, db = ar.b - br.b;
+          return Math.sqrt(dr*dr + dg*dg + db*db);
+        }
+        var d = pigments.map(function(p){ return dist(hex, p); }).sort(function(x,y){ return x-y; });
+        var near = (d[0] + d[1] + d[2]) / 3; // take 3 closest pigments
+        var score = 1 - clamp(near / 220, 0, 1); // heuristic scale
+        return score;
+      }
+
+      function compareVerdict(hexA, hexB){
+        // Determine which is more "you": closer to pigments, and how to combine.
+        var scoreA = pigmentClosenessScore(hexA);
+        var scoreB = pigmentClosenessScore(hexB);
+
+        var tempA = temperatureHint(hexA);
+        var tempB = temperatureHint(hexB);
+
+        var softA = softnessHint(hexA);
+        var softB = softnessHint(hexB);
+
+        var c = contrast(hexA, hexB);
+        var hi = c >= 4.5 ? "high" : (c >= 2.6 ? "medium" : "low");
+
+        var winner = scoreA > scoreB ? "A" : (scoreB > scoreA ? "B" : "tie");
+        var winnerHex = winner === "A" ? hexA : (winner === "B" ? hexB : "#b7bcc3");
+
+        var title = winner === "tie" ? "Verdict: a clean duet" : ("Verdict: "+winner+" belongs to you");
+        var bodyParts = [];
+
+        if(winner !== "tie"){
+          bodyParts.push("Color "+winner+" is closer to your pigments - it will look more native on you, like it was always part of the face.");
+        }else{
+          bodyParts.push("Both colors sit in your range. Choose based on mood and context rather than harmony.");
+        }
+
+        if(tempA !== tempB){
+          bodyParts.push("Temperature: "+(tempA==="cool"||tempB==="cool" ? "keep at least one side cool-leaning to protect your porcelain clarity." : "avoid pushing both warm at once; it can dull the skin."));
+        }else{
+          bodyParts.push("Temperature match: this pairing is coherent, so you can play with texture instead of fighting undertone.");
+        }
+
+        if(softA === "bright" && softB === "bright"){
+          bodyParts.push("Chroma warning: two bright colors together may overpower your soft chroma. Add a greige buffer (Mushroom Smoke or Taupe Drift).");
+        }else if(softA === "soft" && softB === "soft"){
+          bodyParts.push("Soft-on-soft is your signature. It reads expensive, not timid.");
+        }
+
+        if(hi === "high"){
+          bodyParts.push("Contrast is high. Use the darker as structure (jacket, liner, belt) and the lighter near the face.");
+        }else if(hi === "low"){
+          bodyParts.push("Contrast is low. Gorgeous for monochrome looks; add one sharp detail (charcoal lash, silver hardware) to keep it intentional.");
+        }else{
+          bodyParts.push("Contrast is medium - this is your most wearable lane.");
+        }
+
+        // Add a specific use-case line
+        var hslA = rgbToHsl(hexToRgb(hexA).r, hexToRgb(hexA).g, hexToRgb(hexA).b);
+        var hslB = rgbToHsl(hexToRgb(hexB).r, hexToRgb(hexB).g, hexToRgb(hexB).b);
+        if(hslA.h > 290 || hslB.h > 290){
+          bodyParts.push("If you wear this near the eyes: blur it. Your face likes mist, not hard edges.");
+        }
+        if(winner !== "tie"){
+          bodyParts.push("If you must choose one to buy: choose "+winner+".");
+        }
+
+        return { title:title, body: bodyParts.join(" ") , dot:winnerHex };
+      }
+
+      // Copy compare codes
+      document.getElementById("codeA").addEventListener("click", async function(){
+        var t = document.getElementById("codeA").textContent;
+        var ok = await copy(t);
+        toast(ok ? "Copied "+t : "Copy failed", t);
+      });
+      document.getElementById("codeB").addEventListener("click", async function(){
+        var t = document.getElementById("codeB").textContent;
+        var ok = await copy(t);
+        toast(ok ? "Copied "+t : "Copy failed", t);
+      });
+
+      /* --------- Looks render --------- */
+      function renderLooks(){
+        var host = document.getElementById("looks");
+        host.innerHTML = "";
+        looks.forEach(function(lk){
+          var el = document.createElement("div");
+          el.className = "look";
+
+          var top = document.createElement("div");
+          top.className = "lookTop";
+          var h = document.createElement("h3");
+          h.textContent = lk.name;
+          var tag = document.createElement("div");
+          tag.className = "tag";
+          tag.textContent = lk.tag;
+          top.appendChild(h);
+          top.appendChild(tag);
+
+          var sws = document.createElement("div");
+          sws.className = "lookSwatches";
+          lk.swatches.forEach(function(hex){
+            var mini = document.createElement("div");
+            mini.className = "mini";
+            mini.style.background = hex;
+            mini.title = "Tap to copy "+hex.toLowerCase();
+            mini.addEventListener("click", async function(){
+              var ok = await copy(hex.toLowerCase());
+              toast(ok ? "Copied "+hex.toLowerCase() : "Copy failed", hex);
+              pulseDelight("look", hex);
+            });
+            sws.appendChild(mini);
+          });
+
+          var body = document.createElement("div");
+          body.className = "lookBody";
+          body.textContent = lk.body;
+
+          el.appendChild(top);
+          el.appendChild(sws);
+          el.appendChild(body);
+          host.appendChild(el);
+        });
+      }
+
+      /* --------- Drawer / Panels --------- */
+      var overlay = document.getElementById("overlay");
+      var drawer = document.getElementById("drawer");
+      var drawerTitle = document.getElementById("drawerTitle");
+      var drawerBody = document.getElementById("drawerBody");
+      var drawerClose = document.getElementById("drawerClose");
+
+      function openDrawer(title, node, opts){
+        opts = opts || {};
+        drawerTitle.textContent = title;
+        drawerBody.innerHTML = "";
+        drawerBody.appendChild(node);
+
+        // Default is modal (with overlay). Some tools (e.g., Studio capture) need background taps.
+        if(opts.nonModal){
+          overlay.classList.remove("show");
+          overlay.style.pointerEvents = "none";
+        }else{
+          overlay.classList.add("show");
+          overlay.style.pointerEvents = "auto";
+        }
+
+        drawer.classList.add("show");
+        drawer.classList.toggle("peek", !!opts.peek);
+        drawer.setAttribute("aria-hidden","false");
+      }
+      function closeDrawer(){
+        overlay.classList.remove("show");
+        overlay.style.pointerEvents = "";
+        drawer.classList.remove("show");
+        drawer.classList.remove("peek");
+        drawer.setAttribute("aria-hidden","true");
+      }
+      overlay.addEventListener("click", closeDrawer);
+      drawerClose.addEventListener("click", closeDrawer);
+
+      /* Inspector: long press a swatch */
+      function openInspector(s){
+        var wrap = document.createElement("div");
+
+        var big = document.createElement("div");
+        big.className = "pick";
+        big.style.minHeight = "0";
+        big.style.padding = "12px";
+        var b = document.createElement("div");
+        b.className = "big";
+        b.style.background = s.hex;
+        b.style.height = "110px";
+        big.appendChild(b);
+
+        var meta = document.createElement("div");
+        meta.style.marginTop = "10px";
+        meta.style.display = "flex";
+        meta.style.alignItems = "center";
+        meta.style.justifyContent = "space-between";
+        meta.style.gap = "10px";
+
+        var left = document.createElement("div");
+        var nm = document.createElement("div");
+        nm.style.fontSize = "15px";
+        nm.style.fontWeight = "750";
+        nm.textContent = s.name;
+        var sm = document.createElement("div");
+        sm.className = "tiny";
+        sm.textContent = s.group + " - " + softnessHint(s.hex) + " / " + temperatureHint(s.hex);
+        left.appendChild(nm);
+        left.appendChild(sm);
+
+        var code = document.createElement("div");
+        code.className = "hex";
+        code.textContent = s.hex.toLowerCase();
+        code.addEventListener("click", async function(){
+          var ok = await copy(s.hex.toLowerCase());
+          toast(ok ? "Copied "+s.hex.toLowerCase() : "Copy failed", s.hex);
+        });
+
+        meta.appendChild(left);
+        meta.appendChild(code);
+
+        var rec = document.createElement("div");
+        rec.className = "verdict";
+        rec.style.marginTop = "12px";
+        var t = pigmentClosenessScore(s.hex);
+        var recTitle = document.createElement("div");
+        recTitle.className = "vTitle";
+        recTitle.textContent = "How it behaves on you";
+        var recBody = document.createElement("div");
+        recBody.className = "vBody";
+        recBody.textContent = behaviorLine(s.hex, t);
+        rec.appendChild(recTitle);
+        rec.appendChild(recBody);
+
+        var actions = document.createElement("div");
+        actions.className = "actions";
+        var favBtn = document.createElement("button");
+        favBtn.className = "btn " + (inFavs(s) ? "danger" : "primary");
+        favBtn.textContent = inFavs(s) ? "Remove Favorite" : "Add Favorite";
+        favBtn.addEventListener("click", function(){
+          toggleFav(s);
+          closeDrawer();
+        });
+
+        var toA = document.createElement("button");
+        toA.className = "btn";
+        toA.textContent = "Set as Compare A";
+        toA.addEventListener("click", function(){
+          compareState.a = s;
+          compareState.next = "b";
+          renderCompare();
+          toast("Loaded as A", s.hex);
+          closeDrawer();
+        });
+
+        var toB = document.createElement("button");
+        toB.className = "btn";
+        toB.textContent = "Set as Compare B";
+        toB.addEventListener("click", function(){
+          compareState.b = s;
+          compareState.next = "a";
+          renderCompare();
+          toast("Loaded as B", s.hex);
+          closeDrawer();
+        });
+
+        actions.appendChild(favBtn);
+        actions.appendChild(toA);
+        actions.appendChild(toB);
+
+        wrap.appendChild(big);
+        wrap.appendChild(meta);
+        wrap.appendChild(rec);
+        wrap.appendChild(actions);
+
+        openDrawer("Swatch Inspector", wrap);
+      }
+
+      function behaviorLine(hex, score){
+        var temp = temperatureHint(hex);
+        var soft = softnessHint(hex);
+        var hsl = rgbToHsl(hexToRgb(hex).r, hexToRgb(hex).g, hexToRgb(hex).b);
+
+        var lines = [];
+        if(score > 0.70){
+          lines.push("This is native-to-you. It will harmonize with your skin and read like effortless cohesion.");
+        }else if(score > 0.55){
+          lines.push("This is within range. It will look best when paired with a soft neutral buffer (greige, mushroom, pearl steel).");
+        }else{
+          lines.push("This is a stylistic risk. Use it as an accent away from the face, or soften it with texture.");
+        }
+
+        if(temp === "warm"){
+          lines.push("It leans warm; keep it balanced with cool metals or a cool lip to protect clarity.");
+        }else if(temp === "cool"){
+          lines.push("Cool-leaning. Your porcelain base will stay bright and awake.");
+        }else{
+          lines.push("Neutral. Your palette can carry it if the chroma stays soft.");
+        }
+
+        if(soft === "bright"){
+          lines.push("Chroma is high; blur edges, choose matte fabrics, and avoid placing it right under the eyes.");
+        }else if(soft === "soft"){
+          lines.push("Soft chroma: your signature lane. Expensive, not loud.");
+        }
+
+        if(hsl.l < 22){
+          lines.push("Very deep. Use as structure: eyeliner, boot, bag, jacket.");
+        }else if(hsl.l > 82){
+          lines.push("Very light. Great near the face, but anchor with a darker line (brow/mascara).");
+        }
+
+        return lines.join(" ");
+      }
+
+      /* --------- Export Panel --------- */
+      function openExport(){
+        var wrap = document.createElement("div");
+
+        var favArr = Object.keys(favs).map(function(k){
+          return { hex:k, name:favs[k].name, group:favs[k].group, added:favs[k].added };
+        }).sort(function(a,b){ return (a.added||0)-(b.added||0); });
+
+        var payload = {
+          title: "Sea-Glass Halo & Hazel Ember",
+          season: "Soft Summer (12-season)",
+          createdAt: new Date().toISOString(),
+          sourcePigments: sourcePigments,
+          paletteGroups: paletteGroups,
+          favorites: favArr
+        };
+
+        var kv = document.createElement("div");
+        kv.className = "kv";
+
+        var row1 = document.createElement("div");
+        row1.className = "kvRow";
+        row1.innerHTML = '<div class="k">Swatches</div><div class="v">'+allSwatches.length+'</div>';
+
+        var row2 = document.createElement("div");
+        row2.className = "kvRow";
+        row2.innerHTML = '<div class="k">Favorites</div><div class="v">'+favArr.length+'</div>';
+
+        kv.appendChild(row1);
+        kv.appendChild(row2);
+
+        var actions = document.createElement("div");
+        actions.className = "actions";
+
+        var btnJson = document.createElement("button");
+        btnJson.className = "btn primary";
+        btnJson.textContent = "Copy JSON";
+        btnJson.addEventListener("click", async function(){
+          var txt = JSON.stringify(payload, null, 2);
+          var ok = await copy(txt);
+          toast(ok ? "Copied JSON" : "Copy failed", "#6e90b7");
+        });
+
+        var btnText = document.createElement("button");
+        btnText.className = "btn";
+        btnText.textContent = "Copy Text List";
+        btnText.addEventListener("click", async function(){
+          var lines = [];
+          paletteGroups.forEach(function(g){
+            lines.push(g.name.toUpperCase());
+            g.items.forEach(function(it){ lines.push(it.hex.toLowerCase()+"  " + it.name); });
+            lines.push("");
+          });
+          if(favArr.length){
+            lines.push("FAVORITES");
+            favArr.forEach(function(f){ lines.push(f.hex.toLowerCase()+"  " + f.name); });
+          }
+          var ok = await copy(lines.join("\n"));
+          toast(ok ? "Copied list" : "Copy failed", "#d98b9a");
+        });
+
+        var btnDl = document.createElement("button");
+        btnDl.className = "btn";
+        btnDl.textContent = "Download JSON";
+        btnDl.addEventListener("click", function(){
+          var blob = new Blob([JSON.stringify(payload, null, 2)], { type:"application/json" });
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "sea-glass-halo_palette.json";
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function(){ URL.revokeObjectURL(a.href); document.body.removeChild(a); }, 200);
+          toast("Downloaded JSON", "#6e90b7");
+        });
+
+        actions.appendChild(btnJson);
+        actions.appendChild(btnText);
+        actions.appendChild(btnDl);
+
+        var note = document.createElement("div");
+        note.className = "tiny";
+        note.style.marginTop = "10px";
+        note.textContent = "Offline artifact. Favorites persist locally on this device.";
+
+        wrap.appendChild(kv);
+        wrap.appendChild(actions);
+        wrap.appendChild(note);
+
+        openDrawer("Export", wrap);
+      }
+
+      /* --------- Light Lab (extra delight) --------- */
+      var lightMode = "gallery"; // gallery | shade | indoor | golden
+      function openLightLab(){
+        var wrap = document.createElement("div");
+
+        var p = document.createElement("div");
+        p.className = "empty";
+        p.textContent = "Simulate lighting context. This shifts the UI mood and gives guidance on which palette groups to prioritize under that light. (It does not alter your data; it alters the lens.)";
+
+        var actions = document.createElement("div");
+        actions.className = "actions";
+
+        function makeBtn(label, mode){
+          var b = document.createElement("button");
+          b.className = "btn " + (lightMode===mode ? "primary" : "");
+          b.textContent = label;
+          b.addEventListener("click", function(){
+            lightMode = mode;
+            applyLightMode();
+            closeDrawer();
+            toast("Light set: "+label, modeDot(mode));
+          });
+          return b;
+        }
+
+        actions.appendChild(makeBtn("Gallery (neutral)", "gallery"));
+        actions.appendChild(makeBtn("Shade (cool)", "shade"));
+        actions.appendChild(makeBtn("Indoor (warm bulbs)", "indoor"));
+        actions.appendChild(makeBtn("Golden hour (warm)", "golden"));
+
+        var tip = document.createElement("div");
+        tip.className = "verdict";
+        tip.style.marginTop = "12px";
+        var tt = document.createElement("div");
+        tt.className = "vTitle";
+        tt.textContent = "What to do in this light";
+        var tb = document.createElement("div");
+        tb.className = "vBody";
+        tb.textContent = lightTip(lightMode);
+        tip.appendChild(tt);
+        tip.appendChild(tb);
+
+        wrap.appendChild(p);
+        wrap.appendChild(actions);
+        wrap.appendChild(tip);
+
+        openDrawer("Light Lab", wrap);
+      }
+
+      function modeDot(mode){
+        if(mode==="shade") return "#6e90b7";
+        if(mode==="indoor") return "#b38a45";
+        if(mode==="golden") return "#c98393";
+        return "#7db0aa";
+      }
+
+      function applyLightMode(){
+        var root = document.documentElement;
+        if(lightMode==="shade"){
+          root.style.setProperty("--bg1",
+            "radial-gradient(1200px 800px at 10% 0%, rgba(110,144,183,.28), rgba(15,20,23,0) 60%),"+
+            "radial-gradient(900px 900px at 90% 10%, rgba(79,140,134,.20), rgba(15,20,23,0) 55%),"+
+            "linear-gradient(180deg, #0b0f12, #070a0c 50%, #050708)"
+          );
+        }else if(lightMode==="indoor"){
+          root.style.setProperty("--bg1",
+            "radial-gradient(1200px 800px at 10% 0%, rgba(179,138,69,.18), rgba(15,20,23,0) 60%),"+
+            "radial-gradient(900px 900px at 90% 10%, rgba(217,139,154,.20), rgba(15,20,23,0) 55%),"+
+            "linear-gradient(180deg, #0c0e10, #080a0b 55%, #060708)"
+          );
+        }else if(lightMode==="golden"){
+          root.style.setProperty("--bg1",
+            "radial-gradient(1200px 900px at 30% 0%, rgba(179,138,69,.22), rgba(15,20,23,0) 60%),"+
+            "radial-gradient(900px 900px at 85% 15%, rgba(217,139,154,.22), rgba(15,20,23,0) 55%),"+
+            "linear-gradient(180deg, #0b0b0a, #070706 60%, #050504)"
+          );
+        }else{
+          root.style.setProperty("--bg1",
+            "radial-gradient(1200px 800px at 10% 0%, rgba(110,144,183,.22), rgba(15,20,23,0) 60%),"+
+            "radial-gradient(900px 900px at 90% 10%, rgba(217,139,154,.20), rgba(15,20,23,0) 55%),"+
+            "radial-gradient(1200px 900px at 40% 110%, rgba(79,140,134,.18), rgba(15,20,23,0) 60%),"+
+            "linear-gradient(180deg, #0c1012, #0b0f10 45%, #070a0b)"
+          );
+        }
+        renderDelights();
+      }
+
+      function lightTip(mode){
+        if(mode==="shade"){
+          return "In shade, your palette becomes crystalline. Prioritize Sea-Blues, Soft Metals, and Sea-Glass Neutrals. Avoid warm coral and high-saturation reds.";
+        }
+        if(mode==="indoor"){
+          return "Under warm bulbs, keep contrast controlled. Wear cool neutrals near the face and let warmth live in tiny sparks (Amber Flecks) rather than whole garments.";
+        }
+        if(mode==="golden"){
+          return "Golden hour makes everyone warmer. Keep your colors softly muted and avoid going too orange. Mauves and greiges will keep you luminous instead of brassy.";
+        }
+        return "In neutral light, your true palette shows: soft, cool-neutral, botanical. Build looks around muted blues, mauves, and greige.";
+      }
+
+      /* --------- Delight features (5+) ---------
+        1) Light Lab (context lens)
+        2) Serendipity (tasteful shuffle + micro-prompt)
+        3) Decision Run (scenario-based recommendation)
+        4) Studio (build 5-swatch micro palettes, save + name)
+        5) Harmony Heatmap (show which favorites sit closest to pigments)
+        6) Outfit Weather (simulate season of year moods)
+        7) Learning Mode (Study view shows best/worst range)
+      ------------------------------------------ */
+
+      var studioKey = "rfg_micro_palettes_v1";
+      function loadStudios(){
+        try{
+          var raw = localStorage.getItem(studioKey);
+          if(!raw) return [];
+          var arr = JSON.parse(raw);
+          return Array.isArray(arr) ? arr : [];
+        }catch(e){ return []; }
+      }
+      function saveStudios(arr){
+        try{ localStorage.setItem(studioKey, JSON.stringify(arr)); }catch(e){}
+      }
+      var studios = loadStudios();
+
+      function renderDelights(){
+        var host = document.getElementById("delightKVs");
+        host.innerHTML = "";
+
+        var favCount = Object.keys(favs).length;
+
+        // Harmony index: average closeness of favorites
+        var favArr = Object.keys(favs).map(function(k){ return k; });
+        var h = 0;
+        if(favArr.length){
+          var sum = 0;
+          favArr.forEach(function(hex){ sum += pigmentClosenessScore(hex); });
+          h = sum / favArr.length;
+        }
+        var harmony = favArr.length ? Math.round(h*100) : 0;
+
+        var items = [
+          { k:"Light lens", v: lightMode },
+          { k:"Favorites", v: String(favCount) },
+          { k:"Harmony index", v: favArr.length ? (String(harmony)+"%") : "—" },
+          { k:"Micro-palettes", v: String(studios.length) },
+          { k:"Study mode", v: (viewMode==="study" ? "active" : "ready") }
+        ];
+
+        items.forEach(function(it){
+          var row = document.createElement("div");
+          row.className = "kvRow";
+          var k = document.createElement("div");
+          k.className = "k";
+          k.textContent = it.k;
+          var v = document.createElement("div");
+          v.className = "v";
+          v.textContent = it.v;
+          row.appendChild(k);
+          row.appendChild(v);
+
+          // Make some rows interactive
+          if(it.k === "Micro-palettes"){
+            row.style.cursor = "pointer";
+            row.addEventListener("click", openStudioLibrary);
+          }
+          if(it.k === "Harmony index"){
+            row.style.cursor = "pointer";
+            row.addEventListener("click", openHarmonyHeatmap);
+          }
+          if(it.k === "Light lens"){
+            row.style.cursor = "pointer";
+            row.addEventListener("click", openLightLab);
+          }
+
+          host.appendChild(row);
+        });
+      }
+
+      function pulseDelight(type, hex){
+        // subtle: update delight stats quickly
+        if(type === "copied"){
+          // no persistence; just a tiny sparkle in toast
+          return;
+        }
+        if(type === "look"){
+          return;
+        }
+      }
+
+      /* Serendipity */
+      function serendipity(){
+        // choose 3 swatches: 1 neutral, 1 echo-eye, 1 lip/flush family
+        function pickFromGroup(gName){
+          var g = paletteGroups.filter(function(g){ return g.name===gName; })[0];
+          if(!g) return null;
+          var it = g.items[Math.floor(Math.random()*g.items.length)];
+          return { group:gName, name:it.name, hex:it.hex };
+        }
+        var a = pickFromGroup("Sea-Glass Neutrals");
+        var b = pickFromGroup("Hazel Botanicals");
+        var c = pickFromGroup("Rosewater & Mauves");
+        var picks = [a,b,c].filter(Boolean);
+
+        // Open a small drawer with the suggestion
+        var wrap = document.createElement("div");
+
+        var txt = document.createElement("div");
+        txt.className = "empty";
+        txt.textContent = "Serendipity chose a small spell: one anchor, one iris-echo, one lip-family. Tap any swatch to copy. Double-tap to favorite.";
+
+        var row = document.createElement("div");
+        row.className = "lookSwatches";
+        picks.forEach(function(s){
+          var mini = document.createElement("div");
+          mini.className = "mini";
+          mini.style.background = s.hex;
+          mini.title = s.name + " " + s.hex.toLowerCase();
+          mini.addEventListener("click", async function(){
+            var ok = await copy(s.hex.toLowerCase());
+            toast(ok ? "Copied "+s.hex.toLowerCase() : "Copy failed", s.hex);
+          });
+          mini.addEventListener("dblclick", function(){
+            toggleFav(s);
+          });
+          row.appendChild(mini);
+        });
+
+        var prompt = document.createElement("div");
+        prompt.className = "verdict";
+        prompt.style.marginTop = "12px";
+        var t = document.createElement("div");
+        t.className = "vTitle";
+        t.textContent = "How to wear it";
+        var bdy = document.createElement("div");
+        bdy.className = "vBody";
+        bdy.textContent = "Use the neutral near the face, the botanical as a shadow/liner/accessory, and the mauve as lip or blouse. Keep metals in antique silver.";
+        prompt.appendChild(t);
+        prompt.appendChild(bdy);
+
+        wrap.appendChild(txt);
+        wrap.appendChild(row);
+        wrap.appendChild(prompt);
+
+        openDrawer("Serendipity", wrap);
+      }
+
+      /* Decision Run */
+      function openDecisionRun(){
+        var wrap = document.createElement("div");
+
+        var desc = document.createElement("div");
+        desc.className = "empty";
+        desc.textContent = "Pick a scenario. This will recommend 6 colors: 2 anchors, 2 accents, 2 cosmetics. Then it will tell you the rule.";
+
+        var actions = document.createElement("div");
+        actions.className = "actions";
+
+        var scenarios = [
+          { label:"First date (day)", key:"date_day" },
+          { label:"First date (night)", key:"date_night" },
+          { label:"On camera / video", key:"camera" },
+          { label:"Job interview", key:"interview" },
+          { label:"Wedding guest", key:"wedding" },
+          { label:"Feeling feral but elegant", key:"feral" }
+        ];
+
+        scenarios.forEach(function(sc){
+          var b = document.createElement("button");
+          b.className = "btn primary";
+          b.textContent = sc.label;
+          b.addEventListener("click", function(){
+            closeDrawer();
+            decisionResult(sc.key, sc.label);
+          });
+          actions.appendChild(b);
+        });
+
+        wrap.appendChild(desc);
+        wrap.appendChild(actions);
+
+        openDrawer("Decision Run", wrap);
+      }
+
+      function decisionResult(key, label){
+        // Heuristic picks
+        function rand(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+        var neutrals = paletteGroups.filter(function(g){ return g.name==="Sea-Glass Neutrals"; })[0].items;
+        var blues = paletteGroups.filter(function(g){ return g.name==="Sea-Blues & Teals"; })[0].items;
+        var roses = paletteGroups.filter(function(g){ return g.name==="Rosewater & Mauves"; })[0].items;
+        var botan = paletteGroups.filter(function(g){ return g.name==="Hazel Botanicals"; })[0].items;
+        var metals = paletteGroups.filter(function(g){ return g.name==="Soft Metals"; })[0].items;
+        var purp = paletteGroups.filter(function(g){ return g.name==="Twilight Purples"; })[0].items;
+
+        var pack = [];
+        function add(it, group){
+          pack.push({ name:it.name, hex:it.hex, group:group });
+        }
+
+        if(key==="interview"){
+          add(rand(neutrals), "Sea-Glass Neutrals");
+          add(rand(metals), "Soft Metals");
+          add(rand(blues), "Sea-Blues & Teals");
+          add(rand(neutrals), "Sea-Glass Neutrals");
+          add(rand(roses), "Rosewater & Mauves"); // lip
+          add({ name:"Lash Charcoal", hex:"#2b2f33" }, "Soft Metals");
+        }else if(key==="camera"){
+          add({ name:"Graphite Lace", hex:"#3a3f45" }, "Sea-Glass Neutrals");
+          add({ name:"Denim Dusk", hex:"#3f5f7a" }, "Sea-Blues & Teals");
+          add(rand(roses), "Rosewater & Mauves");
+          add(rand(neutrals), "Sea-Glass Neutrals");
+          add({ name:"Berry Satin", hex:"#a05c74" }, "Rosewater & Mauves");
+          add({ name:"Antique Silver", hex:"#cfd2d6" }, "Soft Metals");
+        }else if(key==="wedding"){
+          add({ name:"Porcelain Mist", hex:"#f0e6e4" }, "Sea-Glass Neutrals");
+          add(rand(roses), "Rosewater & Mauves");
+          add(rand(purp), "Twilight Purples");
+          add(rand(blues), "Sea-Blues & Teals");
+          add({ name:"Rosewater", hex:"#e7b6bf" }, "Rosewater & Mauves");
+          add({ name:"Pearl Steel", hex:"#b7bcc3" }, "Soft Metals");
+        }else if(key==="date_night"){
+          add({ name:"Charcoal", hex:"#2b2f33" }, "Soft Metals");
+          add(rand(botan), "Hazel Botanicals");
+          add({ name:"Plum Whisper", hex:"#7c4a5a" }, "Rosewater & Mauves");
+          add(rand(neutrals), "Sea-Glass Neutrals");
+          add({ name:"Berry Satin", hex:"#a05c74" }, "Rosewater & Mauves");
+          add({ name:"Pewter Night", hex:"#3a3f45" }, "Soft Metals");
+        }else if(key==="feral"){
+          add({ name:"Moss Ink", hex:"#2f3f35" }, "Hazel Botanicals");
+          add({ name:"Deep Fjord", hex:"#24495f" }, "Sea-Blues & Teals");
+          add({ name:"Thorn Wine", hex:"#6b2f3f" }, "Rosewater & Mauves");
+          add({ name:"Taupe Drift", hex:"#8f827c" }, "Sea-Glass Neutrals");
+          add({ name:"Mauve Ritual", hex:"#b07186" }, "Rosewater & Mauves");
+          add({ name:"Gunmetal Mist", hex:"#6a6f77" }, "Soft Metals");
+        }else{
+          // date_day default
+          add(rand(neutrals), "Sea-Glass Neutrals");
+          add(rand(blues), "Sea-Blues & Teals");
+          add(rand(roses), "Rosewater & Mauves");
+          add(rand(neutrals), "Sea-Glass Neutrals");
+          add({ name:"Heirloom Blush", hex:"#dca0ab" }, "Rosewater & Mauves");
+          add({ name:"Antique Silver", hex:"#cfd2d6" }, "Soft Metals");
+        }
+
+        var wrap = document.createElement("div");
+
+        var head = document.createElement("div");
+        head.className = "empty";
+        head.textContent = label + ": your six-color recommendation. Tap to copy. Double-tap to favorite.";
+
+        var row = document.createElement("div");
+        row.className = "lookSwatches";
+        pack.forEach(function(s){
+          var mini = document.createElement("div");
+          mini.className = "mini";
+          mini.style.background = s.hex;
+          mini.title = s.name + " " + s.hex.toLowerCase();
+          mini.addEventListener("click", async function(){
+            var ok = await copy(s.hex.toLowerCase());
+            toast(ok ? "Copied "+s.hex.toLowerCase() : "Copy failed", s.hex);
+          });
+          mini.addEventListener("dblclick", function(){
+            toggleFav(s);
+          });
+          row.appendChild(mini);
+        });
+
+        var rule = document.createElement("div");
+        rule.className = "verdict";
+        rule.style.marginTop = "12px";
+        var t = document.createElement("div");
+        t.className = "vTitle";
+        t.textContent = "Rule";
+        var b = document.createElement("div");
+        b.className = "vBody";
+        b.textContent = "Anchor with a cool-soft neutral, echo the eye with a botanical or sea-blue, then choose one berry-rose for mouth or blush. Keep metals silver; keep edges blurred.";
+        rule.appendChild(t);
+        rule.appendChild(b);
+
+        wrap.appendChild(head);
+        wrap.appendChild(row);
+        wrap.appendChild(rule);
+
+        openDrawer("Decision Run", wrap);
+      }
+
+      /* Studio: build a micro palette of 5 */
+      var studioBuild = [];
+      function openStudio(){
+        studioBuild = [];
+        var wrap = document.createElement("div");
+
+        var desc = document.createElement("div");
+        desc.className = "empty";
+        desc.textContent = "Tap 5 swatches from anywhere in the palette. This panel will track them. Then name it, and it will be saved on this device.";
+
+        var tray = document.createElement("div");
+        tray.className = "lookSwatches";
+        tray.id = "studioTray";
+
+        var name = document.createElement("input");
+        name.className = "input";
+        name.placeholder = "Name your micro-palette (e.g., 'Velvet Library Night')";
+        name.autocomplete = "off";
+        name.style.marginTop = "12px";
+
+        var actions = document.createElement("div");
+        actions.className = "actions";
+
+        var saveBtn = document.createElement("button");
+        saveBtn.className = "btn primary";
+        saveBtn.textContent = "Save Micro-Palette";
+        saveBtn.addEventListener("click", function(){
+          if(studioBuild.length < 5){
+            toast("Pick 5 colors first", "#d98b9a");
+            return;
+          }
+          var nm = (name.value || "").trim();
+          if(!nm) nm = "Untitled " + new Date().toLocaleDateString();
+          var item = { id: nowId(), name:nm, colors: studioBuild.slice(), created: Date.now() };
+          studios.push(item);
+          saveStudios(studios);
+          toast("Saved "+nm, "#6e90b7");
+          renderDelights();
+          closeDrawer();
+        });
+
+        var libBtn = document.createElement("button");
+        libBtn.className = "btn";
+        libBtn.textContent = "Open Library";
+        libBtn.addEventListener("click", function(){
+          closeDrawer();
+          openStudioLibrary();
+        });
+
+        actions.appendChild(saveBtn);
+        actions.appendChild(libBtn);
+
+        var hint = document.createElement("div");
+        hint.className = "tiny";
+        hint.style.marginTop = "10px";
+        hint.textContent = "Tip: while this panel is open, any swatch you tap will add here until you reach five.";
+
+        wrap.appendChild(desc);
+        wrap.appendChild(tray);
+        wrap.appendChild(name);
+        wrap.appendChild(actions);
+        wrap.appendChild(hint);
+
+        openDrawer("Studio", wrap, { nonModal:true });
+        drawer.classList.add("peek");
+
+        // Arm capture mode
+        studioCaptureOn = true;
+        updateStudioTray();
+      }
+
+      function updateStudioTray(){
+        var tray = document.getElementById("studioTray");
+        if(!tray) return;
+        tray.innerHTML = "";
+        if(studioBuild.length === 0){
+          var small = document.createElement("div");
+          small.className = "tiny";
+          small.textContent = "No colors yet.";
+          tray.appendChild(small);
+          return;
+        }
+        studioBuild.forEach(function(s, idx){
+          var mini = document.createElement("div");
+          mini.className = "mini";
+          mini.style.background = s.hex;
+          mini.title = s.name;
+          mini.addEventListener("click", function(){
+            studioBuild.splice(idx,1);
+            updateStudioTray();
+            toast("Removed", s.hex);
+          });
+          tray.appendChild(mini);
+        });
+      }
+
+      function openStudioLibrary(){
+        var wrap = document.createElement("div");
+
+        if(studios.length === 0){
+          var e = document.createElement("div");
+          e.className = "empty";
+          e.textContent = "No micro-palettes saved yet. Build one in Studio.";
+          wrap.appendChild(e);
+
+          var a = document.createElement("div");
+          a.className = "actions";
+          var b = document.createElement("button");
+          b.className = "btn primary";
+          b.textContent = "Open Studio";
+          b.addEventListener("click", function(){ closeDrawer(); openStudio(); });
+          a.appendChild(b);
+          wrap.appendChild(a);
+
+          openDrawer("Micro-Palette Library", wrap);
+          return;
+        }
+
+        studios.slice().sort(function(a,b){ return (b.created||0)-(a.created||0); }).forEach(function(mp){
+          var block = document.createElement("div");
+          block.className = "look";
+          block.style.marginBottom = "10px";
+
+          var top = document.createElement("div");
+          top.className = "lookTop";
+          var h = document.createElement("h3");
+          h.textContent = mp.name;
+          var tag = document.createElement("div");
+          tag.className = "tag";
+          tag.textContent = new Date(mp.created).toLocaleDateString();
+          top.appendChild(h);
+          top.appendChild(tag);
+
+          var sw = document.createElement("div");
+          sw.className = "lookSwatches";
+          mp.colors.forEach(function(c){
+            var mini = document.createElement("div");
+            mini.className = "mini";
+            mini.style.background = c.hex;
+            mini.title = c.name + " " + c.hex.toLowerCase();
+            mini.addEventListener("click", async function(){
+              var ok = await copy(c.hex.toLowerCase());
+              toast(ok ? "Copied "+c.hex.toLowerCase() : "Copy failed", c.hex);
+            });
+            sw.appendChild(mini);
+          });
+
+          var actions = document.createElement("div");
+          actions.className = "actions";
+          actions.style.padding = "0 12px 12px";
+
+          var copyBtn = document.createElement("button");
+          copyBtn.className = "btn";
+          copyBtn.textContent = "Copy List";
+          copyBtn.addEventListener("click", async function(){
+            var lines = mp.colors.map(function(c){ return c.hex.toLowerCase()+"  " + c.name; }).join("\n");
+            var ok = await copy(lines);
+            toast(ok ? "Copied micro-palette" : "Copy failed", "#7db0aa");
+          });
+
+          var delBtn = document.createElement("button");
+          delBtn.className = "btn danger";
+          delBtn.textContent = "Delete";
+          delBtn.addEventListener("click", function(){
+            studios = studios.filter(function(x){ return x.id !== mp.id; });
+            saveStudios(studios);
+            toast("Deleted", "#ff6b6b");
+            closeDrawer();
+            openStudioLibrary();
+            renderDelights();
+          });
+
+          actions.appendChild(copyBtn);
+          actions.appendChild(delBtn);
+
+          block.appendChild(top);
+          block.appendChild(sw);
+          block.appendChild(actions);
+
+          wrap.appendChild(block);
+        });
+
+        openDrawer("Micro-Palette Library", wrap);
+      }
+
+      /* Harmony Heatmap */
+      function openHarmonyHeatmap(){
+        var favArr = Object.keys(favs).map(function(k){
+          var s = favs[k];
+          return { hex:k, name:s.name, group:s.group, score:pigmentClosenessScore(k) };
+        }).sort(function(a,b){ return b.score - a.score; });
+
+        var wrap = document.createElement("div");
+        if(favArr.length === 0){
+          var e = document.createElement("div");
+          e.className = "empty";
+          e.textContent = "No favorites yet. Double-tap swatches to favorite. Then this panel shows which of your favorites are closest to your pigments.";
+          wrap.appendChild(e);
+          openDrawer("Harmony Heatmap", wrap);
+          return;
+        }
+
+        var desc = document.createElement("div");
+        desc.className = "empty";
+        desc.textContent = "Your favorites ranked by harmony with your pigments. Higher means more native-to-you.";
+
+        wrap.appendChild(desc);
+
+        favArr.forEach(function(f){
+          var row = document.createElement("div");
+          row.className = "kvRow";
+          row.style.cursor = "pointer";
+          row.addEventListener("click", async function(){
+            var ok = await copy(f.hex.toLowerCase());
+            toast(ok ? "Copied "+f.hex.toLowerCase() : "Copy failed", f.hex);
+          });
+
+          var left = document.createElement("div");
+          left.style.display = "flex";
+          left.style.alignItems = "center";
+          left.style.gap = "10px";
+          left.style.minWidth = "0";
+
+          var dot = document.createElement("div");
+          dot.className = "sw";
+          dot.style.background = f.hex;
+
+          var txt = document.createElement("div");
+          txt.style.minWidth = "0";
+          var nm = document.createElement("div");
+          nm.style.fontSize = "13px";
+          nm.style.fontWeight = "700";
+          nm.style.whiteSpace = "nowrap";
+          nm.style.overflow = "hidden";
+          nm.style.textOverflow = "ellipsis";
+          nm.textContent = f.name;
+
+          var sm = document.createElement("div");
+          sm.className = "tiny";
+          sm.textContent = f.group;
+
+          txt.appendChild(nm);
+          txt.appendChild(sm);
+
+          left.appendChild(dot);
+          left.appendChild(txt);
+
+          var right = document.createElement("div");
+          right.className = "v";
+          right.textContent = String(Math.round(f.score*100))+"%";
+
+          row.appendChild(left);
+          row.appendChild(right);
+          wrap.appendChild(row);
+        });
+
+        openDrawer("Harmony Heatmap", wrap);
+      }
+
+      /* Capture mode for studio */
+      var studioCaptureOn = false;
+
+      function captureToStudio(s){
+        if(!studioCaptureOn) return false;
+        if(studioBuild.length >= 5) return true;
+        // avoid duplicates
+        for(var i=0;i<studioBuild.length;i++){
+          if(studioBuild[i].hex.toLowerCase() === s.hex.toLowerCase()) return true;
+        }
+        studioBuild.push({ name:s.name, hex:s.hex, group:s.group });
+        updateStudioTray();
+        toast("Added to Studio", s.hex);
+        if(studioBuild.length >= 5){
+          toast("Studio ready: name & save", "#6e90b7");
+        }
+        return true;
+      }
+
+      /* Hook swatch tap events into studio capture by overriding feedCompare */
+      var _feedCompare = feedCompare;
+      feedCompare = function(s){
+        // If studio capture is active, first capture
+        if(studioCaptureOn && captureToStudio(s)){ return; }
+        _feedCompare(s);
+      };
+
+      // When closing drawer, stop capture unless Studio is open
+      var _closeDrawer = closeDrawer;
+      closeDrawer = function(){
+        studioCaptureOn = false;
+        _closeDrawer();
+      };
+
+      /* --------- Controls --------- */
+      function setSeg(elTrue, elFalse1, elFalse2){
+        elTrue.setAttribute("aria-pressed","true");
+        elFalse1.setAttribute("aria-pressed","false");
+        elFalse2.setAttribute("aria-pressed","false");
+      }
+
+      var segAll = document.getElementById("segAll");
+      var segFav = document.getElementById("segFav");
+      var segStudy = document.getElementById("segStudy");
+
+      var studyHint = document.getElementById("studyHint");
+      var studyHowBtn = document.getElementById("studyHowBtn");
+      function updateStudyHint(){
+        if(!studyHint) return;
+        studyHint.hidden = (viewMode !== "study");
+      }
+      
+/* --------- Study: external colors & photo extraction --------- */
+function safeParseJSON(s, fallback){
+  try{
+    var x = JSON.parse(s);
+    return x == null ? fallback : x;
+  }catch(e){
+    return fallback;
+  }
+}
+
+var externalTestsKey = "atelier_external_tests_v1";
+var extractedKey = "atelier_extracted_colors_v1";
+var externalTests = safeParseJSON(localStorage.getItem(externalTestsKey), []);
+var extractedColors = safeParseJSON(localStorage.getItem(extractedKey), []);
+
+var studyHexInput = document.getElementById("studyHexInput");
+var studyNameInput = document.getElementById("studyNameInput");
+var studyAddBtn = document.getElementById("studyAddBtn");
+var studyExternalTray = document.getElementById("studyExternalTray");
+
+var studyImgInput = document.getElementById("studyImgInput");
+var studyPickBtn = document.getElementById("studyPickBtn");
+var studyExtractBtn = document.getElementById("studyExtractBtn");
+var studyExtractedTray = document.getElementById("studyExtractedTray");
+
+
+
+var studyClearTested = document.getElementById("studyClearTested");
+var studyClearExtracted = document.getElementById("studyClearExtracted");
+var studyClearAll = document.getElementById("studyClearAll");
+
+function clearStudy(kind){
+  if(kind === "tested"){
+    externalTests = [];
+    saveExternal();
+    renderExternalTrays();
+    toast("Cleared tested colors.");
+    return;
+  }
+  if(kind === "extracted"){
+    extractedColors = [];
+    saveExtracted();
+    renderExternalTrays();
+    toast("Cleared extracted colors.");
+    return;
+  }
+  // all
+  externalTests = [];
+  extractedColors = [];
+  saveExternal();
+  saveExtracted();
+  renderExternalTrays();
+  toast("Cleared all Study colors.");
+}
+
+if(studyClearTested){
+  studyClearTested.addEventListener("click", function(){ clearStudy("tested"); });
+}
+if(studyClearExtracted){
+  studyClearExtracted.addEventListener("click", function(){ clearStudy("extracted"); });
+}
+if(studyClearAll){
+  studyClearAll.addEventListener("click", function(){ clearStudy("all"); });
+}
+
+function normalizeHex(s){
+  s = (s || "").trim();
+  if(!s) return null;
+  if(s[0] !== "#") s = "#"+s;
+  if(s.length === 4){
+    s = "#"+s[1]+s[1]+s[2]+s[2]+s[3]+s[3];
+  }
+  if(!/^#[0-9a-fA-F]{6}$/.test(s)) return null;
+  return s.toLowerCase();
+}
+
+function bestLabelForExternal(hex){
+  // "belongs" heuristic: closeness score bands
+  var sc = pigmentClosenessScore(hex);
+  if(sc >= 0.70) return { tag:"native", note:"very you" };
+  if(sc >= 0.52) return { tag:"aligned", note:"works with care" };
+  if(sc >= 0.38) return { tag:"borderline", note:"test in daylight" };
+  return { tag:"outsider", note:"likely fights you" };
+}
+
+function saveExternal(){
+  localStorage.setItem(externalTestsKey, JSON.stringify(externalTests));
+}
+function saveExtracted(){
+  localStorage.setItem(extractedKey, JSON.stringify(extractedColors));
+}
+
+function makeChip(s, tray, kind){
+  var chip = document.createElement("button");
+  chip.type = "button";
+  chip.className = "extChip";
+  chip.setAttribute("data-hex", s.hex);
+  chip.setAttribute("data-name", s.name || s.hex);
+  chip.setAttribute("aria-label", (s.name || "Color")+" "+s.hex);
+
+  var dot = document.createElement("span");
+  dot.className = "extDot";
+  dot.style.background = s.hex;
+
+  var meta = document.createElement("span");
+  meta.className = "extMeta";
+
+  var nm = document.createElement("span");
+  nm.className = "extName";
+  nm.textContent = s.name || "Untitled";
+
+  var lab = bestLabelForExternal(s.hex);
+
+  var sub = document.createElement("span");
+  sub.className = "extSub";
+  sub.textContent = s.hex + " · " + lab.note;
+
+  meta.appendChild(nm);
+  meta.appendChild(sub);
+
+  var tag = document.createElement("span");
+  tag.className = "extTag";
+  tag.textContent = lab.tag;
+
+  // Favorite button (reliable on mobile)
+  var favBtn = document.createElement("button");
+  favBtn.type = "button";
+  favBtn.className = "extFav";
+  favBtn.setAttribute("aria-label","Favorite");
+  favBtn.setAttribute("aria-pressed", favs[s.hex.toLowerCase()] ? "true" : "false");
+  favBtn.textContent = "✶";
+  favBtn.addEventListener("click", function(ev){
+    ev.stopPropagation();
+    toggleFav({ name:(s.name || s.hex), hex:s.hex, group:"Study" });
+    favBtn.setAttribute("aria-pressed", favs[s.hex.toLowerCase()] ? "true" : "false");
+  });
+
+  chip.appendChild(dot);
+  chip.appendChild(meta);
+  chip.appendChild(tag);
+  chip.appendChild(favBtn);
+// Tap: copy + send to Compare
+  chip.addEventListener("click", async function(e){
+    var ok = await copy(s.hex);
+    toast(ok ? ("Copied "+s.hex) : "Copy failed", s.hex);
+    feedCompare({ name: (s.name || s.hex), hex: s.hex });
+    pulseDelight("copied", s.hex);
+  });
+
+  // Double-tap: favorite (works on mobile)
+  var lastTap = 0;
+  chip.addEventListener("touchend", function(e){
+    var t = Date.now();
+    if(t - lastTap < 320){
+      toggleFav({ name:(s.name || s.hex), hex:s.hex, group:"Study" });
+      e.preventDefault();
+    }
+    lastTap = t;
+  }, { passive:false });
+
+  chip.addEventListener("dblclick", function(e){
+    toggleFav({ name:(s.name || s.hex), hex:s.hex, group:"Study" });
+    e.preventDefault();
+  });
+// Long-press (mobile): remove from tray
+  var lpTimer = null;
+  chip.addEventListener("touchstart", function(){
+    lpTimer = setTimeout(function(){
+      if(kind === "external"){
+        externalTests = externalTests.filter(function(x){ return x.hex !== s.hex; });
+        saveExternal();
+        renderExternalTrays();
+        toast("Removed from Study.");
+      }else if(kind === "extracted"){
+        extractedColors = extractedColors.filter(function(x){ return x.hex !== s.hex; });
+        saveExtracted();
+        renderExternalTrays();
+        toast("Removed from Extracted.");
+      }
+    }, 520);
+  }, { passive:true });
+  chip.addEventListener("touchend", function(){ if(lpTimer) clearTimeout(lpTimer); }, { passive:true });
+  chip.addEventListener("touchmove", function(){ if(lpTimer) clearTimeout(lpTimer); }, { passive:true });
+
+  tray.appendChild(chip);
+}
+
+function renderExternalTrays(){
+  if(studyExternalTray){
+    studyExternalTray.innerHTML = "";
+    if(!externalTests.length){
+      var e = document.createElement("div");
+      e.className = "tiny";
+      e.style.opacity = ".8";
+      e.textContent = "No tested colors yet. Add a hex above, or extract from a photo.";
+      studyExternalTray.appendChild(e);
+    }else{
+      externalTests.slice(0, 18).forEach(function(s){ makeChip(s, studyExternalTray, "external"); });
+      if(externalTests.length > 18){
+        var more = document.createElement("div");
+        more.className = "tiny";
+        more.style.opacity = ".8";
+        more.textContent = "Showing 18. Long-press to remove.";
+        studyExternalTray.appendChild(more);
+      }
+    }
+  }
+
+  if(studyExtractedTray){
+    studyExtractedTray.innerHTML = "";
+    if(!extractedColors.length){
+      var e2 = document.createElement("div");
+      e2.className = "tiny";
+      e2.style.opacity = ".8";
+      e2.textContent = "Upload a photo, then tap Extract.";
+      studyExtractedTray.appendChild(e2);
+    }else{
+      extractedColors.slice(0, 14).forEach(function(s){ makeChip(s, studyExtractedTray, "extracted"); });
+      if(extractedColors.length > 14){
+        var more2 = document.createElement("div");
+        more2.className = "tiny";
+        more2.style.opacity = ".8";
+        more2.textContent = "Showing 14. Long-press to remove.";
+        studyExtractedTray.appendChild(more2);
+      }
+    }
+  }
+}
+
+function addExternalHex(hex, name){
+  var h = normalizeHex(hex);
+  if(!h){
+    toast("That doesn't look like a hex. Try #rrggbb.");
+    return;
+  }
+  var nm = (name || "").trim();
+  if(!nm) nm = "Test color";
+  // replace if exists
+  externalTests = externalTests.filter(function(x){ return x.hex !== h; });
+  externalTests.unshift({ name: nm, hex: h });
+  externalTests = externalTests.slice(0, 64);
+  saveExternal();
+  renderExternalTrays();
+}
+
+if(studyAddBtn){
+  studyAddBtn.addEventListener("click", function(){
+    addExternalHex(studyHexInput ? studyHexInput.value : "", studyNameInput ? studyNameInput.value : "");
+    if(studyHexInput) studyHexInput.value = "";
+    if(studyNameInput) studyNameInput.value = "";
+  });
+}
+if(studyHexInput){
+  studyHexInput.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(studyAddBtn) studyAddBtn.click();
+    }
+  });
+}
+
+// Eyedropper (where supported)
+if(studyPickBtn){
+  studyPickBtn.addEventListener("click", async function(){
+    try{
+      if(!("EyeDropper" in window)){
+        toast("Eyedropper not supported here. Use photo upload instead.");
+        return;
+      }
+      var ed = new window.EyeDropper();
+      var res = await ed.open();
+      if(res && res.sRGBHex){
+        addExternalHex(res.sRGBHex, "Eyedropped");
+      }
+    }catch(e){
+      // user canceled - no toast needed
+    }
+  });
+}
+
+// Photo extraction (offline): quick k-means on downscaled image
+function extractDominantsFromImage(file, k){
+  return new Promise(function(resolve, reject){
+    try{
+      var img = new Image();
+      img.onload = function(){
+        var maxW = 160, maxH = 160;
+        var scale = Math.min(maxW / img.width, maxH / img.height, 1);
+        var w = Math.max(16, Math.round(img.width * scale));
+        var h = Math.max(16, Math.round(img.height * scale));
+
+        var canvas = document.createElement("canvas");
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext("2d", { willReadFrequently: true });
+        ctx.drawImage(img, 0, 0, w, h);
+        var data = ctx.getImageData(0, 0, w, h).data;
+
+        // sample pixels
+        var pts = [];
+        for(var i=0;i<data.length;i+=16){
+          var r = data[i], g = data[i+1], b = data[i+2], a = data[i+3];
+          if(a < 200) continue;
+          // ignore near-white / near-black extremes a bit
+          var lum = (0.2126*r + 0.7152*g + 0.0722*b);
+          if(lum > 252 || lum < 3) continue;
+          pts.push([r,g,b]);
+        }
+        if(pts.length < 20){
+          resolve([]);
+          return;
+        }
+
+        var K = clamp(k || 8, 4, 12);
+        // init centroids from random points
+        var cents = [];
+        for(var c=0;c<K;c++){
+          cents.push(pts[Math.floor(Math.random()*pts.length)].slice());
+        }
+
+        function dist2(p,q){
+          var dr=p[0]-q[0], dg=p[1]-q[1], db=p[2]-q[2];
+          return dr*dr+dg*dg+db*db;
+        }
+
+        for(var iter=0; iter<8; iter++){
+          var sums = new Array(K).fill(0).map(function(){ return [0,0,0,0]; });
+          for(var pi=0; pi<pts.length; pi++){
+            var p = pts[pi];
+            var best = 0, bestD = Infinity;
+            for(var ci=0; ci<K; ci++){
+              var d = dist2(p, cents[ci]);
+              if(d < bestD){ bestD=d; best=ci; }
+            }
+            sums[best][0]+=p[0];
+            sums[best][1]+=p[1];
+            sums[best][2]+=p[2];
+            sums[best][3]+=1;
+          }
+          for(var ci2=0; ci2<K; ci2++){
+            if(sums[ci2][3] > 0){
+              cents[ci2] = [
+                Math.round(sums[ci2][0]/sums[ci2][3]),
+                Math.round(sums[ci2][1]/sums[ci2][3]),
+                Math.round(sums[ci2][2]/sums[ci2][3])
+              ];
+            }
+          }
+        }
+
+        // weight by cluster size
+        var counts = new Array(K).fill(0);
+        for(var pi2=0; pi2<pts.length; pi2++){
+          var p2 = pts[pi2];
+          var best2 = 0, bestD2 = Infinity;
+          for(var ci3=0; ci3<K; ci3++){
+            var d2 = dist2(p2, cents[ci3]);
+            if(d2 < bestD2){ bestD2=d2; best2=ci3; }
+          }
+          counts[best2]+=1;
+        }
+
+        var palette = cents.map(function(c, idx){
+          var hex = rgbToHex(c[0], c[1], c[2]).toLowerCase();
+          return { hex: hex, name: "Extracted", weight: counts[idx] };
+        }).sort(function(a,b){ return b.weight - a.weight; });
+
+        // de-dupe similar colors
+        function tooClose(h1,h2){
+          var a1 = hexToRgb(h1), b1 = hexToRgb(h2);
+          var dr=a1.r-b1.r, dg=a1.g-b1.g, db=a1.b-b1.b;
+          return Math.sqrt(dr*dr+dg*dg+db*db) < 26;
+        }
+        var uniq = [];
+        palette.forEach(function(s){
+          if(!uniq.some(function(u){ return tooClose(u.hex, s.hex); })){
+            uniq.push({ name: s.name, hex: s.hex });
+          }
+        });
+
+        resolve(uniq.slice(0, 10));
+      };
+      img.onerror = function(){ reject(new Error("image load failed")); };
+      var reader = new FileReader();
+      reader.onload = function(){ img.src = reader.result; };
+      reader.onerror = function(){ reject(new Error("file read failed")); };
+      reader.readAsDataURL(file);
+    }catch(e){
+      reject(e);
+    }
+  });
+}
+
+if(studyExtractBtn){
+  studyExtractBtn.addEventListener("click", async function(){
+    if(!studyImgInput || !studyImgInput.files || !studyImgInput.files[0]){
+      toast("Choose a photo first.");
+      return;
+    }
+    toast("Extracting colors...");
+    try{
+      var cols = await extractDominantsFromImage(studyImgInput.files[0], 9);
+      if(!cols.length){
+        toast("Couldn't extract colors. Try a sharper, brighter photo.");
+        return;
+      }
+      extractedColors = cols.map(function(c){ return { name: c.name, hex: c.hex }; });
+      saveExtracted();
+      renderExternalTrays();
+      toast("Extracted "+extractedColors.length+" colors.");
+    }catch(e){
+      toast("Extraction failed.");
+    }
+  });
+}
+
+// Show trays when Study opens
+function afterStudyModeToggle(){
+  if(viewMode === "study"){
+    renderExternalTrays();
+  }
+}
+if(studyHowBtn){
+        studyHowBtn.addEventListener("click", function(){
+          var wrap = document.createElement("div");
+
+          var a = document.createElement("div");
+          a.className = "empty";
+          a.textContent = "Study mode is for learning your boundaries: the colors that harmonize with your pigments (high closeness) and the colors that fight them (low closeness).";
+
+          var b = document.createElement("div");
+          b.className = "tiny";
+          b.style.marginTop = "10px";
+          b.style.lineHeight = "1.45";
+          b.textContent = "How to use it: (1) Switch to Study. (2) Tap a swatch to send it to Compare. (3) Compare it against a known 'yes' pigment (like Lip Pigment or Hazel Green Iris). (4) Use the verdict to decide if a garment is a buy, a maybe, or a no. Study intentionally surfaces both easy wins and risky outliers.";
+
+          var c = document.createElement("div");
+          c.className = "tiny";
+          c.style.marginTop = "10px";
+          c.textContent = "Pro tip: in daylight, your best colors will look like they belong to you. The wrong ones look like they're sitting on top of you.";
+
+          wrap.appendChild(a);
+          wrap.appendChild(b);
+          wrap.appendChild(c);
+
+          openDrawer("How to use Study", wrap);
+        });
+      }
+
+
+      segAll.addEventListener("click", function(){
+        viewMode = "all";
+        setSeg(segAll, segFav, segStudy);
+        renderPalette();
+        renderDelights();
+        updateStudyHint();
+      });
+      segFav.addEventListener("click", function(){
+        viewMode = "fav";
+        setSeg(segFav, segAll, segStudy);
+        renderPalette();
+        renderDelights();
+        updateStudyHint();
+      });
+      segStudy.addEventListener("click", function(){
+        viewMode = "study";
+        setSeg(segStudy, segAll, segFav);
+        renderPalette();
+        renderDelights();
+        updateStudyHint();
+        afterStudyModeToggle();
+      });
+
+      var sortHue = document.getElementById("sortHue");
+      var sortLight = document.getElementById("sortLight");
+      var sortTemp = document.getElementById("sortTemp");
+
+      function setSort(active){
+        sortHue.setAttribute("aria-pressed", active==="hue" ? "true":"false");
+        sortLight.setAttribute("aria-pressed", active==="light" ? "true":"false");
+        sortTemp.setAttribute("aria-pressed", active==="temp" ? "true":"false");
+      }
+      sortHue.addEventListener("click", function(){ sortMode="hue"; setSort("hue"); renderPalette(); });
+      sortLight.addEventListener("click", function(){ sortMode="light"; setSort("light"); renderPalette(); });
+      sortTemp.addEventListener("click", function(){ sortMode="temp"; setSort("temp"); renderPalette(); });
+
+      document.getElementById("search").addEventListener("input", function(){ renderPalette(); });
+
+      document.getElementById("pillExport").addEventListener("click", openExport);
+      document.getElementById("pillLight").addEventListener("click", openLightLab);
+
+      document.getElementById("btnRandom").addEventListener("click", serendipity);
+      document.getElementById("btnDecision").addEventListener("click", openDecisionRun);
+      document.getElementById("btnStudio").addEventListener("click", openStudio);
+
+      // Season pill tap gives a tiny explanation panel
+      document.getElementById("pillSeason").addEventListener("click", function(){
+        var wrap = document.createElement("div");
+        var e = document.createElement("div");
+        e.className = "empty";
+        e.textContent = "Soft Summer: cool-neutral undertone, medium contrast, softly muted chroma. Your eyes contain botanical green with amber flecks, so you can carry muted greens and teals beautifully as long as they stay softened.";
+        wrap.appendChild(e);
+        openDrawer("Season Placement", wrap);
+      });
+
+      /* --------- Init --------- */
+      renderPigments();
+      renderPalette();
+      renderLooks();
+      renderCompare();
+      applyLightMode();
+      renderDelights();
+
+      // A subtle first-run hint
+      setTimeout(function(){
+        toast("Tip: long-press a swatch for the Inspector", "#7db0aa");
+      }, 600);
+
+    })();
+  </script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
