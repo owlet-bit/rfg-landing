@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Gilded Moss Grimoire</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --vellum: #F5F0E8;
+  --ink: #2D3A2E;
+  --gold: #B8956C;
+  --moss: #6B7F5E;
+  --hazel: #7A8B6D;
+  --amber: #9E7B4A;
+  --rose: #C4A5A0;
+  --mauve: #9D8088;
+  --verdigris: #5A7067;
+  --shadow: rgba(45, 58, 46, 0.12);
+  --glow: rgba(184, 149, 108, 0.3);
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+@keyframes unfurl {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+  50% { box-shadow: 0 0 12px 4px var(--glow); }
+}
+
+@keyframes reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  background: var(--vellum);
+  color: var(--ink);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Vellum texture via subtle gradients */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(184, 149, 108, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(107, 127, 94, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(196, 165, 160, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.grimoire {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0 0 80px;
+}
+
+/* Header - Illuminated Title */
+.frontispiece {
+  text-align: center;
+  padding: 48px 24px 40px;
+  border-bottom: 1px solid var(--gold);
+  background: linear-gradient(180deg, rgba(184, 149, 108, 0.1) 0%, transparent 100%);
+}
+
+.sigil {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 16px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: var(--gold);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.title {
+  font-size: clamp(1.75rem, 6vw, 2.5rem);
+  font-weight: normal;
+  font-style: italic;
+  color: var(--ink);
+  letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--mauve);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Navigation tabs */
+.chapters {
+  display: flex;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-bottom: 1px solid rgba(184, 149, 108, 0.3);
+  background: rgba(245, 240, 232, 0.95);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.chapters::-webkit-scrollbar { display: none; }
+
+.chapter-tab {
+  flex: 0 0 auto;
+  padding: 16px 20px;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  min-height: 48px;
+  transition: color 0.3s ease;
+}
+
+.chapter-tab::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.chapter-tab:hover { color: var(--ink); }
+.chapter-tab.active { color: var(--ink); }
+.chapter-tab.active::after { width: 100%; }
+
+/* Sections */
+.chapter {
+  display: none;
+  padding: 32px 20px;
+  animation: unfurl 0.4s ease-out;
+}
+
+.chapter.active { display: block; }
+
+.chapter-title {
+  font-size: 1.25rem;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 24px;
+  color: var(--ink);
+}
+
+.chapter-title::before,
+.chapter-title::after {
+  content: " ~ ";
+  color: var(--gold);
+}
+
+/* Analysis Text */
+.analysis-text {
+  max-width: 600px;
+  margin: 0 auto 32px;
+  font-size: 15px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.analysis-text p {
+  margin-bottom: 1.2em;
+  text-indent: 1.5em;
+}
+
+.analysis-text p:first-of-type::first-letter {
+  font-size: 3em;
+  float: left;
+  line-height: 0.8;
+  padding-right: 8px;
+  color: var(--gold);
+  font-style: italic;
+}
+
+.season-badge {
+  display: inline-block;
+  padding: 8px 20px;
+  background: var(--ink);
+  color: var(--vellum);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 auto 16px;
+}
+
+.season-note {
+  font-style: italic;
+  color: var(--mauve);
+  text-align: center;
+  font-size: 14px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Source Pigments */
+.pigments-grid {
+  display: grid;
+  gap: 16px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.pigment-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(184, 149, 108, 0.2);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pigment-card:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: var(--gold);
+}
+
+.pigment-swatch {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.pigment-info {
+  flex: 1;
+}
+
+.pigment-source {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  margin-bottom: 4px;
+}
+
+.pigment-name {
+  font-style: italic;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.pigment-hex {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  color: var(--mauve);
+}
+
+/* Palette Grid */
+.palette-section {
+  margin-bottom: 40px;
+}
+
+.palette-section-title {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(184, 149, 108, 0.2);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 12px;
+}
+
+.swatch {
+  aspect-ratio: 1;
+  min-height: 72px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background: none;
+  padding: 0;
+}
+
+.swatch-color {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: border-color 0.2s ease;
+}
+
+.swatch:hover {
+  transform: scale(1.08);
+  z-index: 10;
+}
+
+.swatch:hover .swatch-color {
+  border-color: var(--gold);
+}
+
+.swatch.favorited .swatch-color {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px var(--gold), 0 4px 12px var(--shadow);
+}
+
+.swatch.favorited::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 16px;
+  height: 16px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 2px solid var(--vellum);
+}
+
+.swatch-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--vellum);
+  padding: 6px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 20;
+}
+
+.swatch:hover .swatch-tooltip {
+  opacity: 1;
+}
+
+/* Toast notification */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: var(--vellum);
+  padding: 12px 24px;
+  font-size: 14px;
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Favorites Section */
+.favorites-empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--mauve);
+  font-style: italic;
+}
+
+.favorites-empty::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 0 auto 24px;
+}
+
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.favorite-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(184, 149, 108, 0.2);
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite-card:hover {
+  border-color: var(--gold);
+}
+
+.favorite-swatch {
+  width: 100%;
+  aspect-ratio: 2/1;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.favorite-name {
+  font-size: 13px;
+  font-style: italic;
+  margin-bottom: 2px;
+}
+
+.favorite-hex {
+  font-family: "Courier New", monospace;
+  font-size: 11px;
+  color: var(--mauve);
+}
+
+/* Compare Tool */
+.compare-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.compare-slots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.compare-slot {
+  aspect-ratio: 1;
+  min-height: 140px;
+  border: 2px dashed rgba(184, 149, 108, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.compare-slot.filled {
+  border-style: solid;
+  border-color: var(--gold);
+}
+
+.compare-slot-label {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  margin-bottom: 8px;
+}
+
+.compare-slot-color {
+  width: 80%;
+  height: 60%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.compare-slot-info {
+  position: absolute;
+  bottom: 8px;
+  font-size: 11px;
+  font-family: "Courier New", monospace;
+  color: var(--mauve);
+}
+
+.compare-instructions {
+  text-align: center;
+  font-style: italic;
+  color: var(--mauve);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.verdict-box {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--gold);
+  padding: 24px;
+  margin-top: 24px;
+  display: none;
+}
+
+.verdict-box.visible { display: block; }
+
+.verdict-title {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.verdict-text {
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.compare-clear {
+  display: block;
+  margin: 16px auto 0;
+  padding: 12px 24px;
+  background: none;
+  border: 1px solid var(--mauve);
+  color: var(--mauve);
+  font-family: inherit;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.compare-clear:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Looks / Color Stories */
+.looks-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.look-card {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(184, 149, 108, 0.2);
+}
+
+.look-card:last-child {
+  border-bottom: none;
+}
+
+.look-title {
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.look-colors {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  height: 80px;
+}
+
+.look-color {
+  flex: 1;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease;
+  position: relative;
+}
+
+.look-color:hover {
+  transform: scaleY(1.1);
+  z-index: 5;
+}
+
+.look-color-label {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  white-space: nowrap;
+}
+
+.look-description {
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--ink);
+  text-align: center;
+  font-style: italic;
+}
+
+/* Export Panel */
+.export-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.export-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.export-btn {
+  padding: 16px;
+  background: none;
+  border: 1px solid var(--gold);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 52px;
+  transition: all 0.2s ease;
+}
+
+.export-btn:hover {
+  background: var(--gold);
+  color: var(--vellum);
+}
+
+.export-output {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(184, 149, 108, 0.3);
+  padding: 20px;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+/* Lighting Simulator */
+.lighting-container {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.lighting-preview {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 24px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.lighting-swatch {
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: filter 0.3s ease;
+}
+
+.lighting-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.lighting-btn {
+  padding: 12px 16px;
+  background: none;
+  border: 1px solid rgba(184, 149, 108, 0.4);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.2s ease;
+}
+
+.lighting-btn:hover, .lighting-btn.active {
+  border-color: var(--gold);
+  background: rgba(184, 149, 108, 0.1);
+}
+
+.lighting-note {
+  margin-top: 20px;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--mauve);
+}
+
+/* Color Oracle - Random Discovery */
+.oracle-container {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.oracle-card {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--gold);
+  padding: 40px 24px;
+  margin-bottom: 24px;
+}
+
+.oracle-swatch {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 24px;
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.oracle-name {
+  font-size: 1.25rem;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.oracle-hex {
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  color: var(--mauve);
+  margin-bottom: 16px;
+}
+
+.oracle-message {
+  font-size: 14px;
+  line-height: 1.7;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.oracle-btn {
+  padding: 16px 32px;
+  background: var(--ink);
+  border: none;
+  color: var(--vellum);
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  min-height: 52px;
+  transition: all 0.2s ease;
+}
+
+.oracle-btn:hover {
+  background: var(--gold);
+}
+
+/* Harmony Wheel */
+.harmony-container {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.harmony-wheel {
+  width: 280px;
+  height: 280px;
+  margin: 0 auto 24px;
+  position: relative;
+  border-radius: 50%;
+  background: conic-gradient(
+    #C4A5A0 0deg, #D4B5B0 30deg, #B8956C 60deg, #9E7B4A 90deg,
+    #7A8B6D 120deg, #6B7F5E 150deg, #5A7067 180deg, #4A6B6B 210deg,
+    #5B6B8B 240deg, #6B5B7B 270deg, #8B6B7B 300deg, #A68B8B 330deg,
+    #C4A5A0 360deg
+  );
+  box-shadow: 0 4px 20px var(--shadow);
+}
+
+.harmony-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  background: var(--vellum);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: italic;
+  font-size: 13px;
+  color: var(--mauve);
+  border: 2px solid var(--gold);
+}
+
+.harmony-schemes {
+  display: grid;
+  gap: 16px;
+}
+
+.harmony-scheme {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(184, 149, 108, 0.2);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.harmony-scheme:hover {
+  border-color: var(--gold);
+}
+
+.harmony-scheme-title {
+  font-size: 13px;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.harmony-scheme-colors {
+  display: flex;
+  gap: 4px;
+  height: 40px;
+}
+
+.harmony-scheme-color {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* Wardrobe Audit */
+.audit-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.audit-input-group {
+  margin-bottom: 24px;
+}
+
+.audit-label {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  margin-bottom: 8px;
+}
+
+.audit-color-input {
+  width: 100%;
+  height: 60px;
+  border: 2px solid rgba(184, 149, 108, 0.3);
+  cursor: pointer;
+  background: #ffffff;
+}
+
+.audit-result {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--gold);
+  padding: 24px;
+  display: none;
+}
+
+.audit-result.visible { display: block; }
+
+.audit-verdict {
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.audit-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.audit-score-bar {
+  width: 200px;
+  height: 8px;
+  background: rgba(184, 149, 108, 0.2);
+  position: relative;
+}
+
+.audit-score-fill {
+  height: 100%;
+  background: var(--gold);
+  transition: width 0.5s ease;
+}
+
+.audit-score-label {
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.audit-explanation {
+  font-size: 14px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.audit-closest {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(184, 149, 108, 0.2);
+  text-align: center;
+}
+
+.audit-closest-label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  margin-bottom: 8px;
+}
+
+.audit-closest-swatch {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border: 2px solid var(--gold);
+}
+
+/* Seasonal Clock */
+.clock-container {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.clock-display {
+  margin-bottom: 24px;
+}
+
+.clock-time {
+  font-size: 3rem;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.clock-season {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+}
+
+.clock-palette {
+  display: flex;
+  gap: 4px;
+  height: 60px;
+  margin-bottom: 24px;
+}
+
+.clock-color {
+  flex: 1;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  transition: all 0.5s ease;
+}
+
+.clock-note {
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Shopping List */
+.shopping-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.shopping-categories {
+  display: grid;
+  gap: 16px;
+}
+
+.shopping-category {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(184, 149, 108, 0.2);
+  padding: 20px;
+}
+
+.shopping-category-title {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mauve);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(184, 149, 108, 0.2);
+}
+
+.shopping-items {
+  display: grid;
+  gap: 12px;
+}
+
+.shopping-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shopping-swatch {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.shopping-item-info {
+  flex: 1;
+}
+
+.shopping-item-name {
+  font-size: 14px;
+  font-style: italic;
+}
+
+.shopping-item-note {
+  font-size: 12px;
+  color: var(--mauve);
+}
+
+/* Footer */
+.colophon {
+  text-align: center;
+  padding: 40px 20px;
+  border-top: 1px solid rgba(184, 149, 108, 0.3);
+  margin-top: 40px;
+}
+
+.colophon-text {
+  font-size: 12px;
+  color: var(--mauve);
+  font-style: italic;
+}
+
+/* Mobile refinements */
+@media (max-width: 480px) {
+  .chapter { padding: 24px 16px; }
+  .swatches { grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .swatch { min-height: 64px; }
+  .look-colors { height: 60px; }
+  .compare-slots { gap: 12px; }
+  .compare-slot { min-height: 120px; }
+  .export-buttons { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="grimoire">
+  <header class="frontispiece">
+    <div class="sigil">&#9733;</div>
+    <h1 class="title">The Gilded Moss Grimoire</h1>
+    <p class="subtitle">A Personal Color Alchemy</p>
+  </header>
+
+  <nav class="chapters">
+    <button class="chapter-tab active" data-chapter="analysis">Analysis</button>
+    <button class="chapter-tab" data-chapter="pigments">Pigments</button>
+    <button class="chapter-tab" data-chapter="palette">Palette</button>
+    <button class="chapter-tab" data-chapter="looks">Looks</button>
+    <button class="chapter-tab" data-chapter="favorites">Favorites</button>
+    <button class="chapter-tab" data-chapter="compare">Compare</button>
+    <button class="chapter-tab" data-chapter="oracle">Oracle</button>
+    <button class="chapter-tab" data-chapter="lighting">Lighting</button>
+    <button class="chapter-tab" data-chapter="audit">Audit</button>
+    <button class="chapter-tab" data-chapter="clock">Clock</button>
+    <button class="chapter-tab" data-chapter="export">Export</button>
+  </nav>
+
+  <!-- Analysis Chapter -->
+  <section class="chapter active" id="analysis">
+    <h2 class="chapter-title">The Reading</h2>
+    
+    <div style="text-align: center; margin-bottom: 32px;">
+      <span class="season-badge">Soft Autumn Deep</span>
+    </div>
+    
+    <div class="analysis-text">
+      <p>Yours is the coloring of old libraries at golden hour: warm light falling across moss-green velvet, illuminating the gilt spines of forgotten books. The hazel eyes are extraordinary — a sunburst of amber and ochre radiating from the pupil, held within a ring of sage-grey-green that shifts like forest light through leaves. This is not a simple eye color but a landscape, containing both the warmth of turning leaves and the cool mystery of lichen-covered stone.</p>
+      
+      <p>The skin speaks a dialect of warmth through neutral — a translucent ivory with peachy-rose undertones that bloom into visible flush across the cheeks and forehead. The veins at the wrist tell their own story in blue-violet, adding cool depth to the overall impression. This creates a fascinating tension: warm enough to need golden colors, cool enough to require softening. The hair continues this narrative — ash blonde at the roots darkening to a muted honey-gold at the ends, threaded with both cool ash and warm caramel.</p>
+      
+      <p>The mouth is particularly telling: a soft dusty rose with mauve shadows, neither warm pink nor cool berry but something liminal between. This is the signature of Soft Autumn Deep — a season that lives in the golden hour, when colors are simultaneously rich and diffused, warm but never harsh, saturated but mysteriously muted, as though viewed through antique glass.</p>
+    </div>
+    
+    <p class="season-note">Placed in Soft Autumn Deep: the warmth of your amber eye pigments and peachy skin combined with muted ash tones and cool vein undertones creates a palette that demands richly saturated yet softened colors with golden warmth and forest depth.</p>
+  </section>
+
+  <!-- Source Pigments Chapter -->
+  <section class="chapter" id="pigments">
+    <h2 class="chapter-title">Source Pigments</h2>
+    <p style="text-align: center; font-style: italic; color: var(--mauve); font-size: 14px; margin-bottom: 32px;">The colors living within you</p>
+    
+    <div class="pigments-grid" id="pigmentsGrid"></div>
+  </section>
+
+  <!-- Palette Chapter -->
+  <section class="chapter" id="palette">
+    <h2 class="chapter-title">The Wearable Palette</h2>
+    <p style="text-align: center; font-style: italic; color: var(--mauve); font-size: 14px; margin-bottom: 32px;">Click to copy hex. Double-click to favorite.</p>
+    
+    <div id="paletteContainer"></div>
+  </section>
+
+  <!-- Looks Chapter -->
+  <section class="chapter" id="looks">
+    <h2 class="chapter-title">Color Stories</h2>
+    
+    <div class="looks-container" id="looksContainer"></div>
+  </section>
+
+  <!-- Favorites Chapter -->
+  <section class="chapter" id="favorites">
+    <h2 class="chapter-title">Your Treasures</h2>
+    
+    <div id="favoritesContainer">
+      <div class="favorites-empty">
+        Double-click any swatch to begin your collection
+      </div>
+    </div>
+  </section>
+
+  <!-- Compare Chapter -->
+  <section class="chapter" id="compare">
+    <h2 class="chapter-title">The Comparison</h2>
+    
+    <div class="compare-container">
+      <p class="compare-instructions">Click any swatch in Palette or Favorites to add it here</p>
+      
+      <div class="compare-slots">
+        <div class="compare-slot" id="compareSlot1" data-slot="1">
+          <span class="compare-slot-label">First</span>
+        </div>
+        <div class="compare-slot" id="compareSlot2" data-slot="2">
+          <span class="compare-slot-label">Second</span>
+        </div>
+      </div>
+      
+      <div class="verdict-box" id="verdictBox">
+        <div class="verdict-title">The Verdict</div>
+        <div class="verdict-text" id="verdictText"></div>
+      </div>
+      
+      <button class="compare-clear" id="compareClear">Clear Comparison</button>
+    </div>
+  </section>
+
+  <!-- Oracle Chapter -->
+  <section class="chapter" id="oracle">
+    <h2 class="chapter-title">The Color Oracle</h2>
+    
+    <div class="oracle-container">
+      <div class="oracle-card">
+        <div class="oracle-swatch" id="oracleSwatch"></div>
+        <div class="oracle-name" id="oracleName">—</div>
+        <div class="oracle-hex" id="oracleHex">—</div>
+        <div class="oracle-message" id="oracleMessage">Ask the oracle for your color of the moment</div>
+      </div>
+      
+      <button class="oracle-btn" id="oracleBtn">Divine a Color</button>
+    </div>
+  </section>
+
+  <!-- Lighting Chapter -->
+  <section class="chapter" id="lighting">
+    <h2 class="chapter-title">Under Different Lights</h2>
+    
+    <div class="lighting-container">
+      <div class="lighting-preview" id="lightingPreview"></div>
+      
+      <div class="lighting-modes">
+        <button class="lighting-btn active" data-mode="daylight">Daylight</button>
+        <button class="lighting-btn" data-mode="golden">Golden Hour</button>
+        <button class="lighting-btn" data-mode="tungsten">Tungsten</button>
+        <button class="lighting-btn" data-mode="fluorescent">Fluorescent</button>
+        <button class="lighting-btn" data-mode="candlelight">Candlelight</button>
+        <button class="lighting-btn" data-mode="overcast">Overcast</button>
+      </div>
+      
+      <p class="lighting-note" id="lightingNote">Your true colors under natural daylight</p>
+    </div>
+  </section>
+
+  <!-- Audit Chapter -->
+  <section class="chapter" id="audit">
+    <h2 class="chapter-title">Wardrobe Audit</h2>
+    <p style="text-align: center; font-style: italic; color: var(--mauve); font-size: 14px; margin-bottom: 32px;">Test any color against your palette</p>
+    
+    <div class="audit-container">
+      <div class="audit-input-group">
+        <label class="audit-label">Select a color to test</label>
+        <input type="color" class="audit-color-input" id="auditInput" value="#8B7355">
+      </div>
+      
+      <div class="audit-result" id="auditResult">
+        <div class="audit-verdict" id="auditVerdict"></div>
+        <div class="audit-score">
+          <div class="audit-score-bar">
+            <div class="audit-score-fill" id="auditScoreFill"></div>
+          </div>
+          <span class="audit-score-label" id="auditScoreLabel">0%</span>
+        </div>
+        <div class="audit-explanation" id="auditExplanation"></div>
+        <div class="audit-closest">
+          <div class="audit-closest-label">Closest match in your palette</div>
+          <div class="audit-closest-swatch" id="auditClosestSwatch"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Clock Chapter -->
+  <section class="chapter" id="clock">
+    <h2 class="chapter-title">The Seasonal Clock</h2>
+    
+    <div class="clock-container">
+      <div class="clock-display">
+        <div class="clock-time" id="clockTime">--:--</div>
+        <div class="clock-season" id="clockSeason">—</div>
+      </div>
+      
+      <div class="clock-palette" id="clockPalette"></div>
+      
+      <p class="clock-note" id="clockNote">Colors shift with the light of day</p>
+    </div>
+  </section>
+
+  <!-- Export Chapter -->
+  <section class="chapter" id="export">
+    <h2 class="chapter-title">Export Your Palette</h2>
+    
+    <div class="export-container">
+      <div class="export-buttons">
+        <button class="export-btn" id="exportFullJSON">Full Palette (JSON)</button>
+        <button class="export-btn" id="exportFullText">Full Palette (Text)</button>
+        <button class="export-btn" id="exportFavJSON">Favorites (JSON)</button>
+        <button class="export-btn" id="exportFavText">Favorites (Text)</button>
+      </div>
+      
+      <div class="export-output" id="exportOutput">Select an export format above</div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p class="colophon-text">Inscribed in the Gilded Moss Grimoire ~ A treasure of personal color</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ============================================
+// DATA: Source Pigments
+// ============================================
+const sourcePigments = [
+  { source: "Iris - Inner Ring", name: "Amber Starburst", hex: "#9E7B4A" },
+  { source: "Iris - Outer Ring", name: "Sage Mist", hex: "#7A8B6D" },
+  { source: "Iris - Depth", name: "Forest Shadow", hex: "#5A6B5A" },
+  { source: "Skin - Base", name: "Ivory Vellum", hex: "#E8DDD0" },
+  { source: "Skin - Undertone", name: "Peach Bloom", hex: "#DBBAA8" },
+  { source: "Flush", name: "Rose Fever", hex: "#D4A5A0" },
+  { source: "Lips - Center", name: "Dusty Petal", hex: "#C4A5A0" },
+  { source: "Lips - Shadow", name: "Mauve Whisper", hex: "#9D8088" },
+  { source: "Hair - Roots", name: "Ash Walnut", hex: "#7A7060" },
+  { source: "Hair - Midtone", name: "Honeyed Flax", hex: "#B8A078" },
+  { source: "Hair - Highlights", name: "Champagne Gilt", hex: "#D4C4A8" },
+  { source: "Veins", name: "Violet Trace", hex: "#7B7B9B" },
+  { source: "Brow", name: "Taupe Earth", hex: "#6B6055" }
+];
+
+// ============================================
+// DATA: Full Wearable Palette
+// ============================================
+const paletteGroups = {
+  "Mossy Greens": [
+    { name: "Deep Forest Floor", hex: "#3D4A3A" },
+    { name: "Hunter Emerald", hex: "#4A5D4A" },
+    { name: "Woodland Moss", hex: "#6B7F5E" },
+    { name: "Sage Garden", hex: "#8B9B7B" },
+    { name: "Celadon Mist", hex: "#A8B898" },
+    { name: "Verdigris Dream", hex: "#5A7067" },
+    { name: "Eucalyptus", hex: "#7B9B8B" }
+  ],
+  "Amber Golds": [
+    { name: "Antique Bronze", hex: "#7B5B3B" },
+    { name: "Burnished Gold", hex: "#B8956C" },
+    { name: "Honeycomb", hex: "#C9A86C" },
+    { name: "Gilded Ochre", hex: "#9E7B4A" },
+    { name: "Harvest Wheat", hex: "#D4B896" },
+    { name: "Butterscotch", hex: "#C49B6B" },
+    { name: "Amber Resin", hex: "#A67B4B" }
+  ],
+  "Dusty Roses": [
+    { name: "Dried Petal", hex: "#C4A5A0" },
+    { name: "Blush Suede", hex: "#D4B5B0" },
+    { name: "Rose Taupe", hex: "#A68B88" },
+    { name: "Mauve Silk", hex: "#9D8088" },
+    { name: "Antique Rose", hex: "#B89898" },
+    { name: "Dusty Coral", hex: "#C9A090" }
+  ],
+  "Rich Depths": [
+    { name: "Burgundy Wine", hex: "#6B3A4A" },
+    { name: "Plum Shadow", hex: "#5B4B5B" },
+    { name: "Aubergine", hex: "#4A3B4B" },
+    { name: "Mulberry", hex: "#7B4B5B" },
+    { name: "Black Cherry", hex: "#3B2A2A" },
+    { name: "Oxblood", hex: "#5B2B2B" }
+  ],
+  "Earth Browns": [
+    { name: "Espresso", hex: "#3B2B2B" },
+    { name: "Walnut Shell", hex: "#5B4B3B" },
+    { name: "Caramel Leather", hex: "#8B6B4B" },
+    { name: "Saddle Brown", hex: "#7B5B4B" },
+    { name: "Toffee", hex: "#9B7B5B" },
+    { name: "Cocoa Dust", hex: "#6B5B4B" }
+  ],
+  "Soft Neutrals": [
+    { name: "Warm Ivory", hex: "#F5EDE5" },
+    { name: "Oat Milk", hex: "#E8DDD0" },
+    { name: "Stone", hex: "#B8ADA0" },
+    { name: "Taupe Veil", hex: "#9B8B7B" },
+    { name: "Pewter", hex: "#7B7B7B" },
+    { name: "Charcoal Smoke", hex: "#4B4B4B" }
+  ],
+  "Muted Teals": [
+    { name: "Deep Lagoon", hex: "#3B5B5B" },
+    { name: "Vintage Teal", hex: "#4B6B6B" },
+    { name: "Seafoam Aged", hex: "#6B8B8B" },
+    { name: "Duck Egg", hex: "#8BA8A0" },
+    { name: "Soft Verdigris", hex: "#7B9B9B" }
+  ],
+  "Statement Jewels": [
+    { name: "Topaz Flame", hex: "#C87830" },
+    { name: "Garnet", hex: "#8B3040" },
+    { name: "Tourmaline", hex: "#4B7B6B" },
+    { name: "Tigers Eye", hex: "#B87830" },
+    { name: "Smoky Quartz", hex: "#7B6B5B" }
+  ]
+};
+
+// Flatten palette for various uses
+const allColors = Object.values(paletteGroups).flat();
+
+// ============================================
+// DATA: Styled Looks
+// ============================================
+const styledLooks = [
+  {
+    title: "The Golden Hour Editorial",
+    colors: [
+      { hex: "#B8956C", role: "Blazer" },
+      { hex: "#F5EDE5", role: "Blouse" },
+      { hex: "#5B4B3B", role: "Trouser" },
+      { hex: "#C4A5A0", role: "Lip" },
+      { hex: "#9E7B4A", role: "Eye" }
+    ],
+    description: "For the afternoon that matters. Burnished gold silk against ivory, grounded in walnut trousers. The makeup echoes your natural pigments — dusty petal on the lip, amber swept across the lid."
+  },
+  {
+    title: "Forest Floor Romantique",
+    colors: [
+      { hex: "#4A5D4A", role: "Dress" },
+      { hex: "#D4C4A8", role: "Scarf" },
+      { hex: "#7B5B3B", role: "Boot" },
+      { hex: "#B89898", role: "Blush" },
+      { hex: "#6B5B4B", role: "Brow" }
+    ],
+    description: "A hunter green velvet dress catches light like moss after rain. Champagne silk at the neck, antique bronze boots, cheeks flushed with antique rose. Eyes defined but soft."
+  },
+  {
+    title: "The Burgundy Study",
+    colors: [
+      { hex: "#6B3A4A", role: "Coat" },
+      { hex: "#E8DDD0", role: "Knit" },
+      { hex: "#3B2B2B", role: "Leather" },
+      { hex: "#9D8088", role: "Lip" },
+      { hex: "#5A6B5A", role: "Eye" }
+    ],
+    description: "Burgundy wine wool wrapping oat milk cashmere. Dark espresso leather, lips in mauve shadow, a whisper of forest on the lid. Intellectual glamour for grey afternoons."
+  },
+  {
+    title: "Teal & Honey",
+    colors: [
+      { hex: "#4B6B6B", role: "Top" },
+      { hex: "#C9A86C", role: "Skirt" },
+      { hex: "#7B6B5B", role: "Bag" },
+      { hex: "#D4B5B0", role: "Lip" },
+      { hex: "#B8A078", role: "Highlight" }
+    ],
+    description: "Vintage teal silk tucked into honeycomb linen. A smoky quartz leather bag, lips barely there in blush suede, a sweep of golden highlight. Easy opulence."
+  },
+  {
+    title: "Midnight Garden Gala",
+    colors: [
+      { hex: "#4A3B4B", role: "Gown" },
+      { hex: "#B8956C", role: "Jewelry" },
+      { hex: "#C87830", role: "Clutch" },
+      { hex: "#8B3040", role: "Lip" },
+      { hex: "#7A8B6D", role: "Eye" }
+    ],
+    description: "Aubergine silk to the floor, gleaming with gold. A topaz clutch catches candlelight. Garnet lips, eyes washed in sage. Maximum drama through minimal gesture."
+  },
+  {
+    title: "The Soft Power Meeting",
+    colors: [
+      { hex: "#7B5B4B", role: "Suit" },
+      { hex: "#F5EDE5", role: "Shirt" },
+      { hex: "#4B4B4B", role: "Heel" },
+      { hex: "#C4A5A0", role: "Lip" },
+      { hex: "#6B6055", role: "Brow" }
+    ],
+    description: "Saddle brown suiting over crisp ivory, charcoal pumps grounding the warmth. Your natural dusty petal lip, brows defined in taupe. Authority without hardness."
+  },
+  {
+    title: "Weekend in the Vines",
+    colors: [
+      { hex: "#8B9B7B", role: "Linen" },
+      { hex: "#D4B896", role: "Shorts" },
+      { hex: "#9B7B5B", role: "Sandal" },
+      { hex: "#DBBAA8", role: "Glow" },
+      { hex: "#7A8B6D", role: "Eye" }
+    ],
+    description: "Sage garden linen, harvest wheat shorts, toffee leather sandals. Skin catching sun in peach bloom, eyes echoing the hills. Effortless, abundant, alive."
+  }
+];
+
+// ============================================
+// DATA: Oracle Messages
+// ============================================
+const oracleMessages = [
+  "This color asks you to take up space today.",
+  "Wear this near your face when you need courage.",
+  "A color for speaking truths you've been holding.",
+  "This shade attracts serendipity.",
+  "Your eyes will appear most luminous beside this.",
+  "A color for new beginnings.",
+  "Wear this when you want to be remembered.",
+  "This color invites depth into conversation.",
+  "A shade for quiet power.",
+  "This calls you toward creative work today.",
+  "Wear this to feel held.",
+  "A color that mirrors your current season.",
+  "This shade will photograph beautifully on you.",
+  "Wear this to connect with your intuition.",
+  "A color for celebration, however small."
+];
+
+// ============================================
+// STATE
+// ============================================
+let favorites = [];
+let compareSlots = [null, null];
+let compareMode = false;
+
+// ============================================
+// INITIALIZATION
+// ============================================
+document.addEventListener("DOMContentLoaded", () => {
+  loadFavorites();
+  renderPigments();
+  renderPalette();
+  renderLooks();
+  renderFavorites();
+  initTabs();
+  initCompare();
+  initOracle();
+  initLighting();
+  initAudit();
+  initClock();
+  initExport();
+});
+
+// ============================================
+// LOCAL STORAGE
+// ============================================
+function loadFavorites() {
+  try {
+    const stored = localStorage.getItem("grimoire-favorites");
+    if (stored) {
+      favorites = JSON.parse(stored);
+    }
+  } catch (e) {
+    favorites = [];
+  }
+}
+
+function saveFavorites() {
+  try {
+    localStorage.setItem("grimoire-favorites", JSON.stringify(favorites));
+  } catch (e) {
+    console.log("Storage unavailable");
+  }
+}
+
+// ============================================
+// TABS
+// ============================================
+function initTabs() {
+  const tabs = document.querySelectorAll(".chapter-tab");
+  const chapters = document.querySelectorAll(".chapter");
+  
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.chapter;
+      
+      tabs.forEach(t => t.classList.remove("active"));
+      chapters.forEach(c => c.classList.remove("active"));
+      
+      tab.classList.add("active");
+      document.getElementById(target).classList.add("active");
+      
+      // Reset compare mode when leaving compare tab
+      if (target !== "compare") {
+        compareMode = false;
+      }
+    });
+  });
+}
+
+// ============================================
+// TOAST NOTIFICATIONS
+// ============================================
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.classList.add("visible");
+  
+  setTimeout(() => {
+    toast.classList.remove("visible");
+  }, 2000);
+}
+
+// ============================================
+// RENDER PIGMENTS
+// ============================================
+function renderPigments() {
+  const container = document.getElementById("pigmentsGrid");
+  
+  sourcePigments.forEach(pigment => {
+    const card = document.createElement("div");
+    card.className = "pigment-card";
+    card.innerHTML = `
+      <div class="pigment-swatch" style="background: ${pigment.hex}"></div>
+      <div class="pigment-info">
+        <div class="pigment-source">${pigment.source}</div>
+        <div class="pigment-name">${pigment.name}</div>
+        <div class="pigment-hex">${pigment.hex}</div>
+      </div>
+    `;
+    
+    card.addEventListener("click", () => copyHex(pigment.hex, pigment.name));
+    container.appendChild(card);
+  });
+}
+
+// ============================================
+// RENDER PALETTE
+// ============================================
+function renderPalette() {
+  const container = document.getElementById("paletteContainer");
+  
+  Object.entries(paletteGroups).forEach(([groupName, colors]) => {
+    const section = document.createElement("div");
+    section.className = "palette-section";
+    section.innerHTML = `<h3 class="palette-section-title">${groupName}</h3>`;
+    
+    const swatches = document.createElement("div");
+    swatches.className = "swatches";
+    
+    colors.forEach(color => {
+      const swatch = createSwatch(color);
+      swatches.appendChild(swatch);
+    });
+    
+    section.appendChild(swatches);
+    container.appendChild(section);
+  });
+}
+
+function createSwatch(color) {
+  const swatch = document.createElement("button");
+  swatch.className = "swatch";
+  if (favorites.some(f => f.hex === color.hex)) {
+    swatch.classList.add("favorited");
+  }
+  
+  swatch.innerHTML = `
+    <div class="swatch-color" style="background: ${color.hex}"></div>
+    <div class="swatch-tooltip">${color.name}</div>
+  `;
+  
+  swatch.addEventListener("click", () => {
+    if (compareMode) {
+      addToCompare(color);
+    } else {
+      copyHex(color.hex, color.name);
+    }
+  });
+  
+  swatch.addEventListener("dblclick", (e) => {
+    e.preventDefault();
+    toggleFavorite(color);
+    swatch.classList.toggle("favorited", favorites.some(f => f.hex === color.hex));
+  });
+  
+  return swatch;
+}
+
+function copyHex(hex, name) {
+  navigator.clipboard.writeText(hex).then(() => {
+    showToast(`${name}: ${hex} copied`);
+  }).catch(() => {
+    showToast(`${hex}`);
+  });
+}
+
+function toggleFavorite(color) {
+  const index = favorites.findIndex(f => f.hex === color.hex);
+  if (index > -1) {
+    favorites.splice(index, 1);
+    showToast(`${color.name} removed from favorites`);
+  } else {
+    favorites.push({ name: color.name, hex: color.hex });
+    showToast(`${color.name} added to favorites`);
+  }
+  saveFavorites();
+  renderFavorites();
+  updateSwatchStates();
+}
+
+function updateSwatchStates() {
+  document.querySelectorAll(".swatch").forEach(swatch => {
+    const hex = swatch.querySelector(".swatch-color").style.background;
+    const rgb = swatch.querySelector(".swatch-color").style.backgroundColor;
+    // Check if this color is favorited
+    const isFav = favorites.some(f => {
+      const swatchHex = rgbToHex(rgb);
+      return f.hex.toLowerCase() === swatchHex.toLowerCase();
+    });
+    swatch.classList.toggle("favorited", isFav);
+  });
+}
+
+function rgbToHex(rgb) {
+  if (rgb.startsWith("#")) return rgb;
+  const match = rgb.match(/\d+/g);
+  if (!match || match.length < 3) return "#000000";
+  return "#" + match.slice(0, 3).map(x => {
+    const hex = parseInt(x).toString(16);
+    return hex.length === 1 ? "0" + hex : hex;
+  }).join("").toUpperCase();
+}
+
+// ============================================
+// RENDER FAVORITES
+// ============================================
+function renderFavorites() {
+  const container = document.getElementById("favoritesContainer");
+  
+  if (favorites.length === 0) {
+    container.innerHTML = `
+      <div class="favorites-empty">
+        Double-click any swatch to begin your collection
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = "";
+  const grid = document.createElement("div");
+  grid.className = "favorites-grid";
+  
+  favorites.forEach(fav => {
+    const card = document.createElement("div");
+    card.className = "favorite-card";
+    card.innerHTML = `
+      <div class="favorite-swatch" style="background: ${fav.hex}"></div>
+      <div class="favorite-name">${fav.name}</div>
+      <div class="favorite-hex">${fav.hex}</div>
+    `;
+    
+    card.addEventListener("click", () => {
+      if (compareMode) {
+        addToCompare(fav);
+      } else {
+        copyHex(fav.hex, fav.name);
+      }
+    });
+    
+    card.addEventListener("dblclick", () => {
+      toggleFavorite(fav);
+    });
+    
+    grid.appendChild(card);
+  });
+  
+  container.appendChild(grid);
+}
+
+// ============================================
+// RENDER LOOKS
+// ============================================
+function renderLooks() {
+  const container = document.getElementById("looksContainer");
+  
+  styledLooks.forEach(look => {
+    const card = document.createElement("div");
+    card.className = "look-card";
+    
+    const colorsHTML = look.colors.map(c => `
+      <button class="look-color" style="background: ${c.hex}" onclick="copyHex('${c.hex}', '${c.role}')">
+        <span class="look-color-label">${c.role}</span>
+      </button>
+    `).join("");
+    
+    card.innerHTML = `
+      <h3 class="look-title">${look.title}</h3>
+      <div class="look-colors">${colorsHTML}</div>
+      <p class="look-description">${look.description}</p>
+    `;
+    
+    container.appendChild(card);
+  });
+}
+
+// ============================================
+// COMPARE FUNCTIONALITY
+// ============================================
+function initCompare() {
+  const slot1 = document.getElementById("compareSlot1");
+  const slot2 = document.getElementById("compareSlot2");
+  const clearBtn = document.getElementById("compareClear");
+  
+  // Enable compare mode when on compare tab
+  document.querySelector('[data-chapter="compare"]').addEventListener("click", () => {
+    compareMode = true;
+    showToast("Click any swatch to compare");
+  });
+  
+  clearBtn.addEventListener("click", clearCompare);
+}
+
+function addToCompare(color) {
+  const slot1 = document.getElementById("compareSlot1");
+  const slot2 = document.getElementById("compareSlot2");
+  
+  if (!compareSlots[0]) {
+    compareSlots[0] = color;
+    renderCompareSlot(slot1, color);
+    showToast("First color selected");
+  } else if (!compareSlots[1]) {
+    compareSlots[1] = color;
+    renderCompareSlot(slot2, color);
+    generateVerdict();
+  } else {
+    // Reset and start fresh
+    compareSlots = [color, null];
+    renderCompareSlot(slot1, color);
+    slot2.classList.remove("filled");
+    slot2.innerHTML = '<span class="compare-slot-label">Second</span>';
+    document.getElementById("verdictBox").classList.remove("visible");
+  }
+}
+
+function renderCompareSlot(slot, color) {
+  slot.classList.add("filled");
+  slot.innerHTML = `
+    <div class="compare-slot-color" style="background: ${color.hex}"></div>
+    <span class="compare-slot-info">${color.name}</span>
+  `;
+}
+
+function clearCompare() {
+  compareSlots = [null, null];
+  const slot1 = document.getElementById("compareSlot1");
+  const slot2 = document.getElementById("compareSlot2");
+  
+  slot1.classList.remove("filled");
+  slot2.classList.remove("filled");
+  slot1.innerHTML = '<span class="compare-slot-label">First</span>';
+  slot2.innerHTML = '<span class="compare-slot-label">Second</span>';
+  
+  document.getElementById("verdictBox").classList.remove("visible");
+}
+
+function generateVerdict() {
+  const box = document.getElementById("verdictBox");
+  const text = document.getElementById("verdictText");
+  
+  const c1 = compareSlots[0];
+  const c2 = compareSlots[1];
+  
+  const hsl1 = hexToHSL(c1.hex);
+  const hsl2 = hexToHSL(c2.hex);
+  
+  let verdict = "";
+  
+  // Analyze relationship
+  const hueDiff = Math.abs(hsl1.h - hsl2.h);
+  const satDiff = Math.abs(hsl1.s - hsl2.s);
+  const lightDiff = Math.abs(hsl1.l - hsl2.l);
+  
+  // Determine harmony type
+  if (hueDiff < 30 || hueDiff > 330) {
+    verdict = `These are analogous neighbors — ${c1.name} and ${c2.name} share a color family and create quiet harmony together. `;
+    if (lightDiff > 25) {
+      verdict += `The contrast in value (${lightDiff > 40 ? "dramatic" : "moderate"}) allows them to define each other without competing. Ideal for layering pieces.`;
+    } else {
+      verdict += "Use one as the dominant and add a neutral for separation, or they may blur together.";
+    }
+  } else if (hueDiff > 150 && hueDiff < 210) {
+    verdict = `A complementary pairing — ${c1.name} and ${c2.name} sit opposite on the wheel, creating vibrant tension. `;
+    verdict += "This is a statement combination. Use in a 70/30 ratio for sophistication, or equal parts for bold impact.";
+  } else if ((hueDiff > 60 && hueDiff < 90) || (hueDiff > 270 && hueDiff < 300)) {
+    verdict = `A triadic relationship suggests these colors could share a third partner for maximum impact. `;
+    verdict += `${c1.name} and ${c2.name} together are lively without being jarring. Consider adding a neutral from your palette as buffer.`;
+  } else {
+    verdict = `An unexpected pairing — ${c1.name} and ${c2.name} exist in different color territories. `;
+    if (satDiff < 15) {
+      verdict += "Their similar saturation levels help them coexist. This combination reads as artistic and intentional.";
+    } else {
+      verdict += "The difference in intensity creates visual hierarchy — the more saturated color will dominate.";
+    }
+  }
+  
+  // Add practical advice
+  verdict += "\n\n";
+  if (hsl1.l < 40 && hsl2.l < 40) {
+    verdict += "Both colors are deep — reserve this combination for evening or dramatic moments.";
+  } else if (hsl1.l > 70 && hsl2.l > 70) {
+    verdict += "Both colors are light — excellent for spring/summer or creating an ethereal mood.";
+  } else {
+    verdict += "The light/dark balance here is naturally flattering — one grounds while the other illuminates.";
+  }
+  
+  text.textContent = verdict;
+  box.classList.add("visible");
+}
+
+function hexToHSL(hex) {
+  let r = parseInt(hex.slice(1, 3), 16) / 255;
+  let g = parseInt(hex.slice(3, 5), 16) / 255;
+  let b = parseInt(hex.slice(5, 7), 16) / 255;
+  
+  let max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s, l = (max + min) / 2;
+  
+  if (max === min) {
+    h = s = 0;
+  } else {
+    let d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+      case g: h = ((b - r) / d + 2) / 6; break;
+      case b: h = ((r - g) / d + 4) / 6; break;
+    }
+  }
+  
+  return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+}
+
+// ============================================
+// COLOR ORACLE
+// ============================================
+function initOracle() {
+  const btn = document.getElementById("oracleBtn");
+  btn.addEventListener("click", divineColor);
+}
+
+function divineColor() {
+  const swatch = document.getElementById("oracleSwatch");
+  const namEl = document.getElementById("oracleName");
+  const hexEl = document.getElementById("oracleHex");
+  const msgEl = document.getElementById("oracleMessage");
+  
+  const color = allColors[Math.floor(Math.random() * allColors.length)];
+  const message = oracleMessages[Math.floor(Math.random() * oracleMessages.length)];
+  
+  swatch.style.background = color.hex;
+  swatch.style.animation = "pulse 1s ease-out";
+  setTimeout(() => swatch.style.animation = "", 1000);
+  
+  namEl.textContent = color.name;
+  hexEl.textContent = color.hex;
+  msgEl.textContent = message;
+}
+
+// ============================================
+// LIGHTING SIMULATOR
+// ============================================
+function initLighting() {
+  const preview = document.getElementById("lightingPreview");
+  const buttons = document.querySelectorAll(".lighting-btn");
+  const note = document.getElementById("lightingNote");
+  
+  // Get 5 key colors for preview
+  const previewColors = [
+    allColors[2],  // Moss
+    allColors[10], // Gold
+    allColors[17], // Rose
+    allColors[23], // Burgundy
+    allColors[30]  // Teal
+  ];
+  
+  previewColors.forEach(color => {
+    const swatch = document.createElement("div");
+    swatch.className = "lighting-swatch";
+    swatch.style.background = color.hex;
+    swatch.dataset.originalColor = color.hex;
+    preview.appendChild(swatch);
+  });
+  
+  const lightingModes = {
+    daylight: { filter: "none", note: "Your true colors under natural daylight" },
+    golden: { filter: "sepia(15%) saturate(120%) brightness(105%)", note: "How your colors glow at golden hour — warmer, more saturated" },
+    tungsten: { filter: "sepia(25%) saturate(90%) brightness(95%)", note: "Under warm incandescent bulbs — yellower, cozier" },
+    fluorescent: { filter: "saturate(85%) brightness(105%) hue-rotate(-5deg)", note: "Office lighting tends to wash out — choose richer versions" },
+    candlelight: { filter: "sepia(35%) saturate(110%) brightness(85%)", note: "Candlelit evenings favor your deeper, warmer shades" },
+    overcast: { filter: "saturate(90%) brightness(98%)", note: "Cloudy days soften everything — your muted colors shine" }
+  };
+  
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      buttons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      
+      const mode = btn.dataset.mode;
+      const settings = lightingModes[mode];
+      
+      preview.querySelectorAll(".lighting-swatch").forEach(swatch => {
+        swatch.style.filter = settings.filter;
+      });
+      
+      note.textContent = settings.note;
+    });
+  });
+}
+
+// ============================================
+// WARDROBE AUDIT
+// ============================================
+function initAudit() {
+  const input = document.getElementById("auditInput");
+  const result = document.getElementById("auditResult");
+  
+  input.addEventListener("input", () => {
+    analyzeColor(input.value);
+    result.classList.add("visible");
+  });
+  
+  // Initial analysis
+  analyzeColor(input.value);
+  result.classList.add("visible");
+}
+
+function analyzeColor(hex) {
+  const verdict = document.getElementById("auditVerdict");
+  const scoreFill = document.getElementById("auditScoreFill");
+  const scoreLabel = document.getElementById("auditScoreLabel");
+  const explanation = document.getElementById("auditExplanation");
+  const closestSwatch = document.getElementById("auditClosestSwatch");
+  
+  // Find closest palette color
+  let closest = null;
+  let minDistance = Infinity;
+  
+  allColors.forEach(color => {
+    const dist = colorDistance(hex, color.hex);
+    if (dist < minDistance) {
+      minDistance = dist;
+      closest = color;
+    }
+  });
+  
+  // Score: 0-100 based on distance (lower distance = higher score)
+  // Typical palette colors have distance ~0-50 from each other
+  const score = Math.max(0, Math.min(100, Math.round(100 - (minDistance / 1.5))));
+  
+  scoreFill.style.width = score + "%";
+  scoreLabel.textContent = score + "%";
+  closestSwatch.style.background = closest.hex;
+  
+  // Generate verdict
+  if (score >= 80) {
+    verdict.textContent = "A Perfect Match";
+    explanation.textContent = `This color is deeply harmonious with your palette. It echoes ${closest.name} and will integrate seamlessly with your existing pieces.`;
+  } else if (score >= 60) {
+    verdict.textContent = "A Close Cousin";
+    explanation.textContent = `This works well within your color world. It sits near ${closest.name} and can be worn confidently, especially as an accent.`;
+  } else if (score >= 40) {
+    verdict.textContent = "Proceed with Intention";
+    explanation.textContent = `This color exists at the edge of your palette. It might work in small doses or as a deliberate contrast, but test it against your face first.`;
+  } else {
+    verdict.textContent = "Outside Your Territory";
+    explanation.textContent = `This color may compete with your natural coloring rather than enhancing it. Consider whether the garment can be worn away from your face (as a skirt, pants, or bag).`;
+  }
+}
+
+function colorDistance(hex1, hex2) {
+  const rgb1 = hexToRGB(hex1);
+  const rgb2 = hexToRGB(hex2);
+  
+  // Weighted Euclidean distance (human eyes more sensitive to green)
+  const rDiff = rgb1.r - rgb2.r;
+  const gDiff = rgb1.g - rgb2.g;
+  const bDiff = rgb1.b - rgb2.b;
+  
+  return Math.sqrt(2 * rDiff * rDiff + 4 * gDiff * gDiff + 3 * bDiff * bDiff);
+}
+
+function hexToRGB(hex) {
+  return {
+    r: parseInt(hex.slice(1, 3), 16),
+    g: parseInt(hex.slice(3, 5), 16),
+    b: parseInt(hex.slice(5, 7), 16)
+  };
+}
+
+// ============================================
+// SEASONAL CLOCK
+// ============================================
+function initClock() {
+  const clockPalette = document.getElementById("clockPalette");
+  
+  // Create 5 color slots
+  for (let i = 0; i < 5; i++) {
+    const slot = document.createElement("div");
+    slot.className = "clock-color";
+    clockPalette.appendChild(slot);
+  }
+  
+  updateClock();
+  setInterval(updateClock, 60000); // Update every minute
+}
+
+function updateClock() {
+  const now = new Date();
+  const hours = now.getHours();
+  const mins = now.getMinutes();
+  
+  document.getElementById("clockTime").textContent = 
+    `${hours.toString().padStart(2, "0")}:${mins.toString().padStart(2, "0")}`;
+  
+  // Determine time-of-day palette
+  let seasonLabel, seasonNote, paletteIndices;
+  
+  if (hours >= 5 && hours < 9) {
+    seasonLabel = "Morning Light";
+    seasonNote = "Soft, awakening colors for the fresh hours — your lighter neutrals and gentle roses.";
+    paletteIndices = [32, 33, 17, 4, 34]; // Warm Ivory, Oat Milk, Dusty Rose, Sage, Stone
+  } else if (hours >= 9 && hours < 12) {
+    seasonLabel = "Mid-Morning";
+    seasonNote = "The world is bright and clear — wear your true greens and confident golds.";
+    paletteIndices = [2, 3, 10, 11, 30]; // Mosses and golds
+  } else if (hours >= 12 && hours < 15) {
+    seasonLabel = "High Noon";
+    seasonNote = "Full light demands full color — your statement jewels and rich depths shine now.";
+    paletteIndices = [38, 39, 40, 22, 23]; // Statement colors
+  } else if (hours >= 15 && hours < 18) {
+    seasonLabel = "Golden Hour";
+    seasonNote = "Your amber golds and dusty roses catch the descending light most beautifully now.";
+    paletteIndices = [8, 9, 10, 15, 16]; // Ambers and roses
+  } else if (hours >= 18 && hours < 21) {
+    seasonLabel = "Evening";
+    seasonNote = "The depths come forward — burgundies, plums, and rich teals for candlelit hours.";
+    paletteIndices = [20, 21, 22, 28, 29]; // Deep colors
+  } else {
+    seasonLabel = "Night";
+    seasonNote = "The quietest colors for quiet hours — your soft neutrals and gentle shadows.";
+    paletteIndices = [24, 25, 35, 36, 37]; // Browns and neutrals
+  }
+  
+  document.getElementById("clockSeason").textContent = seasonLabel;
+  document.getElementById("clockNote").textContent = seasonNote;
+  
+  const slots = document.querySelectorAll(".clock-color");
+  paletteIndices.forEach((idx, i) => {
+    if (allColors[idx]) {
+      slots[i].style.background = allColors[idx].hex;
+    }
+  });
+}
+
+// ============================================
+// EXPORT FUNCTIONS
+// ============================================
+function initExport() {
+  document.getElementById("exportFullJSON").addEventListener("click", () => {
+    const data = {
+      title: "The Gilded Moss Grimoire",
+      season: "Soft Autumn Deep",
+      sourcePigments: sourcePigments,
+      palette: paletteGroups
+    };
+    displayExport(JSON.stringify(data, null, 2));
+  });
+  
+  document.getElementById("exportFullText").addEventListener("click", () => {
+    let text = "THE GILDED MOSS GRIMOIRE\nSoft Autumn Deep\n\n";
+    text += "SOURCE PIGMENTS\n" + "-".repeat(40) + "\n";
+    sourcePigments.forEach(p => {
+      text += `${p.source}: ${p.name} (${p.hex})\n`;
+    });
+    text += "\nWEARABLE PALETTE\n" + "-".repeat(40) + "\n";
+    Object.entries(paletteGroups).forEach(([group, colors]) => {
+      text += `\n${group.toUpperCase()}\n`;
+      colors.forEach(c => {
+        text += `  ${c.name}: ${c.hex}\n`;
+      });
+    });
+    displayExport(text);
+  });
+  
+  document.getElementById("exportFavJSON").addEventListener("click", () => {
+    const data = {
+      favorites: favorites
+    };
+    displayExport(JSON.stringify(data, null, 2));
+  });
+  
+  document.getElementById("exportFavText").addEventListener("click", () => {
+    let text = "MY FAVORITE COLORS\n" + "-".repeat(40) + "\n\n";
+    if (favorites.length === 0) {
+      text += "No favorites saved yet.\nDouble-click swatches to add favorites.";
+    } else {
+      favorites.forEach(f => {
+        text += `${f.name}: ${f.hex}\n`;
+      });
+    }
+    displayExport(text);
+  });
+}
+
+function displayExport(content) {
+  const output = document.getElementById("exportOutput");
+  output.textContent = content;
+  
+  // Copy to clipboard
+  navigator.clipboard.writeText(content).then(() => {
+    showToast("Copied to clipboard");
+  }).catch(() => {
+    showToast("Displayed below");
+  });
+}
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
