@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Selenite Grimoire</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#1a191f;--bg2:#232228;--bg3:#2a292f;--text:#e8e4df;--text2:#c5c0b8;--text3:#9a958d;--gold:#C4A962;--gold2:#a08945;--gold3:#d4bc7a}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(196,169,98,.4)}50%{box-shadow:0 0 30px 10px rgba(196,169,98,.3)}}
+@keyframes shimmer{0%,100%{opacity:.4}50%{opacity:.8}}
+body{font-family:Palatino,Georgia,serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px}
+.title-page{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 20px;position:relative;background:linear-gradient(180deg,#1f1e24 0%,var(--bg) 50%,#1f1e24 100%)}
+.title-page::before{content:"";position:absolute;top:20px;left:20px;right:20px;bottom:20px;border:1px solid var(--gold2);pointer-events:none}
+.illuminated{font-size:100px;color:var(--gold);margin-bottom:-15px;text-shadow:2px 2px 0 var(--gold2);animation:pulse 4s ease-in-out infinite}
+.title{font-size:24px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:10px;text-align:center}
+.subtitle{font-size:13px;letter-spacing:.5em;text-transform:uppercase;color:var(--gold);margin-bottom:40px}
+.badge{display:inline-block;padding:12px 30px;border:1px solid var(--gold);font-size:12px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:30px}
+.scroll{position:absolute;bottom:40px;font-size:13px;letter-spacing:.3em;color:var(--text3);animation:shimmer 2s infinite}
+.chapter{padding:50px 20px}
+.ch-header{text-align:center;margin-bottom:35px}
+.ch-num{font-size:11px;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;display:block;margin-bottom:8px}
+.ch-title{font-size:21px;font-weight:normal;letter-spacing:.1em}
+.ch-title::after{content:"";display:block;width:60px;height:1px;background:var(--gold);margin:12px auto 0}
+.analysis{max-width:620px;margin:0 auto;text-align:justify;color:var(--text2)}
+.analysis p{margin-bottom:1.5em;text-indent:2em}
+.analysis p:first-of-type{text-indent:0}
+.analysis p:first-of-type::first-letter{float:left;font-size:52px;line-height:1;padding-right:12px;color:var(--gold)}
+.pig-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:550px;margin:0 auto}
+.pig-card{background:var(--bg2);padding:18px;cursor:pointer;border:1px solid var(--bg3);transition:border-color .2s}
+.pig-card:hover{border-color:var(--gold2)}
+.pig-swatch{width:100%;height:55px;margin-bottom:12px;border:1px solid rgba(255,255,255,.1)}
+.pig-name{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--text2);margin-bottom:4px}
+.pig-hex{font-family:monospace;font-size:12px;color:var(--gold3)}
+.pig-desc{font-size:13px;font-style:italic;color:var(--text3);margin-top:8px}
+.pal-section{background:var(--bg2)}
+.pal-group{margin-bottom:45px}
+.grp-name{font-size:13px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:15px}
+.swatches{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;padding:0 10px}
+.swatch{width:48px;height:48px;border:1px solid rgba(255,255,255,.1);cursor:pointer;position:relative;transition:transform .2s}
+.swatch:hover{transform:scale(1.15);z-index:10}
+.swatch.fav::after{content:"★";position:absolute;top:2px;right:4px;color:var(--gold);font-size:14px}
+.swatch.sel{outline:2px solid var(--gold);outline-offset:2px}
+.swatch-name{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);background:var(--bg);color:var(--text);padding:6px 10px;font-size:11px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .2s;border:1px solid var(--gold2);margin-bottom:5px;z-index:100}
+.swatch:hover .swatch-name{opacity:1}
+.pal-intro{text-align:center;font-size:13px;color:var(--text3);margin-bottom:25px;font-style:italic}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--gold);color:var(--bg);padding:12px 24px;font-size:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:1000}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.compare{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);padding:20px;transform:translateY(100%);transition:transform .4s;z-index:100;border-top:1px solid var(--gold2)}
+.compare.on{transform:translateY(0)}
+.cmp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.cmp-title{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.cmp-close{background:none;border:none;font-size:28px;color:var(--text3);cursor:pointer}
+.cmp-swatches{display:flex;gap:20px;justify-content:center;margin-bottom:15px}
+.cmp-sw-wrap{text-align:center}
+.cmp-sw{width:70px;height:70px;border:1px solid rgba(255,255,255,.1)}
+.cmp-hex{font-family:monospace;font-size:11px;color:var(--text3);margin-top:8px}
+.cmp-name{font-size:10px;color:var(--text2);margin-top:4px}
+.cmp-verdict{text-align:center;padding:15px;background:var(--bg3);font-style:italic;font-size:14px;color:var(--text2);border-radius:4px}
+.looks{display:flex;flex-direction:column;gap:30px}
+.look{background:var(--bg2);padding:25px 18px;position:relative;border:1px solid var(--bg3)}
+.look-num{position:absolute;top:15px;left:15px;font-size:10px;letter-spacing:.3em;color:var(--gold2)}
+.look-title{text-align:center;font-size:16px;letter-spacing:.12em;margin-bottom:15px;padding-top:8px}
+.look-pal{display:flex;justify-content:center;gap:4px;margin-bottom:15px}
+.look-sw{width:38px;height:48px;border:1px solid rgba(255,255,255,.1)}
+.look-sw.main{height:58px}
+.look-desc{font-size:14px;text-align:center;font-style:italic;color:var(--text2);max-width:320px;margin:0 auto}
+.look-det{margin-top:15px;font-size:12px;color:var(--text3);text-align:center}
+.look-det span{margin:0 10px}
+.fav-section{min-height:280px}
+.fav-empty{text-align:center;padding:60px 20px;color:var(--text3)}
+.fav-empty-icon{font-size:44px;color:var(--gold);opacity:.3;margin-bottom:15px}
+.fav-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:15px;padding:0 15px}
+.fav-item{text-align:center;cursor:pointer;transition:transform .2s}
+.fav-item:hover{transform:scale(1.05)}
+.fav-sw{width:58px;height:58px;border:1px solid rgba(255,255,255,.1);margin-bottom:8px}
+.fav-name{font-size:10px;color:var(--text2);max-width:70px}
+.fav-hex{font-family:monospace;font-size:9px;color:var(--text3)}
+.exp-btns{display:flex;flex-direction:column;gap:12px;max-width:300px;margin:0 auto}
+.exp-btn{background:none;border:1px solid var(--gold);color:var(--text);padding:14px 25px;font-family:inherit;font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:all .3s}
+.exp-btn:hover{background:var(--gold);color:var(--bg)}
+.light-section{background:linear-gradient(180deg,var(--bg) 0%,#151418 100%)}
+.light-sim{max-width:450px;margin:0 auto}
+.time-label{text-align:center;font-size:14px;letter-spacing:.2em;margin-bottom:12px;color:var(--gold)}
+.time-slider{width:100%;height:6px;-webkit-appearance:none;background:linear-gradient(90deg,#1a1a2e 0%,#f4a261 15%,#e9c46a 25%,#f4f1de 50%,#e9c46a 75%,#e76f51 85%,#1a1a2e 100%);border-radius:3px;outline:none;margin-bottom:25px}
+.time-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--gold);border-radius:50%;cursor:pointer}
+.light-preview{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;padding:18px;background:rgba(0,0,0,.2);border-radius:8px}
+.light-sw{height:60px;border:1px solid rgba(255,255,255,.1);transition:filter .5s}
+.light-desc{text-align:center;margin-top:20px;font-style:italic;font-size:14px;color:var(--text2)}
+.oracle{max-width:400px;margin:0 auto;text-align:center}
+.oracle-q{font-style:italic;margin-bottom:28px;font-size:16px;color:var(--text2)}
+.oracle-btn{background:none;border:1px solid var(--gold);color:var(--gold);padding:16px 40px;font-family:inherit;font-size:12px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-bottom:40px}
+.oracle-btn:hover{background:var(--gold);color:var(--bg)}
+.oracle-result{opacity:0;transform:translateY(15px);transition:all .5s}
+.oracle-result.show{opacity:1;transform:translateY(0)}
+.oracle-name{font-size:24px;letter-spacing:.15em;margin-bottom:12px;color:var(--gold)}
+.oracle-sw{width:100px;height:100px;margin:0 auto 20px;border:1px solid rgba(255,255,255,.1)}
+.oracle-msg{font-style:italic;font-size:15px;line-height:1.8;color:var(--text2)}
+.seasons{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;max-width:400px;margin:0 auto}
+.season{padding:22px 15px;text-align:center;cursor:pointer;border:1px solid var(--bg3);background:var(--bg2);transition:border-color .3s}
+.season:hover,.season.on{border-color:var(--gold)}
+.season-icon{font-size:28px;margin-bottom:10px}
+.season-name{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+.season-colors{display:flex;justify-content:center;gap:4px}
+.season-sw{width:24px;height:30px;border:1px solid rgba(255,255,255,.1)}
+.season-advice{max-width:400px;margin:28px auto 0;text-align:center;font-style:italic;font-size:14px;color:var(--text2);min-height:60px}
+.story{max-width:480px;margin:0 auto;text-align:center}
+.story-prompt{font-style:italic;margin-bottom:28px;color:var(--text2);font-size:15px}
+.story-btn{background:none;border:1px solid var(--gold);color:var(--gold);padding:16px 40px;font-family:inherit;font-size:12px;letter-spacing:.3em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin-bottom:40px}
+.story-btn:hover{background:var(--gold);color:var(--bg)}
+.story-out{opacity:0;transition:opacity .5s}
+.story-out.show{opacity:1}
+.story-colors{display:flex;justify-content:center;gap:8px;margin-bottom:25px}
+.story-sw{width:50px;height:60px;border:1px solid rgba(255,255,255,.1)}
+.story-text{font-size:16px;line-height:1.9;font-style:italic;color:var(--text2)}
+.facechart{max-width:500px;margin:0 auto;text-align:center}
+.facechart-canvas{background:#FDFCFA;border-radius:8px;display:block;margin:0 auto 20px}
+.fc-btn{background:none;border:1px solid var(--gold);color:var(--text);padding:10px 20px;font-family:inherit;font-size:11px;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;transition:all .3s;margin:5px}
+.fc-btn:hover{background:var(--gold);color:var(--bg)}
+.compact-studio{max-width:400px;margin:0 auto;text-align:center;padding-top:20px}
+.compact-container{perspective:1000px;margin:30px auto;height:320px}
+.compact{position:relative;width:260px;height:260px;margin:0 auto;cursor:pointer}
+.compact-lid{position:absolute;top:0;left:0;width:100%;height:50%;background:linear-gradient(135deg,#D4AF37 0%,#C5A028 25%,#E5C158 50%,#C5A028 75%,#D4AF37 100%);border-radius:130px 130px 0 0;transform-origin:bottom center;transition:transform 0.8s cubic-bezier(0.4,0,0.2,1);z-index:10;box-shadow:0 -2px 10px rgba(0,0,0,0.3),inset 0 2px 20px rgba(255,255,255,0.3);backface-visibility:hidden}
+.compact-lid::before{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:0;border:2px solid rgba(255,255,255,0.2);border-radius:126px 126px 0 0;border-bottom:none}
+.compact-lid::after{content:'';position:absolute;bottom:-2px;left:10%;right:10%;height:4px;background:linear-gradient(90deg,transparent,rgba(0,0,0,0.3),transparent)}
+.compact-lid-decor{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.compact-monogram{font-family:Palatino,Georgia,serif;font-size:42px;color:#2A2832;text-shadow:1px 1px 2px rgba(255,255,255,0.5);opacity:0.6}
+.compact-filigree{width:70px;height:2px;background:linear-gradient(90deg,transparent,#2A2832,transparent);margin:6px auto;opacity:0.4}
+.floating-mirror{position:absolute;top:0;left:0;right:0;height:50%;opacity:0;transition:opacity 0.5s 0.3s;pointer-events:none;z-index:4}
+.compact.open .floating-mirror{opacity:1}
+.mirror-inner{position:absolute;top:8%;left:8%;right:8%;bottom:0;background:linear-gradient(160deg,#D0D0D0 0%,#E8E8E8 25%,#F5F5F5 50%,#E8E8E8 75%,#D5D5D5 100%);border-radius:95px 95px 0 0;box-shadow:inset 0 3px 20px rgba(0,0,0,0.08)}
+.mirror-inner::after{content:'';position:absolute;top:10%;left:12%;width:30%;height:45%;background:linear-gradient(135deg,rgba(255,255,255,0.9) 0%,transparent 100%);border-radius:50%;transform:rotate(-15deg)}
+.mirror-frame{position:absolute;top:0;left:0;right:0;bottom:-1px;border-radius:130px 130px 0 0;background:linear-gradient(180deg,#E5C158 0%,#D4AF37 20%,#B8962E 40%,#D4AF37 60%,#E5C158 80%,#D4AF37 100%);padding:6px;padding-bottom:0}
+.mirror-frame-inner{width:100%;height:100%;border-radius:124px 124px 0 0;background:var(--bg);position:relative}
+.mirror-frame::before{content:'';position:absolute;top:3px;left:3px;right:3px;bottom:0;border-radius:127px 127px 0 0;border:1px solid rgba(255,255,255,0.3);border-bottom:none}
+.mirror-frame::after{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:60px;height:12px;background:linear-gradient(90deg,transparent,#E5C158 20%,#FFF8E0 50%,#E5C158 80%,transparent);border-radius:6px;opacity:0.8}
+.mirror-ornament{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none}
+.mirror-ornament::before{content:'❖';position:absolute;top:2px;left:50%;transform:translateX(-50%);color:#D4AF37;font-size:10px}
+.mirror-scrollwork{position:absolute;top:20px;width:40px;height:20px;border:2px solid #D4AF37;border-radius:50%;opacity:0.6}
+.mirror-scrollwork.left{left:15px;border-right:none;transform:rotate(-20deg)}
+.mirror-scrollwork.right{right:15px;border-left:none;transform:rotate(20deg)}
+.compact.open .compact-lid{transform:rotateX(-130deg) translateY(-5px)}
+.compact-base{position:absolute;top:50%;left:0;width:100%;height:50%;background:linear-gradient(180deg,#252525 0%,#1a1a1a 50%,#151515 100%);border-radius:0 0 130px 130px;box-shadow:inset 0 5px 15px rgba(0,0,0,0.5),0 4px 15px rgba(0,0,0,0.4);z-index:5}
+.compact-base::before{content:'';position:absolute;top:0;left:4px;right:4px;bottom:4px;border:1px solid rgba(212,175,55,0.3);border-radius:0 0 126px 126px;border-top:none}
+.compact-mirror{display:none}
+.compact-wells{position:absolute;top:5px;left:0;right:0;bottom:10px;display:flex;flex-direction:row;justify-content:center;align-items:center;gap:15px;opacity:0;transition:opacity 0.4s 0.5s}
+.compact.open .compact-wells{opacity:1}
+.wells-left{display:flex;flex-direction:column;align-items:center}
+.wells-right{display:flex;flex-direction:column;gap:5px;align-items:center}
+.well-section{text-align:center}
+.well-label{font-size:6px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:2px;opacity:0.8}
+.well-row{display:flex;justify-content:center;gap:5px}
+.well-item{display:flex;flex-direction:column;align-items:center}
+.well{width:26px;height:26px;border-radius:50%;border:2px solid rgba(212,175,55,0.4);box-shadow:inset 0 2px 4px rgba(0,0,0,0.3),0 1px 2px rgba(255,255,255,0.1);transition:transform 0.3s,box-shadow 0.3s}
+.well:hover{transform:scale(1.1);box-shadow:inset 0 2px 4px rgba(0,0,0,0.3),0 0 10px rgba(212,175,55,0.4)}
+.well.lip-well{width:20px;height:40px;border-radius:10px}
+.well-color-name{font-size:5px;color:var(--text3);margin-top:1px;text-align:center;max-width:35px;line-height:1.1}
+.compact-look-name{font-size:18px;letter-spacing:.15em;color:var(--gold);margin-top:20px;opacity:0;transition:opacity 0.4s 0.6s}
+.compact-look-desc{font-size:13px;font-style:italic;color:var(--text2);margin-top:8px;opacity:0;transition:opacity 0.4s 0.7s}
+.compact.open~.compact-look-name,.compact.open~.compact-look-desc{opacity:1}
+.style-guide{max-width:600px;margin:0 auto}
+.style-section{margin-bottom:40px}
+.style-title{font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:18px}
+.style-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:12px}
+.style-item{text-align:center;width:80px;position:relative}
+.style-swatch{width:55px;height:55px;border-radius:50%;margin:0 auto 8px;border:2px solid rgba(255,255,255,.15);position:relative;overflow:hidden}
+.style-swatch.rec{border-color:var(--gold);border-width:3px}
+.style-swatch.avoid{opacity:0.55;border-color:#A86060}
+.style-swatch.avoid::after{content:'✗';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;color:#fff;font-weight:bold;text-shadow:0 0 8px rgba(0,0,0,0.9)}
+.style-label{font-size:10px;color:var(--text2)}
+.style-item.avoid-item .style-label{color:#A86060;opacity:0.7}
+.style-note{font-size:13px;font-style:italic;color:var(--text3);text-align:center;max-width:450px;margin:0 auto}
+.pattern-list{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.pattern-item{background:var(--bg2);padding:15px;border:1px solid var(--bg3)}
+.pattern-name{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold3);margin-bottom:6px}
+.pattern-desc{font-size:13px;color:var(--text2);line-height:1.5}
+.pattern-item.yes{border-left:3px solid #5A9A82}
+.pattern-item.yes .pattern-name::before{content:'✓ ';color:#5A9A82}
+.pattern-item.no{border-left:3px solid #A86060;opacity:.7}
+.pattern-item.no .pattern-name::before{content:'✗ ';color:#A86060}
+.diary{max-width:500px;margin:0 auto}
+.diary-new{background:var(--bg2);padding:25px;margin-bottom:25px;border:1px solid var(--bg3)}
+.diary-new-title{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:15px;text-align:center}
+.diary-picker-label{font-size:11px;color:var(--text3);margin-bottom:10px;text-align:center}
+.diary-picker-swatches{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:150px;overflow-y:auto;padding:10px;background:var(--bg);border-radius:4px}
+.diary-picker-sw{width:32px;height:32px;cursor:pointer;border:2px solid transparent}
+.diary-picker-sw:hover{transform:scale(1.1)}
+.diary-picker-sw.picked{border-color:var(--gold)}
+.diary-selected{display:flex;gap:8px;justify-content:center;margin:15px 0;min-height:45px;align-items:center}
+.diary-selected-sw{width:40px;height:40px;border:1px solid rgba(255,255,255,.2);cursor:pointer}
+.diary-selected-empty{color:var(--text3);font-style:italic;font-size:13px}
+.diary-text-input{width:100%;background:var(--bg);border:1px solid var(--bg3);color:var(--text);font-family:inherit;font-size:14px;padding:15px;min-height:80px;resize:vertical;margin-bottom:15px}
+.diary-text-input:focus{outline:none;border-color:var(--gold2)}
+.diary-save-btn{width:100%;background:var(--gold);border:none;color:var(--bg);padding:14px;font-family:inherit;font-size:12px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.diary-entries{margin-top:30px}
+.diary-entry{background:var(--bg2);padding:20px;margin-bottom:15px;border:1px solid var(--bg3)}
+.diary-entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.diary-entry-date{font-size:11px;letter-spacing:.15em;color:var(--gold2)}
+.diary-entry-delete{background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:5px 10px;transition:color 0.2s;position:relative;z-index:5}
+.diary-entry-delete:hover{color:#A86060}
+.diary-entry-colors{display:flex;gap:6px;margin-bottom:12px}
+.diary-entry-sw{width:35px;height:35px;border:1px solid rgba(255,255,255,.1)}
+.diary-entry-text{font-size:14px;font-style:italic;color:var(--text2)}
+.diary-export-btn{width:100%;background:none;border:1px solid var(--gold2);color:var(--text2);padding:12px;font-family:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;margin-top:20px}
+.picker{max-width:450px;margin:0 auto}
+.picker-upload{border:2px dashed var(--gold2);padding:40px 20px;text-align:center;cursor:pointer;margin-bottom:25px;background:var(--bg2);transition:all .3s}
+.picker-upload:hover{border-color:var(--gold);background:var(--bg3)}
+.picker-upload-icon{font-size:36px;color:var(--gold);margin-bottom:12px}
+.picker-upload-text{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--text2)}
+.picker-input{display:none}
+.picker-canvas-wrap{position:relative;display:none;margin-bottom:18px}
+.picker-canvas-wrap.on{display:block}
+.picker-canvas{max-width:100%;cursor:crosshair;display:block;margin:0 auto;border:1px solid var(--bg3)}
+.picker-cross{position:absolute;width:30px;height:30px;border:2px solid #fff;border-radius:50%;pointer-events:none;transform:translate(-50%,-50%);display:none;box-shadow:0 0 10px rgba(0,0,0,.5)}
+.picker-result{display:none;background:var(--bg2);padding:22px;text-align:center;border:1px solid var(--bg3)}
+.picker-result.on{display:block}
+.picker-res-sw{width:80px;height:80px;margin:0 auto 15px;border:1px solid rgba(255,255,255,.1)}
+.picker-res-hex{font-family:monospace;font-size:20px;margin-bottom:12px;color:var(--gold)}
+.picker-copy{background:none;border:1px solid var(--gold);color:var(--text);padding:10px 24px;font-family:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer}
+.picker-match{margin-top:20px;padding-top:20px;border-top:1px solid var(--bg3)}
+.picker-match-label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:10px}
+.picker-match-sw{width:60px;height:60px;margin:0 auto 10px;border:1px solid rgba(255,255,255,.1)}
+.picker-match-name{font-size:13px;color:var(--text2)}
+.picker-verdict{margin-top:15px;padding:12px 15px;background:var(--bg);border-radius:6px;font-size:14px;line-height:1.6}
+.picker-verdict.yes{border-left:3px solid #5A9A82;color:#98C5B2}
+.picker-verdict.close{border-left:3px solid var(--gold);color:var(--gold3)}
+.picker-verdict.no{border-left:3px solid #A86060;color:#C89090}
+.hex-lookup{margin-top:30px;padding-top:25px;border-top:1px solid var(--bg3)}
+.hex-lookup-label{font-size:11px;color:var(--text3);text-align:center;margin-bottom:12px}
+.hex-lookup-input-wrap{display:flex;align-items:center;justify-content:center;gap:8px}
+.hex-lookup-hash{font-size:16px;color:var(--gold);font-family:monospace}
+.hex-lookup-input{width:100px;padding:10px 12px;background:var(--bg);border:1px solid var(--bg3);color:var(--text);font-family:monospace;font-size:14px;text-transform:uppercase;letter-spacing:0.1em}
+.hex-lookup-input:focus{outline:none;border-color:var(--gold)}
+.hex-lookup-btn{padding:10px 18px;background:var(--gold);border:none;color:var(--bg);font-family:inherit;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.3s}
+.hex-lookup-btn:hover{background:var(--gold2)}
+.hex-lookup-result{display:none;margin-top:20px;padding:20px;background:var(--bg2);border:1px solid var(--bg3)}
+.hex-lookup-result.on{display:flex;gap:20px;align-items:center}
+.hex-lookup-swatch{width:70px;height:70px;border:2px solid rgba(255,255,255,0.1);flex-shrink:0}
+.hex-lookup-info{flex:1}
+.hex-lookup-match-label{font-size:10px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px}
+.hex-lookup-match-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.hex-lookup-match-sw{width:24px;height:24px;border:1px solid rgba(255,255,255,0.1)}
+.hex-lookup-verdict{font-size:12px;font-style:italic}
+.hex-lookup-verdict.yes{color:#5A9A82}
+.hex-lookup-verdict.no{color:#A86060}
+.hex-lookup-verdict.maybe{color:var(--gold)}
+.footer{text-align:center;padding:60px 20px;background:#0f0e12}
+.footer-text{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3)}
+.nav{position:fixed;right:12px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:50}
+.nav-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);opacity:.25;cursor:pointer;transition:all .3s;border:none}
+.nav-dot:hover,.nav-dot.on{opacity:1;transform:scale(1.4)}
+@media(max-width:420px){.illuminated{font-size:70px}.title{font-size:20px}.pig-grid{grid-template-columns:1fr}.swatch{width:42px;height:42px}}
+</style>
+</head>
+<body>
+<div class="grimoire">
+<section class="title-page" id="title">
+<div class="illuminated">S</div>
+<h1 class="title">The Selenite Grimoire</h1>
+<p class="subtitle">A Personal Chromatic Archive</p>
+<div class="badge">Soft Summer with Extended Range</div>
+<p class="scroll">Scroll to Begin</p>
+</section>
+<section class="chapter" id="analysis">
+<div class="ch-header"><span class="ch-num">Chapter I</span><h2 class="ch-title">The Reading of Light</h2></div>
+<div class="analysis">
+<p>Yours is the coloring of moonlight through sea glass, of moth wings at dusk, of the silver-green patina that forms on forgotten brass. You exist in the space where categories blur—Soft Summer at your core, but with bridges into territory that "shouldn't" work for you.</p>
+<p>Your eyes are the key to everything: grey-green waters with that distinctive amber starburst radiating from the pupil. This central warmth is your cheat code. It's why gold works on you when it "shouldn't." It's why a pinky-coral that would wash out a textbook Summer actually flatters you. That amber creates a bridge, pulling selective warm tones into harmony with your cool foundation.</p>
+<p>Your skin confirms the cool foundation: ivory over cream, blue-purple veins, burn-then-tan. You're not secretly warm. But you're not rigidly cool either. You have range that the standard seasonal system doesn't fully capture.</p>
+<p>This is Soft Summer with extended range. The muted, cool-dominant palette is your home base—dusty roses, sage greens, soft teals, muted purples. But you get to raid the neighbors: pinky-corals, warm golds, certain peachy-pinks that a strict Summer would have to skip. Your palette isn't about following rules—it's about understanding which rules you get to break and why.</p>
+<p>The colors in this grimoire reflect that. Cool and muted at the core, with strategic warmth where your coloring supports it. Not a textbook anything—something more interesting.</p>
+</div>
+</section>
+<section class="chapter" id="pigments">
+<div class="ch-header"><span class="ch-num">Chapter II</span><h2 class="ch-title">The Source Pigments</h2></div>
+<div class="pig-grid" id="pigGrid"></div>
+</section>
+<section class="chapter pal-section" id="palette">
+<div class="ch-header"><span class="ch-num">Chapter III</span><h2 class="ch-title">The Wearable Archive</h2></div>
+<p class="pal-intro">Tap to copy hex code. Double-tap to favorite. Hover for color names.</p>
+<div id="palGroups"></div>
+</section>
+<section class="chapter" id="looks">
+<div class="ch-header"><span class="ch-num">Chapter IV</span><h2 class="ch-title">The Styled Harmonies</h2></div>
+<div class="looks" id="looksBox"></div>
+</section>
+<section class="chapter" id="facechart">
+<div class="ch-header"><span class="ch-num">Chapter V</span><h2 class="ch-title">The Enchanted Compact</h2></div>
+<div class="compact-studio">
+<p class="pal-intro">Click the compact to reveal your makeup look</p>
+<div class="compact-container" id="compactContainer">
+<div class="compact" id="compact">
+<div class="floating-mirror">
+<div class="mirror-frame"></div>
+<div class="mirror-inner"></div>
+<div class="mirror-ornament"></div>
+<div class="mirror-scrollwork left"></div>
+<div class="mirror-scrollwork right"></div>
+</div>
+<div class="compact-lid" id="compactLid">
+<div class="compact-lid-decor">
+<div class="compact-monogram">S</div>
+<div class="compact-filigree"></div>
+</div>
+</div>
+<div class="compact-base">
+<div class="compact-wells">
+<div class="wells-left">
+<div class="well-label">Lips</div>
+<div class="well lip-well" id="wellLip"></div>
+<div class="well-color-name" id="wellLipName"></div>
+</div>
+<div class="wells-right">
+<div class="well-section">
+<div class="well-label">Eyes</div>
+<div class="well-row">
+<div class="well-item"><div class="well" id="wellLid"></div><div class="well-color-name" id="wellLidName"></div></div>
+<div class="well-item"><div class="well" id="wellCrease"></div><div class="well-color-name" id="wellCreaseName"></div></div>
+<div class="well-item"><div class="well" id="wellLiner"></div><div class="well-color-name" id="wellLinerName"></div></div>
+</div>
+</div>
+<div class="well-section">
+<div class="well-label">Face</div>
+<div class="well-row">
+<div class="well-item"><div class="well" id="wellCheek"></div><div class="well-color-name" id="wellCheekName"></div></div>
+<div class="well-item"><div class="well" id="wellHighlight"></div><div class="well-color-name" id="wellHighlightName"></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="compact-look-name" id="fcLookName"></div>
+<div class="compact-look-desc" id="fcLookDesc"></div>
+</div>
+</div>
+</section>
+<section class="chapter" id="style">
+<div class="ch-header"><span class="ch-num">Chapter VI</span><h2 class="ch-title">The Style Compendium</h2></div>
+<div class="style-guide">
+<div class="style-section">
+<h3 class="style-title">Hair Colors</h3>
+<div class="style-grid" id="hairGrid"></div>
+<p class="style-note" id="hairNote"></p>
+</div>
+<div class="style-section">
+<h3 class="style-title">Metals & Jewelry</h3>
+<div class="style-grid" id="metalGrid"></div>
+<p class="style-note" id="metalNote"></p>
+</div>
+<div class="style-section">
+<h3 class="style-title">Glasses Frames</h3>
+<div class="style-grid" id="glassesGrid"></div>
+<p class="style-note" id="glassesNote"></p>
+</div>
+<div class="style-section">
+<h3 class="style-title">Nail Colors</h3>
+<div class="style-grid" id="nailGrid"></div>
+<p class="style-note" id="nailNote"></p>
+</div>
+<div class="style-section">
+<h3 class="style-title">Patterns & Prints</h3>
+<div class="pattern-list" id="patternList"></div>
+</div>
+</div>
+</section>
+<section class="chapter light-section" id="lighting">
+<div class="ch-header"><span class="ch-num">Chapter VII</span><h2 class="ch-title">The Hours of Light</h2></div>
+<div class="light-sim">
+<div class="time-label" id="timeLabel">Golden Hour</div>
+<input type="range" class="time-slider" id="timeSlider" min="0" max="100" value="75">
+<div class="light-preview" id="lightPrev"></div>
+<p class="light-desc" id="lightDesc"></p>
+</div>
+</section>
+<section class="chapter" id="oracle">
+<div class="ch-header"><span class="ch-num">Chapter VIII</span><h2 class="ch-title">The Chromatic Oracle</h2></div>
+<div class="oracle">
+<p class="oracle-q">What color does your spirit need today?</p>
+<button class="oracle-btn" id="oracleBtn">Consult the Oracle</button>
+<div class="oracle-result" id="oracleRes"><div class="oracle-name" id="oracleName"></div><div class="oracle-sw" id="oracleSw"></div><p class="oracle-msg" id="oracleMsg"></p></div>
+</div>
+</section>
+<section class="chapter" id="seasons">
+<div class="ch-header"><span class="ch-num">Chapter IX</span><h2 class="ch-title">The Seasonal Shifts</h2></div>
+<div class="seasons" id="seasonsBox"></div>
+<p class="season-advice" id="seasonAdv">Select a season to see how your palette transforms.</p>
+</section>
+<section class="chapter" id="story">
+<div class="ch-header"><span class="ch-num">Chapter X</span><h2 class="ch-title">The Color Story</h2></div>
+<div class="story">
+<p class="story-prompt">Let the colors write their own narrative...</p>
+<button class="story-btn" id="storyBtn">Generate a Story</button>
+<div class="story-out" id="storyOut"><div class="story-colors" id="storyCols"></div><p class="story-text" id="storyText"></p></div>
+</div>
+</section>
+<section class="chapter" id="picker">
+<div class="ch-header"><span class="ch-num">Chapter XI</span><h2 class="ch-title">The Color Diviner</h2></div>
+<div class="picker">
+<div class="picker-upload" id="pickUp"><div class="picker-upload-icon">+</div><p class="picker-upload-text">Upload image to extract colors</p></div>
+<input type="file" class="picker-input" id="pickIn" accept="image/*">
+<div class="picker-canvas-wrap" id="pickWrap"><canvas class="picker-canvas" id="pickCanvas"></canvas><div class="picker-cross" id="pickCross"></div></div>
+<div class="picker-result" id="pickRes"><div class="picker-res-sw" id="pickResSw"></div><div class="picker-res-hex" id="pickResHex"></div><button class="picker-copy" id="pickCopy">Copy Hex</button><div class="picker-match"><p class="picker-match-label">Nearest Palette Match</p><div class="picker-match-sw" id="pickMatchSw"></div><p class="picker-match-name" id="pickMatchName"></p><div class="picker-verdict" id="pickVerdict"></div></div></div>
+<div class="hex-lookup">
+<p class="hex-lookup-label">Or enter a hex code directly:</p>
+<div class="hex-lookup-input-wrap">
+<span class="hex-lookup-hash">#</span>
+<input type="text" class="hex-lookup-input" id="hexLookupInput" placeholder="681830" maxlength="6">
+<button class="hex-lookup-btn" id="hexLookupBtn">Look Up</button>
+</div>
+<div class="hex-lookup-result" id="hexLookupRes">
+<div class="hex-lookup-swatch" id="hexLookupSw"></div>
+<div class="hex-lookup-info">
+<div class="hex-lookup-match-label">Nearest Palette Match:</div>
+<div class="hex-lookup-match-row"><div class="hex-lookup-match-sw" id="hexLookupMatchSw"></div><span id="hexLookupMatchName"></span></div>
+<div class="hex-lookup-verdict" id="hexLookupVerdict"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="chapter" id="diary">
+<div class="ch-header"><span class="ch-num">Chapter XII</span><h2 class="ch-title">The Chromatic Diary</h2></div>
+<div class="diary" id="diaryBox"></div>
+</section>
+<section class="chapter fav-section" id="favorites">
+<div class="ch-header"><span class="ch-num">Chapter XIII</span><h2 class="ch-title">The Treasured Hues</h2></div>
+<div id="favBox"></div>
+</section>
+<section class="chapter" id="export">
+<div class="ch-header"><span class="ch-num">Chapter XIV</span><h2 class="ch-title">Export</h2></div>
+<div class="exp-btns">
+<button class="exp-btn" id="expJSON">Export Palette (JSON)</button>
+<button class="exp-btn" id="expText">Export Palette (Text)</button>
+<button class="exp-btn" id="expFavJSON">Export Favorites (JSON)</button>
+<button class="exp-btn" id="expFavText">Export Favorites (Text)</button>
+</div>
+</section>
+<footer class="footer"><p class="footer-text">The Selenite Grimoire</p></footer>
+</div>
+<div class="compare" id="compare">
+<div class="cmp-header"><span class="cmp-title">Compare</span><button class="cmp-close" id="cmpClose">×</button></div>
+<div class="cmp-swatches"><div class="cmp-sw-wrap"><div class="cmp-sw" id="cmpSw1"></div><div class="cmp-hex" id="cmpHex1">-</div><div class="cmp-name" id="cmpName1"></div></div><div class="cmp-sw-wrap"><div class="cmp-sw" id="cmpSw2"></div><div class="cmp-hex" id="cmpHex2">-</div><div class="cmp-name" id="cmpName2"></div></div></div>
+<div class="cmp-verdict" id="cmpVerdict"></div>
+</div>
+<div class="toast" id="toast"></div>
+<nav class="nav" id="nav"></nav>
+<script>
+const pigs=[
+{name:"Skin - Porcelain",hex:"#E8DED4",desc:"Cool ivory with pink-blue translucence"},
+{name:"Flush - Rose Quartz",hex:"#D4A5A5",desc:"Delicate warmth rising to cheeks"},
+{name:"Shadow - Soft Violet",hex:"#B8A5B8",desc:"Undereye whispers of lavender"},
+{name:"Eye - Sage Waters",hex:"#8A9A7B",desc:"Grey-green depths of still ponds"},
+{name:"Eye - Amber Starburst",hex:"#9A8B5C",desc:"Warm spark at the center"},
+{name:"Hair - Pewter Ash",hex:"#8B8478",desc:"Silver-touched strands"},
+{name:"Hair - Root Shadow",hex:"#6B635B",desc:"Deeper tones at crown"},
+{name:"Lip - Dusty Mauve",hex:"#A67B7B",desc:"Cool rose undertone"},
+{name:"Vein - Blue Violet",hex:"#7B8BA2",desc:"Cool rivers beneath skin"},
+{name:"Brow - Taupe Smoke",hex:"#7A7068",desc:"Ashy neutral framing"}
+];
+
+const groups={
+"Whisper Whites":[{hex:"#FFFFFF",name:"Pure Snow"},{hex:"#FAF8F5",name:"Bridal Veil"},{hex:"#F5F2EE",name:"Soft Cloud"},{hex:"#EFE9E3",name:"Pearl Dust"},{hex:"#E8E2DC",name:"Vintage Lace"},{hex:"#E0D8D0",name:"Eggshell"}],
+"Soft Greys":[{hex:"#E8E4E1",name:"Morning Mist"},{hex:"#DDD8D4",name:"Whisper Grey"},{hex:"#D0CBC7",name:"Dove Wing"},{hex:"#C2BDB8",name:"Silver Birch"},{hex:"#B5B0AB",name:"Pewter Silk"},{hex:"#A5A09B",name:"Greige"},{hex:"#95908B",name:"Stone"},{hex:"#85807B",name:"Smoky Quartz"},{hex:"#75706B",name:"Charcoal Taupe"}],
+"Blues - Soft":[{hex:"#E4EBF2",name:"Winter Sky"},{hex:"#D0DBE5",name:"Glacier"},{hex:"#BCCAD8",name:"Cloud Shadow"},{hex:"#A5B8C8",name:"Forgotten Letter"},{hex:"#90A5B8",name:"Rain Washed"},{hex:"#7B92A5",name:"Storm Approaching"},{hex:"#687F92",name:"Slate Sea"},{hex:"#556C7F",name:"Twilight Sea"},{hex:"#455A6C",name:"Deep Current"}],
+"Blues - Clear":[{hex:"#D5E5F0",name:"Ice Pool"},{hex:"#B8D2E5",name:"Powder Blue"},{hex:"#98BDD8",name:"Sky Blue"},{hex:"#78A8C8",name:"Periwinkle Blue"},{hex:"#5A92B8",name:"Cornflower"},{hex:"#4580A8",name:"Delft"},{hex:"#356E95",name:"Sapphire"},{hex:"#285C82",name:"Ocean"},{hex:"#1C4A6E",name:"Deep Sapphire"}],
+"Blue-Violets":[{hex:"#D8DCF0",name:"Twilight Haze"},{hex:"#C5C8E8",name:"Periwinkle Mist"},{hex:"#B0B5E0",name:"Soft Periwinkle"},{hex:"#9AA0D5",name:"Periwinkle"},{hex:"#858BC8",name:"Violet Blue"},{hex:"#7078B8",name:"Iris Blue"},{hex:"#5C65A8",name:"Bluebell"},{hex:"#485298",name:"Evening Iris"},{hex:"#384088",name:"Deep Periwinkle"}],
+"Teals":[{hex:"#D8EBEB",name:"Seafoam"},{hex:"#B8D5D8",name:"Aqua Mist"},{hex:"#98C0C5",name:"Sea Glass"},{hex:"#78AAB0",name:"Verdigris"},{hex:"#5A959A",name:"Soft Teal"},{hex:"#458085",name:"Teal"},{hex:"#356B70",name:"Deep Teal"},{hex:"#28585C",name:"Peacock"},{hex:"#1C4548",name:"Dark Peacock"}],
+"Greens - Soft":[{hex:"#E5EBE5",name:"Morning Dew"},{hex:"#D2DCD2",name:"Eucalyptus"},{hex:"#BFCDBF",name:"Soft Sage"},{hex:"#AABBAA",name:"Garden Lichen"},{hex:"#95A895",name:"Sage"},{hex:"#829582",name:"Herb Garden"},{hex:"#6F826F",name:"Forest Moss"},{hex:"#5C6F5C",name:"Fern Shadow"},{hex:"#4A5C4A",name:"Deep Fern"}],
+"Greens - Clear":[{hex:"#D8EBE2",name:"Mint Cream"},{hex:"#B8D8CA",name:"Seafoam Green"},{hex:"#98C5B2",name:"Jade Mist"},{hex:"#78B09A",name:"Soft Jade"},{hex:"#5A9A82",name:"Jade"},{hex:"#45856E",name:"Malachite"},{hex:"#35705A",name:"Emerald"},{hex:"#285C48",name:"Forest Emerald"},{hex:"#1C4838",name:"Deep Emerald"}],
+"Pinks - Soft":[{hex:"#F5EAEA",name:"Blush Whisper"},{hex:"#EBDADA",name:"Ballet Slipper"},{hex:"#E0CACA",name:"Rose Mist"},{hex:"#D4B8B8",name:"Vintage Rose"},{hex:"#C8A5A5",name:"Dusty Rose"},{hex:"#BA9292",name:"Mauve Rose"},{hex:"#AA7F7F",name:"Rose Taupe"},{hex:"#986C6C",name:"Rosewood"},{hex:"#855A5A",name:"Deep Rose"}],
+"Corals - Extended Range":[{hex:"#E8A095",name:"Rose Coral"},{hex:"#DB8A80",name:"Dusty Coral"},{hex:"#D4817A",name:"Soft Coral"},{hex:"#C87872",name:"Muted Coral"},{hex:"#BB6B68",name:"Deep Coral"}],
+"Pinks - Clear":[{hex:"#F5E0E8",name:"Cotton Candy"},{hex:"#EBC8D8",name:"Pink Champagne"},{hex:"#E0B0C5",name:"Rose Pink"},{hex:"#D498B0",name:"Orchid Pink"},{hex:"#C8809A",name:"Rose"},{hex:"#BA6885",name:"Raspberry Rose"},{hex:"#AA5070",name:"Raspberry"},{hex:"#983D5C",name:"Berry"},{hex:"#852A48",name:"Deep Raspberry"}],
+"Berries":[{hex:"#E8D4DC",name:"Pale Berry"},{hex:"#D8B8C5",name:"Soft Mauve"},{hex:"#C89CAC",name:"Mauve"},{hex:"#B88095",name:"Plum Rose"},{hex:"#A8687E",name:"Mulberry"},{hex:"#985068",name:"Wine Rose"},{hex:"#883D55",name:"Boysenberry"},{hex:"#782A42",name:"Wine"},{hex:"#681830",name:"Deep Wine"}],
+"Reds - Cool":[{hex:"#E8C8C8",name:"Soft Coral"},{hex:"#D8ACAC",name:"Rose Petal"},{hex:"#C89090",name:"Cameo"},{hex:"#B87878",name:"Victorian Rose"},{hex:"#A86060",name:"Dusty Red"},{hex:"#984848",name:"Cranberry"},{hex:"#883838",name:"Cherry"},{hex:"#782828",name:"Crimson"},{hex:"#681C1C",name:"Burgundy"},{hex:"#581212",name:"Oxblood"}],
+"Purples - Soft":[{hex:"#EDE8F0",name:"Lilac Haze"},{hex:"#E0D8E8",name:"Wisteria Mist"},{hex:"#D2C8DE",name:"Pale Iris"},{hex:"#C4B8D2",name:"Lavender"},{hex:"#B4A5C4",name:"Thistle"},{hex:"#A492B5",name:"Dried Lavender"},{hex:"#9480A5",name:"Heather"},{hex:"#846E95",name:"Plum Shadow"},{hex:"#725C82",name:"Deep Amethyst"}],
+"Purples - Clear":[{hex:"#E8DCF0",name:"Orchid Ice"},{hex:"#D8C5E5",name:"Pale Orchid"},{hex:"#C8AED8",name:"Wisteria"},{hex:"#B898CA",name:"Violet"},{hex:"#A882BC",name:"Iris"},{hex:"#986CAD",name:"Amethyst"},{hex:"#88569E",name:"Purple Heart"},{hex:"#78408E",name:"Royal Purple"},{hex:"#682A7E",name:"Deep Violet"}],
+"Neutrals":[{hex:"#F5F0EB",name:"Ivory Page"},{hex:"#EBE5DE",name:"Aged Linen"},{hex:"#E2DAD2",name:"Canvas"},{hex:"#D8D0C5",name:"Pale Sandalwood"},{hex:"#CFC5B8",name:"Warm Sand"},{hex:"#C2B5A5",name:"Dune"},{hex:"#B5A592",name:"Taupe"},{hex:"#A59580",name:"Weathered Stone"},{hex:"#95856E",name:"Driftstone"}],
+"Deep Anchors":[{hex:"#5A5565",name:"Storm Cloud"},{hex:"#4D4858",name:"Charcoal Violet"},{hex:"#423D4C",name:"Evening Shadow"},{hex:"#3A4248",name:"Deep Slate"},{hex:"#32353F",name:"Ink Wash"},{hex:"#2A2832",name:"Midnight Ink"},{hex:"#343832",name:"Forest Night"},{hex:"#3A3232",name:"Cocoa Ash"},{hex:"#282525",name:"Soft Black"}],
+"Metals":[{hex:"#E5E7EA",name:"White Gold"},{hex:"#D5D8DD",name:"Platinum"},{hex:"#C5C8CF",name:"Platinum Frost"},{hex:"#B5B8C0",name:"Sterling"},{hex:"#A5A8B2",name:"Moonlit Silver"},{hex:"#9598A2",name:"Brushed Pewter"},{hex:"#858892",name:"Gunmetal"},{hex:"#D5D0C8",name:"Champagne"},{hex:"#C5BEB5",name:"Antique Silver"}]
+};
+
+// MAKEUP LOOKS - Using saturated jewel tones
+const makeupLooks=[
+{name:"Soft Romance",desc:"Delicate rose-toned lids with dusty rose lip.",lip:{hex:"#C8A5A5",name:"Dusty Rose"},eye:{hex:"#C4B8D2",name:"Lavender"},eyeDeep:{hex:"#846E95",name:"Plum Shadow"},cheek:{hex:"#D4B8B8",name:"Vintage Rose"},highlight:{hex:"#FAF8F5",name:"Bridal Veil"},liner:{hex:"#4D4858",name:"Charcoal Violet"},brow:{hex:"#75706B",name:"Charcoal Taupe"}},
+{name:"Coral Glow",desc:"Warm coral lips and cheeks with soft taupe eyes.",lip:{hex:"#D4817A",name:"Soft Coral"},eye:{hex:"#C8C0B8",name:"Taupe Mist"},eyeDeep:{hex:"#8A7F75",name:"Warm Taupe"},cheek:{hex:"#DB8A80",name:"Dusty Coral"},highlight:{hex:"#E8DDD5",name:"Champagne"},liner:{hex:"#5A5248",name:"Soft Brown"},brow:{hex:"#6B635B",name:"Root Shadow"}},
+{name:"Evening Drama",desc:"Smoky amethyst eyes with bold berry lip.",lip:{hex:"#883D55",name:"Boysenberry"},eye:{hex:"#9480A5",name:"Heather"},eyeDeep:{hex:"#725C82",name:"Deep Amethyst"},cheek:{hex:"#C89CAC",name:"Mauve"},highlight:{hex:"#D5D8DD",name:"Platinum"},liner:{hex:"#2A2832",name:"Midnight Ink"},brow:{hex:"#5A5565",name:"Storm Cloud"}},
+{name:"Sapphire Night",desc:"Deep blue-violet eyes with raspberry lip.",lip:{hex:"#AA5070",name:"Raspberry"},eye:{hex:"#9AA0D5",name:"Periwinkle"},eyeDeep:{hex:"#5C65A8",name:"Bluebell"},cheek:{hex:"#D4A5B5",name:"Pink Champagne"},highlight:{hex:"#E8D8E0",name:"Pearl"},liner:{hex:"#384088",name:"Deep Periwinkle"},brow:{hex:"#5A5565",name:"Storm Cloud"}},
+{name:"Emerald Elegance",desc:"Jewel-toned jade eyes with wine lip.",lip:{hex:"#782A42",name:"Wine"},eye:{hex:"#78B09A",name:"Soft Jade"},eyeDeep:{hex:"#35705A",name:"Emerald"},cheek:{hex:"#C8A5A5",name:"Dusty Rose"},highlight:{hex:"#E8DDD5",name:"Champagne"},liner:{hex:"#1C4838",name:"Deep Emerald"},brow:{hex:"#75706B",name:"Charcoal Taupe"}},
+{name:"Power Meeting",desc:"Cool slate eyes with confident mulberry lip.",lip:{hex:"#A8687E",name:"Mulberry"},eye:{hex:"#A5B8C8",name:"Forgotten Letter"},eyeDeep:{hex:"#556C7F",name:"Twilight Sea"},cheek:{hex:"#D4A5B5",name:"Soft Rose"},highlight:{hex:"#E0D8D8",name:"Moonstone"},liner:{hex:"#3A4248",name:"Deep Slate"},brow:{hex:"#75706B",name:"Charcoal Taupe"}},
+{name:"Bold Night",desc:"Deep crimson lip with smoky purple eyes.",lip:{hex:"#782828",name:"Crimson"},eye:{hex:"#B4A5C4",name:"Thistle"},eyeDeep:{hex:"#78408E",name:"Royal Purple"},cheek:{hex:"#C89898",name:"Mauve Rose"},highlight:{hex:"#D8D0D5",name:"Lilac Frost"},liner:{hex:"#282525",name:"Soft Black"},brow:{hex:"#4D4858",name:"Charcoal Violet"}},
+{name:"Ocean Muse",desc:"Teal-kissed lids with a rose lip.",lip:{hex:"#C8809A",name:"Rose"},eye:{hex:"#98C0C5",name:"Sea Glass"},eyeDeep:{hex:"#458085",name:"Teal"},cheek:{hex:"#D4A0B0",name:"Rose Pink"},highlight:{hex:"#E5DDD8",name:"Sand Pearl"},liner:{hex:"#28585C",name:"Peacock"},brow:{hex:"#85807B",name:"Smoky Quartz"}},
+{name:"Vintage Siren",desc:"Wine-stained lips with mauve eyes.",lip:{hex:"#782A42",name:"Wine"},eye:{hex:"#D8B8C5",name:"Soft Mauve"},eyeDeep:{hex:"#A8687E",name:"Mulberry"},cheek:{hex:"#C8A0A0",name:"Antique Rose"},highlight:{hex:"#E8E0D8",name:"Ivory Glow"},liner:{hex:"#3A3232",name:"Cocoa Ash"},brow:{hex:"#6B635B",name:"Root Shadow"}}
+];
+
+// CHAPTER IV LOOKS - Using more saturated jewel tones
+const looksData=[
+{title:"The Sapphire Gallery",colors:["#356E95","#E8E4E1","#AA5070","#B5B8C0","#2A2832"],desc:"Sapphire dress, morning mist coat, raspberry lip, silver jewelry, midnight clutch.",det:{lip:"#AA5070",eye:"#5C65A8",cheek:"#EBC8D8"}},
+{title:"The Emerald Evening",colors:["#35705A","#FAF8F5","#782A42","#B5B8C0","#725C82"],desc:"Emerald gown, bridal veil wrap, wine lip, sterling accents, amethyst earrings.",det:{lip:"#782A42",eye:"#35705A",cheek:"#D4B8B8"}},
+{title:"The Coral Sun",colors:["#D4817A","#FAF8F5","#C8A5A5","#CFB53B","#5A5248"],desc:"Soft coral blouse, ivory trousers, dusty rose lip, antique gold hoops, warm taupe bag.",det:{lip:"#C8A5A5",eye:"#8A7F75",cheek:"#DB8A80"}},
+{title:"The Amethyst Hour",colors:["#78408E","#E8E4E1","#C8809A","#D5D8DD","#356E95"],desc:"Royal purple dress, morning mist cardigan, rose lip, platinum jewelry, sapphire bag.",det:{lip:"#C8809A",eye:"#78408E",cheek:"#EBC8D8"}},
+{title:"The Teal Tide",colors:["#458085","#FFFFFF","#AA5070","#28585C","#B5B8C0"],desc:"Teal silk dress, pure snow blouse, raspberry lip, peacock heels, sterling bangles.",det:{lip:"#AA5070",eye:"#458085",cheek:"#E0B0C5"}},
+{title:"The Crimson Soirée",colors:["#782828","#2A2832","#B5B8C0","#E8E4E1","#5C65A8"],desc:"Crimson velvet top, midnight ink trousers, sterling earrings, bluebell clutch.",det:{lip:"#782828",eye:"#5C65A8",cheek:"#D8B8C5"}},
+{title:"The Periwinkle Dream",colors:["#858BC8","#F5F2EE","#883D55","#D5D8DD","#458085"],desc:"Violet blue dress, soft cloud wrap, boysenberry lip, platinum necklace, teal shoes.",det:{lip:"#883D55",eye:"#858BC8",cheek:"#C89CAC"}},
+{title:"The Jade Garden",colors:["#5A9A82","#F5EAEA","#A8687E","#45856E","#B5B8C0"],desc:"Jade midi skirt, blush whisper blouse, mulberry lip, malachite earrings.",det:{lip:"#A8687E",eye:"#5A9A82",cheek:"#EBDADA"}},
+{title:"The Wine & Roses",colors:["#681830","#EBC8D8","#4D4858","#B5B8C0","#356E95"],desc:"Deep wine dress, pink champagne scarf, charcoal violet jacket, sapphire ring.",det:{lip:"#681830",eye:"#4D4858",cheek:"#EBC8D8"}}
+];
+
+// CHAPTER VI - More saturated light preview colors
+const lightColors=["#356E95","#AA5070","#35705A","#78408E","#458085"];
+
+// CHAPTER VII Oracle - with jewel tones
+const oracleData=[
+{color:"#356E95",name:"Sapphire",msg:"Clear depths and quiet confidence. This blue asks you to trust your own wisdom."},
+{color:"#35705A",name:"Emerald",msg:"Abundance and growth. This is the color of things thriving. You are one of them."},
+{color:"#78408E",name:"Royal Purple",msg:"The color of intuition. Trust yourself today."},
+{color:"#AA5070",name:"Raspberry",msg:"Fierce, feminine, fearless. The color of women who do not apologize."},
+{color:"#458085",name:"Teal",msg:"The meeting of sea and sky. You exist at intersections; this color honors that."},
+{color:"#782828",name:"Crimson",msg:"Passion distilled. Wear this when you need to remember what you are fighting for."},
+{color:"#5C65A8",name:"Bluebell",msg:"The color of twilight magic. Something wonderful is coming."},
+{color:"#782A42",name:"Wine",msg:"Depth and richness. This color knows the value of slow savoring."},
+{color:"#986CAD",name:"Amethyst",msg:"Ancient wisdom in vivid form. This purple knows things you are beginning to learn."},
+{color:"#A8687E",name:"Mulberry",msg:"Complexity in a single hue. You contain multitudes."},
+{color:"#5A9A82",name:"Jade",msg:"Balance and harmony. This green brings centeredness."},
+{color:"#883D55",name:"Boysenberry",msg:"Bold and unapologetic. Take up space."},
+{color:"#28585C",name:"Peacock",msg:"Mystery and allure. Some things are meant to remain a little secret."},
+{color:"#725C82",name:"Deep Amethyst",msg:"The color of depths and mystery. Today invites introspection."}
+];
+
+// CHAPTER VIII Seasons - with more saturated colors
+const seasonData={
+spring:{icon:"✿",name:"Spring",colors:["#78B09A","#EBC8D8","#858BC8","#C8809A","#F5F2EE"],adv:"Lean into jade, periwinkle, and rose. The world is waking—dress like you mean it."},
+summer:{icon:"☀",name:"Summer",colors:["#356E95","#35705A","#78408E","#AA5070","#458085"],adv:"Your native season. Embrace your full jewel-tone range: sapphire, emerald, amethyst, raspberry, teal."},
+autumn:{icon:"♣",name:"Autumn",colors:["#5C65A8","#5A9A82","#A8687E","#556C7F","#725C82"],adv:"Shift to your deeper tones: bluebell, jade, mulberry, twilight sea, deep amethyst."},
+winter:{icon:"❄",name:"Winter",colors:["#2A2832","#356E95","#782A42","#B5B8C0","#FFFFFF"],adv:"High contrast season. Midnight ink with sapphire, wine with sterling, pure snow accents."}
+};
+
+const stories=["She arrived wearing {0}, matching exactly the patina on the bronze sculptures. Her scarf, a wisp of {1}, caught the light. No one spoke to her, but everyone noticed.","The letter was written on paper the color of {0}. The ink had faded to {1}. She read it by the window, her dress the same {2} as the winter sky.","Three colors: {0} for the morning garden, {1} for the afternoon library, {2} for the evening when everything changed.","The room was painted {0}. The curtains were {1}. She wore {2}. Together, they made a kind of silence.","She chose {0} for the interview, knowing it would make them underestimate her. The {1} earrings were her secret confidence. By evening, wearing {2}, she celebrated."];
+
+let favs=JSON.parse(localStorage.getItem("sel_fav")||"{}");
+let cmpCols=[];
+let diary=JSON.parse(localStorage.getItem("sel_diary")||"[]");
+let diaryPicked=[];
+const allCols=[];
+Object.entries(groups).forEach(([g,cs])=>cs.forEach(c=>allCols.push({...c,group:g})));
+
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2000)}
+function copy(t){navigator.clipboard&&navigator.clipboard.writeText(t)}
+function hexRgb(h){const r=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(h);return r?{r:parseInt(r[1],16),g:parseInt(r[2],16),b:parseInt(r[3],16)}:null}
+function rgbHex(r,g,b){return"#"+[r,g,b].map(x=>{const h=Math.max(0,Math.min(255,Math.round(x))).toString(16);return h.length===1?"0"+h:h}).join("").toUpperCase()}
+function colDist(a,b){const c1=hexRgb(a),c2=hexRgb(b);if(!c1||!c2)return Infinity;return Math.sqrt((c1.r-c2.r)**2+(c1.g-c2.g)**2+(c1.b-c2.b)**2)}
+function nearest(h){let n=allCols[0],d=Infinity;allCols.forEach(c=>{const dist=colDist(h,c.hex);if(dist<d){d=dist;n=c}});return n}
+
+function renderPigs(){document.getElementById("pigGrid").innerHTML=pigs.map(p=>'<div class="pig-card" data-hex="'+p.hex+'"><div class="pig-swatch" style="background:'+p.hex+'"></div><div class="pig-name">'+p.name+'</div><div class="pig-hex">'+p.hex+'</div><div class="pig-desc">'+p.desc+'</div></div>').join("");document.querySelectorAll(".pig-card").forEach(c=>c.onclick=()=>{copy(c.dataset.hex);toast("Copied "+c.dataset.hex)})}
+
+function renderPal(){document.getElementById("palGroups").innerHTML=Object.entries(groups).map(([g,cs])=>'<div class="pal-group"><h3 class="grp-name">'+g+'</h3><div class="swatches">'+cs.map(c=>'<button class="swatch '+(favs[c.hex]?"fav":"")+'" data-hex="'+c.hex+'" data-name="'+c.name+'" style="background:'+c.hex+'"><span class="swatch-name">'+c.name+'</span></button>').join("")+'</div></div>').join("");attachSwatch()}
+
+function attachSwatch(){let last=0;document.querySelectorAll(".swatch").forEach(s=>{s.onclick=function(){const now=Date.now(),h=s.dataset.hex,n=s.dataset.name;if(now-last<300){if(favs[h]){delete favs[h];s.classList.remove("fav");toast("Removed from favorites")}else{favs[h]=n;s.classList.add("fav");toast("Added to favorites")}localStorage.setItem("sel_fav",JSON.stringify(favs));renderFavs()}else{copy(h);toast(n+" · "+h);if(cmpCols.length<2&&!cmpCols.find(x=>x.hex===h)){cmpCols.push({hex:h,name:n});s.classList.add("sel")}else if(cmpCols.length>=2){document.querySelectorAll(".swatch.sel").forEach(x=>x.classList.remove("sel"));cmpCols=[{hex:h,name:n}];s.classList.add("sel")}updateCmp()}last=now}})}
+
+function updateCmp(){const p=document.getElementById("compare");if(cmpCols.length>=1){p.classList.add("on");document.getElementById("cmpSw1").style.background=cmpCols[0].hex;document.getElementById("cmpHex1").textContent=cmpCols[0].hex;document.getElementById("cmpName1").textContent=cmpCols[0].name;if(cmpCols.length===2){document.getElementById("cmpSw2").style.background=cmpCols[1].hex;document.getElementById("cmpHex2").textContent=cmpCols[1].hex;document.getElementById("cmpName2").textContent=cmpCols[1].name;const d=colDist(cmpCols[0].hex,cmpCols[1].hex);document.getElementById("cmpVerdict").textContent=d<50?"Close neighbors—tonal harmony":d<100?"Harmonious pairing":d<150?"Interesting tension":"Bold contrast"}else{document.getElementById("cmpSw2").style.background="#2a292f";document.getElementById("cmpHex2").textContent="-";document.getElementById("cmpName2").textContent="";document.getElementById("cmpVerdict").textContent="Select a second color to compare"}}else p.classList.remove("on")}
+
+function renderLooks(){document.getElementById("looksBox").innerHTML=looksData.map((l,i)=>'<div class="look"><span class="look-num">'+(i+1).toString().padStart(2,"0")+'</span><h3 class="look-title">'+l.title+'</h3><div class="look-pal">'+l.colors.map((c,j)=>'<div class="look-sw '+(j===0?"main":"")+'" style="background:'+c+'"></div>').join("")+'</div><p class="look-desc">'+l.desc+'</p><div class="look-det"><span>Lip: '+l.det.lip+'</span><span>Eye: '+l.det.eye+'</span></div></div>').join("")}
+
+function renderFaceChart(){
+const look=makeupLooks[Math.floor(Math.random()*makeupLooks.length)];
+document.getElementById("fcLookName").textContent=look.name;
+document.getElementById("fcLookDesc").textContent=look.desc;
+document.getElementById("wellLid").style.background=look.eye.hex;
+document.getElementById("wellCrease").style.background=look.eyeDeep.hex;
+document.getElementById("wellLiner").style.background=look.liner.hex;
+document.getElementById("wellCheek").style.background=look.cheek.hex;
+document.getElementById("wellHighlight").style.background=look.highlight.hex;
+document.getElementById("wellLip").style.background=look.lip.hex;
+document.getElementById("wellLidName").textContent=look.eye.name;
+document.getElementById("wellCreaseName").textContent=look.eyeDeep.name;
+document.getElementById("wellLinerName").textContent=look.liner.name;
+document.getElementById("wellCheekName").textContent=look.cheek.name;
+document.getElementById("wellHighlightName").textContent=look.highlight.name;
+document.getElementById("wellLipName").textContent=look.lip.name;
+}
+
+document.getElementById("compact").onclick=function(){
+const compact=document.getElementById("compact");
+if(compact.classList.contains("open")){
+compact.classList.remove("open");
+setTimeout(()=>{
+renderFaceChart();
+setTimeout(()=>compact.classList.add("open"),100);
+},800);
+}else{
+renderFaceChart();
+compact.classList.add("open");
+}
+};
+
+// Style Guide Data - PERSONALIZED FOR LAUREN
+const styleData={
+hair:{
+colors:[
+{hex:"#4A3A35",name:"Your Natural",rec:true},
+{hex:"#5C4A42",name:"Cool Brunette",rec:true},
+{hex:"#6B5B52",name:"Mushroom Brown",rec:true},
+{hex:"#3A3232",name:"Espresso",rec:true},
+{hex:"#4D4858",name:"Charcoal Violet",rec:true},
+{hex:"#D4A574",name:"Golden Blonde",rec:false},
+{hex:"#8B4513",name:"Auburn",rec:false},
+{hex:"#782A42",name:"Burgundy",rec:false}
+],
+note:"Your natural cool brunette is perfect—it's doing the work for you. If you ever want to play, you could go slightly deeper or add cool violet-brown tones. Skip the burgundy and auburn fantasy—they'd fight your undertones instead of harmonizing."
+},
+metals:{
+colors:[
+{hex:"#C0C0C0",name:"Silver",rec:true},
+{hex:"#E5E4E2",name:"Platinum",rec:true},
+{hex:"#D4AF37",name:"Warm Gold",rec:true},
+{hex:"#CFB53B",name:"Antique Gold",rec:true},
+{hex:"#B76E79",name:"Rose Gold",rec:true},
+{hex:"#8A9A9A",name:"Gunmetal",rec:true},
+{hex:"#FFD700",name:"Bright Yellow Gold",rec:false},
+{hex:"#B87333",name:"Copper",rec:false}
+],
+note:"Here's where you break the Summer rules: your amber starburst means you CAN wear gold. Antique gold, warm gold, brushed finishes—they pick up that amber and glow. Silver is still gorgeous on you. Avoid super bright yellow gold and copper, but most golds are fair game."
+},
+glasses:{
+colors:[
+{hex:"#2A2832",name:"Soft Black",rec:true},
+{hex:"#5A5565",name:"Charcoal",rec:true},
+{hex:"#4D4858",name:"Charcoal Violet",rec:true},
+{hex:"#356E95",name:"Sapphire",rec:true},
+{hex:"#28585C",name:"Deep Teal",rec:true},
+{hex:"#C0C0C0",name:"Silver Metal",rec:true},
+{hex:"#D4AF37",name:"Gold Metal",rec:true},
+{hex:"#8B4513",name:"Warm Tortoise",rec:false}
+],
+note:"You wear glasses daily—they're part of your face. Charcoal, soft black, and deep jewel tones frame your eyes beautifully. Gold metal frames work because of your amber starburst. Skip warm tortoise—it's too orange. Cool grey tortoise could work if it's more grey than brown."
+},
+nails:{
+colors:[
+{hex:"#F5F0EB",name:"Sheer Pink",rec:true},
+{hex:"#C8A5A5",name:"Dusty Rose",rec:true},
+{hex:"#D4817A",name:"Soft Coral",rec:true},
+{hex:"#AA5070",name:"Raspberry",rec:true},
+{hex:"#782A42",name:"Wine",rec:true},
+{hex:"#681830",name:"Oxblood",rec:true},
+{hex:"#356E95",name:"Sapphire",rec:true},
+{hex:"#78408E",name:"Amethyst",rec:true},
+{hex:"#2A2832",name:"Nearly Black",rec:true},
+{hex:"#FF7F50",name:"Orange Coral",rec:false},
+{hex:"#FF4500",name:"Orange",rec:false}
+],
+note:"Go bold or go barely-there. Muted pinky-corals work on you (your extended range!) but skip orange-corals. Deep wines and jewel tones are great for stage presence. Dusty rose is your perfect everyday neutral."
+},
+patterns:[
+{name:"Bold Geometrics",desc:"Strong lines, architectural shapes. You're not a shrinking violet—your patterns can have presence.",yes:true},
+{name:"Abstract Art Prints",desc:"Think museum gift shop, not grandma's curtains. Interesting, conversation-starting prints.",yes:true},
+{name:"Celestial & Mystical",desc:"Moons, stars, moths, subtle witchy vibes. Very on-brand for the Selenite Grimoire creator.",yes:true},
+{name:"Classic Stripes",desc:"Navy/white, grey/rose, black/cream. Crisp and intellectual. Good for professional settings.",yes:true},
+{name:"Jewel-Tone Color Blocking",desc:"Sapphire and amethyst together. Emerald and wine. Bold color combinations in solid blocks.",yes:true},
+{name:"Paisley",desc:"Too boho-grandma for your aesthetic. You're a rogue fem genius, not a vintage shop owner.",yes:false},
+{name:"Toile",desc:"Absolutely not. This is for people who describe themselves as 'classic' and mean it as a compliment.",yes:false},
+{name:"Cutesy Florals",desc:"Small ditsy prints read too sweet. If you do florals, make them dark, moody, or oversized.",yes:false},
+{name:"Tropical/Warm Prints",desc:"Orange, coral, warm yellow—these colors aren't in your range and the vibe isn't you.",yes:false}
+]
+};
+
+function renderStyleGuide(){
+// Hair
+document.getElementById("hairGrid").innerHTML=styleData.hair.colors.map(c=>'<div class="style-item'+(c.rec?'':' avoid-item')+'"><div class="style-swatch '+(c.rec?'rec':'avoid')+'" style="background:'+c.hex+'"></div><div class="style-label">'+c.name+'</div></div>').join("");
+document.getElementById("hairNote").textContent=styleData.hair.note;
+// Metals
+document.getElementById("metalGrid").innerHTML=styleData.metals.colors.map(c=>'<div class="style-item'+(c.rec?'':' avoid-item')+'"><div class="style-swatch '+(c.rec?'rec':'avoid')+'" style="background:'+c.hex+'"></div><div class="style-label">'+c.name+'</div></div>').join("");
+document.getElementById("metalNote").textContent=styleData.metals.note;
+// Glasses
+document.getElementById("glassesGrid").innerHTML=styleData.glasses.colors.map(c=>'<div class="style-item'+(c.rec?'':' avoid-item')+'"><div class="style-swatch '+(c.rec?'rec':'avoid')+'" style="background:'+c.hex+'"></div><div class="style-label">'+c.name+'</div></div>').join("");
+document.getElementById("glassesNote").textContent=styleData.glasses.note;
+// Nails
+document.getElementById("nailGrid").innerHTML=styleData.nails.colors.map(c=>'<div class="style-item'+(c.rec?'':' avoid-item')+'"><div class="style-swatch '+(c.rec?'rec':'avoid')+'" style="background:'+c.hex+'"></div><div class="style-label">'+c.name+'</div></div>').join("");
+document.getElementById("nailNote").textContent=styleData.nails.note;
+// Patterns
+document.getElementById("patternList").innerHTML=styleData.patterns.map(p=>'<div class="pattern-item '+(p.yes?"yes":"no")+'"><div class="pattern-name">'+p.name+'</div><div class="pattern-desc">'+p.desc+'</div></div>').join("");
+}
+
+function renderFavs(){const box=document.getElementById("favBox"),list=Object.entries(favs);if(!list.length){box.innerHTML='<div class="fav-empty"><div class="fav-empty-icon">★</div><p class="fav-empty-text">Double-tap any swatch to begin your collection.</p></div>';return}box.innerHTML='<div class="fav-grid">'+list.map(([h,n])=>'<div class="fav-item" data-hex="'+h+'"><div class="fav-sw" style="background:'+h+'"></div><div class="fav-name">'+n+'</div><div class="fav-hex">'+h+'</div></div>').join("")+'</div>';box.querySelectorAll(".fav-item").forEach(item=>item.onclick=()=>{copy(item.dataset.hex);toast("Copied "+item.dataset.hex)})}
+
+function renderSeasons(){const box=document.getElementById("seasonsBox");box.innerHTML=Object.entries(seasonData).map(([k,s])=>'<div class="season" data-s="'+k+'"><div class="season-icon">'+s.icon+'</div><div class="season-name">'+s.name+'</div><div class="season-colors">'+s.colors.map(c=>'<div class="season-sw" style="background:'+c+'"></div>').join("")+'</div></div>').join("");box.querySelectorAll(".season").forEach(c=>c.onclick=()=>{box.querySelectorAll(".season").forEach(x=>x.classList.remove("on"));c.classList.add("on");document.getElementById("seasonAdv").textContent=seasonData[c.dataset.s].adv})}
+
+function renderLight(){document.getElementById("lightPrev").innerHTML=lightColors.map(c=>'<div class="light-sw" style="background:'+c+'"></div>').join("")}
+
+function updateLight(v){const times=[{n:"Midnight",bg:"rgba(10,10,20,.4)",f:"brightness(.35) saturate(.6)",d:"Your jewel tones become mysterious and deep."},{n:"Blue Hour",bg:"rgba(40,60,100,.25)",f:"brightness(.65) saturate(.85)",d:"Cool undertones shine—sapphire and amethyst glow."},{n:"Dawn",bg:"rgba(200,150,130,.12)",f:"brightness(.88)",d:"Soft rose light flatters raspberry and wine."},{n:"Morning",bg:"rgba(255,255,240,.08)",f:"brightness(1)",d:"Clear, honest light shows your colors true."},{n:"Midday",bg:"rgba(255,255,255,.1)",f:"brightness(1.08) saturate(.92)",d:"Harsh light—seek shade or embrace bold contrast."},{n:"Afternoon",bg:"rgba(255,230,180,.1)",f:"brightness(1.03)",d:"Teal and emerald sing in afternoon sun."},{n:"Golden Hour",bg:"rgba(255,170,90,.18)",f:"brightness(.98) saturate(1.08) sepia(.08)",d:"Your most romantic hour—every color glows."},{n:"Sunset",bg:"rgba(255,90,70,.12)",f:"brightness(.92) saturate(1.12) sepia(.12)",d:"Rose and purple tones come alive."},{n:"Dusk",bg:"rgba(70,50,90,.2)",f:"brightness(.75) saturate(.85)",d:"Violet light makes your purples transcendent."},{n:"Evening",bg:"rgba(30,30,50,.3)",f:"brightness(.55) saturate(.65)",d:"Silver and platinum catch every flicker."}];const i=Math.floor(v/100*(times.length-1)),t=times[i];document.getElementById("timeLabel").textContent=t.n;document.getElementById("lightPrev").style.background=t.bg;document.getElementById("lightDesc").textContent=t.d;document.querySelectorAll(".light-sw").forEach(s=>s.style.filter=t.f)}
+
+function renderNav(){const secs=["title","analysis","pigments","palette","looks","facechart","style","lighting","oracle","seasons","story","picker","diary","favorites","export"];const nav=document.getElementById("nav");nav.innerHTML=secs.map(s=>'<button class="nav-dot" data-s="'+s+'"></button>').join("");nav.querySelectorAll(".nav-dot").forEach(d=>d.onclick=()=>document.getElementById(d.dataset.s).scrollIntoView({behavior:"smooth"}));const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){nav.querySelectorAll(".nav-dot").forEach(x=>x.classList.remove("on"));const dot=nav.querySelector('[data-s="'+e.target.id+'"]');if(dot)dot.classList.add("on")}})},{threshold:.3});secs.forEach(s=>{const el=document.getElementById(s);if(el)obs.observe(el)})}
+function renderDiary(){diaryPicked=[];const box=document.getElementById("diaryBox");box.innerHTML='<div class="diary-new"><div class="diary-new-title">New Entry</div><div class="diary-picker-label">Select colors that called to you today:</div><div class="diary-picker-swatches" id="diarySwatches"></div><div class="diary-selected" id="diarySelected"><span class="diary-selected-empty">Tap colors above</span></div><textarea class="diary-text-input" id="diaryText" placeholder="What do these colors mean to you today?"></textarea><button class="diary-save-btn" id="diarySave">Save Entry</button></div><div class="diary-entries" id="diaryEntries"></div><button class="diary-export-btn" id="diaryExport">Export Diary</button>';document.getElementById("diarySwatches").innerHTML=allCols.map(c=>'<div class="diary-picker-sw" data-hex="'+c.hex+'" data-name="'+c.name+'" style="background:'+c.hex+'" title="'+c.name+'"></div>').join("");document.querySelectorAll(".diary-picker-sw").forEach(sw=>{sw.onclick=()=>{const hex=sw.dataset.hex,name=sw.dataset.name;if(sw.classList.contains("picked")){sw.classList.remove("picked");diaryPicked=diaryPicked.filter(p=>p.hex!==hex)}else if(diaryPicked.length<7){sw.classList.add("picked");diaryPicked.push({hex,name})}updateDiarySelected()}});document.getElementById("diarySave").onclick=saveDiaryEntry;document.getElementById("diaryExport").onclick=exportDiary;renderDiaryEntries()}
+
+function updateDiarySelected(){const box=document.getElementById("diarySelected");if(!diaryPicked.length){box.innerHTML='<span class="diary-selected-empty">Tap colors above</span>'}else{box.innerHTML=diaryPicked.map(p=>'<div class="diary-selected-sw" data-hex="'+p.hex+'" style="background:'+p.hex+'" title="Click to remove"></div>').join("");box.querySelectorAll(".diary-selected-sw").forEach(sw=>{sw.onclick=()=>{diaryPicked=diaryPicked.filter(p=>p.hex!==sw.dataset.hex);const picker=document.querySelector('.diary-picker-sw[data-hex="'+sw.dataset.hex+'"]');if(picker)picker.classList.remove("picked");updateDiarySelected()}})}}
+
+function saveDiaryEntry(){if(!diaryPicked.length){toast("Select at least one color");return}diary.unshift({date:new Date().toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"}),colors:diaryPicked.map(p=>({hex:p.hex,name:p.name})),text:document.getElementById("diaryText").value.trim()});localStorage.setItem("sel_diary",JSON.stringify(diary));toast("Entry saved!");document.getElementById("diaryText").value="";diaryPicked=[];document.querySelectorAll(".diary-picker-sw.picked").forEach(s=>s.classList.remove("picked"));updateDiarySelected();renderDiaryEntries()}
+
+function renderDiaryEntries(){const box=document.getElementById("diaryEntries");if(!diary.length){box.innerHTML="";return}box.innerHTML=diary.map((e,i)=>'<div class="diary-entry"><div class="diary-entry-header"><span class="diary-entry-date">'+e.date+'</span><button class="diary-entry-delete" data-i="'+i+'">×</button></div><div class="diary-entry-colors">'+e.colors.map(c=>'<div class="diary-entry-sw" style="background:'+c.hex+'" title="'+c.name+'"></div>').join("")+'</div>'+(e.text?'<div class="diary-entry-text">"'+e.text+'"</div>':'')+'</div>').join("");box.querySelectorAll(".diary-entry-delete").forEach(btn=>{btn.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();const idx=parseInt(this.dataset.i);diary.splice(idx,1);localStorage.setItem("sel_diary",JSON.stringify(diary));renderDiaryEntries();toast("Entry deleted")})})}
+
+function exportDiary(){if(!diary.length){toast("No entries to export");return}let t="THE SELENITE GRIMOIRE — CHROMATIC DIARY\n"+"═".repeat(45)+"\n\n";diary.forEach(e=>{t+=e.date+"\n"+"-".repeat(30)+"\nColors: "+e.colors.map(c=>c.name).join(", ")+"\n"+(e.text?'"'+e.text+'"\n':"")+"\n"});dl(new Blob([t],{type:"text/plain"}),"selenite-diary.txt")}
+
+document.getElementById("cmpClose").onclick=()=>{document.getElementById("compare").classList.remove("on");document.querySelectorAll(".swatch.sel").forEach(s=>s.classList.remove("sel"));cmpCols=[]};
+document.getElementById("timeSlider").oninput=e=>updateLight(e.target.value);
+document.getElementById("oracleBtn").onclick=()=>{const r=oracleData[Math.floor(Math.random()*oracleData.length)];document.getElementById("oracleName").textContent=r.name;document.getElementById("oracleSw").style.background=r.color;document.getElementById("oracleMsg").textContent=r.msg;document.getElementById("oracleRes").classList.add("show")};
+document.getElementById("storyBtn").onclick=()=>{const tpl=stories[Math.floor(Math.random()*stories.length)];const cols=[],names=[];for(let i=0;i<3;i++){const c=allCols[Math.floor(Math.random()*allCols.length)];cols.push(c.hex);names.push(c.name)}let txt=tpl;names.forEach((n,i)=>{txt=txt.replace("{"+i+"}",n)});document.getElementById("storyCols").innerHTML=cols.map(c=>'<div class="story-sw" style="background:'+c+'"></div>').join("");document.getElementById("storyText").textContent=txt;document.getElementById("storyOut").classList.add("show")};
+
+// FIXED IMAGE PICKER
+const pickUp=document.getElementById("pickUp");
+const pickIn=document.getElementById("pickIn");
+const pickCanvas=document.getElementById("pickCanvas");
+const pickCtx=pickCanvas.getContext("2d",{willReadFrequently:true});
+const pickCross=document.getElementById("pickCross");
+const pickWrap=document.getElementById("pickWrap");
+
+pickUp.addEventListener("click",function(){pickIn.click()});
+
+pickIn.addEventListener("change",function(e){
+const file=e.target.files[0];
+if(!file)return;
+const reader=new FileReader();
+reader.onload=function(event){
+const img=new Image();
+img.onload=function(){
+const maxW=380;
+const scale=Math.min(1,maxW/img.width);
+pickCanvas.width=img.width*scale;
+pickCanvas.height=img.height*scale;
+pickCtx.drawImage(img,0,0,pickCanvas.width,pickCanvas.height);
+pickWrap.classList.add("on");
+pickUp.style.display="none";
+};
+img.src=event.target.result;
+};
+reader.readAsDataURL(file);
+});
+
+function pickColor(e){
+const rect=pickCanvas.getBoundingClientRect();
+const x=(e.clientX||e.touches[0].clientX)-rect.left;
+const y=(e.clientY||e.touches[0].clientY)-rect.top;
+const scaleX=pickCanvas.width/rect.width;
+const scaleY=pickCanvas.height/rect.height;
+const px=pickCtx.getImageData(Math.floor(x*scaleX),Math.floor(y*scaleY),1,1).data;
+const hex=rgbHex(px[0],px[1],px[2]);
+pickCross.style.display="block";
+pickCross.style.left=x+"px";
+pickCross.style.top=y+"px";
+pickCross.style.borderColor=px[0]+px[1]+px[2]>380?"#000":"#fff";
+document.getElementById("pickRes").classList.add("on");
+document.getElementById("pickResSw").style.background=hex;
+document.getElementById("pickResHex").textContent=hex;
+const match=nearest(hex);
+const dist=colDist(hex,match.hex);
+document.getElementById("pickMatchSw").style.background=match.hex;
+document.getElementById("pickMatchName").textContent=match.name+" ("+match.hex+")";
+// Analyze the color for True Summer compatibility
+const rgb=hexRgb(hex);
+const r=rgb.r,g=rgb.g,b=rgb.b;
+const max=Math.max(r,g,b),min=Math.min(r,g,b);
+const l=(max+min)/2/255;
+const s=max===min?0:(max-min)/(1-Math.abs(2*l-1))/255;
+const warmth=(r-b)/255; // positive = warm, negative = cool
+const verd=document.getElementById("pickVerdict");
+let msg="",cls="";
+if(dist<25){
+msg="✓ Perfect match! This color is in your palette.";cls="yes";
+}else if(dist<50){
+msg="✓ Very close! This works beautifully for you.";cls="yes";
+}else if(dist<80){
+if(warmth>0.15){msg="⚠ Close, but slightly too warm. The palette match is cooler and would suit you better.";cls="close";}
+else if(s>0.7){msg="⚠ Close, but a bit too saturated. Your version is softer.";cls="close";}
+else{msg="✓ Good match—within your range with minor differences.";cls="close";}
+}else{
+if(warmth>0.25){msg="✗ Too warm for True Summer. This leans orange/yellow—look for cooler versions with blue or pink undertones.";cls="no";}
+else if(warmth<-0.3&&s>0.6){msg="✗ Too cool and saturated—this is Winter territory. Your palette is softer.";cls="no";}
+else if(s>0.75){msg="✗ Too bright/saturated. True Summer needs softness—look for more muted versions.";cls="no";}
+else if(l<0.2){msg="✗ Too dark. While you can wear deep colors, this is heavier than your range.";cls="no";}
+else if(l>0.9){msg="⚠ Very light—works as a highlight or accent, but may wash you out as a main color.";cls="close";}
+else{msg="✗ Not quite right for your palette. The nearest match shown above would be more flattering.";cls="no";}
+}
+verd.textContent=msg;
+verd.className="picker-verdict "+cls;
+}
+
+pickCanvas.addEventListener("click",pickColor);
+pickCanvas.addEventListener("touchstart",function(e){e.preventDefault();pickColor(e)});
+document.getElementById("pickCopy").addEventListener("click",function(){copy(document.getElementById("pickResHex").textContent);toast("Copied!")});
+
+// Hex Lookup Function
+function hexLookup(){
+const input=document.getElementById("hexLookupInput").value.trim().replace("#","");
+if(!/^[0-9A-Fa-f]{6}$/.test(input)){toast("Enter a valid 6-digit hex code");return}
+const hex="#"+input.toUpperCase();
+const res=document.getElementById("hexLookupRes");
+document.getElementById("hexLookupSw").style.background=hex;
+const match=nearest(hex);
+const dist=colDist(hex,match.hex);
+document.getElementById("hexLookupMatchSw").style.background=match.hex;
+document.getElementById("hexLookupMatchName").textContent=match.name+" ("+match.hex+")";
+const rgb=hexRgb(hex);
+const r=rgb.r,g=rgb.g,b=rgb.b;
+const max=Math.max(r,g,b),min=Math.min(r,g,b);
+const l=(max+min)/2/255;
+const s=max===min?0:(max-min)/(1-Math.abs(2*l-1))/255;
+const warmth=(r-b)/255;
+const verd=document.getElementById("hexLookupVerdict");
+let msg="",cls="";
+if(dist<25){msg="✓ This color is in your palette!";cls="yes";}
+else if(dist<50){msg="✓ Very close—this works for you.";cls="yes";}
+else if(dist<80){
+if(warmth>0.15){msg="⚠ Close, but slightly too warm.";cls="maybe";}
+else{msg="✓ Good match with minor differences.";cls="maybe";}
+}else{
+if(warmth>0.25){msg="✗ Too warm for True Summer.";cls="no";}
+else if(s>0.75){msg="✗ Too saturated—look for softer versions.";cls="no";}
+else{msg="✗ Not quite right for your palette.";cls="no";}
+}
+verd.textContent=msg;
+verd.className="hex-lookup-verdict "+cls;
+res.classList.add("on");
+}
+document.getElementById("hexLookupBtn").addEventListener("click",hexLookup);
+document.getElementById("hexLookupInput").addEventListener("keypress",function(e){if(e.key==="Enter")hexLookup()});
+
+function dl(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);toast("Exported!")}
+document.getElementById("expJSON").onclick=()=>{dl(new Blob([JSON.stringify({title:"The Selenite Grimoire",season:"True Summer / Soft Summer Cusp",palette:groups},null,2)],{type:"application/json"}),"selenite-palette.json")};
+document.getElementById("expText").onclick=()=>{let t="THE SELENITE GRIMOIRE\n"+"═".repeat(30)+"\nTrue Summer / Soft Summer Cusp\n\n";Object.entries(groups).forEach(([g,cs])=>{t+=g.toUpperCase()+"\n";cs.forEach(c=>{t+="  "+c.name+": "+c.hex+"\n"});t+="\n"});dl(new Blob([t],{type:"text/plain"}),"selenite-palette.txt")};
+document.getElementById("expFavJSON").onclick=()=>{if(!Object.keys(favs).length){toast("No favorites yet");return}dl(new Blob([JSON.stringify({favorites:favs},null,2)],{type:"application/json"}),"selenite-favorites.json")};
+document.getElementById("expFavText").onclick=()=>{if(!Object.keys(favs).length){toast("No favorites yet");return}let t="SELENITE FAVORITES\n"+"═".repeat(25)+"\n\n";Object.entries(favs).forEach(([h,n])=>{t+=n+": "+h+"\n"});dl(new Blob([t],{type:"text/plain"}),"selenite-favorites.txt")};
+
+function init(){renderPigs();renderPal();renderLooks();renderFavs();renderSeasons();renderLight();
+// Set lighting based on actual time of day (0-100 maps to 10 time periods)
+const hour=new Date().getHours();
+let timeVal;
+if(hour>=0&&hour<5)timeVal=0; // Midnight (index 0)
+else if(hour>=5&&hour<6)timeVal=12; // Blue Hour (index 1)
+else if(hour>=6&&hour<7)timeVal=24; // Dawn (index 2)
+else if(hour>=7&&hour<10)timeVal=36; // Morning (index 3)
+else if(hour>=10&&hour<14)timeVal=48; // Midday (index 4)
+else if(hour>=14&&hour<17)timeVal=60; // Afternoon (index 5)
+else if(hour>=17&&hour<18)timeVal=72; // Golden Hour (index 6)
+else if(hour>=18&&hour<19)timeVal=84; // Sunset (index 7)
+else if(hour>=19&&hour<21)timeVal=96; // Dusk (index 8)
+else timeVal=100; // Evening (index 9)
+document.getElementById("timeSlider").value=timeVal;
+updateLight(timeVal);
+renderNav();renderDiary();renderStyleGuide()}
+document.addEventListener("DOMContentLoaded",init);
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
