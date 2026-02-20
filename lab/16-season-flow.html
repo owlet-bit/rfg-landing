@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>16-Season Color Analysis (Flow)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0f0f1a; color: #e0e0e0; padding: 20px; }
+  h1 { text-align: center; font-size: 30px; margin-bottom: 6px; background: linear-gradient(135deg, #f093fb, #f5576c, #fda085); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: glow 3s ease-in-out infinite alternate; }
+  @keyframes glow { from { filter: brightness(1); } to { filter: brightness(1.15); } }
+  .subtitle { text-align: center; font-size: 12px; color: #666; margin-bottom: 28px; }
+  .section-header { text-align: center; font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 4px; padding: 20px 0 8px; }
+  .spring-header { color: #FFB347; }
+  .summer-header { color: #87CEEB; }
+  .autumn-header { color: #D2691E; }
+  .winter-header { color: #B0C4DE; }
+  .tonal-header { color: #C9A959; }
+  .flow-header { color: #D4A0B0; }
+  .season-card { background: #161625; border-radius: 12px; padding: 18px 20px; margin-bottom: 16px; position: relative; overflow: hidden; max-width: 1200px; margin-left: auto; margin-right: auto; }
+  .season-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; animation: sparkle 4s linear infinite; }
+  @keyframes sparkle { 0%,100% { opacity: 0.7; } 50% { opacity: 1; } }
+  .spring-card::before { background: linear-gradient(90deg, #FF6F61, #FFD300, #00CED1, #FF69B4); }
+  .summer-card::before { background: linear-gradient(90deg, #8E9AAF, #CBC0D3, #7EC8E3, #DB7093); }
+  .autumn-card::before { background: linear-gradient(90deg, #CC5500, #DAA520, #556B2F, #8B0000); }
+  .winter-card::before { background: linear-gradient(90deg, #DC143C, #0000CD, #4B0082, #FFFFFF); }
+  .tonal-card::before { background: linear-gradient(90deg, #FF0040, #004D40, #FFD1DC, #BC8F8F); }
+  .flow-card::before { background: linear-gradient(90deg, #E8A0A0, #F5D888, #506C90, #5F8A8B); }
+  .season-header-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .season-name { font-size: 20px; font-weight: 700; }
+  .season-desc { font-size: 11px; color: #777; }
+  .season-count { font-size: 10px; color: #555; }
+  .hue-row { margin-bottom: 8px; }
+  .hue-label { font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #555; margin-bottom: 3px; }
+  .swatch-row { display: flex; flex-wrap: wrap; gap: 3px; }
+  .swatch { width: 36px; height: 36px; border-radius: 5px; position: relative; cursor: default; transition: transform 0.15s, box-shadow 0.15s; }
+  .swatch:hover { transform: scale(1.3); z-index: 10; box-shadow: 0 0 12px rgba(255,255,255,0.2); }
+  .swatch .tip { display: none; position: absolute; bottom: -26px; left: 50%; transform: translateX(-50%); background: #000c; color: #fff; font-size: 8px; padding: 2px 5px; border-radius: 3px; white-space: nowrap; z-index: 20; line-height: 1.3; text-align: center; }
+  .swatch:hover .tip { display: block; }
+  .white-border { border: 1px solid #333; }
+</style>
+</head>
+<body>
+<h1>16-Season Color Analysis (Flow)</h1>
+<p class="subtitle">12 Classic + 4 Flow Seasons (Soft Spring, Light Autumn, Deep Summer, Soft Winter) — Hover for hex codes & names</p>
+<div class="section-header spring-header">— Spring —</div>
+<div class="season-card spring-card">
+  <div class="season-header-row">
+    <div class="season-name">Bright Spring</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Vivid, clear, warm-neutral. Maximum chroma — tropical, electric, saturated.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF2400"><span class="tip">#FF2400<br>Scarlet</span></div>
+      <div class="swatch" style="background:#E23D28"><span class="tip">#E23D28<br>Vermillion</span></div>
+      <div class="swatch" style="background:#FF4040"><span class="tip">#FF4040<br>Coral Red</span></div>
+      <div class="swatch" style="background:#FF6F61"><span class="tip">#FF6F61<br>Living Coral</span></div>
+      <div class="swatch" style="background:#FF1493"><span class="tip">#FF1493<br>Deep Pink</span></div>
+      <div class="swatch" style="background:#FF69B4"><span class="tip">#FF69B4<br>Hot Pink</span></div>
+      <div class="swatch" style="background:#FC8EAC"><span class="tip">#FC8EAC<br>Flamingo</span></div>
+      <div class="swatch" style="background:#FF85A2"><span class="tip">#FF85A2<br>Watermelon</span></div>
+      <div class="swatch" style="background:#E0457B"><span class="tip">#E0457B<br>Cerise</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF7F50"><span class="tip">#FF7F50<br>Coral</span></div>
+      <div class="swatch" style="background:#FF6B35"><span class="tip">#FF6B35<br>Bright Orange</span></div>
+      <div class="swatch" style="background:#FFA500"><span class="tip">#FFA500<br>Orange</span></div>
+      <div class="swatch" style="background:#FFB347"><span class="tip">#FFB347<br>Pastel Orange</span></div>
+      <div class="swatch" style="background:#FF8C42"><span class="tip">#FF8C42<br>Mango</span></div>
+      <div class="swatch" style="background:#E8702A"><span class="tip">#E8702A<br>Tangerine</span></div>
+      <div class="swatch" style="background:#FFA07A"><span class="tip">#FFA07A<br>Light Salmon</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FFD300"><span class="tip">#FFD300<br>Cyber Yellow</span></div>
+      <div class="swatch" style="background:#FFEA00"><span class="tip">#FFEA00<br>Yellow</span></div>
+      <div class="swatch" style="background:#F7E98E"><span class="tip">#F7E98E<br>Pale Gold</span></div>
+      <div class="swatch" style="background:#FFD700"><span class="tip">#FFD700<br>Gold</span></div>
+      <div class="swatch" style="background:#F0C420"><span class="tip">#F0C420<br>Jonquil</span></div>
+      <div class="swatch" style="background:#E8D44D"><span class="tip">#E8D44D<br>Citrine</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#4CBB17"><span class="tip">#4CBB17<br>Kelly Green</span></div>
+      <div class="swatch" style="background:#00A86B"><span class="tip">#00A86B<br>Jade</span></div>
+      <div class="swatch" style="background:#00B89F"><span class="tip">#00B89F<br>Mint</span></div>
+      <div class="swatch" style="background:#32CD32"><span class="tip">#32CD32<br>Lime Green</span></div>
+      <div class="swatch" style="background:#C1FF0E"><span class="tip">#C1FF0E<br>Electric Lime</span></div>
+      <div class="swatch" style="background:#7CB518"><span class="tip">#7CB518<br>Apple Green</span></div>
+      <div class="swatch" style="background:#3CB44B"><span class="tip">#3CB44B<br>Green</span></div>
+      <div class="swatch" style="background:#2E8B57"><span class="tip">#2E8B57<br>Sea Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#00CED1"><span class="tip">#00CED1<br>Dark Turquoise</span></div>
+      <div class="swatch" style="background:#00BFFF"><span class="tip">#00BFFF<br>Deep Sky Blue</span></div>
+      <div class="swatch" style="background:#0047AB"><span class="tip">#0047AB<br>Cobalt</span></div>
+      <div class="swatch" style="background:#1E90FF"><span class="tip">#1E90FF<br>Dodger Blue</span></div>
+      <div class="swatch" style="background:#40E0D0"><span class="tip">#40E0D0<br>Turquoise</span></div>
+      <div class="swatch" style="background:#4169E1"><span class="tip">#4169E1<br>Royal Blue</span></div>
+      <div class="swatch" style="background:#20B2AA"><span class="tip">#20B2AA<br>Light Sea Green</span></div>
+      <div class="swatch" style="background:#0077B6"><span class="tip">#0077B6<br>Star Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#DA70D6"><span class="tip">#DA70D6<br>Orchid</span></div>
+      <div class="swatch" style="background:#BA55D3"><span class="tip">#BA55D3<br>Medium Orchid</span></div>
+      <div class="swatch" style="background:#9B59B6"><span class="tip">#9B59B6<br>Amethyst</span></div>
+      <div class="swatch" style="background:#8A2BE2"><span class="tip">#8A2BE2<br>Blue Violet</span></div>
+      <div class="swatch" style="background:#7B2FBE"><span class="tip">#7B2FBE<br>Grape</span></div>
+      <div class="swatch" style="background:#CC66CC"><span class="tip">#CC66CC<br>Plum</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFFF0"><span class="tip">#FFFFF0<br>Ivory</span></div>
+      <div class="swatch white-border" style="background:#FFF8DC"><span class="tip">#FFF8DC<br>Cornsilk</span></div>
+      <div class="swatch white-border" style="background:#F5F0E1"><span class="tip">#F5F0E1<br>Warm White</span></div>
+      <div class="swatch" style="background:#D2B48C"><span class="tip">#D2B48C<br>Tan</span></div>
+      <div class="swatch" style="background:#C19A6B"><span class="tip">#C19A6B<br>Fawn</span></div>
+      <div class="swatch" style="background:#8B7355"><span class="tip">#8B7355<br>Dark Tan</span></div>
+      <div class="swatch" style="background:#5B4A3F"><span class="tip">#5B4A3F<br>Taupe Brown</span></div>
+      <div class="swatch" style="background:#3E2723"><span class="tip">#3E2723<br>Dark Brown</span></div>
+      <div class="swatch" style="background:#1C1C1C"><span class="tip">#1C1C1C<br>Near Black</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card spring-card">
+  <div class="season-header-row">
+    <div class="season-name">True (Warm) Spring</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Warmest spring. Golden, fresh, saturated warm tones. Sunshine energy.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF6347"><span class="tip">#FF6347<br>Tomato</span></div>
+      <div class="swatch" style="background:#E25822"><span class="tip">#E25822<br>Flame</span></div>
+      <div class="swatch" style="background:#D94030"><span class="tip">#D94030<br>Warm Red</span></div>
+      <div class="swatch" style="background:#CD5C5C"><span class="tip">#CD5C5C<br>Indian Red</span></div>
+      <div class="swatch" style="background:#FA8072"><span class="tip">#FA8072<br>Salmon</span></div>
+      <div class="swatch" style="background:#F4786A"><span class="tip">#F4786A<br>Coral Pink</span></div>
+      <div class="swatch" style="background:#E8747C"><span class="tip">#E8747C<br>Warm Rose</span></div>
+      <div class="swatch" style="background:#FFB6B0"><span class="tip">#FFB6B0<br>Melon</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF8C00"><span class="tip">#FF8C00<br>Dark Orange</span></div>
+      <div class="swatch" style="background:#E9692C"><span class="tip">#E9692C<br>Burnt Orange</span></div>
+      <div class="swatch" style="background:#FFB347"><span class="tip">#FFB347<br>Pastel Orange</span></div>
+      <div class="swatch" style="background:#FFDAB9"><span class="tip">#FFDAB9<br>Peach Puff</span></div>
+      <div class="swatch" style="background:#F9A76C"><span class="tip">#F9A76C<br>Sandy Coral</span></div>
+      <div class="swatch" style="background:#E07C4A"><span class="tip">#E07C4A<br>Raw Sienna</span></div>
+      <div class="swatch" style="background:#F5B17B"><span class="tip">#F5B17B<br>Apricot</span></div>
+      <div class="swatch" style="background:#FFD39B"><span class="tip">#FFD39B<br>Peach</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FFD700"><span class="tip">#FFD700<br>Gold</span></div>
+      <div class="swatch" style="background:#FFBF00"><span class="tip">#FFBF00<br>Amber</span></div>
+      <div class="swatch" style="background:#F0E68C"><span class="tip">#F0E68C<br>Khaki</span></div>
+      <div class="swatch" style="background:#ECD540"><span class="tip">#ECD540<br>Dandelion</span></div>
+      <div class="swatch" style="background:#DAA520"><span class="tip">#DAA520<br>Goldenrod</span></div>
+      <div class="swatch" style="background:#F5DEB3"><span class="tip">#F5DEB3<br>Wheat</span></div>
+      <div class="swatch white-border" style="background:#FFEFD5"><span class="tip">#FFEFD5<br>Papaya Whip</span></div>
+      <div class="swatch white-border" style="background:#FFE4B5"><span class="tip">#FFE4B5<br>Moccasin</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#3CB371"><span class="tip">#3CB371<br>Medium Sea Green</span></div>
+      <div class="swatch" style="background:#66C34E"><span class="tip">#66C34E<br>Grass Green</span></div>
+      <div class="swatch" style="background:#7CFC00"><span class="tip">#7CFC00<br>Lawn Green</span></div>
+      <div class="swatch" style="background:#A4C639"><span class="tip">#A4C639<br>Android Green</span></div>
+      <div class="swatch" style="background:#85BB65"><span class="tip">#85BB65<br>Dollar Bill</span></div>
+      <div class="swatch" style="background:#50C878"><span class="tip">#50C878<br>Emerald</span></div>
+      <div class="swatch" style="background:#40E0D0"><span class="tip">#40E0D0<br>Turquoise</span></div>
+      <div class="swatch" style="background:#5F8575"><span class="tip">#5F8575<br>Hookers Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#4682B4"><span class="tip">#4682B4<br>Steel Blue</span></div>
+      <div class="swatch" style="background:#008080"><span class="tip">#008080<br>Teal</span></div>
+      <div class="swatch" style="background:#5F9EA0"><span class="tip">#5F9EA0<br>Cadet Blue</span></div>
+      <div class="swatch" style="background:#2E8B97"><span class="tip">#2E8B97<br>Warm Teal</span></div>
+      <div class="swatch" style="background:#367588"><span class="tip">#367588<br>Jelly Bean</span></div>
+      <div class="swatch" style="background:#1E6B52"><span class="tip">#1E6B52<br>Deep Sea</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#B57EDC"><span class="tip">#B57EDC<br>Lavender</span></div>
+      <div class="swatch" style="background:#9966CC"><span class="tip">#9966CC<br>Amethyst</span></div>
+      <div class="swatch" style="background:#7B68AE"><span class="tip">#7B68AE<br>Warm Violet</span></div>
+      <div class="swatch" style="background:#8066A0"><span class="tip">#8066A0<br>Soft Purple</span></div>
+      <div class="swatch" style="background:#C8A2C8"><span class="tip">#C8A2C8<br>Lilac</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFFF0"><span class="tip">#FFFFF0<br>Ivory</span></div>
+      <div class="swatch white-border" style="background:#FFFDD0"><span class="tip">#FFFDD0<br>Cream</span></div>
+      <div class="swatch" style="background:#F5DEB3"><span class="tip">#F5DEB3<br>Wheat</span></div>
+      <div class="swatch" style="background:#DEB887"><span class="tip">#DEB887<br>Burlywood</span></div>
+      <div class="swatch" style="background:#D2B48C"><span class="tip">#D2B48C<br>Tan</span></div>
+      <div class="swatch" style="background:#C19A6B"><span class="tip">#C19A6B<br>Fawn</span></div>
+      <div class="swatch" style="background:#8B7355"><span class="tip">#8B7355<br>Dark Tan</span></div>
+      <div class="swatch" style="background:#6B4226"><span class="tip">#6B4226<br>Kobicha</span></div>
+      <div class="swatch" style="background:#483C32"><span class="tip">#483C32<br>Dark Lava</span></div>
+      <div class="swatch" style="background:#2C1B0E"><span class="tip">#2C1B0E<br>Seal Brown</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card spring-card">
+  <div class="season-header-row">
+    <div class="season-name">Light Spring</div>
+    <div class="season-count">54 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Lightest, most delicate spring. Warm pastels, candy-like, fresh.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F08080"><span class="tip">#F08080<br>Light Coral</span></div>
+      <div class="swatch" style="background:#FC8EAC"><span class="tip">#FC8EAC<br>Flamingo Pink</span></div>
+      <div class="swatch" style="background:#FFB6C1"><span class="tip">#FFB6C1<br>Light Pink</span></div>
+      <div class="swatch" style="background:#FFC0CB"><span class="tip">#FFC0CB<br>Pink</span></div>
+      <div class="swatch white-border" style="background:#FFD1DC"><span class="tip">#FFD1DC<br>Pastel Pink</span></div>
+      <div class="swatch" style="background:#F4C2C2"><span class="tip">#F4C2C2<br>Tea Rose</span></div>
+      <div class="swatch" style="background:#E8A0BF"><span class="tip">#E8A0BF<br>Carnation</span></div>
+      <div class="swatch" style="background:#E5909C"><span class="tip">#E5909C<br>Warm Pink</span></div>
+      <div class="swatch" style="background:#F5A0A0"><span class="tip">#F5A0A0<br>Salmon Pink</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FFDAB9"><span class="tip">#FFDAB9<br>Peach Puff</span></div>
+      <div class="swatch white-border" style="background:#FFE5B4"><span class="tip">#FFE5B4<br>Peach</span></div>
+      <div class="swatch" style="background:#FFCBA4"><span class="tip">#FFCBA4<br>Deep Peach</span></div>
+      <div class="swatch" style="background:#F5B895"><span class="tip">#F5B895<br>Melon</span></div>
+      <div class="swatch" style="background:#F7C59F"><span class="tip">#F7C59F<br>Apricot</span></div>
+      <div class="swatch" style="background:#FFC49B"><span class="tip">#FFC49B<br>Salmon Buff</span></div>
+      <div class="swatch" style="background:#F5D0B0"><span class="tip">#F5D0B0<br>Warm Peach</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFACD"><span class="tip">#FFFACD<br>Lemon Chiffon</span></div>
+      <div class="swatch white-border" style="background:#FFEEBB"><span class="tip">#FFEEBB<br>Navajo White</span></div>
+      <div class="swatch white-border" style="background:#FFE4B5"><span class="tip">#FFE4B5<br>Moccasin</span></div>
+      <div class="swatch" style="background:#FFF176"><span class="tip">#FFF176<br>Pale Yellow</span></div>
+      <div class="swatch" style="background:#F9E076"><span class="tip">#F9E076<br>Jasmine</span></div>
+      <div class="swatch" style="background:#ECD9A1"><span class="tip">#ECD9A1<br>Pale Gold</span></div>
+      <div class="swatch" style="background:#F5E6A0"><span class="tip">#F5E6A0<br>Butter</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#98FB98"><span class="tip">#98FB98<br>Pale Green</span></div>
+      <div class="swatch" style="background:#7FFFD4"><span class="tip">#7FFFD4<br>Aquamarine</span></div>
+      <div class="swatch" style="background:#ACE1AF"><span class="tip">#ACE1AF<br>Celadon</span></div>
+      <div class="swatch" style="background:#B5D8B3"><span class="tip">#B5D8B3<br>Pistachio</span></div>
+      <div class="swatch" style="background:#86C67C"><span class="tip">#86C67C<br>De York</span></div>
+      <div class="swatch" style="background:#68C3A3"><span class="tip">#68C3A3<br>Medium Aqua</span></div>
+      <div class="swatch" style="background:#77C5A3"><span class="tip">#77C5A3<br>Ocean Green</span></div>
+      <div class="swatch" style="background:#A0D8B0"><span class="tip">#A0D8B0<br>Granny Smith</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#87CEEB"><span class="tip">#87CEEB<br>Sky Blue</span></div>
+      <div class="swatch" style="background:#AFEEEE"><span class="tip">#AFEEEE<br>Pale Turquoise</span></div>
+      <div class="swatch" style="background:#ADD8E6"><span class="tip">#ADD8E6<br>Light Blue</span></div>
+      <div class="swatch" style="background:#B0E0E6"><span class="tip">#B0E0E6<br>Powder Blue</span></div>
+      <div class="swatch" style="background:#7EB0C4"><span class="tip">#7EB0C4<br>Moonstone</span></div>
+      <div class="swatch" style="background:#5F9EA0"><span class="tip">#5F9EA0<br>Cadet Blue</span></div>
+      <div class="swatch" style="background:#68B8C4"><span class="tip">#68B8C4<br>Fountain Blue</span></div>
+      <div class="swatch" style="background:#80CED7"><span class="tip">#80CED7<br>Middle Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#E6E6FA"><span class="tip">#E6E6FA<br>Lavender</span></div>
+      <div class="swatch" style="background:#DDA0DD"><span class="tip">#DDA0DD<br>Plum</span></div>
+      <div class="swatch" style="background:#D8BFD8"><span class="tip">#D8BFD8<br>Thistle</span></div>
+      <div class="swatch" style="background:#C9B1E0"><span class="tip">#C9B1E0<br>Light Wisteria</span></div>
+      <div class="swatch" style="background:#B8A9C9"><span class="tip">#B8A9C9<br>Pastel Purple</span></div>
+      <div class="swatch" style="background:#C5ADE0"><span class="tip">#C5ADE0<br>Bright Lavender</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFAF0"><span class="tip">#FFFAF0<br>Floral White</span></div>
+      <div class="swatch white-border" style="background:#FFF5EE"><span class="tip">#FFF5EE<br>Seashell</span></div>
+      <div class="swatch white-border" style="background:#F5F5DC"><span class="tip">#F5F5DC<br>Beige</span></div>
+      <div class="swatch" style="background:#E8DCC8"><span class="tip">#E8DCC8<br>Champagne</span></div>
+      <div class="swatch" style="background:#D6C7B2"><span class="tip">#D6C7B2<br>Pale Taupe</span></div>
+      <div class="swatch" style="background:#C8B78C"><span class="tip">#C8B78C<br>Ecru</span></div>
+      <div class="swatch" style="background:#B0AFA0"><span class="tip">#B0AFA0<br>Ash</span></div>
+      <div class="swatch" style="background:#8E8B82"><span class="tip">#8E8B82<br>Battleship Grey</span></div>
+      <div class="swatch" style="background:#6B6660"><span class="tip">#6B6660<br>Warm Grey</span></div>
+    </div>
+  </div>
+</div>
+<div class="section-header summer-header">— Summer —</div>
+<div class="season-card summer-card">
+  <div class="season-header-row">
+    <div class="season-name">Light Summer</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Cool, light, soft. Powder pastels with a grey undertone. Ethereal.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E8ADAA"><span class="tip">#E8ADAA<br>Shrimp</span></div>
+      <div class="swatch" style="background:#F2B5D4"><span class="tip">#F2B5D4<br>Orchid Pink</span></div>
+      <div class="swatch" style="background:#FFB7C5"><span class="tip">#FFB7C5<br>Cherry Blossom</span></div>
+      <div class="swatch white-border" style="background:#F0D5E0"><span class="tip">#F0D5E0<br>Fairy Tale</span></div>
+      <div class="swatch" style="background:#D4A5C7"><span class="tip">#D4A5C7<br>Pastel Violet</span></div>
+      <div class="swatch" style="background:#E8B4CB"><span class="tip">#E8B4CB<br>Kobi</span></div>
+      <div class="swatch" style="background:#D48B9E"><span class="tip">#D48B9E<br>Puce</span></div>
+      <div class="swatch" style="background:#C98CAC"><span class="tip">#C98CAC<br>Muted Rose</span></div>
+      <div class="swatch" style="background:#DCA0B8"><span class="tip">#DCA0B8<br>Cameo Pink</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F0C9C0"><span class="tip">#F0C9C0<br>Peach Cloud</span></div>
+      <div class="swatch" style="background:#E8C4B8"><span class="tip">#E8C4B8<br>Dust Storm</span></div>
+      <div class="swatch" style="background:#F2D2C6"><span class="tip">#F2D2C6<br>Pale Peach</span></div>
+      <div class="swatch" style="background:#EBBAA1"><span class="tip">#EBBAA1<br>Muted Peach</span></div>
+      <div class="swatch" style="background:#DCBFAF"><span class="tip">#DCBFAF<br>Warm Sand</span></div>
+      <div class="swatch" style="background:#E8CCC0"><span class="tip">#E8CCC0<br>Pale Dogwood</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FDFAEF"><span class="tip">#FDFAEF<br>Warm White</span></div>
+      <div class="swatch white-border" style="background:#F5EDCF"><span class="tip">#F5EDCF<br>Cornsilk</span></div>
+      <div class="swatch white-border" style="background:#EDE4C8"><span class="tip">#EDE4C8<br>Pale Wheat</span></div>
+      <div class="swatch" style="background:#E8DDB5"><span class="tip">#E8DDB5<br>Muted Gold</span></div>
+      <div class="swatch" style="background:#E2D89C"><span class="tip">#E2D89C<br>Straw</span></div>
+      <div class="swatch" style="background:#E8E0C8"><span class="tip">#E8E0C8<br>Bone</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#ACE1AF"><span class="tip">#ACE1AF<br>Celadon</span></div>
+      <div class="swatch" style="background:#B2D8D8"><span class="tip">#B2D8D8<br>Opal</span></div>
+      <div class="swatch" style="background:#A8D5BA"><span class="tip">#A8D5BA<br>Eton Blue</span></div>
+      <div class="swatch" style="background:#8FBC8F"><span class="tip">#8FBC8F<br>Dark Sea Green</span></div>
+      <div class="swatch" style="background:#95B8A6"><span class="tip">#95B8A6<br>Cambridge Blue</span></div>
+      <div class="swatch" style="background:#83AF9B"><span class="tip">#83AF9B<br>Lichen</span></div>
+      <div class="swatch" style="background:#7B9E89"><span class="tip">#7B9E89<br>Muted Sage</span></div>
+      <div class="swatch" style="background:#90C4A8"><span class="tip">#90C4A8<br>Ocean Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#ADD8E6"><span class="tip">#ADD8E6<br>Light Blue</span></div>
+      <div class="swatch" style="background:#B0C4DE"><span class="tip">#B0C4DE<br>Light Steel Blue</span></div>
+      <div class="swatch" style="background:#A8C4D9"><span class="tip">#A8C4D9<br>Pale Cerulean</span></div>
+      <div class="swatch" style="background:#8CB4CB"><span class="tip">#8CB4CB<br>Dark Sky Blue</span></div>
+      <div class="swatch" style="background:#7BA7BC"><span class="tip">#7BA7BC<br>Moonstone</span></div>
+      <div class="swatch" style="background:#6B97AA"><span class="tip">#6B97AA<br>Air Force Blue</span></div>
+      <div class="swatch" style="background:#5B7E91"><span class="tip">#5B7E91<br>Cadet</span></div>
+      <div class="swatch" style="background:#78A0B6"><span class="tip">#78A0B6<br>Pewter Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E0BBE4"><span class="tip">#E0BBE4<br>Thistle</span></div>
+      <div class="swatch" style="background:#C8A2C8"><span class="tip">#C8A2C8<br>Lilac</span></div>
+      <div class="swatch" style="background:#B8A9C9"><span class="tip">#B8A9C9<br>Pastel Purple</span></div>
+      <div class="swatch" style="background:#A992B4"><span class="tip">#A992B4<br>African Violet</span></div>
+      <div class="swatch" style="background:#9B8AA5"><span class="tip">#9B8AA5<br>Muted Amethyst</span></div>
+      <div class="swatch" style="background:#8A7698"><span class="tip">#8A7698<br>Greyish Purple</span></div>
+      <div class="swatch" style="background:#C0A8D0"><span class="tip">#C0A8D0<br>Wisteria</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#F5F0EB"><span class="tip">#F5F0EB<br>Linen</span></div>
+      <div class="swatch white-border" style="background:#E8E0D5"><span class="tip">#E8E0D5<br>Pearl</span></div>
+      <div class="swatch" style="background:#E8D8C4"><span class="tip">#E8D8C4<br>Almond</span></div>
+      <div class="swatch" style="background:#D3D3D3"><span class="tip">#D3D3D3<br>Light Grey</span></div>
+      <div class="swatch" style="background:#C0C0C0"><span class="tip">#C0C0C0<br>Silver</span></div>
+      <div class="swatch" style="background:#B0A99F"><span class="tip">#B0A99F<br>Warm Grey</span></div>
+      <div class="swatch" style="background:#9E9590"><span class="tip">#9E9590<br>Cloudy</span></div>
+      <div class="swatch" style="background:#778899"><span class="tip">#778899<br>Light Slate</span></div>
+      <div class="swatch" style="background:#5C6670"><span class="tip">#5C6670<br>Slate</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card summer-card">
+  <div class="season-header-row">
+    <div class="season-name">True (Cool) Summer</div>
+    <div class="season-count">52 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Coolest summer. Blue-based, muted, medium contrast. Elegant restraint.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C04060"><span class="tip">#C04060<br>Maroon Rose</span></div>
+      <div class="swatch" style="background:#C2445A"><span class="tip">#C2445A<br>Raspberry</span></div>
+      <div class="swatch" style="background:#DB7093"><span class="tip">#DB7093<br>Pale Violet Red</span></div>
+      <div class="swatch" style="background:#B56B84"><span class="tip">#B56B84<br>Turkish Rose</span></div>
+      <div class="swatch" style="background:#C08081"><span class="tip">#C08081<br>Old Rose</span></div>
+      <div class="swatch" style="background:#E8ADAA"><span class="tip">#E8ADAA<br>Shrimp</span></div>
+      <div class="swatch" style="background:#D0849B"><span class="tip">#D0849B<br>Puce</span></div>
+      <div class="swatch" style="background:#B05574"><span class="tip">#B05574<br>Mauvewood</span></div>
+      <div class="swatch" style="background:#A04060"><span class="tip">#A04060<br>Raspberry Rose</span></div>
+      <div class="swatch" style="background:#C87090"><span class="tip">#C87090<br>Charm</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C4867C"><span class="tip">#C4867C<br>Muted Coral</span></div>
+      <div class="swatch" style="background:#CFA59A"><span class="tip">#CFA59A<br>Muted Peach</span></div>
+      <div class="swatch" style="background:#D5AFA0"><span class="tip">#D5AFA0<br>Pale Taupe Rose</span></div>
+      <div class="swatch" style="background:#C09990"><span class="tip">#C09990<br>Quicksand</span></div>
+      <div class="swatch" style="background:#B88A82"><span class="tip">#B88A82<br>Copper Rose</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E0DCC0"><span class="tip">#E0DCC0<br>Cool Wheat</span></div>
+      <div class="swatch" style="background:#D0C8A4"><span class="tip">#D0C8A4<br>Sage</span></div>
+      <div class="swatch" style="background:#C5C0A8"><span class="tip">#C5C0A8<br>Pale Olive</span></div>
+      <div class="swatch" style="background:#B8B294"><span class="tip">#B8B294<br>Cool Ecru</span></div>
+      <div class="swatch" style="background:#D8D4B8"><span class="tip">#D8D4B8<br>Pale Sage</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#6B8E6B"><span class="tip">#6B8E6B<br>Fern</span></div>
+      <div class="swatch" style="background:#8FBC8F"><span class="tip">#8FBC8F<br>Dark Sea Green</span></div>
+      <div class="swatch" style="background:#6B8F71"><span class="tip">#6B8F71<br>Laurel Green</span></div>
+      <div class="swatch" style="background:#5F9EA0"><span class="tip">#5F9EA0<br>Cadet Blue</span></div>
+      <div class="swatch" style="background:#6BA292"><span class="tip">#6BA292<br>Polished Pine</span></div>
+      <div class="swatch" style="background:#517B6E"><span class="tip">#517B6E<br>Viridian</span></div>
+      <div class="swatch" style="background:#4E6E58"><span class="tip">#4E6E58<br>Hunter Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#6495ED"><span class="tip">#6495ED<br>Cornflower Blue</span></div>
+      <div class="swatch" style="background:#4682B4"><span class="tip">#4682B4<br>Steel Blue</span></div>
+      <div class="swatch" style="background:#6A7BA2"><span class="tip">#6A7BA2<br>Shadow Blue</span></div>
+      <div class="swatch" style="background:#536878"><span class="tip">#536878<br>Dark Electric Blue</span></div>
+      <div class="swatch" style="background:#708090"><span class="tip">#708090<br>Slate Grey</span></div>
+      <div class="swatch" style="background:#5072A7"><span class="tip">#5072A7<br>Blue Yonder</span></div>
+      <div class="swatch" style="background:#3B5998"><span class="tip">#3B5998<br>Facebook Blue</span></div>
+      <div class="swatch" style="background:#2F4F6F"><span class="tip">#2F4F6F<br>Dark Blue Grey</span></div>
+      <div class="swatch" style="background:#191970"><span class="tip">#191970<br>Midnight Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#6A5ACD"><span class="tip">#6A5ACD<br>Slate Blue</span></div>
+      <div class="swatch" style="background:#7B68EE"><span class="tip">#7B68EE<br>Medium Slate Blue</span></div>
+      <div class="swatch" style="background:#8B7EB8"><span class="tip">#8B7EB8<br>Purple Mountain</span></div>
+      <div class="swatch" style="background:#7B6C8E"><span class="tip">#7B6C8E<br>Muted Purple</span></div>
+      <div class="swatch" style="background:#6C567B"><span class="tip">#6C567B<br>Plum Purple</span></div>
+      <div class="swatch" style="background:#5D4E72"><span class="tip">#5D4E72<br>English Violet</span></div>
+      <div class="swatch" style="background:#483D6B"><span class="tip">#483D6B<br>Dark Slate Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#F5F0EB"><span class="tip">#F5F0EB<br>Linen</span></div>
+      <div class="swatch" style="background:#C4AEAD"><span class="tip">#C4AEAD<br>Silver Pink</span></div>
+      <div class="swatch" style="background:#B8AFA8"><span class="tip">#B8AFA8<br>Silver</span></div>
+      <div class="swatch" style="background:#A09A92"><span class="tip">#A09A92<br>Quick Silver</span></div>
+      <div class="swatch" style="background:#808080"><span class="tip">#808080<br>Grey</span></div>
+      <div class="swatch" style="background:#708090"><span class="tip">#708090<br>Slate Grey</span></div>
+      <div class="swatch" style="background:#536878"><span class="tip">#536878<br>Payne's Grey</span></div>
+      <div class="swatch" style="background:#2F4F4F"><span class="tip">#2F4F4F<br>Dark Slate</span></div>
+      <div class="swatch" style="background:#1E2D3D"><span class="tip">#1E2D3D<br>Dark Navy</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card summer-card">
+  <div class="season-header-row">
+    <div class="season-name">Soft Summer</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Most muted summer. Greyed, blended, cool-neutral. Atmospheric haze.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#D4899E"><span class="tip">#D4899E<br>Dusty Rose</span></div>
+      <div class="swatch" style="background:#E0A4B0"><span class="tip">#E0A4B0<br>Muted Pink</span></div>
+      <div class="swatch" style="background:#D09CC0"><span class="tip">#D09CC0<br>Lilac Pink</span></div>
+      <div class="swatch" style="background:#C07898"><span class="tip">#C07898<br>Mauve Taupe</span></div>
+      <div class="swatch" style="background:#B86A8C"><span class="tip">#B86A8C<br>Muted Berry</span></div>
+      <div class="swatch" style="background:#A85880"><span class="tip">#A85880<br>Antique Fuchsia</span></div>
+      <div class="swatch" style="background:#984C72"><span class="tip">#984C72<br>Plum Rose</span></div>
+      <div class="swatch" style="background:#C888A4"><span class="tip">#C888A4<br>Mountbatten Pink</span></div>
+      <div class="swatch" style="background:#DEAAB8"><span class="tip">#DEAAB8<br>Pastel Pink</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#DCC0A4"><span class="tip">#DCC0A4<br>Warm Sand</span></div>
+      <div class="swatch" style="background:#D8B498"><span class="tip">#D8B498<br>Soft Peach</span></div>
+      <div class="swatch" style="background:#CEA88E"><span class="tip">#CEA88E<br>Tan</span></div>
+      <div class="swatch" style="background:#C49C84"><span class="tip">#C49C84<br>Beaver</span></div>
+      <div class="swatch" style="background:#E0C0AA"><span class="tip">#E0C0AA<br>Pale Taupe</span></div>
+      <div class="swatch" style="background:#D0B094"><span class="tip">#D0B094<br>Grullo</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E0D8B0"><span class="tip">#E0D8B0<br>Pale Olive</span></div>
+      <div class="swatch" style="background:#D8CCAA"><span class="tip">#D8CCAA<br>Sage</span></div>
+      <div class="swatch" style="background:#CCB890"><span class="tip">#CCB890<br>Dark Khaki</span></div>
+      <div class="swatch" style="background:#BEB488"><span class="tip">#BEB488<br>Artichoke</span></div>
+      <div class="swatch" style="background:#E4D8AE"><span class="tip">#E4D8AE<br>Vanilla</span></div>
+      <div class="swatch" style="background:#C8BC90"><span class="tip">#C8BC90<br>Muted Khaki</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#A4C098"><span class="tip">#A4C098<br>Norway</span></div>
+      <div class="swatch" style="background:#80BAB0"><span class="tip">#80BAB0<br>Xanadu</span></div>
+      <div class="swatch" style="background:#78AC84"><span class="tip">#78AC84<br>Muted Green</span></div>
+      <div class="swatch" style="background:#7CA470"><span class="tip">#7CA470<br>Reseda Green</span></div>
+      <div class="swatch" style="background:#689870"><span class="tip">#689870<br>Axolotl</span></div>
+      <div class="swatch" style="background:#70B898"><span class="tip">#70B898<br>Wintergreen</span></div>
+      <div class="swatch" style="background:#5C907C"><span class="tip">#5C907C<br>Feldgrau</span></div>
+      <div class="swatch" style="background:#90BC90"><span class="tip">#90BC90<br>Cambridge</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#98BCD0"><span class="tip">#98BCD0<br>Pewter Blue</span></div>
+      <div class="swatch" style="background:#8CACC8"><span class="tip">#8CACC8<br>Cool Blue</span></div>
+      <div class="swatch" style="background:#7CA0C0"><span class="tip">#7CA0C0<br>Shadow Blue</span></div>
+      <div class="swatch" style="background:#6C94B8"><span class="tip">#6C94B8<br>Air Superiority</span></div>
+      <div class="swatch" style="background:#5C88A8"><span class="tip">#5C88A8<br>Cadet</span></div>
+      <div class="swatch" style="background:#507C9C"><span class="tip">#507C9C<br>Dark Cadet</span></div>
+      <div class="swatch" style="background:#446C88"><span class="tip">#446C88<br>Dark Slate Teal</span></div>
+      <div class="swatch" style="background:#84A4BC"><span class="tip">#84A4BC<br>Muted Steel</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#B098CC"><span class="tip">#B098CC<br>Muted Lavender</span></div>
+      <div class="swatch" style="background:#9878B4"><span class="tip">#9878B4<br>Muted Violet</span></div>
+      <div class="swatch" style="background:#A48CBC"><span class="tip">#A48CBC<br>Cool Mauve</span></div>
+      <div class="swatch" style="background:#8868A4"><span class="tip">#8868A4<br>Purple Haze</span></div>
+      <div class="swatch" style="background:#7C6898"><span class="tip">#7C6898<br>Dim Violet</span></div>
+      <div class="swatch" style="background:#8C78A4"><span class="tip">#8C78A4<br>Old Lavender</span></div>
+      <div class="swatch" style="background:#A890B8"><span class="tip">#A890B8<br>Wisteria</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#F0EDE5"><span class="tip">#F0EDE5<br>White Smoke</span></div>
+      <div class="swatch" style="background:#D5CEC5"><span class="tip">#D5CEC5<br>Pale Silver</span></div>
+      <div class="swatch" style="background:#C4BCB0"><span class="tip">#C4BCB0<br>Ash</span></div>
+      <div class="swatch" style="background:#A9A9A9"><span class="tip">#A9A9A9<br>Dark Grey</span></div>
+      <div class="swatch" style="background:#967969"><span class="tip">#967969<br>Beaver</span></div>
+      <div class="swatch" style="background:#808080"><span class="tip">#808080<br>Grey</span></div>
+      <div class="swatch" style="background:#6B6560"><span class="tip">#6B6560<br>Dim Grey</span></div>
+      <div class="swatch" style="background:#555050"><span class="tip">#555050<br>Davys Grey</span></div>
+      <div class="swatch" style="background:#3E3B38"><span class="tip">#3E3B38<br>Charcoal</span></div>
+    </div>
+  </div>
+</div>
+<div class="section-header autumn-header">— Autumn —</div>
+<div class="season-card autumn-card">
+  <div class="season-header-row">
+    <div class="season-name">Soft Autumn</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Softest autumn. Muted, warm-neutral, hazy earth tones. Foggy morning.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#D08C74"><span class="tip">#D08C74<br>Dark Salmon</span></div>
+      <div class="swatch" style="background:#C48090"><span class="tip">#C48090<br>Muted Rose</span></div>
+      <div class="swatch" style="background:#DC8C74"><span class="tip">#DC8C74<br>Copper Rose</span></div>
+      <div class="swatch" style="background:#B88480"><span class="tip">#B88480<br>Cinereous</span></div>
+      <div class="swatch" style="background:#C07480"><span class="tip">#C07480<br>Rose Taupe</span></div>
+      <div class="swatch" style="background:#CC8C7C"><span class="tip">#CC8C7C<br>Burnished Brown</span></div>
+      <div class="swatch" style="background:#B47C74"><span class="tip">#B47C74<br>Copper Penny</span></div>
+      <div class="swatch" style="background:#D8988C"><span class="tip">#D8988C<br>Blast Off Rose</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F0A878"><span class="tip">#F0A878<br>Sandy Brown</span></div>
+      <div class="swatch" style="background:#E4B484"><span class="tip">#E4B484<br>Camel</span></div>
+      <div class="swatch" style="background:#DCA470"><span class="tip">#DCA470<br>Fallow</span></div>
+      <div class="swatch" style="background:#E4AC78"><span class="tip">#E4AC78<br>Persian Orange</span></div>
+      <div class="swatch" style="background:#D4A474"><span class="tip">#D4A474<br>Buff</span></div>
+      <div class="swatch" style="background:#C89468"><span class="tip">#C89468<br>Shadow</span></div>
+      <div class="swatch" style="background:#E0C09C"><span class="tip">#E0C09C<br>Pale Gold</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F6D294"><span class="tip">#F6D294<br>Mellow Yellow</span></div>
+      <div class="swatch" style="background:#ECD078"><span class="tip">#ECD078<br>Jasmine</span></div>
+      <div class="swatch" style="background:#E4C87C"><span class="tip">#E4C87C<br>Straw</span></div>
+      <div class="swatch" style="background:#DCC890"><span class="tip">#DCC890<br>Ecru</span></div>
+      <div class="swatch" style="background:#D0B880"><span class="tip">#D0B880<br>Ecru Dark</span></div>
+      <div class="swatch" style="background:#CCD098"><span class="tip">#CCD098<br>Sage</span></div>
+      <div class="swatch" style="background:#D8C48C"><span class="tip">#D8C48C<br>Dark Khaki</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#A4B480"><span class="tip">#A4B480<br>Artichoke</span></div>
+      <div class="swatch" style="background:#80A468"><span class="tip">#80A468<br>Fern</span></div>
+      <div class="swatch" style="background:#6CA080"><span class="tip">#6CA080<br>Axolotl</span></div>
+      <div class="swatch" style="background:#90AC74"><span class="tip">#90AC74<br>Reseda</span></div>
+      <div class="swatch" style="background:#80A460"><span class="tip">#80A460<br>Russian Green</span></div>
+      <div class="swatch" style="background:#A0AC80"><span class="tip">#A0AC80<br>Laurel</span></div>
+      <div class="swatch" style="background:#6C9450"><span class="tip">#6C9450<br>Fern Green</span></div>
+      <div class="swatch" style="background:#8CB474"><span class="tip">#8CB474<br>Asparagus</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#84BCA8"><span class="tip">#84BCA8<br>Cambridge Blue</span></div>
+      <div class="swatch" style="background:#74B0A4"><span class="tip">#74B0A4<br>Wintergreen</span></div>
+      <div class="swatch" style="background:#64A490"><span class="tip">#64A490<br>Hookers Green</span></div>
+      <div class="swatch" style="background:#6C9C84"><span class="tip">#6C9C84<br>Xanadu</span></div>
+      <div class="swatch" style="background:#609498"><span class="tip">#609498<br>Teal Blue</span></div>
+      <div class="swatch" style="background:#649CA8"><span class="tip">#649CA8<br>Steel Teal</span></div>
+      <div class="swatch" style="background:#548C98"><span class="tip">#548C98<br>Cadet</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#AC84AC"><span class="tip">#AC84AC<br>Mountbatten</span></div>
+      <div class="swatch" style="background:#9C70A8"><span class="tip">#9C70A8<br>Old Lavender</span></div>
+      <div class="swatch" style="background:#AC84A0"><span class="tip">#AC84A0<br>Muted Plum</span></div>
+      <div class="swatch" style="background:#946CA0"><span class="tip">#946CA0<br>Dim Plum</span></div>
+      <div class="swatch" style="background:#886C90"><span class="tip">#886C90<br>Eggplant Light</span></div>
+      <div class="swatch" style="background:#A484AC"><span class="tip">#A484AC<br>Muted Lilac</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#F5EDE0"><span class="tip">#F5EDE0<br>Linen</span></div>
+      <div class="swatch" style="background:#E8DCC8"><span class="tip">#E8DCC8<br>Champagne</span></div>
+      <div class="swatch" style="background:#DDD5C5"><span class="tip">#DDD5C5<br>Bone</span></div>
+      <div class="swatch" style="background:#C4B9A4"><span class="tip">#C4B9A4<br>Dark Vanilla</span></div>
+      <div class="swatch" style="background:#B8A99A"><span class="tip">#B8A99A<br>Grullo</span></div>
+      <div class="swatch" style="background:#A09080"><span class="tip">#A09080<br>Khaki</span></div>
+      <div class="swatch" style="background:#8D7B6C"><span class="tip">#8D7B6C<br>Shadow</span></div>
+      <div class="swatch" style="background:#7A6A5B"><span class="tip">#7A6A5B<br>Coyote</span></div>
+      <div class="swatch" style="background:#5C4E40"><span class="tip">#5C4E40<br>Dark Lava</span></div>
+      <div class="swatch" style="background:#4A3F35"><span class="tip">#4A3F35<br>Cafe Noir</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card autumn-card">
+  <div class="season-header-row">
+    <div class="season-name">True (Warm) Autumn</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Warmest autumn. Rich, golden, earthy. Like autumn foliage at peak.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#CC5500"><span class="tip">#CC5500<br>Burnt Orange</span></div>
+      <div class="swatch" style="background:#C04000"><span class="tip">#C04000<br>Mahogany</span></div>
+      <div class="swatch" style="background:#B7410E"><span class="tip">#B7410E<br>Rust</span></div>
+      <div class="swatch" style="background:#E2725B"><span class="tip">#E2725B<br>Terracotta</span></div>
+      <div class="swatch" style="background:#D2691E"><span class="tip">#D2691E<br>Chocolate</span></div>
+      <div class="swatch" style="background:#CD5C5C"><span class="tip">#CD5C5C<br>Indian Red</span></div>
+      <div class="swatch" style="background:#A0522D"><span class="tip">#A0522D<br>Sienna</span></div>
+      <div class="swatch" style="background:#CB6D51"><span class="tip">#CB6D51<br>Copper</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF8C00"><span class="tip">#FF8C00<br>Dark Orange</span></div>
+      <div class="swatch" style="background:#E9692C"><span class="tip">#E9692C<br>Deep Orange</span></div>
+      <div class="swatch" style="background:#F0A030"><span class="tip">#F0A030<br>Marigold</span></div>
+      <div class="swatch" style="background:#F0C050"><span class="tip">#F0C050<br>Saffron</span></div>
+      <div class="swatch" style="background:#E8972C"><span class="tip">#E8972C<br>Carrot</span></div>
+      <div class="swatch" style="background:#D2881B"><span class="tip">#D2881B<br>Harvest Gold</span></div>
+      <div class="swatch" style="background:#C87533"><span class="tip">#C87533<br>Ochre</span></div>
+      <div class="swatch" style="background:#FFB347"><span class="tip">#FFB347<br>Pastel Orange</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#DAA520"><span class="tip">#DAA520<br>Goldenrod</span></div>
+      <div class="swatch" style="background:#C9A82C"><span class="tip">#C9A82C<br>Old Gold</span></div>
+      <div class="swatch" style="background:#B8960C"><span class="tip">#B8960C<br>Dark Goldenrod</span></div>
+      <div class="swatch white-border" style="background:#FAEBD7"><span class="tip">#FAEBD7<br>Antique White</span></div>
+      <div class="swatch" style="background:#F5DEB3"><span class="tip">#F5DEB3<br>Wheat</span></div>
+      <div class="swatch" style="background:#E8D5B5"><span class="tip">#E8D5B5<br>Dutch White</span></div>
+      <div class="swatch" style="background:#E6C35C"><span class="tip">#E6C35C<br>Sunflower</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#808000"><span class="tip">#808000<br>Olive</span></div>
+      <div class="swatch" style="background:#556B2F"><span class="tip">#556B2F<br>Dark Olive</span></div>
+      <div class="swatch" style="background:#6B8E23"><span class="tip">#6B8E23<br>Olive Drab</span></div>
+      <div class="swatch" style="background:#228B22"><span class="tip">#228B22<br>Forest Green</span></div>
+      <div class="swatch" style="background:#2E8B57"><span class="tip">#2E8B57<br>Sea Green</span></div>
+      <div class="swatch" style="background:#008080"><span class="tip">#008080<br>Teal</span></div>
+      <div class="swatch" style="background:#2E5E4E"><span class="tip">#2E5E4E<br>Warm Teal</span></div>
+      <div class="swatch" style="background:#4D6B3A"><span class="tip">#4D6B3A<br>Sap Green</span></div>
+      <div class="swatch" style="background:#667B4E"><span class="tip">#667B4E<br>Russian Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#367588"><span class="tip">#367588<br>Jelly Bean</span></div>
+      <div class="swatch" style="background:#3B6978"><span class="tip">#3B6978<br>Ming</span></div>
+      <div class="swatch" style="background:#2C5F6E"><span class="tip">#2C5F6E<br>Deep Teal</span></div>
+      <div class="swatch" style="background:#1E6B52"><span class="tip">#1E6B52<br>Bottle Green</span></div>
+      <div class="swatch" style="background:#006D6F"><span class="tip">#006D6F<br>Skobeloff</span></div>
+      <div class="swatch" style="background:#1B4B5A"><span class="tip">#1B4B5A<br>Midnight Teal</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#7B4B6D"><span class="tip">#7B4B6D<br>Warm Plum</span></div>
+      <div class="swatch" style="background:#614051"><span class="tip">#614051<br>Eggplant</span></div>
+      <div class="swatch" style="background:#6B4458"><span class="tip">#6B4458<br>Wine Dregs</span></div>
+      <div class="swatch" style="background:#824D6B"><span class="tip">#824D6B<br>Twilight Mauve</span></div>
+      <div class="swatch" style="background:#785A6A"><span class="tip">#785A6A<br>Mauve Taupe</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FAEBD7"><span class="tip">#FAEBD7<br>Antique White</span></div>
+      <div class="swatch" style="background:#DEB887"><span class="tip">#DEB887<br>Burlywood</span></div>
+      <div class="swatch" style="background:#C19A6B"><span class="tip">#C19A6B<br>Fawn</span></div>
+      <div class="swatch" style="background:#A0826D"><span class="tip">#A0826D<br>Beaver</span></div>
+      <div class="swatch" style="background:#8B7355"><span class="tip">#8B7355<br>Dark Tan</span></div>
+      <div class="swatch" style="background:#8B6914"><span class="tip">#8B6914<br>Dark Goldenrod</span></div>
+      <div class="swatch" style="background:#7B3F00"><span class="tip">#7B3F00<br>Chocolate</span></div>
+      <div class="swatch" style="background:#654321"><span class="tip">#654321<br>Dark Brown</span></div>
+      <div class="swatch" style="background:#3B2F2F"><span class="tip">#3B2F2F<br>Dark Lava</span></div>
+      <div class="swatch" style="background:#2C1B0E"><span class="tip">#2C1B0E<br>Seal Brown</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card autumn-card">
+  <div class="season-header-row">
+    <div class="season-name">Dark (Deep) Autumn</div>
+    <div class="season-count">51 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Darkest autumn. Warm, deep, rich. Dark jewel warmth, burgundy wine.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#8B0000"><span class="tip">#8B0000<br>Dark Red</span></div>
+      <div class="swatch" style="background:#B22222"><span class="tip">#B22222<br>Firebrick</span></div>
+      <div class="swatch" style="background:#A0522D"><span class="tip">#A0522D<br>Sienna</span></div>
+      <div class="swatch" style="background:#800000"><span class="tip">#800000<br>Maroon</span></div>
+      <div class="swatch" style="background:#722F37"><span class="tip">#722F37<br>Wine</span></div>
+      <div class="swatch" style="background:#7C0A02"><span class="tip">#7C0A02<br>Barn Red</span></div>
+      <div class="swatch" style="background:#9B2335"><span class="tip">#9B2335<br>Cranberry</span></div>
+      <div class="swatch" style="background:#893F45"><span class="tip">#893F45<br>Cordovan</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#CC7722"><span class="tip">#CC7722<br>Ochre</span></div>
+      <div class="swatch" style="background:#B8860B"><span class="tip">#B8860B<br>Dark Goldenrod</span></div>
+      <div class="swatch" style="background:#A0692B"><span class="tip">#A0692B<br>Golden Brown</span></div>
+      <div class="swatch" style="background:#D4812A"><span class="tip">#D4812A<br>Cinnamon</span></div>
+      <div class="swatch" style="background:#BF8040"><span class="tip">#BF8040<br>Peru</span></div>
+      <div class="swatch" style="background:#C26020"><span class="tip">#C26020<br>Alloy Orange</span></div>
+      <div class="swatch" style="background:#9C5221"><span class="tip">#9C5221<br>Windsor Tan</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#8B6508"><span class="tip">#8B6508<br>Dark Gold</span></div>
+      <div class="swatch" style="background:#9B7B12"><span class="tip">#9B7B12<br>Antique Gold</span></div>
+      <div class="swatch" style="background:#A08C28"><span class="tip">#A08C28<br>Satin Gold</span></div>
+      <div class="swatch" style="background:#8B7D3C"><span class="tip">#8B7D3C<br>Dark Khaki</span></div>
+      <div class="swatch" style="background:#7B6B2E"><span class="tip">#7B6B2E<br>Olive Gold</span></div>
+      <div class="swatch" style="background:#C4A238"><span class="tip">#C4A238<br>Gold Metallic</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#006400"><span class="tip">#006400<br>Dark Green</span></div>
+      <div class="swatch" style="background:#2E8B57"><span class="tip">#2E8B57<br>Sea Green</span></div>
+      <div class="swatch" style="background:#4A5D23"><span class="tip">#4A5D23<br>Army Green</span></div>
+      <div class="swatch" style="background:#355E3B"><span class="tip">#355E3B<br>Hunter Green</span></div>
+      <div class="swatch" style="background:#3A5F0B"><span class="tip">#3A5F0B<br>Avocado</span></div>
+      <div class="swatch" style="background:#556B2F"><span class="tip">#556B2F<br>Dark Olive</span></div>
+      <div class="swatch" style="background:#4B5320"><span class="tip">#4B5320<br>Olive Drab</span></div>
+      <div class="swatch" style="background:#4F6545"><span class="tip">#4F6545<br>Hookers Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#004953"><span class="tip">#004953<br>Deep Teal</span></div>
+      <div class="swatch" style="background:#003153"><span class="tip">#003153<br>Prussian Blue</span></div>
+      <div class="swatch" style="background:#1B4B5A"><span class="tip">#1B4B5A<br>Midnight Green</span></div>
+      <div class="swatch" style="background:#006D6F"><span class="tip">#006D6F<br>Skobeloff</span></div>
+      <div class="swatch" style="background:#1A3A4A"><span class="tip">#1A3A4A<br>Dark Teal</span></div>
+      <div class="swatch" style="background:#0D3B66"><span class="tip">#0D3B66<br>Dark Blue</span></div>
+      <div class="swatch" style="background:#16425B"><span class="tip">#16425B<br>Indigo Dye</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#614051"><span class="tip">#614051<br>Eggplant</span></div>
+      <div class="swatch" style="background:#5E376D"><span class="tip">#5E376D<br>Kingfisher Daisy</span></div>
+      <div class="swatch" style="background:#4C2C50"><span class="tip">#4C2C50<br>Dark Purple</span></div>
+      <div class="swatch" style="background:#3E2148"><span class="tip">#3E2148<br>Dark Violet</span></div>
+      <div class="swatch" style="background:#55384A"><span class="tip">#55384A<br>Wine Berry</span></div>
+      <div class="swatch" style="background:#4A3040"><span class="tip">#4A3040<br>Dark Raspberry</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#F5E6D3"><span class="tip">#F5E6D3<br>Champagne</span></div>
+      <div class="swatch" style="background:#C4A882"><span class="tip">#C4A882<br>Pale Gold</span></div>
+      <div class="swatch" style="background:#8B7D6B"><span class="tip">#8B7D6B<br>Shadow</span></div>
+      <div class="swatch" style="background:#6B5E50"><span class="tip">#6B5E50<br>Coffee</span></div>
+      <div class="swatch" style="background:#5C4033"><span class="tip">#5C4033<br>Van Dyke Brown</span></div>
+      <div class="swatch" style="background:#4A3728"><span class="tip">#4A3728<br>Pullman Brown</span></div>
+      <div class="swatch" style="background:#3C2415"><span class="tip">#3C2415<br>Chocolate</span></div>
+      <div class="swatch" style="background:#2C1A10"><span class="tip">#2C1A10<br>Bistre</span></div>
+      <div class="swatch" style="background:#1C1014"><span class="tip">#1C1014<br>Licorice</span></div>
+    </div>
+  </div>
+</div>
+<div class="section-header winter-header">— Winter —</div>
+<div class="season-card winter-card">
+  <div class="season-header-row">
+    <div class="season-name">Dark (Deep) Winter</div>
+    <div class="season-count">53 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Darkest winter. Cool, vivid, dramatic. Deep jewel tones, high drama.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#DC143C"><span class="tip">#DC143C<br>Crimson</span></div>
+      <div class="swatch" style="background:#C62168"><span class="tip">#C62168<br>Cerise</span></div>
+      <div class="swatch" style="background:#800020"><span class="tip">#800020<br>Burgundy</span></div>
+      <div class="swatch" style="background:#960018"><span class="tip">#960018<br>Carmine</span></div>
+      <div class="swatch" style="background:#D21F3C"><span class="tip">#D21F3C<br>Amaranth</span></div>
+      <div class="swatch" style="background:#AB274F"><span class="tip">#AB274F<br>Amaranth Purple</span></div>
+      <div class="swatch" style="background:#722F37"><span class="tip">#722F37<br>Wine</span></div>
+      <div class="swatch" style="background:#B80F0A"><span class="tip">#B80F0A<br>Venetian Red</span></div>
+      <div class="swatch" style="background:#9B1B30"><span class="tip">#9B1B30<br>Ruby Wine</span></div>
+      <div class="swatch" style="background:#D02060"><span class="tip">#D02060<br>Vivid Cerise</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#A03820"><span class="tip">#A03820<br>Dark Coral</span></div>
+      <div class="swatch" style="background:#8B3A3A"><span class="tip">#8B3A3A<br>Deep Red Brown</span></div>
+      <div class="swatch" style="background:#C04040"><span class="tip">#C04040<br>Muted Coral</span></div>
+      <div class="swatch" style="background:#A34050"><span class="tip">#A34050<br>Brick Red</span></div>
+      <div class="swatch" style="background:#B03050"><span class="tip">#B03050<br>Jester Red</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C4A000"><span class="tip">#C4A000<br>Dark Yellow</span></div>
+      <div class="swatch" style="background:#B5950E"><span class="tip">#B5950E<br>Dark Gold</span></div>
+      <div class="swatch" style="background:#DAA520"><span class="tip">#DAA520<br>Goldenrod</span></div>
+      <div class="swatch" style="background:#A89020"><span class="tip">#A89020<br>Antique Gold</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#50C878"><span class="tip">#50C878<br>Emerald</span></div>
+      <div class="swatch" style="background:#006B3C"><span class="tip">#006B3C<br>Bottle Green</span></div>
+      <div class="swatch" style="background:#004225"><span class="tip">#004225<br>British Racing</span></div>
+      <div class="swatch" style="background:#00563F"><span class="tip">#00563F<br>Castleton</span></div>
+      <div class="swatch" style="background:#007A7A"><span class="tip">#007A7A<br>Teal</span></div>
+      <div class="swatch" style="background:#355E3B"><span class="tip">#355E3B<br>Hunter Green</span></div>
+      <div class="swatch" style="background:#0D4F3C"><span class="tip">#0D4F3C<br>Malachite</span></div>
+      <div class="swatch" style="background:#006050"><span class="tip">#006050<br>Deep Jade</span></div>
+      <div class="swatch" style="background:#1B6B4A"><span class="tip">#1B6B4A<br>Dark Spring</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#002366"><span class="tip">#002366<br>Royal Blue Dark</span></div>
+      <div class="swatch" style="background:#0D3B66"><span class="tip">#0D3B66<br>Dark Blue</span></div>
+      <div class="swatch" style="background:#1B1464"><span class="tip">#1B1464<br>Dark Indigo</span></div>
+      <div class="swatch" style="background:#003153"><span class="tip">#003153<br>Prussian Blue</span></div>
+      <div class="swatch" style="background:#002244"><span class="tip">#002244<br>Dark Midnight</span></div>
+      <div class="swatch" style="background:#0F4D92"><span class="tip">#0F4D92<br>Yale Blue</span></div>
+      <div class="swatch" style="background:#0047AB"><span class="tip">#0047AB<br>Cobalt</span></div>
+      <div class="swatch" style="background:#1A5276"><span class="tip">#1A5276<br>Dark Cerulean</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#4B0082"><span class="tip">#4B0082<br>Indigo</span></div>
+      <div class="swatch" style="background:#702963"><span class="tip">#702963<br>Byzantium</span></div>
+      <div class="swatch" style="background:#660066"><span class="tip">#660066<br>Purple</span></div>
+      <div class="swatch" style="background:#4A0E4E"><span class="tip">#4A0E4E<br>Tyrian Purple</span></div>
+      <div class="swatch" style="background:#2E0854"><span class="tip">#2E0854<br>Dark Indigo</span></div>
+      <div class="swatch" style="background:#5C246E"><span class="tip">#5C246E<br>Purple Heart</span></div>
+      <div class="swatch" style="background:#3B0A45"><span class="tip">#3B0A45<br>Dark Magenta</span></div>
+      <div class="swatch" style="background:#550A80"><span class="tip">#550A80<br>Kingfisher Daisy</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#F0F0F0"><span class="tip">#F0F0F0<br>White Smoke</span></div>
+      <div class="swatch" style="background:#D8D8D8"><span class="tip">#D8D8D8<br>Light Grey</span></div>
+      <div class="swatch" style="background:#C0C0C0"><span class="tip">#C0C0C0<br>Silver</span></div>
+      <div class="swatch" style="background:#808080"><span class="tip">#808080<br>Grey</span></div>
+      <div class="swatch" style="background:#696969"><span class="tip">#696969<br>Dim Grey</span></div>
+      <div class="swatch" style="background:#36454F"><span class="tip">#36454F<br>Charcoal</span></div>
+      <div class="swatch" style="background:#1A1A2E"><span class="tip">#1A1A2E<br>Dark Navy</span></div>
+      <div class="swatch" style="background:#0A0A0A"><span class="tip">#0A0A0A<br>Near Black</span></div>
+      <div class="swatch" style="background:#000000"><span class="tip">#000000<br>Black</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card winter-card">
+  <div class="season-header-row">
+    <div class="season-name">True (Cool) Winter</div>
+    <div class="season-count">55 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Coolest winter. High contrast — icy + bold, blue-based. Snow and jewels.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#CC0000"><span class="tip">#CC0000<br>Boston Red</span></div>
+      <div class="swatch" style="background:#DC143C"><span class="tip">#DC143C<br>Crimson</span></div>
+      <div class="swatch" style="background:#E30B5C"><span class="tip">#E30B5C<br>Raspberry</span></div>
+      <div class="swatch" style="background:#FF007F"><span class="tip">#FF007F<br>Rose</span></div>
+      <div class="swatch" style="background:#D2042D"><span class="tip">#D2042D<br>Cherry</span></div>
+      <div class="swatch" style="background:#C21E56"><span class="tip">#C21E56<br>Magenta Rose</span></div>
+      <div class="swatch" style="background:#FF0090"><span class="tip">#FF0090<br>Magenta Process</span></div>
+      <div class="swatch" style="background:#E0115F"><span class="tip">#E0115F<br>Ruby</span></div>
+      <div class="swatch" style="background:#B80050"><span class="tip">#B80050<br>Rubine Red</span></div>
+      <div class="swatch" style="background:#E02070"><span class="tip">#E02070<br>Cerise</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#CB4154"><span class="tip">#CB4154<br>Cool Coral</span></div>
+      <div class="swatch" style="background:#C04040"><span class="tip">#C04040<br>Cool Red Coral</span></div>
+      <div class="swatch" style="background:#CD5B5B"><span class="tip">#CD5B5B<br>Icy Coral</span></div>
+      <div class="swatch" style="background:#B83A4A"><span class="tip">#B83A4A<br>Blush Red</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E2D200"><span class="tip">#E2D200<br>Cool Lemon</span></div>
+      <div class="swatch" style="background:#D4C700"><span class="tip">#D4C700<br>Pear</span></div>
+      <div class="swatch white-border" style="background:#FFFFCC"><span class="tip">#FFFFCC<br>Cream</span></div>
+      <div class="swatch" style="background:#D0D060"><span class="tip">#D0D060<br>Cool Gold</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#009B7D"><span class="tip">#009B7D<br>Paolo Veronese</span></div>
+      <div class="swatch" style="background:#008B8B"><span class="tip">#008B8B<br>Dark Cyan</span></div>
+      <div class="swatch" style="background:#00755E"><span class="tip">#00755E<br>Tropical Green</span></div>
+      <div class="swatch" style="background:#009060"><span class="tip">#009060<br>Shamrock</span></div>
+      <div class="swatch" style="background:#228B22"><span class="tip">#228B22<br>Forest Green</span></div>
+      <div class="swatch" style="background:#36747D"><span class="tip">#36747D<br>Ming</span></div>
+      <div class="swatch" style="background:#006D5B"><span class="tip">#006D5B<br>Teal Green</span></div>
+      <div class="swatch" style="background:#00A878"><span class="tip">#00A878<br>Green Jewel</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#4169E1"><span class="tip">#4169E1<br>Royal Blue</span></div>
+      <div class="swatch" style="background:#0000CD"><span class="tip">#0000CD<br>Medium Blue</span></div>
+      <div class="swatch" style="background:#0F52BA"><span class="tip">#0F52BA<br>Sapphire</span></div>
+      <div class="swatch" style="background:#0057B8"><span class="tip">#0057B8<br>Azure</span></div>
+      <div class="swatch" style="background:#003F87"><span class="tip">#003F87<br>Cobalt</span></div>
+      <div class="swatch" style="background:#005F9E"><span class="tip">#005F9E<br>Sapphire Blue</span></div>
+      <div class="swatch" style="background:#00468C"><span class="tip">#00468C<br>Medium Electric</span></div>
+      <div class="swatch" style="background:#000080"><span class="tip">#000080<br>Navy</span></div>
+      <div class="swatch" style="background:#1560BD"><span class="tip">#1560BD<br>Denim</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#8A2BE2"><span class="tip">#8A2BE2<br>Blue Violet</span></div>
+      <div class="swatch" style="background:#7B1FA2"><span class="tip">#7B1FA2<br>Purple</span></div>
+      <div class="swatch" style="background:#6C3461"><span class="tip">#6C3461<br>Palatinate</span></div>
+      <div class="swatch" style="background:#663399"><span class="tip">#663399<br>Rebecca Purple</span></div>
+      <div class="swatch" style="background:#5B2C6F"><span class="tip">#5B2C6F<br>Purple Heart</span></div>
+      <div class="swatch" style="background:#4A0080"><span class="tip">#4A0080<br>Indigo</span></div>
+      <div class="swatch" style="background:#5D3FD3"><span class="tip">#5D3FD3<br>Iris</span></div>
+      <div class="swatch" style="background:#9932CC"><span class="tip">#9932CC<br>Dark Orchid</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals & Icys</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFFFF"><span class="tip">#FFFFFF<br>Pure White</span></div>
+      <div class="swatch white-border" style="background:#E8F0F8"><span class="tip">#E8F0F8<br>Ice Blue</span></div>
+      <div class="swatch white-border" style="background:#D6E6F2"><span class="tip">#D6E6F2<br>Alice Blue</span></div>
+      <div class="swatch white-border" style="background:#E8D4EF"><span class="tip">#E8D4EF<br>Icy Lavender</span></div>
+      <div class="swatch white-border" style="background:#D6F5E3"><span class="tip">#D6F5E3<br>Icy Mint</span></div>
+      <div class="swatch white-border" style="background:#F0D0D8"><span class="tip">#F0D0D8<br>Icy Pink</span></div>
+      <div class="swatch" style="background:#C0C0C0"><span class="tip">#C0C0C0<br>Silver</span></div>
+      <div class="swatch" style="background:#808080"><span class="tip">#808080<br>Grey</span></div>
+      <div class="swatch" style="background:#484848"><span class="tip">#484848<br>Outer Space</span></div>
+      <div class="swatch" style="background:#2C3E50"><span class="tip">#2C3E50<br>Gunmetal</span></div>
+      <div class="swatch" style="background:#1C1C1C"><span class="tip">#1C1C1C<br>Eerie Black</span></div>
+      <div class="swatch" style="background:#000000"><span class="tip">#000000<br>Black</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card winter-card">
+  <div class="season-header-row">
+    <div class="season-name">Bright (Clear) Winter</div>
+    <div class="season-count">54 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Most vivid winter. Electric, cool-neutral, striking contrast. Neon ice.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF1493"><span class="tip">#FF1493<br>Deep Pink</span></div>
+      <div class="swatch" style="background:#FF0066"><span class="tip">#FF0066<br>Vivid Rose</span></div>
+      <div class="swatch" style="background:#E40046"><span class="tip">#E40046<br>Spanish Red</span></div>
+      <div class="swatch" style="background:#FF003F"><span class="tip">#FF003F<br>Electric Crimson</span></div>
+      <div class="swatch" style="background:#FF355E"><span class="tip">#FF355E<br>Radical Red</span></div>
+      <div class="swatch" style="background:#D6006E"><span class="tip">#D6006E<br>Vivid Cerise</span></div>
+      <div class="swatch" style="background:#FF00FF"><span class="tip">#FF00FF<br>Magenta</span></div>
+      <div class="swatch" style="background:#FF6EC7"><span class="tip">#FF6EC7<br>Neon Pink</span></div>
+      <div class="swatch" style="background:#E8005A"><span class="tip">#E8005A<br>Bright Raspberry</span></div>
+      <div class="swatch" style="background:#CC0044"><span class="tip">#CC0044<br>Carmine Red</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FF4D4D"><span class="tip">#FF4D4D<br>Bright Coral</span></div>
+      <div class="swatch" style="background:#FF5555"><span class="tip">#FF5555<br>Sunset Orange</span></div>
+      <div class="swatch" style="background:#FF5F5F"><span class="tip">#FF5F5F<br>Bittersweet</span></div>
+      <div class="swatch" style="background:#FF6680"><span class="tip">#FF6680<br>Wild Watermelon</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E2D200"><span class="tip">#E2D200<br>Cool Lemon</span></div>
+      <div class="swatch" style="background:#D4E157"><span class="tip">#D4E157<br>Lime</span></div>
+      <div class="swatch" style="background:#C6FF00"><span class="tip">#C6FF00<br>Electric Lime</span></div>
+      <div class="swatch" style="background:#B2FF59"><span class="tip">#B2FF59<br>Light Green Accent</span></div>
+      <div class="swatch" style="background:#E0E040"><span class="tip">#E0E040<br>Pear</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#00FF7F"><span class="tip">#00FF7F<br>Spring Green</span></div>
+      <div class="swatch" style="background:#00CC66"><span class="tip">#00CC66<br>Caribbean Green</span></div>
+      <div class="swatch" style="background:#009B48"><span class="tip">#009B48<br>Green Pigment</span></div>
+      <div class="swatch" style="background:#00A693"><span class="tip">#00A693<br>Persian Green</span></div>
+      <div class="swatch" style="background:#00C4B0"><span class="tip">#00C4B0<br>Light Teal</span></div>
+      <div class="swatch" style="background:#3CD070"><span class="tip">#3CD070<br>Malachite</span></div>
+      <div class="swatch" style="background:#00FA9A"><span class="tip">#00FA9A<br>Medium Spring</span></div>
+      <div class="swatch" style="background:#00E070"><span class="tip">#00E070<br>Vivid Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#1E90FF"><span class="tip">#1E90FF<br>Dodger Blue</span></div>
+      <div class="swatch" style="background:#0000FF"><span class="tip">#0000FF<br>Blue</span></div>
+      <div class="swatch" style="background:#00CED1"><span class="tip">#00CED1<br>Dark Turquoise</span></div>
+      <div class="swatch" style="background:#0077FF"><span class="tip">#0077FF<br>Azure Radiance</span></div>
+      <div class="swatch" style="background:#007FFF"><span class="tip">#007FFF<br>Azure</span></div>
+      <div class="swatch" style="background:#0066CC"><span class="tip">#0066CC<br>Absolute Zero</span></div>
+      <div class="swatch" style="background:#4040FF"><span class="tip">#4040FF<br>Neon Blue</span></div>
+      <div class="swatch" style="background:#00BFFF"><span class="tip">#00BFFF<br>Deep Sky Blue</span></div>
+      <div class="swatch" style="background:#00A0E0"><span class="tip">#00A0E0<br>Vivid Cerulean</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#8B00FF"><span class="tip">#8B00FF<br>Electric Violet</span></div>
+      <div class="swatch" style="background:#9400D3"><span class="tip">#9400D3<br>Dark Violet</span></div>
+      <div class="swatch" style="background:#A020F0"><span class="tip">#A020F0<br>Purple</span></div>
+      <div class="swatch" style="background:#BF00FF"><span class="tip">#BF00FF<br>Electric Purple</span></div>
+      <div class="swatch" style="background:#7F00FF"><span class="tip">#7F00FF<br>Violet</span></div>
+      <div class="swatch" style="background:#6600FF"><span class="tip">#6600FF<br>Electric Indigo</span></div>
+      <div class="swatch" style="background:#CC00FF"><span class="tip">#CC00FF<br>Vivid Orchid</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals & Icys</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFFFF"><span class="tip">#FFFFFF<br>Pure White</span></div>
+      <div class="swatch white-border" style="background:#E0E7EE"><span class="tip">#E0E7EE<br>Icy Blue</span></div>
+      <div class="swatch white-border" style="background:#E5E0F0"><span class="tip">#E5E0F0<br>Icy Violet</span></div>
+      <div class="swatch white-border" style="background:#E0F0E0"><span class="tip">#E0F0E0<br>Icy Mint</span></div>
+      <div class="swatch white-border" style="background:#F0E0E8"><span class="tip">#F0E0E8<br>Icy Pink</span></div>
+      <div class="swatch" style="background:#C0C0C0"><span class="tip">#C0C0C0<br>Silver</span></div>
+      <div class="swatch" style="background:#778899"><span class="tip">#778899<br>Light Slate</span></div>
+      <div class="swatch" style="background:#505060"><span class="tip">#505060<br>Payne's Grey</span></div>
+      <div class="swatch" style="background:#2F4F4F"><span class="tip">#2F4F4F<br>Dark Slate</span></div>
+      <div class="swatch" style="background:#1C1C1C"><span class="tip">#1C1C1C<br>Eerie Black</span></div>
+      <div class="swatch" style="background:#000000"><span class="tip">#000000<br>Black</span></div>
+    </div>
+  </div>
+</div>
+<div class="section-header flow-header">— Flow Seasons (16-Season Additions) —</div>
+<div class="season-card flow-card">
+  <div class="season-header-row">
+    <div class="season-name">Soft Spring</div>
+    <div class="season-count">51 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Spring + muted. Playful variety, coral-pink warmth, cool accents (turquoise, lavender). Dusty but colorful.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F08890"><span class="tip">#F08890<br>Coral Pink</span></div>
+      <div class="swatch" style="background:#E87090"><span class="tip">#E87090<br>Warm Rose</span></div>
+      <div class="swatch" style="background:#F5A0A8"><span class="tip">#F5A0A8<br>Salmon Pink</span></div>
+      <div class="swatch" style="background:#DC6C84"><span class="tip">#DC6C84<br>Blush Rose</span></div>
+      <div class="swatch" style="background:#F8B0B8"><span class="tip">#F8B0B8<br>Flamingo</span></div>
+      <div class="swatch" style="background:#F09CAC"><span class="tip">#F09CAC<br>Carnation</span></div>
+      <div class="swatch" style="background:#E48098"><span class="tip">#E48098<br>Thatch</span></div>
+      <div class="swatch" style="background:#F5A8C0"><span class="tip">#F5A8C0<br>Rose Blush</span></div>
+      <div class="swatch" style="background:#D87898"><span class="tip">#D87898<br>Dusty Rose</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F5A880"><span class="tip">#F5A880<br>Soft Peach</span></div>
+      <div class="swatch" style="background:#F8C0A0"><span class="tip">#F8C0A0<br>Peach Puff</span></div>
+      <div class="swatch" style="background:#F0B088"><span class="tip">#F0B088<br>Warm Peach</span></div>
+      <div class="swatch" style="background:#EC9C6C"><span class="tip">#EC9C6C<br>Apricot</span></div>
+      <div class="swatch" style="background:#FFB888"><span class="tip">#FFB888<br>Cantaloupe</span></div>
+      <div class="swatch" style="background:#F5C8A4"><span class="tip">#F5C8A4<br>Bisque</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#FFD88C"><span class="tip">#FFD88C<br>Soft Gold</span></div>
+      <div class="swatch" style="background:#FFE094"><span class="tip">#FFE094<br>Butter</span></div>
+      <div class="swatch" style="background:#F5CC78"><span class="tip">#F5CC78<br>Pale Gold</span></div>
+      <div class="swatch" style="background:#FFD050"><span class="tip">#FFD050<br>Daffodil</span></div>
+      <div class="swatch" style="background:#F0CC70"><span class="tip">#F0CC70<br>Jasmine</span></div>
+      <div class="swatch" style="background:#FFDC8C"><span class="tip">#FFDC8C<br>Buttercream</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#90D8B0"><span class="tip">#90D8B0<br>Mint</span></div>
+      <div class="swatch" style="background:#7CCC88"><span class="tip">#7CCC88<br>Celadon</span></div>
+      <div class="swatch" style="background:#68C070"><span class="tip">#68C070<br>Pistachio</span></div>
+      <div class="swatch" style="background:#5CB868"><span class="tip">#5CB868<br>Sage</span></div>
+      <div class="swatch" style="background:#80CC8C"><span class="tip">#80CC8C<br>Eton Blue</span></div>
+      <div class="swatch" style="background:#58B068"><span class="tip">#58B068<br>Soft Fern</span></div>
+      <div class="swatch" style="background:#70C088"><span class="tip">#70C088<br>Cambridge</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#80C8DC"><span class="tip">#80C8DC<br>Robin Egg Blue</span></div>
+      <div class="swatch" style="background:#68BCC8"><span class="tip">#68BCC8<br>Moonstone</span></div>
+      <div class="swatch" style="background:#58B0C4"><span class="tip">#58B0C4<br>Turquoise</span></div>
+      <div class="swatch" style="background:#70BCCC"><span class="tip">#70BCCC<br>Soft Sky</span></div>
+      <div class="swatch" style="background:#50A8B8"><span class="tip">#50A8B8<br>Teal Mist</span></div>
+      <div class="swatch" style="background:#60B4C4"><span class="tip">#60B4C4<br>Aquamarine</span></div>
+      <div class="swatch" style="background:#48A0B0"><span class="tip">#48A0B0<br>Pool Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C4A4D8"><span class="tip">#C4A4D8<br>Soft Lavender</span></div>
+      <div class="swatch" style="background:#B490C8"><span class="tip">#B490C8<br>Wisteria</span></div>
+      <div class="swatch" style="background:#D0B0DC"><span class="tip">#D0B0DC<br>Thistle</span></div>
+      <div class="swatch" style="background:#A480B8"><span class="tip">#A480B8<br>Muted Lilac</span></div>
+      <div class="swatch" style="background:#BC98CC"><span class="tip">#BC98CC<br>Orchid Haze</span></div>
+      <div class="swatch" style="background:#9474AC"><span class="tip">#9474AC<br>Dusty Plum</span></div>
+      <div class="swatch" style="background:#C8A8D0"><span class="tip">#C8A8D0<br>Light Lavender</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFF8EC"><span class="tip">#FFF8EC<br>Cream</span></div>
+      <div class="swatch white-border" style="background:#F8EEDC"><span class="tip">#F8EEDC<br>Linen</span></div>
+      <div class="swatch" style="background:#EEDCC0"><span class="tip">#EEDCC0<br>Champagne</span></div>
+      <div class="swatch" style="background:#DCCCA8"><span class="tip">#DCCCA8<br>Sand</span></div>
+      <div class="swatch" style="background:#CCB490"><span class="tip">#CCB490<br>Warm Taupe</span></div>
+      <div class="swatch" style="background:#B8A080"><span class="tip">#B8A080<br>Mushroom</span></div>
+      <div class="swatch" style="background:#9C886C"><span class="tip">#9C886C<br>Soft Brown</span></div>
+      <div class="swatch" style="background:#846C54"><span class="tip">#846C54<br>Driftwood</span></div>
+      <div class="swatch" style="background:#684C3C"><span class="tip">#684C3C<br>Cocoa</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card flow-card">
+  <div class="season-header-row">
+    <div class="season-name">Light Autumn</div>
+    <div class="season-count">49 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Lightest autumn. Golden honey glow, creamy amber warmth. Concentrated warm hues — less blue/purple range than Soft Spring.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E8A088"><span class="tip">#E8A088<br>Peach Blossom</span></div>
+      <div class="swatch" style="background:#E0946C"><span class="tip">#E0946C<br>Terra Pink</span></div>
+      <div class="swatch" style="background:#F0A890"><span class="tip">#F0A890<br>Melon</span></div>
+      <div class="swatch" style="background:#D8906C"><span class="tip">#D8906C<br>Copper Blush</span></div>
+      <div class="swatch" style="background:#F5B89C"><span class="tip">#F5B89C<br>Warm Peach</span></div>
+      <div class="swatch" style="background:#CC8468"><span class="tip">#CC8468<br>Sienna Rose</span></div>
+      <div class="swatch" style="background:#F0A480"><span class="tip">#F0A480<br>Soft Coral</span></div>
+      <div class="swatch" style="background:#D89878"><span class="tip">#D89878<br>Dusty Salmon</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F0AC68"><span class="tip">#F0AC68<br>Amber</span></div>
+      <div class="swatch" style="background:#F8BC78"><span class="tip">#F8BC78<br>Apricot</span></div>
+      <div class="swatch" style="background:#E49850"><span class="tip">#E49850<br>Butterscotch</span></div>
+      <div class="swatch" style="background:#F5C88C"><span class="tip">#F5C88C<br>Buff</span></div>
+      <div class="swatch" style="background:#D89044"><span class="tip">#D89044<br>Honey</span></div>
+      <div class="swatch" style="background:#ECC088"><span class="tip">#ECC088<br>Sandy Coral</span></div>
+      <div class="swatch" style="background:#F8D4A0"><span class="tip">#F8D4A0<br>Pale Peach</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#F5D888"><span class="tip">#F5D888<br>Pale Gold</span></div>
+      <div class="swatch" style="background:#ECC870"><span class="tip">#ECC870<br>Jasmine</span></div>
+      <div class="swatch" style="background:#F0DC94"><span class="tip">#F0DC94<br>Butter</span></div>
+      <div class="swatch" style="background:#E0C060"><span class="tip">#E0C060<br>Straw</span></div>
+      <div class="swatch" style="background:#D8B458"><span class="tip">#D8B458<br>Golden Honey</span></div>
+      <div class="swatch" style="background:#F2E0A0"><span class="tip">#F2E0A0<br>Vanilla</span></div>
+      <div class="swatch" style="background:#C8A84C"><span class="tip">#C8A84C<br>Amber Gold</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#A4BC78"><span class="tip">#A4BC78<br>Sage</span></div>
+      <div class="swatch" style="background:#90B068"><span class="tip">#90B068<br>Fern</span></div>
+      <div class="swatch" style="background:#B8C898"><span class="tip">#B8C898<br>Tea Green</span></div>
+      <div class="swatch" style="background:#7CA454"><span class="tip">#7CA454<br>Leaf</span></div>
+      <div class="swatch" style="background:#8CA864"><span class="tip">#8CA864<br>Moss</span></div>
+      <div class="swatch" style="background:#6C9448"><span class="tip">#6C9448<br>Olive Green</span></div>
+      <div class="swatch" style="background:#A0B480"><span class="tip">#A0B480<br>Celadon</span></div>
+      <div class="swatch" style="background:#94AC70"><span class="tip">#94AC70<br>Grass</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#80BCA4"><span class="tip">#80BCA4<br>Warm Teal</span></div>
+      <div class="swatch" style="background:#6CB094"><span class="tip">#6CB094<br>Sea Glass</span></div>
+      <div class="swatch" style="background:#90C8AC"><span class="tip">#90C8AC<br>Jade</span></div>
+      <div class="swatch" style="background:#5CA484"><span class="tip">#5CA484<br>Eucalyptus</span></div>
+      <div class="swatch" style="background:#78B89C"><span class="tip">#78B89C<br>Soft Jade</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C0A4B4"><span class="tip">#C0A4B4<br>Soft Mauve</span></div>
+      <div class="swatch" style="background:#AC90A4"><span class="tip">#AC90A4<br>Dusty Orchid</span></div>
+      <div class="swatch" style="background:#B49CA8"><span class="tip">#B49CA8<br>Wisteria</span></div>
+      <div class="swatch" style="background:#988498"><span class="tip">#988498<br>Warm Violet</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#FFFAF0"><span class="tip">#FFFAF0<br>Floral White</span></div>
+      <div class="swatch white-border" style="background:#F8EEDC"><span class="tip">#F8EEDC<br>Cream</span></div>
+      <div class="swatch" style="background:#F0E0C4"><span class="tip">#F0E0C4<br>Oat</span></div>
+      <div class="swatch" style="background:#E4D0B0"><span class="tip">#E4D0B0<br>Sand</span></div>
+      <div class="swatch" style="background:#D4C098"><span class="tip">#D4C098<br>Warm Tan</span></div>
+      <div class="swatch" style="background:#C4AC84"><span class="tip">#C4AC84<br>Camel</span></div>
+      <div class="swatch" style="background:#B09870"><span class="tip">#B09870<br>Fawn</span></div>
+      <div class="swatch" style="background:#9C8460"><span class="tip">#9C8460<br>Driftwood</span></div>
+      <div class="swatch" style="background:#846C50"><span class="tip">#846C50<br>Umber</span></div>
+      <div class="swatch" style="background:#6C5840"><span class="tip">#6C5840<br>Espresso</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card flow-card">
+  <div class="season-header-row">
+    <div class="season-name">Deep Summer</div>
+    <div class="season-count">52 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Least saturated flow season. Cool, deep, heavily muted. Fog over dark water. Smoky jewels.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#804050"><span class="tip">#804050<br>Burgundy Rose</span></div>
+      <div class="swatch" style="background:#884858"><span class="tip">#884858<br>Raspberry</span></div>
+      <div class="swatch" style="background:#703848"><span class="tip">#703848<br>Wine</span></div>
+      <div class="swatch" style="background:#7C4854"><span class="tip">#7C4854<br>Boysenberry</span></div>
+      <div class="swatch" style="background:#90606C"><span class="tip">#90606C<br>Muted Fuchsia</span></div>
+      <div class="swatch" style="background:#643040"><span class="tip">#643040<br>Claret</span></div>
+      <div class="swatch" style="background:#7C4858"><span class="tip">#7C4858<br>Mallow</span></div>
+      <div class="swatch" style="background:#744050"><span class="tip">#744050<br>Mulberry</span></div>
+      <div class="swatch" style="background:#986878"><span class="tip">#986878<br>Soft Berry</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#907070"><span class="tip">#907070<br>Copper Rose</span></div>
+      <div class="swatch" style="background:#9C8080"><span class="tip">#9C8080<br>Dusty Coral</span></div>
+      <div class="swatch" style="background:#806868"><span class="tip">#806868<br>Mauve Brown</span></div>
+      <div class="swatch" style="background:#A48888"><span class="tip">#A48888<br>Quicksand</span></div>
+      <div class="swatch" style="background:#886868"><span class="tip">#886868<br>Dark Salmon</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#988C68"><span class="tip">#988C68<br>Olive Gold</span></div>
+      <div class="swatch" style="background:#8C8460"><span class="tip">#8C8460<br>Dark Khaki</span></div>
+      <div class="swatch" style="background:#A8A080"><span class="tip">#A8A080<br>Ecru</span></div>
+      <div class="swatch" style="background:#807850"><span class="tip">#807850<br>Antique Gold</span></div>
+      <div class="swatch" style="background:#B0A888"><span class="tip">#B0A888<br>Sand</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#4C6860"><span class="tip">#4C6860<br>Pine</span></div>
+      <div class="swatch" style="background:#3C5C54"><span class="tip">#3C5C54<br>Dark Spring</span></div>
+      <div class="swatch" style="background:#54706C"><span class="tip">#54706C<br>Viridian</span></div>
+      <div class="swatch" style="background:#304C48"><span class="tip">#304C48<br>Brunswick</span></div>
+      <div class="swatch" style="background:#5C7C78"><span class="tip">#5C7C78<br>Muted Teal</span></div>
+      <div class="swatch" style="background:#486864"><span class="tip">#486864<br>Forest Teal</span></div>
+      <div class="swatch" style="background:#587470"><span class="tip">#587470<br>Sea Green</span></div>
+      <div class="swatch" style="background:#384C48"><span class="tip">#384C48<br>Deep Jade</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#506074"><span class="tip">#506074<br>Steel Blue</span></div>
+      <div class="swatch" style="background:#3C5064"><span class="tip">#3C5064<br>Dark Steel</span></div>
+      <div class="swatch" style="background:#546880"><span class="tip">#546880<br>Air Force Blue</span></div>
+      <div class="swatch" style="background:#2C4058"><span class="tip">#2C4058<br>Prussian Blue</span></div>
+      <div class="swatch" style="background:#485C6C"><span class="tip">#485C6C<br>Shadow Blue</span></div>
+      <div class="swatch" style="background:#304458"><span class="tip">#304458<br>Dark Navy</span></div>
+      <div class="swatch" style="background:#5C7088"><span class="tip">#5C7088<br>Muted Cerulean</span></div>
+      <div class="swatch" style="background:#1C2C40"><span class="tip">#1C2C40<br>Midnight</span></div>
+      <div class="swatch" style="background:#4C6478"><span class="tip">#4C6478<br>Blue Yonder</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#584064"><span class="tip">#584064<br>Eggplant</span></div>
+      <div class="swatch" style="background:#4C3858"><span class="tip">#4C3858<br>Dark Orchid</span></div>
+      <div class="swatch" style="background:#604C70"><span class="tip">#604C70<br>Muted Purple</span></div>
+      <div class="swatch" style="background:#443050"><span class="tip">#443050<br>Grape</span></div>
+      <div class="swatch" style="background:#6C5C7C"><span class="tip">#6C5C7C<br>Amethyst</span></div>
+      <div class="swatch" style="background:#402C48"><span class="tip">#402C48<br>Byzantium</span></div>
+      <div class="swatch" style="background:#584068"><span class="tip">#584068<br>Plum</span></div>
+      <div class="swatch" style="background:#5C5078"><span class="tip">#5C5078<br>Iris</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#E0D8D4"><span class="tip">#E0D8D4<br>Pearl</span></div>
+      <div class="swatch" style="background:#BCB4B0"><span class="tip">#BCB4B0<br>Pale Silver</span></div>
+      <div class="swatch" style="background:#989498"><span class="tip">#989498<br>Cool Taupe</span></div>
+      <div class="swatch" style="background:#787880"><span class="tip">#787880<br>Pewter</span></div>
+      <div class="swatch" style="background:#585860"><span class="tip">#585860<br>Charcoal Violet</span></div>
+      <div class="swatch" style="background:#404448"><span class="tip">#404448<br>Gunmetal</span></div>
+      <div class="swatch" style="background:#2C3038"><span class="tip">#2C3038<br>Dark Charcoal</span></div>
+      <div class="swatch" style="background:#181C20"><span class="tip">#181C20<br>Near Black</span></div>
+    </div>
+  </div>
+</div>
+<div class="season-card flow-card">
+  <div class="season-header-row">
+    <div class="season-name">Soft Winter</div>
+    <div class="season-count">52 colors</div>
+  </div>
+  <div class="season-desc" style="margin-bottom:12px">Cool-neutral, higher clarity than True Summer. Stormy jewels with punch. Crisp but not electric.</div>
+  <div class="hue-row">
+    <div class="hue-label">Reds & Pinks</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C44878"><span class="tip">#C44878<br>Soft Fuchsia</span></div>
+      <div class="swatch" style="background:#A83060"><span class="tip">#A83060<br>Merlot</span></div>
+      <div class="swatch" style="background:#D85898"><span class="tip">#D85898<br>Muted Magenta</span></div>
+      <div class="swatch" style="background:#942850"><span class="tip">#942850<br>Black Cherry</span></div>
+      <div class="swatch" style="background:#DC70A8"><span class="tip">#DC70A8<br>Orchid</span></div>
+      <div class="swatch" style="background:#B83C6C"><span class="tip">#B83C6C<br>Boysenberry</span></div>
+      <div class="swatch" style="background:#C85488"><span class="tip">#C85488<br>Mulberry</span></div>
+      <div class="swatch" style="background:#A83C68"><span class="tip">#A83C68<br>Cranberry</span></div>
+      <div class="swatch" style="background:#E488B4"><span class="tip">#E488B4<br>Dusty Rose</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Oranges & Corals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#CC8890"><span class="tip">#CC8890<br>Cool Coral</span></div>
+      <div class="swatch" style="background:#D8949C"><span class="tip">#D8949C<br>Rose Quartz</span></div>
+      <div class="swatch" style="background:#C07C88"><span class="tip">#C07C88<br>Berry Coral</span></div>
+      <div class="swatch" style="background:#E0A4A8"><span class="tip">#E0A4A8<br>Blush Coral</span></div>
+      <div class="swatch" style="background:#D49098"><span class="tip">#D49098<br>Dusty Coral</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Yellows & Golds</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#C0B47C"><span class="tip">#C0B47C<br>Olive Haze</span></div>
+      <div class="swatch" style="background:#B0A468"><span class="tip">#B0A468<br>Dark Khaki</span></div>
+      <div class="swatch" style="background:#D0C488"><span class="tip">#D0C488<br>Ecru</span></div>
+      <div class="swatch" style="background:#A49458"><span class="tip">#A49458<br>Field Drab</span></div>
+      <div class="swatch" style="background:#D8CC94"><span class="tip">#D8CC94<br>Sage</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Greens</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#246048"><span class="tip">#246048<br>Pine Green</span></div>
+      <div class="swatch" style="background:#307860"><span class="tip">#307860<br>Deep Sage</span></div>
+      <div class="swatch" style="background:#409478"><span class="tip">#409478<br>Viridian</span></div>
+      <div class="swatch" style="background:#50A884"><span class="tip">#50A884<br>Muted Teal</span></div>
+      <div class="swatch" style="background:#246450"><span class="tip">#246450<br>Dark Emerald</span></div>
+      <div class="swatch" style="background:#409474"><span class="tip">#409474<br>Eucalyptus</span></div>
+      <div class="swatch" style="background:#60AC8C"><span class="tip">#60AC8C<br>Lichen</span></div>
+      <div class="swatch" style="background:#307450"><span class="tip">#307450<br>Bottle Green</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Blues & Teals</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#4C9CB0"><span class="tip">#4C9CB0<br>Dusty Teal</span></div>
+      <div class="swatch" style="background:#5C90BC"><span class="tip">#5C90BC<br>Dusty Blue</span></div>
+      <div class="swatch" style="background:#4080A4"><span class="tip">#4080A4<br>Storm Blue</span></div>
+      <div class="swatch" style="background:#307090"><span class="tip">#307090<br>Dark Teal</span></div>
+      <div class="swatch" style="background:#5090B4"><span class="tip">#5090B4<br>Wedgewood</span></div>
+      <div class="swatch" style="background:#245878"><span class="tip">#245878<br>Stormy Navy</span></div>
+      <div class="swatch" style="background:#3C7C9C"><span class="tip">#3C7C9C<br>Cadet</span></div>
+      <div class="swatch" style="background:#244C64"><span class="tip">#244C64<br>Dark Navy</span></div>
+      <div class="swatch" style="background:#4480AC"><span class="tip">#4480AC<br>Slate Blue</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Purples & Violets</div>
+    <div class="swatch-row">
+      <div class="swatch" style="background:#A468A4"><span class="tip">#A468A4<br>Icy Plum</span></div>
+      <div class="swatch" style="background:#9478B0"><span class="tip">#9478B0<br>Smokey Lavender</span></div>
+      <div class="swatch" style="background:#7C4894"><span class="tip">#7C4894<br>Eggplant</span></div>
+      <div class="swatch" style="background:#9458B0"><span class="tip">#9458B0<br>Muted Amethyst</span></div>
+      <div class="swatch" style="background:#6C3880"><span class="tip">#6C3880<br>Dark Plum</span></div>
+      <div class="swatch" style="background:#B078C4"><span class="tip">#B078C4<br>Wisteria</span></div>
+      <div class="swatch" style="background:#844C9C"><span class="tip">#844C9C<br>Grape</span></div>
+    </div>
+  </div>
+  <div class="hue-row">
+    <div class="hue-label">Neutrals</div>
+    <div class="swatch-row">
+      <div class="swatch white-border" style="background:#E8E4E0"><span class="tip">#E8E4E0<br>Soft White</span></div>
+      <div class="swatch" style="background:#D0CCC8"><span class="tip">#D0CCC8<br>Dove Grey</span></div>
+      <div class="swatch" style="background:#B0ACB0"><span class="tip">#B0ACB0<br>Silver</span></div>
+      <div class="swatch" style="background:#8E8E94"><span class="tip">#8E8E94<br>Pewter</span></div>
+      <div class="swatch" style="background:#6C6C78"><span class="tip">#6C6C78<br>Cool Grey</span></div>
+      <div class="swatch" style="background:#4C4C5C"><span class="tip">#4C4C5C<br>Charcoal</span></div>
+      <div class="swatch" style="background:#383038"><span class="tip">#383038<br>Espresso</span></div>
+      <div class="swatch" style="background:#282830"><span class="tip">#282830<br>Dark Charcoal</span></div>
+      <div class="swatch" style="background:#141418"><span class="tip">#141418<br>Near Black</span></div>
+    </div>
+  </div>
+</div>
+
+<p style="text-align:center; margin-top:24px; font-size:10px; color:#444; max-width:800px; margin-left:auto; margin-right:auto;">
+  Colors compiled from The Concept Wardrobe, SchemeColor, Color-Hex community palettes, and seasonal color theory principles.
+  Organized by hue family for easy reference. Hover swatches for hex codes and color names.
+</p>
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
