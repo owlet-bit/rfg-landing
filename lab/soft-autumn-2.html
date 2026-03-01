@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Best Colors — Soft Autumn</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #1a1612;
+    --bg-card: #241f1a;
+    --bg-hover: #2e2720;
+    --text-primary: #e8ddd3;
+    --text-secondary: #a89888;
+    --text-muted: #6d5f52;
+    --glow-warm: rgba(194, 142, 100, 0.15);
+    --glow-green: rgba(120, 130, 90, 0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Sparkle particles */
+  .sparkle-container {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .sparkle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    animation: sparkle-float linear infinite;
+  }
+
+  @keyframes sparkle-float {
+    0% { opacity: 0; transform: translateY(100vh) scale(0); }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 15px rgba(194, 142, 100, 0.1); }
+    50% { box-shadow: 0 0 30px rgba(194, 142, 100, 0.25); }
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+
+  @keyframes breathe {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes soft-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 2.8em;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #e8ddd3, #c8a882, #e8ddd3);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 6s ease-in-out infinite;
+  }
+
+  .header .subtitle {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    font-size: 0.85em;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .header .season-badge {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 6px 24px;
+    border: 1px solid var(--text-muted);
+    border-radius: 20px;
+    font-size: 0.75em;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  /* Natural coloring reference */
+  .natural-ref {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+  }
+
+  .nat-swatch {
+    text-align: center;
+  }
+
+  .nat-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    border: 2px solid rgba(232, 221, 211, 0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nat-circle.eye-swatch {
+    background: conic-gradient(#50443e 0deg, #50443e 120deg, #404037 120deg, #404037 240deg, #50443e 240deg);
+  }
+
+  .nat-circle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    animation: breathe 3s ease-in-out infinite;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent);
+  }
+
+  .nat-label {
+    font-size: 0.65em;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .nat-hex {
+    font-size: 0.7em;
+    color: var(--text-secondary);
+    font-family: 'Jost', sans-serif;
+  }
+
+  /* Section headers */
+  .section-header {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 1.4em;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .section-why {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+    line-height: 1.6;
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  /* Color group */
+  .color-group {
+    margin-bottom: 40px;
+  }
+
+  /* Swatch grid */
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .swatch {
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-card);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: default;
+  }
+
+  .swatch:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  .swatch-color {
+    height: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .swatch-color::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at center, rgba(255,255,255,0.08), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .swatch:hover .swatch-color::after {
+    opacity: 1;
+  }
+
+  .swatch-info {
+    padding: 10px 12px;
+  }
+
+  .swatch-name {
+    font-size: 0.72em;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .swatch-hex {
+    font-size: 0.65em;
+    color: var(--text-muted);
+    font-family: 'Jost', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  .swatch-note {
+    font-size: 0.6em;
+    color: var(--text-secondary);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+    margin-top: 3px;
+  }
+
+  /* Star swatch */
+  .swatch.star .swatch-color {
+    position: relative;
+  }
+
+  .swatch.star .swatch-color::before {
+    content: '★';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 0.7em;
+    color: rgba(255,255,255,0.5);
+    animation: breathe 2s ease-in-out infinite;
+    z-index: 2;
+  }
+
+  /* Avoid section */
+  .avoid-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .avoid-swatch .swatch-color {
+    height: 50px;
+    position: relative;
+  }
+
+  .avoid-swatch .swatch-color::before {
+    content: '✕';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2em;
+    color: rgba(255,255,255,0.35);
+    z-index: 2;
+  }
+
+  .avoid-swatch {
+    opacity: 0.6;
+  }
+
+  /* Combination panels */
+  .combo-section {
+    margin-top: 50px;
+  }
+
+  .combo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .combo-card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 16px;
+    animation: pulse-glow 5s ease-in-out infinite;
+  }
+
+  .combo-swatches {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .combo-dot {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid rgba(232, 221, 211, 0.1);
+    position: relative;
+  }
+
+  .combo-dot::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.1), transparent);
+  }
+
+  .combo-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+    font-size: 0.9em;
+    margin-bottom: 4px;
+  }
+
+  .combo-desc {
+    font-size: 0.7em;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  /* Footer note */
+  .footer-note {
+    margin-top: 50px;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    line-height: 1.8;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--text-muted), transparent);
+    margin: 40px auto;
+  }
+
+  @media (max-width: 600px) {
+    .header h1 { font-size: 2em; }
+    .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+    .combo-grid { grid-template-columns: 1fr; }
+    .natural-ref { gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="sparkle-container" id="sparkles"></div>
+
+<div class="wrapper">
+
+  <div class="header">
+    <h1>Your Best Colors</h1>
+    <div class="subtitle">Mapped to your natural coloring</div>
+    <div class="season-badge">Soft Autumn</div>
+  </div>
+
+  <!-- Natural coloring reference -->
+  <div class="natural-ref">
+    <div class="nat-swatch">
+      <div class="nat-circle" style="background: #b8867a;"></div>
+      <div class="nat-label">Skin</div>
+      <div class="nat-hex">#b8867a</div>
+    </div>
+    <div class="nat-swatch">
+      <div class="nat-circle" style="background: #523a32;"></div>
+      <div class="nat-label">Hair</div>
+      <div class="nat-hex">#523a32</div>
+    </div>
+    <div class="nat-swatch">
+      <div class="nat-circle eye-swatch"></div>
+      <div class="nat-label">Eyes</div>
+      <div class="nat-hex">#404037</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- GREENS — Echo the iris -->
+  <div class="color-group">
+    <div class="section-header">Greens</div>
+    <div class="section-why">Your iris core sits at 60° olive-green. These echo it directly — they'll make your eyes the loudest thing in the room.</div>
+    <div class="swatch-grid">
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #6b7c4e;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Moss</div>
+          <div class="swatch-hex">#6b7c4e</div>
+          <div class="swatch-note">your killer color</div>
+        </div>
+      </div>
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #8a9a6c;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sage</div>
+          <div class="swatch-hex">#8a9a6c</div>
+          <div class="swatch-note">direct iris echo</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #5c6b3f;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Forest Olive</div>
+          <div class="swatch-hex">#5c6b3f</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #74806a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Lichen</div>
+          <div class="swatch-hex">#74806a</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #4a5a3a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Deep Moss</div>
+          <div class="swatch-hex">#4a5a3a</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #3e5c50;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Pine</div>
+          <div class="swatch-hex">#3e5c50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WARM EARTH — Harmonize with skin + hair -->
+  <div class="color-group">
+    <div class="section-header">Warm Earths</div>
+    <div class="section-why">Your skin (12°) and hair (15°) live in the same warm hue range. These tones harmonize without competing — they let your coloring sing.</div>
+    <div class="swatch-grid">
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #b5784a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Cognac</div>
+          <div class="swatch-hex">#b5784a</div>
+          <div class="swatch-note">matches your warmth exactly</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #c4956e;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Camel</div>
+          <div class="swatch-hex">#c4956e</div>
+        </div>
+      </div>
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #a0623e;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Terracotta</div>
+          <div class="swatch-hex">#a0623e</div>
+          <div class="swatch-note">your skin's hue, deeper</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #8c5e3c;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Sienna</div>
+          <div class="swatch-hex">#8c5e3c</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #d4a574;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Honey</div>
+          <div class="swatch-hex">#d4a574</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #c68850;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Amber</div>
+          <div class="swatch-hex">#c68850</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REDS + PINKS — Muted warm -->
+  <div class="color-group">
+    <div class="section-header">Warm Reds & Pinks</div>
+    <div class="section-why">Your skin's natural flush sits at 9-13° with ~35% chroma. These reds match that warmth level without overwhelming your softness.</div>
+    <div class="swatch-grid">
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #a85c50;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Brick Rose</div>
+          <div class="swatch-hex">#a85c50</div>
+          <div class="swatch-note">perfect lip color</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #c4807a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Dusty Rose</div>
+          <div class="swatch-hex">#c4807a</div>
+        </div>
+      </div>
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #944a3c;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Brick</div>
+          <div class="swatch-hex">#944a3c</div>
+          <div class="swatch-note">lipstick, scarves, gorgeous</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #b86b5c;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Coral</div>
+          <div class="swatch-hex">#b86b5c</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #d9a098;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Blush</div>
+          <div class="swatch-hex">#d9a098</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #7a3830;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Oxblood</div>
+          <div class="swatch-hex">#7a3830</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEALS + COOL ACCENTS -->
+  <div class="color-group">
+    <div class="section-header">Teals & Muted Blues</div>
+    <div class="section-why">Your eyes' cool-neutral core (60°) means you can pull from the cool side — but muted, never icy. Teal bridges your warm skin and cool iris.</div>
+    <div class="swatch-grid">
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #4a7872;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Soft Teal</div>
+          <div class="swatch-hex">#4a7872</div>
+          <div class="swatch-note">bridges warm + cool</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #5c8a84;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Eucalyptus</div>
+          <div class="swatch-hex">#5c8a84</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #3d5c6a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Slate Blue</div>
+          <div class="swatch-hex">#3d5c6a</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #2e4a50;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Deep Teal</div>
+          <div class="swatch-hex">#2e4a50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEUTRALS -->
+  <div class="color-group">
+    <div class="section-header">Neutrals</div>
+    <div class="section-why">Your natural contrast is moderate (~40 pts skin-to-hair). These warm neutrals work as foundations without flattening you.</div>
+    <div class="swatch-grid">
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #f0e2d0;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Ivory</div>
+          <div class="swatch-hex">#f0e2d0</div>
+          <div class="swatch-note">your white</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #d5c4af;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Oat</div>
+          <div class="swatch-hex">#d5c4af</div>
+        </div>
+      </div>
+      <div class="swatch star">
+        <div class="swatch-color" style="background: #7a6a5c;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Taupe</div>
+          <div class="swatch-hex">#7a6a5c</div>
+          <div class="swatch-note">your gray</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #5a4c40;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Umber</div>
+          <div class="swatch-hex">#5a4c40</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #3a302a;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Espresso</div>
+          <div class="swatch-hex">#3a302a</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #2c2420;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Dark Chocolate</div>
+          <div class="swatch-hex">#2c2420</div>
+          <div class="swatch-note">your black</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GOLDS + METALLICS -->
+  <div class="color-group">
+    <div class="section-header">Metallics & Accents</div>
+    <div class="section-why">Warm gold flatters the 12-20° hue range of your skin and hair. Rose gold echoes your peachy undertone. Copper picks up the auburn in your hair.</div>
+    <div class="swatch-grid">
+      <div class="swatch star">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #c9a84c, #e6c872, #c9a84c);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Warm Gold</div>
+          <div class="swatch-hex">#c9a84c</div>
+          <div class="swatch-note">your metal</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #b87a5a, #d4996e, #b87a5a);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Rose Gold</div>
+          <div class="swatch-hex">#b87a5a</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #a86840, #c47e50, #a86840);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Copper</div>
+          <div class="swatch-hex">#a86840</div>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: linear-gradient(135deg, #8a7a50, #a89460, #8a7a50);"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Antique Brass</div>
+          <div class="swatch-hex">#8a7a50</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- AVOID -->
+  <div class="color-group">
+    <div class="section-header">Avoid</div>
+    <div class="section-why">These fight your coloring — too cool, too vivid, too stark, or too icy for your muted warmth.</div>
+    <div class="avoid-grid">
+      <div class="swatch avoid-swatch">
+        <div class="swatch-color" style="background: #000000;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">True Black</div>
+          <div class="swatch-hex">too stark</div>
+        </div>
+      </div>
+      <div class="swatch avoid-swatch">
+        <div class="swatch-color" style="background: #ffffff;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Pure White</div>
+          <div class="swatch-hex">washes out</div>
+        </div>
+      </div>
+      <div class="swatch avoid-swatch">
+        <div class="swatch-color" style="background: #ff00ff;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Fuchsia</div>
+          <div class="swatch-hex">too vivid + cool</div>
+        </div>
+      </div>
+      <div class="swatch avoid-swatch">
+        <div class="swatch-color" style="background: #a8d8ea;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Icy Blue</div>
+          <div class="swatch-hex">too cool + bright</div>
+        </div>
+      </div>
+      <div class="swatch avoid-swatch">
+        <div class="swatch-color" style="background: #ff4444;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Fire Red</div>
+          <div class="swatch-hex">too vivid</div>
+        </div>
+      </div>
+      <div class="swatch avoid-swatch">
+        <div class="swatch-color" style="background: #c0c0c0;"></div>
+        <div class="swatch-info">
+          <div class="swatch-name">Cool Silver</div>
+          <div class="swatch-hex">wrong undertone</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- COMBINATIONS -->
+  <div class="combo-section">
+    <div class="section-header">Power Combinations</div>
+    <div class="section-why">Outfits, not just colors. Each pairing is calibrated to your specific contrast level and warmth.</div>
+    <div class="combo-grid">
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-dot" style="background: #6b7c4e;"></div>
+          <div class="combo-dot" style="background: #b5784a;"></div>
+          <div class="combo-dot" style="background: #f0e2d0;"></div>
+        </div>
+        <div class="combo-name">The Eye-Catcher</div>
+        <div class="combo-desc">Moss green top, cognac leather, ivory scarf. Puts your hazel eyes front and center.</div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-dot" style="background: #a0623e;"></div>
+          <div class="combo-dot" style="background: #3a302a;"></div>
+          <div class="combo-dot" style="background: #c9a84c;"></div>
+        </div>
+        <div class="combo-name">Warm Authority</div>
+        <div class="combo-desc">Terracotta top, dark chocolate pant, gold jewelry. Confident warmth, director energy.</div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-dot" style="background: #4a7872;"></div>
+          <div class="combo-dot" style="background: #d5c4af;"></div>
+          <div class="combo-dot" style="background: #7a6a5c;"></div>
+        </div>
+        <div class="combo-name">Soft Complexity</div>
+        <div class="combo-desc">Teal + oat + warm taupe. Uses your eyes' cool side while keeping the warmth grounded.</div>
+      </div>
+      <div class="combo-card">
+        <div class="combo-swatches">
+          <div class="combo-dot" style="background: #944a3c;"></div>
+          <div class="combo-dot" style="background: #5a4c40;"></div>
+          <div class="combo-dot" style="background: #8a9a6c;"></div>
+        </div>
+        <div class="combo-name">The Leading Lady</div>
+        <div class="combo-desc">Warm brick dress, umber boots, sage accent. Every element echoes something natural in you.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="footer-note">
+    Colors derived from pixel-level analysis of natural coloring<br>
+    Skin HSV(12°, 34%, 72%) · Hair HSV(15°, 39%, 32%) · Iris HSV(60°, 14%, 25%)<br>
+    <span style="opacity: 0.5;">Soft Autumn · Warm · Muted · Medium Contrast</span>
+  </div>
+
+</div>
+
+<script>
+// Generate sparkle particles
+const container = document.getElementById('sparkles');
+const colors = ['#c9a84c', '#8a9a6c', '#b5784a', '#c4807a', '#4a7872', '#d4a574'];
+
+function createSparkle() {
+  const sparkle = document.createElement('div');
+  sparkle.className = 'sparkle';
+  sparkle.style.left = Math.random() * 100 + '%';
+  sparkle.style.background = colors[Math.floor(Math.random() * colors.length)];
+  sparkle.style.animationDuration = (8 + Math.random() * 12) + 's';
+  sparkle.style.animationDelay = Math.random() * 10 + 's';
+  sparkle.style.width = (2 + Math.random() * 3) + 'px';
+  sparkle.style.height = sparkle.style.width;
+  sparkle.style.boxShadow = `0 0 ${4 + Math.random() * 6}px ${sparkle.style.background}`;
+  container.appendChild(sparkle);
+}
+
+for (let i = 0; i < 30; i++) {
+  createSparkle();
+}
+
+// Staggered entrance animation
+const swatches = document.querySelectorAll('.swatch');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '0';
+      entry.target.style.transform = 'translateY(20px)';
+      entry.target.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      setTimeout(() => {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }, i * 60);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+swatches.forEach(s => observer.observe(s));
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
