@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brittany — Deep Autumn Palette</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0e0a14;color:#ede6db;font-family:'Outfit',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+.bg-mesh{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 600px 500px at 15% 20%,rgba(160,80,30,.1),transparent),radial-gradient(ellipse 500px 600px at 80% 70%,rgba(120,50,30,.08),transparent),#0e0a14}
+.sparkle-field{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.sparkle{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(220,180,120,.9),rgba(220,180,120,0));animation:sl var(--dur) var(--delay) ease-in-out infinite;opacity:0}
+@keyframes sl{0%,100%{opacity:0;transform:scale(.3)}15%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.2);filter:drop-shadow(0 0 6px rgba(220,180,120,.6))}70%{opacity:.3;transform:scale(.6)}}
+.glow-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);animation:of 12s ease-in-out infinite}
+.glow-orb.a{width:350px;height:350px;background:rgba(160,80,30,.1);top:5%;left:-3%}
+.glow-orb.b{width:280px;height:280px;background:rgba(120,50,30,.08);bottom:15%;right:-2%;animation-delay:5s}
+@keyframes of{0%,100%{transform:translate(0,0) scale(1);opacity:.6}50%{transform:translate(-15px,25px) scale(1.2);opacity:1}}
+.wrap{position:relative;z-index:2;max-width:1050px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.header{text-align:center;margin-bottom:3rem;animation:rise 1s ease-out}
+.header h1{font-family:'Playfair Display',serif;font-weight:700;font-size:3rem;letter-spacing:.04em;background:linear-gradient(135deg,#c4764a,#d4a96a,#e8c99b,#d4a96a,#c4764a);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gt 6s ease-in-out infinite}
+@keyframes gt{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.header .season{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:#d4a96a;margin-top:.2rem;animation:pg 3s ease-in-out infinite}
+@keyframes pg{0%,100%{text-shadow:0 0 4px rgba(212,169,106,.2)}50%{text-shadow:0 0 20px rgba(212,169,106,.4)}}
+.header .sub{color:#8a7e72;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-top:.4rem}
+@keyframes rise{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:600;color:#d4a96a;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+.gem{display:inline-block;width:10px;height:10px;background:linear-gradient(135deg,#d4a96a,#c4764a);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);animation:gs 4s linear infinite}
+@keyframes gs{to{transform:rotate(360deg)}}
+.pal-sub{font-size:.65rem;color:#8a7e72;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem}
+.nat-grid{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:3rem}
+.nat-card{text-align:center;width:80px;flex-shrink:0}
+.nat-big{width:68px;height:68px;border-radius:14px;border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transition:all .3s;position:relative;overflow:hidden}
+.nat-big::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
+.nat-card:hover .nat-big{transform:scale(1.15) translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.nat-nm{font-size:.58rem;color:#8a7e72;letter-spacing:.08em;text-transform:uppercase;margin-top:.4rem}
+.nat-hx{font-size:.52rem;color:#c9976a;font-family:monospace;margin-top:.1rem}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem;margin-bottom:3rem}
+.icard{background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(212,169,106,.1);border-radius:16px;padding:1.2rem;transition:all .4s;position:relative;overflow:hidden}
+.icard::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,169,106,.4),transparent);transition:left .6s}
+.icard:hover::before{left:100%}
+.icard:hover{border-color:rgba(212,169,106,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.icard h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:#d4a96a;margin-bottom:.5rem}
+.icard p{font-size:.82rem;line-height:1.65;opacity:.82}
+.metal-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.metal-chip{width:74px;height:74px;border-radius:14px;cursor:pointer;position:relative;overflow:hidden;border:2px solid transparent;box-shadow:0 4px 16px rgba(0,0,0,.5);transition:all .3s}
+.metal-chip::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 40%,rgba(255,255,255,.06) 80%);pointer-events:none}
+.metal-chip::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.15) 50%,transparent 70%);background-size:200% 200%;animation:ms 3s ease-in-out infinite;pointer-events:none}
+@keyframes ms{0%,100%{background-position:200% 200%}50%{background-position:0% 0%}}
+.metal-chip:hover{transform:scale(1.08) translateY(-3px);border-color:rgba(255,255,255,.15)}
+.metal-chip.on{border-color:#d4a96a;box-shadow:0 0 0 2px rgba(212,169,106,.3),0 6px 20px rgba(0,0,0,.5)}
+.metal-lb{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:.52rem;color:rgba(255,255,255,.9);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.sw-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+.sw{width:52px;height:52px;border-radius:10px;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,.4);transition:all .25s;position:relative;overflow:hidden}
+.sw::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none}
+.sw:hover{transform:scale(1.1) translateY(-2px);border-color:rgba(255,255,255,.12)}
+.sw.on{border-color:#d4a96a;box-shadow:0 0 0 2px rgba(212,169,106,.3),0 4px 16px rgba(0,0,0,.5)}
+.pick-label{font-size:.7rem;color:#d4a96a;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;font-family:'Playfair Display',serif}
+.pick-section{margin-bottom:1.5rem}
+.section{margin-bottom:3rem}
+
+/* MAKEUP PREVIEW — abstract color zones, not a face */
+.makeup-zone{display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start}
+.makeup-preview{
+  width:200px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+  border:1px solid rgba(212,169,106,.15);border-radius:20px;padding:1.5rem;text-align:center;
+}
+.makeup-preview h4{font-family:'Playfair Display',serif;font-size:.85rem;color:#d4a96a;margin-bottom:1rem}
+.mu-zone{display:flex;flex-direction:column;gap:.6rem;align-items:center}
+.mu-row{display:flex;align-items:center;gap:.6rem;width:100%}
+.mu-swatch{width:48px;height:48px;border-radius:12px;box-shadow:0 3px 12px rgba(0,0,0,.4);transition:all .4s ease;position:relative;overflow:hidden;flex-shrink:0}
+.mu-swatch::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 50%);pointer-events:none}
+.mu-label{font-size:.6rem;color:#8a7e72;letter-spacing:.06em;text-transform:uppercase;text-align:left}
+.mu-name{font-size:.7rem;color:#ede6db;font-weight:400}
+.mu-combo{display:flex;height:28px;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.4);margin-top:.8rem;width:100%}
+.mu-combo div{flex:1;transition:all .4s}
+.face-reset{margin-top:.8rem;padding:.35rem .7rem;border-radius:20px;background:transparent;border:1px solid rgba(212,169,106,.2);color:#8a7e72;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:'Outfit',sans-serif}
+.face-reset:hover{border-color:#d4a96a;color:#d4a96a}
+.makeup-pickers{flex:1;min-width:260px}
+
+/* OUTFIT BUILDER */
+.outfit-zone{display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start}
+.outfit-preview{width:180px;flex-shrink:0;background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(212,169,106,.15);border-radius:20px;padding:1.5rem;text-align:center}
+.outfit-preview h4{font-family:'Playfair Display',serif;font-size:.85rem;color:#d4a96a;margin-bottom:.8rem}
+.outfit-pickers{flex:1;min-width:260px}
+  .combo-strip{display:flex;height:36px;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.5);margin-top:.5rem;position:relative}
+.combo-strip::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%);pointer-events:none;border-radius:10px}
+.combo-strip div{flex:1;transition:flex .35s}
+.combo-strip div:hover{flex:2.5}
+.combo-tall{height:60px}
+.combo-name{font-size:.55rem;color:#8a7e72;text-align:center;margin-top:.3rem}
+
+
+/* Labeled swatches */
+.sw-wrap{text-align:center;cursor:pointer;position:relative;display:inline-flex;flex-direction:column;align-items:center;width:64px;flex-shrink:0}
+.sw-wrap .sw-nm{font-size:.52rem;color:#8a7e72;margin-top:.25rem;width:56px;text-align:center;line-height:1.2;letter-spacing:.03em}
+.sw-wrap .sw-hx{font-size:.48rem;color:#c9976a;font-family:monospace;margin-top:.1rem;opacity:.7}
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(212,169,106,.95);color:#0e0a14;padding:.5rem 1.2rem;border-radius:10px;font-size:.75rem;font-weight:400;letter-spacing:.05em;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.4);backdrop-filter:blur(8px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Mobile-first fixes */
+
+
+  .combo-strip{flex-direction:row!important}
+.combo-strip div{min-height:100%}
+
+@media(max-width:768px){
+  .wrap{padding:1.5rem .8rem 3rem}
+  .header h1{font-size:2rem}
+  .header .season{font-size:1rem}
+  .header .sub{font-size:.58rem;letter-spacing:.12em}
+  .sec-head{font-size:1.1rem;margin-bottom:.8rem}
+  .pal-sub{font-size:.55rem;margin-bottom:.7rem}
+
+  /* Natural coloring — horizontal scroll if needed */
+  .nat-grid{gap:.5rem}
+  .nat-big{width:52px;height:52px;border-radius:10px}
+  .nat-nm{font-size:.48rem}
+  .nat-hx{font-size:.42rem}
+
+  /* Info cards stack */
+  .info-grid{grid-template-columns:1fr;gap:.7rem}
+  .icard{padding:.9rem}
+  .icard h3{font-size:.95rem}
+  .icard p{font-size:.76rem;line-height:1.55}
+
+  /* Metals smaller */
+  .metal-row{gap:.4rem;justify-content:flex-start}
+  .metal-chip{width:56px;height:56px;border-radius:10px}
+  .metal-lb{font-size:.42rem;bottom:3px}
+
+  /* Swatches — key fix: constrain size and let them wrap naturally */
+  .sw-grid{gap:.4rem}
+  .sw{width:42px;height:42px;border-radius:8px}
+  .sw-wrap{width:54px}
+  .nat-card{width:66px}
+  .sw-wrap .sw-nm{font-size:.42rem;max-width:48px;line-height:1.15}
+  .sw-wrap .sw-hx{font-size:.38rem}
+
+  /* Interactive sections — always stack vertically */
+  .makeup-zone,.outfit-zone,.build-zone{
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:1.2rem!important;
+  }
+  .makeup-preview,.outfit-preview,.build-preview{
+    width:100%!important;
+    max-width:100%!important;
+  }
+  .makeup-pickers,.outfit-pickers,.build-pickers{
+    width:100%!important;
+    min-width:0!important;
+  }
+
+  /* Combo strip — always horizontal */
+  .combo-strip{
+    height:36px!important;
+    flex-direction:row!important;
+    min-height:36px;
+  }
+  .combo-strip div{flex:1!important;min-width:0!important}
+  .combo-tall{height:40px!important}
+  .combo-name{font-size:.5rem}
+
+  /* Makeup preview */
+  .mu-zone{gap:.5rem}
+  .mu-row{gap:.4rem}
+  .mu-swatch{width:38px;height:38px;border-radius:8px}
+  .mu-name{font-size:.62rem}
+  .mu-label{font-size:.5rem}
+  .mu-combo{height:20px;border-radius:6px}
+  .face-reset{font-size:.55rem;padding:.3rem .6rem}
+
+  /* Pick sections */
+  .pick-label{font-size:.6rem;margin-bottom:.4rem}
+  .pick-section{margin-bottom:1rem}
+
+  /* Section spacing */
+  .section{margin-bottom:2rem}
+
+  /* Watch SVG */
+  .build-preview svg{max-width:140px}
+}
+
+@media(max-width:400px){
+  .wrap{padding:1.2rem .6rem 2.5rem}
+  .header h1{font-size:1.7rem}
+  .header .season{font-size:.9rem}
+  .nat-big{width:44px;height:44px}
+  .sw{width:36px;height:36px;border-radius:7px}
+  .sw-wrap{width:46px}
+  .nat-card{width:54px}
+  
+  .sw-wrap .sw-nm{font-size:.38rem;max-width:40px}
+  .sw-wrap .sw-hx{font-size:.34rem}
+  .metal-chip{width:48px;height:48px}
+  .icard p{font-size:.72rem}
+}
+
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="sparkle-field" id="sparkles"></div>
+<div class="glow-orb a"></div><div class="glow-orb b"></div>
+
+<div class="wrap">
+  <div class="header">
+    <h1>Brittany</h1>
+    <div class="season">Obsidian Autumn</div>
+    <div class="sub">Dark Autumn · Warm Undertone · High Contrast · Rich Depth</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Natural Coloring</div>
+    <div class="nat-grid">
+      <div class="nat-card"><div class="nat-big" style="background:#252626"></div><div class="nat-nm">Hair</div><div class="nat-hx">#252626</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#3a2810"></div><div class="nat-nm">Iris (dark)</div><div class="nat-hx">#3a2810</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#7b6b28"></div><div class="nat-nm">Iris (hazel)</div><div class="nat-hx">#7b6b28</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#b28666"></div><div class="nat-nm">Skin</div><div class="nat-hx">#b28666</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#dbc4a2"></div><div class="nat-nm">Skin (wrist)</div><div class="nat-hx">#dbc4a2</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#6a8a7a"></div><div class="nat-nm">Vein</div><div class="nat-hx">#6a8a7a</div></div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="icard"><h3>Season Profile</h3><p>Obsidian Autumn — the richest, darkest Autumn. Jet black achromatic hair against warm medium skin creates high value contrast (66pt spread). Iris saturation is intensely golden — dark hazel with amber, olive-green, and brown creating a multi-tonal warm eye. Veins read blue-green through warm skin — classic warm undertone.</p></div>
+    <div class="icard"><h3>Best Colors</h3><p>Rich saturated warm tones that echo your dark hazel iris — deep greens that pull out the olive in your eyes, amber golds that mirror the inner ring, warm browns that ground the whole palette. Your jet black hair means you can anchor the deepest tones: evergreen, mulled wine, black walnut, deepwater teal. Warm neutrals from raven to candlelight for the foundation.</p></div>
+    <div class="icard"><h3>Avoid</h3><p>Cool whites, icy pastels, blue-based pinks, silver, lavender, powder blue, lemon yellow, neon anything, cool greys. Pure black works — warm it with gold.</p></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Best Metals</div>
+    <div class="metal-row">
+      <div class="metal-chip on" style="background:linear-gradient(145deg,#d4a24c,#c99a3a,#e8c466)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Gold</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#b87333,#a66228,#d4884a)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Copper</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#cd7f32,#b8722a,#dda050)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Bronze</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#e8c466,#d4b04c,#f0d88a)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Champagne</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#b76e79,#a85d6a,#c98090)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Rose Gold</div></div>
+    </div>
+  </div>
+
+  <!-- ★ MAKEUP TRY-ON — abstract zones, no face ★ -->
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Makeup Try-On</div>
+    <div class="pal-sub">Click colors to preview — see your combination build in real time</div>
+    <div class="makeup-zone">
+      <div class="makeup-preview">
+        <h4>Your Look</h4>
+        <div class="mu-zone">
+          <div class="mu-row">
+            <div class="mu-swatch" id="muLipSw" style="background:#c98080"></div>
+            <div><div class="mu-label">Lips</div><div class="mu-name" id="muLipN">Natural</div></div>
+          </div>
+          <div class="mu-row">
+            <div class="mu-swatch" id="muEyeSw" style="background:#0e0a14;border:1px dashed rgba(255,255,255,.1)"></div>
+            <div><div class="mu-label">Eyes</div><div class="mu-name" id="muEyeN">None</div></div>
+          </div>
+          <div class="mu-row">
+            <div class="mu-swatch" id="muBlushSw" style="background:#0e0a14;border:1px dashed rgba(255,255,255,.1)"></div>
+            <div><div class="mu-label">Blush</div><div class="mu-name" id="muBlushN">None</div></div>
+          </div>
+        </div>
+        <div class="mu-combo">
+          <div id="mc1" style="background:#b28666" title="Skin"></div>
+          <div id="mc2" style="background:#c98080" title="Lip"></div>
+          <div id="mc3" style="background:#0e0a14" title="Eye"></div>
+          <div id="mc4" style="background:#0e0a14" title="Blush"></div>
+        </div>
+        <div style="font-size:.5rem;color:#8a7e72;margin-top:.3rem;letter-spacing:.08em;text-transform:uppercase">Skin + Lip + Eye + Blush</div>
+        <button class="face-reset" onclick="resetMU()">Reset</button>
+      </div>
+      <div class="makeup-pickers">
+        <div class="pick-section">
+          <div class="pick-label">Lip Color</div>
+          <div class="sw-grid" id="lipP">
+            <div class="sw-wrap"><div class="sw on" style="background:#c98080" onclick="setL(this,'#c98080','Natural');copyHex('#c98080','Natural')"></div><div class="sw-nm">Natural</div><div class="sw-hx">#c98080</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b3a3a" onclick="setL(this,'#8b3a3a','Blood Moon');copyHex('#8b3a3a','Blood Moon')"></div><div class="sw-nm">Blood Moon</div><div class="sw-hx">#8b3a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#a0522d" onclick="setL(this,'#a0522d','Cinnamon Bark');copyHex('#a0522d','Warm Sienna')"></div><div class="sw-nm">Cinnamon Bark</div><div class="sw-hx">#a0522d</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b3226" onclick="setL(this,'#6b3226','Black Fig');copyHex('#6b3226','Black Fig')"></div><div class="sw-nm">Black Fig</div><div class="sw-hx">#6b3226</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b5453a" onclick="setL(this,'#b5453a','Desert Fire');copyHex('#b5453a','Desert Fire')"></div><div class="sw-nm">Desert Fire</div><div class="sw-hx">#b5453a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#7a3b2e" onclick="setL(this,'#7a3b2e','Clay Pot');copyHex('#7a3b2e','Clay Pot')"></div><div class="sw-nm">Clay Pot</div><div class="sw-hx">#7a3b2e</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#943543" onclick="setL(this,'#943543','Crushed Plum');copyHex('#943543','Crushed Plum')"></div><div class="sw-nm">Crushed Plum</div><div class="sw-hx">#943543</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4956a" onclick="setL(this,'#d4956a','Amber Gloss');copyHex('#d4956a','Amber Gloss')"></div><div class="sw-nm">Honey Veil</div><div class="sw-hx">#d4956a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c25a40" onclick="setL(this,'#c25a40','Bonfire');copyHex('#c25a40','Bonfire')"></div><div class="sw-nm">Bonfire</div><div class="sw-hx">#c25a40</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5c2222" onclick="setL(this,'#5c2222','Nightshade');copyHex('#5c2222','Nightshade')"></div><div class="sw-nm">Nightshade</div><div class="sw-hx">#5c2222</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c4956e" onclick="setL(this,'#c4956e','Second Skin');copyHex('#c4956e','Second Skin')"></div><div class="sw-nm">Second Skin</div><div class="sw-hx">#c4956e</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Eye Shadow</div>
+          <div class="sw-grid" id="eyeP">
+            <div class="sw-wrap"><div class="sw on" style="background:transparent;border:1px dashed rgba(255,255,255,.15)" onclick="setE(this,'','None')"></div><div class="sw-nm">None</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5c3a1e" onclick="setE(this,'#5c3a1e','Warm Bronze');copyHex('#5c3a1e','Warm Bronze')"></div><div class="sw-nm">Burnished</div><div class="sw-hx">#5c3a1e</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#2d4a3a" onclick="setE(this,'#2d4a3a','Pine Shadow');copyHex('#2d4a3a','Pine Shadow')"></div><div class="sw-nm">Deep Wood</div><div class="sw-hx">#2d4a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b6b3d" onclick="setE(this,'#8b6b3d','Antique Gold');copyHex('#8b6b3d','Antique Gold')"></div><div class="sw-nm">Treasure</div><div class="sw-hx">#8b6b3d</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a2828" onclick="setE(this,'#4a2828','Warm Plum');copyHex('#4a2828','Warm Plum')"></div><div class="sw-nm">Velvet Night</div><div class="sw-hx">#4a2828</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b87333" onclick="setE(this,'#b87333','Penny');copyHex('#b87333','Penny')"></div><div class="sw-nm">Penny Bright</div><div class="sw-hx">#b87333</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4a96a" onclick="setE(this,'#d4a96a','Champagne');copyHex('#d4a96a','Champagne')"></div><div class="sw-nm">Stardust</div><div class="sw-hx">#d4a96a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1e3a3a" onclick="setE(this,'#1e3a3a','Deepwater');copyHex('#1e3a3a','Deepwater')"></div><div class="sw-nm">Mermaid</div><div class="sw-hx">#1e3a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#3d2b1a" onclick="setE(this,'#3d2b1a','Black Walnut');copyHex('#3d2b1a','Black Walnut')"></div><div class="sw-nm">Dark Roast</div><div class="sw-hx">#3d2b1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6a3040" onclick="setE(this,'#6a3040','Mulberry');copyHex('#6a3040','Mulberry')"></div><div class="sw-nm">Crushed Berry</div><div class="sw-hx">#6a3040</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Blush</div>
+          <div class="sw-grid" id="blushP">
+            <div class="sw-wrap"><div class="sw on" style="background:transparent;border:1px dashed rgba(255,255,255,.15)" onclick="setB(this,'','None')"></div><div class="sw-nm">None</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c88070" onclick="setB(this,'#c88070','Warm Rose');copyHex('#c88070','Warm Rose')"></div><div class="sw-nm">Petal</div><div class="sw-hx">#c88070</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4956a" onclick="setB(this,'#d4956a','Sun Kiss');copyHex('#d4956a','Sun Kiss')"></div><div class="sw-nm">Sun Kiss</div><div class="sw-hx">#d4956a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b35a42" onclick="setB(this,'#b35a42','Terracotta');copyHex('#b35a42','Terracotta')"></div><div class="sw-nm">Adobe</div><div class="sw-hx">#b35a42</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c47858" onclick="setB(this,'#c47858','Burnt Apricot');copyHex('#c47858','Burnt Apricot')"></div><div class="sw-nm">Nectar</div><div class="sw-hx">#c47858</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#a86040" onclick="setB(this,'#a86040','Warm Cinnamon');copyHex('#a86040','Warm Cinnamon')"></div><div class="sw-nm">Spice</div><div class="sw-hx">#a86040</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4806a" onclick="setB(this,'#d4806a','Coral Flush');copyHex('#d4806a','Coral Flush')"></div><div class="sw-nm">Poppy</div><div class="sw-hx">#d4806a</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ★ OUTFIT BUILDER ★ -->
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Outfit Builder</div>
+    <div class="pal-sub">Pick top, bottom, and accessories — see your combination build</div>
+    <div class="outfit-zone">
+      <div class="outfit-preview">
+        <h4>Your Combo</h4>
+        <div id="outCombo" class="combo-strip combo-tall" style="border-radius:14px">
+          <div id="oc1" style="background:#1a3c2a"></div>
+          <div id="oc2" style="background:#1a1a1a"></div>
+          <div id="oc3" style="background:#7a5a2a"></div>
+        </div>
+        <div class="combo-name" id="outLabel">Pine Shadow + Raven + Saddleback</div>
+      </div>
+      <div class="outfit-pickers">
+        <div class="pick-section">
+          <div class="pick-label">Top</div>
+          <div class="sw-grid" id="topP">
+            <div class="sw-wrap"><div class="sw on" style="background:#1a3c2a" onclick="setTop(this,'#1a3c2a','Pine Shadow');copyHex('#1a3c2a','Pine Shadow')"></div><div class="sw-nm">Pine Shadow</div><div class="sw-hx">#1a3c2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b2020" onclick="setTop(this,'#6b2020','Mulled Wine');copyHex('#6b2020','Mulled Wine')"></div><div class="sw-nm">Mulled Wine</div><div class="sw-hx">#6b2020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a3a4a" onclick="setTop(this,'#1a3a4a','Deepwater');copyHex('#1a3a4a','Deepwater')"></div><div class="sw-nm">Deepwater</div><div class="sw-hx">#1a3a4a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#f0e2c8" onclick="setTop(this,'#f0e2c8','Candlelight');copyHex('#f0e2c8','Candlelight')"></div><div class="sw-nm">Candlelight</div><div class="sw-hx">#f0e2c8</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c4764a" onclick="setTop(this,'#c4764a','Terra Flame');copyHex('#c4764a','Terra Flame')"></div><div class="sw-nm">Terra Flame</div><div class="sw-hx">#c4764a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#e8c99b" onclick="setTop(this,'#e8c99b','Liquid Amber');copyHex('#e8c99b','Liquid Amber')"></div><div class="sw-nm">Liquid Amber</div><div class="sw-hx">#e8c99b</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a2a3a" onclick="setTop(this,'#5a2a3a','Black Cherry');copyHex('#5a2a3a','Black Cherry')"></div><div class="sw-nm">Black Cherry</div><div class="sw-hx">#5a2a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a1a1a" onclick="setTop(this,'#1a1a1a','Raven');copyHex('#1a1a1a','Raven')"></div><div class="sw-nm">Raven</div><div class="sw-hx">#1a1a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#3a2a1a" onclick="setTop(this,'#3a2a1a','Black Walnut');copyHex('#3a2a1a','Black Walnut')"></div><div class="sw-nm">Black Walnut</div><div class="sw-hx">#3a2a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b8860b" onclick="setTop(this,'#b8860b','Honeycomb');copyHex('#b8860b','Honeycomb')"></div><div class="sw-nm">Honeycomb</div><div class="sw-hx">#b8860b</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c0885a" onclick="setTop(this,'#c0885a','Autumn Leaf');copyHex('#c0885a','Autumn Leaf')"></div><div class="sw-nm">Autumn Leaf</div><div class="sw-hx">#c0885a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a6a3a" onclick="setTop(this,'#5a6a3a','Fern');copyHex('#5a6a3a','Fern')"></div><div class="sw-nm">Fern</div><div class="sw-hx">#5a6a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4c4b0" onclick="setTop(this,'#d4c4b0','Raw Linen');copyHex('#d4c4b0','Raw Linen')"></div><div class="sw-nm">Raw Linen</div><div class="sw-hx">#d4c4b0</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4806a" onclick="setTop(this,'#d4806a','Desert Bloom');copyHex('#d4806a','Desert Bloom')"></div><div class="sw-nm">Poppy</div><div class="sw-hx">#d4806a</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Bottom</div>
+          <div class="sw-grid" id="botP">
+            <div class="sw-wrap"><div class="sw on" style="background:#1a1a1a" onclick="setBot(this,'#1a1a1a','Raven');copyHex('#1a1a1a','Raven')"></div><div class="sw-nm">Raven</div><div class="sw-hx">#1a1a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#3a2a1a" onclick="setBot(this,'#3a2a1a','Black Walnut');copyHex('#3a2a1a','Black Walnut')"></div><div class="sw-nm">Black Walnut</div><div class="sw-hx">#3a2a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a6a3a" onclick="setBot(this,'#5a6a3a','Fern');copyHex('#5a6a3a','Fern')"></div><div class="sw-nm">Fern</div><div class="sw-hx">#5a6a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a4440" onclick="setBot(this,'#4a4440','Woodsmoke');copyHex('#4a4440','Woodsmoke')"></div><div class="sw-nm">Woodsmoke</div><div class="sw-hx">#4a4440</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#2a1a1a" onclick="setBot(this,'#2a1a1a','Midnight Bark');copyHex('#2a1a1a','Midnight Bark')"></div><div class="sw-nm">Midnight Bark</div><div class="sw-hx">#2a1a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8a7e70" onclick="setBot(this,'#8a7e70','Dried Clay');copyHex('#8a7e70','Dried Clay')"></div><div class="sw-nm">Dried Clay</div><div class="sw-hx">#8a7e70</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#f0e2c8" onclick="setBot(this,'#f0e2c8','Candlelight');copyHex('#f0e2c8','Candlelight')"></div><div class="sw-nm">Candlelight</div><div class="sw-hx">#f0e2c8</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b8a898" onclick="setBot(this,'#b8a898','River Rock');copyHex('#b8a898','River Rock')"></div><div class="sw-nm">River Rock</div><div class="sw-hx">#b8a898</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a3c2a" onclick="setBot(this,'#1a3c2a','Pine Shadow');copyHex('#1a3c2a','Pine Shadow')"></div><div class="sw-nm">Pine Shadow</div><div class="sw-hx">#1a3c2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b2020" onclick="setBot(this,'#6b2020','Mulled Wine');copyHex('#6b2020','Mulled Wine')"></div><div class="sw-nm">Mulled Wine</div><div class="sw-hx">#6b2020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a4a3a" onclick="setBot(this,'#5a4a3a','Fallen Log');copyHex('#5a4a3a','Fallen Log')"></div><div class="sw-nm">Fallen Log</div><div class="sw-hx">#5a4a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6a5f58" onclick="setBot(this,'#6a5f58','Hearthstone');copyHex('#6a5f58','Hearthstone')"></div><div class="sw-nm">Hearthstone</div><div class="sw-hx">#6a5f58</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Accessories</div>
+          <div class="sw-grid" id="accP">
+            <div class="sw-wrap"><div class="sw on" style="background:#7a5a2a" onclick="setAcc(this,'#7a5a2a','Saddleback');copyHex('#7a5a2a','Saddleback')"></div><div class="sw-nm">Saddleback</div><div class="sw-hx">#7a5a2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4a24c" onclick="setAcc(this,'#d4a24c','Warm Gold');copyHex('#d4a24c','Warm Gold')"></div><div class="sw-nm">Warm Gold</div><div class="sw-hx">#d4a24c</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b87333" onclick="setAcc(this,'#b87333','Penny');copyHex('#b87333','Penny')"></div><div class="sw-nm">Penny Bright</div><div class="sw-hx">#b87333</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a3a1a" onclick="setAcc(this,'#5a3a1a','Bourbon');copyHex('#5a3a1a','Bourbon')"></div><div class="sw-nm">Bourbon</div><div class="sw-hx">#5a3a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a3020" onclick="setAcc(this,'#4a3020','Espresso Bean');copyHex('#4a3020','Espresso Bean')"></div><div class="sw-nm">Espresso Bean</div><div class="sw-hx">#4a3020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a1a1a" onclick="setAcc(this,'#1a1a1a','Raven');copyHex('#1a1a1a','Raven')"></div><div class="sw-nm">Raven</div><div class="sw-hx">#1a1a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#cd7f32" onclick="setAcc(this,'#cd7f32','Patina');copyHex('#cd7f32','Patina')"></div><div class="sw-nm">Patina</div><div class="sw-hx">#cd7f32</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b4513" onclick="setAcc(this,'#8b4513','Toffee');copyHex('#8b4513','Toffee')"></div><div class="sw-nm">Toffee</div><div class="sw-hx">#8b4513</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL WARDROBE -->
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Full Wardrobe Palette</div>
+    <div class="pal-sub">Every color that works — neutrals to accents</div>
+    <div class="sw-grid" style="gap:.4rem">
+      <div class="sw-wrap" onclick="copyHex('#1a1a1a','Raven')"><div class="sw" style="background:#1a1a1a;cursor:pointer"></div><div class="sw-nm">Raven</div><div class="sw-hx">#1a1a1a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#2a1a1a','Midnight Bark')"><div class="sw" style="background:#2a1a1a;cursor:pointer"></div><div class="sw-nm">Midnight Bark</div><div class="sw-hx">#2a1a1a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#3a2a1a','Black Walnut')"><div class="sw" style="background:#3a2a1a;cursor:pointer"></div><div class="sw-nm">Black Walnut</div><div class="sw-hx">#3a2a1a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#4a4440','Woodsmoke')"><div class="sw" style="background:#4a4440;cursor:pointer"></div><div class="sw-nm">Woodsmoke</div><div class="sw-hx">#4a4440</div></div>
+      <div class="sw-wrap" onclick="copyHex('#5a4a3a','Fallen Log')"><div class="sw" style="background:#5a4a3a;cursor:pointer"></div><div class="sw-nm">Fallen Log</div><div class="sw-hx">#5a4a3a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#6a5f58','Hearthstone')"><div class="sw" style="background:#6a5f58;cursor:pointer"></div><div class="sw-nm">Hearthstone</div><div class="sw-hx">#6a5f58</div></div>
+      <div class="sw-wrap" onclick="copyHex('#8a7e70','Dried Clay')"><div class="sw" style="background:#8a7e70;cursor:pointer"></div><div class="sw-nm">Dried Clay</div><div class="sw-hx">#8a7e70</div></div>
+      <div class="sw-wrap" onclick="copyHex('#b8a898','River Rock')"><div class="sw" style="background:#b8a898;cursor:pointer"></div><div class="sw-nm">River Rock</div><div class="sw-hx">#b8a898</div></div>
+      <div class="sw-wrap" onclick="copyHex('#d4c4b0','Raw Linen')"><div class="sw" style="background:#d4c4b0;cursor:pointer"></div><div class="sw-nm">Raw Linen</div><div class="sw-hx">#d4c4b0</div></div>
+      <div class="sw-wrap" onclick="copyHex('#f0e2c8','Candlelight')"><div class="sw" style="background:#f0e2c8;cursor:pointer"></div><div class="sw-nm">Candlelight</div><div class="sw-hx">#f0e2c8</div></div>
+      <div class="sw-wrap" onclick="copyHex('#1a3c2a','Pine Shadow')"><div class="sw" style="background:#1a3c2a;cursor:pointer"></div><div class="sw-nm">Pine Shadow</div><div class="sw-hx">#1a3c2a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#4a5a2a','Moss Floor')"><div class="sw" style="background:#4a5a2a;cursor:pointer"></div><div class="sw-nm">Moss Floor</div><div class="sw-hx">#4a5a2a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#5a6a3a','Fern')"><div class="sw" style="background:#5a6a3a;cursor:pointer"></div><div class="sw-nm">Fern</div><div class="sw-hx">#5a6a3a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#1a3a4a','Deepwater')"><div class="sw" style="background:#1a3a4a;cursor:pointer"></div><div class="sw-nm">Deepwater</div><div class="sw-hx">#1a3a4a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#6b2020','Mulled Wine')"><div class="sw" style="background:#6b2020;cursor:pointer"></div><div class="sw-nm">Mulled Wine</div><div class="sw-hx">#6b2020</div></div>
+      <div class="sw-wrap" onclick="copyHex('#5a2a3a','Black Cherry')"><div class="sw" style="background:#5a2a3a;cursor:pointer"></div><div class="sw-nm">Black Cherry</div><div class="sw-hx">#5a2a3a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#7a5a2a','Saddleback')"><div class="sw" style="background:#7a5a2a;cursor:pointer"></div><div class="sw-nm">Saddleback</div><div class="sw-hx">#7a5a2a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#8b4513','Toffee Bark')"><div class="sw" style="background:#8b4513;cursor:pointer"></div><div class="sw-nm">Toffee Bark</div><div class="sw-hx">#8b4513</div></div>
+      <div class="sw-wrap" onclick="copyHex('#c0885a','Autumn Leaf')"><div class="sw" style="background:#c0885a;cursor:pointer"></div><div class="sw-nm">Autumn Leaf</div><div class="sw-hx">#c0885a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#c4764a','Terra Flame')"><div class="sw" style="background:#c4764a;cursor:pointer"></div><div class="sw-nm">Terra Flame</div><div class="sw-hx">#c4764a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#d4806a','Desert Bloom')"><div class="sw" style="background:#d4806a;cursor:pointer"></div><div class="sw-nm">Poppy</div><div class="sw-hx">#d4806a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#b8860b','Honeycomb')"><div class="sw" style="background:#b8860b;cursor:pointer"></div><div class="sw-nm">Honeycomb</div><div class="sw-hx">#b8860b</div></div>
+      <div class="sw-wrap" onclick="copyHex('#e8c99b','Liquid Amber')"><div class="sw" style="background:#e8c99b;cursor:pointer"></div><div class="sw-nm">Liquid Amber</div><div class="sw-hx">#e8c99b</div></div>
+      <div class="sw-wrap" onclick="copyHex('#d4a96a','Harvest Moon')"><div class="sw" style="background:#d4a96a;cursor:pointer"></div><div class="sw-nm">Stardust</div><div class="sw-hx">#d4a96a</div></div>
+    </div>
+  </div>
+
+  <div class="combo-strip">
+    <div style="background:#252626"></div><div style="background:#3a2810"></div><div style="background:#7b6b28"></div><div style="background:#b28666"></div><div style="background:#dbc4a2"></div><div style="background:#6a8a7a"></div>
+  </div>
+  <div style="text-align:center;margin-top:.3rem;font-size:.6rem;color:#8a7e72;letter-spacing:.1em;text-transform:uppercase">Your natural color gradient</div>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+
+function copyHex(hex, name) {
+  navigator.clipboard.writeText(hex).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = name + '  ' + hex + '  — copied!';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1500);
+  }).catch(() => {});
+}
+const sf=document.getElementById('sparkles');for(let i=0;i<35;i++){const s=document.createElement('div');s.className='sparkle';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--dur',(5+Math.random()*6)+'s');s.style.setProperty('--delay',(Math.random()*8)+'s');const sz=2+Math.random()*4;s.style.width=sz+'px';s.style.height=sz+'px';sf.appendChild(s)}
+
+function sel(el,gid){document.querySelectorAll('#'+gid+' .sw').forEach(s=>s.classList.remove('on'));el.classList.add('on')}
+
+// Makeup
+let muLip='#c98080',muEye='',muBlush='';
+function setL(el,c,n){sel(el,'lipP');muLip=c;document.getElementById('muLipSw').style.background=c;document.getElementById('muLipSw').style.border='none';document.getElementById('muLipN').textContent=n;document.getElementById('mc2').style.background=c;muCombo()}
+function setE(el,c,n){sel(el,'eyeP');muEye=c;const sw=document.getElementById('muEyeSw');if(c){sw.style.background=c;sw.style.border='none'}else{sw.style.background='#0e0a14';sw.style.border='1px dashed rgba(255,255,255,.1)'}document.getElementById('muEyeN').textContent=n;document.getElementById('mc3').style.background=c||'#0e0a14';muCombo()}
+function setB(el,c,n){sel(el,'blushP');muBlush=c;const sw=document.getElementById('muBlushSw');if(c){sw.style.background=c;sw.style.border='none'}else{sw.style.background='#0e0a14';sw.style.border='1px dashed rgba(255,255,255,.1)'}document.getElementById('muBlushN').textContent=n;document.getElementById('mc4').style.background=c||'#0e0a14';muCombo()}
+function muCombo(){}
+function resetMU(){setL(document.querySelector('#lipP .sw'),'#c98080','Natural');setE(document.querySelector('#eyeP .sw'),'','None');setB(document.querySelector('#blushP .sw'),'','None')}
+
+// Outfit
+let cTop='#1a3c2a',nTop='Pine Shadow',cBot='#1a1a1a',nBot='Raven',cAcc='#7a5a2a',nAcc='Saddleback';
+function updateOut(){
+  document.getElementById('oc1').style.background=cTop;document.getElementById('oc2').style.background=cBot;document.getElementById('oc3').style.background=cAcc;
+  document.getElementById('outLabel').textContent=nTop+' + '+nBot+' + '+nAcc;
+}
+function setTop(el,c,n){sel(el,'topP');cTop=c;nTop=n;updateOut()}
+function setBot(el,c,n){sel(el,'botP');cBot=c;nBot=n;updateOut()}
+function setAcc(el,c,n){sel(el,'accP');cAcc=c;nAcc=n;updateOut()}
+updateOut();
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
