@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivan — True Autumn Palette</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0e0a14;color:#ede6db;font-family:'Outfit',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden}
+.bg-mesh{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse 600px 500px at 15% 20%,rgba(140,90,30,.1),transparent),radial-gradient(ellipse 500px 600px at 80% 70%,rgba(100,60,20,.08),transparent),#0e0a14}
+.sparkle-field{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.sparkle{position:absolute;border-radius:50%;background:radial-gradient(circle,rgba(220,180,120,.9),rgba(220,180,120,0));animation:sl var(--dur) var(--delay) ease-in-out infinite;opacity:0}
+@keyframes sl{0%,100%{opacity:0;transform:scale(.3)}15%{opacity:1;transform:scale(1)}50%{opacity:.8;transform:scale(1.2);filter:drop-shadow(0 0 6px rgba(220,180,120,.6))}70%{opacity:.3;transform:scale(.6)}}
+.glow-orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(80px);animation:of 12s ease-in-out infinite}
+.glow-orb.a{width:350px;height:350px;background:rgba(140,90,30,.1);top:5%;left:-3%}
+.glow-orb.b{width:280px;height:280px;background:rgba(100,60,20,.08);bottom:15%;right:-2%;animation-delay:5s}
+@keyframes of{0%,100%{transform:translate(0,0) scale(1);opacity:.6}50%{transform:translate(-15px,25px) scale(1.2);opacity:1}}
+.wrap{position:relative;z-index:2;max-width:1050px;margin:0 auto;padding:2.5rem 1.5rem 5rem}
+.header{text-align:center;margin-bottom:3rem;animation:rise 1s ease-out}
+.header h1{font-family:'Playfair Display',serif;font-weight:700;font-size:3rem;letter-spacing:.04em;background:linear-gradient(135deg,#b8860b,#d4a96a,#e8c99b,#d4a96a,#b8860b);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:gt 6s ease-in-out infinite}
+@keyframes gt{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.header .season{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:#d4a96a;margin-top:.2rem;animation:pg 3s ease-in-out infinite}
+@keyframes pg{0%,100%{text-shadow:0 0 4px rgba(212,169,106,.2)}50%{text-shadow:0 0 20px rgba(212,169,106,.4)}}
+.header .sub{color:#8a7e72;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;margin-top:.4rem}
+@keyframes rise{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+.sec-head{font-family:'Playfair Display',serif;font-size:1.35rem;font-weight:600;color:#d4a96a;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+.gem{display:inline-block;width:10px;height:10px;background:linear-gradient(135deg,#d4a96a,#b8860b);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);animation:gs 4s linear infinite}
+@keyframes gs{to{transform:rotate(360deg)}}
+.pal-sub{font-size:.65rem;color:#8a7e72;letter-spacing:.14em;text-transform:uppercase;margin-bottom:1rem}
+.nat-grid{display:flex;flex-wrap:wrap;gap:.8rem;margin-bottom:3rem}
+.nat-card{text-align:center;width:80px;flex-shrink:0}
+.nat-big{width:68px;height:68px;border-radius:14px;border:1px solid rgba(255,255,255,.06);box-shadow:0 4px 16px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.08);transition:all .3s;position:relative;overflow:hidden}
+.nat-big::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15) 0%,transparent 60%);pointer-events:none}
+.nat-card:hover .nat-big{transform:scale(1.15) translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.nat-nm{font-size:.58rem;color:#8a7e72;letter-spacing:.08em;text-transform:uppercase;margin-top:.4rem}
+.nat-hx{font-size:.52rem;color:#c9976a;font-family:monospace;margin-top:.1rem}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem;margin-bottom:3rem}
+.icard{background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(212,169,106,.1);border-radius:16px;padding:1.2rem;transition:all .4s;position:relative;overflow:hidden}
+.icard::before{content:'';position:absolute;top:0;left:-100%;width:200%;height:1px;background:linear-gradient(90deg,transparent,rgba(212,169,106,.4),transparent);transition:left .6s}
+.icard:hover::before{left:100%}
+.icard:hover{border-color:rgba(212,169,106,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.icard h3{font-family:'Playfair Display',serif;font-size:1.05rem;color:#d4a96a;margin-bottom:.5rem}
+.icard p{font-size:.82rem;line-height:1.65;opacity:.82}
+.metal-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.metal-chip{width:74px;height:74px;border-radius:14px;cursor:pointer;position:relative;overflow:hidden;border:2px solid transparent;box-shadow:0 4px 16px rgba(0,0,0,.5);transition:all .3s}
+.metal-chip::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.25) 0%,transparent 40%,rgba(255,255,255,.06) 80%);pointer-events:none}
+.metal-chip::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,.15) 50%,transparent 70%);background-size:200% 200%;animation:ms 3s ease-in-out infinite;pointer-events:none}
+@keyframes ms{0%,100%{background-position:200% 200%}50%{background-position:0% 0%}}
+.metal-chip:hover{transform:scale(1.08) translateY(-3px);border-color:rgba(255,255,255,.15)}
+.metal-chip.on{border-color:#d4a96a;box-shadow:0 0 0 2px rgba(212,169,106,.3),0 6px 20px rgba(0,0,0,.5)}
+.metal-lb{position:absolute;bottom:5px;left:0;right:0;text-align:center;font-size:.52rem;color:rgba(255,255,255,.9);letter-spacing:.08em;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+.sw-grid{display:flex;flex-wrap:wrap;gap:.6rem}
+.sw{width:52px;height:52px;border-radius:10px;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,.4);transition:all .25s;position:relative;overflow:hidden}
+.sw::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none}
+.sw:hover{transform:scale(1.1) translateY(-2px);border-color:rgba(255,255,255,.12)}
+.sw.on{border-color:#d4a96a;box-shadow:0 0 0 2px rgba(212,169,106,.3),0 4px 16px rgba(0,0,0,.5)}
+.pick-label{font-size:.7rem;color:#d4a96a;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.6rem;font-family:'Playfair Display',serif}
+.pick-section{margin-bottom:1.5rem}
+.section{margin-bottom:3rem}
+
+/* MAKEUP PREVIEW — abstract color zones, not a face */
+.makeup-zone{display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start}
+.makeup-preview{
+  width:200px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));
+  border:1px solid rgba(212,169,106,.15);border-radius:20px;padding:1.5rem;text-align:center;
+}
+.makeup-preview h4{font-family:'Playfair Display',serif;font-size:.85rem;color:#d4a96a;margin-bottom:1rem}
+.mu-zone{display:flex;;gap:.6rem;align-items:center}
+.mu-row{display:flex;align-items:center;gap:.6rem;width:100%}
+.mu-swatch{width:48px;height:48px;border-radius:12px;box-shadow:0 3px 12px rgba(0,0,0,.4);transition:all .4s ease;position:relative;overflow:hidden;flex-shrink:0}
+.mu-swatch::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.12),transparent 50%);pointer-events:none}
+.mu-label{font-size:.6rem;color:#8a7e72;letter-spacing:.06em;text-transform:uppercase;text-align:left}
+.mu-name{font-size:.7rem;color:#ede6db;font-weight:400}
+.mu-combo{display:flex;height:28px;border-radius:8px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.4);margin-top:.8rem;width:100%}
+.mu-combo div{flex:1;transition:all .4s}
+.face-reset{margin-top:.8rem;padding:.35rem .7rem;border-radius:20px;background:transparent;border:1px solid rgba(212,169,106,.2);color:#8a7e72;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .3s;font-family:'Outfit',sans-serif}
+.face-reset:hover{border-color:#d4a96a;color:#d4a96a}
+.makeup-pickers{flex:1;min-width:260px}
+
+/* OUTFIT BUILDER */
+.outfit-zone{display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start}
+.outfit-preview{width:180px;flex-shrink:0;background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(212,169,106,.15);border-radius:20px;padding:1.5rem;text-align:center}
+.outfit-preview h4{font-family:'Playfair Display',serif;font-size:.85rem;color:#d4a96a;margin-bottom:.8rem}
+.outfit-pickers{flex:1;min-width:260px}
+  .combo-strip{display:flex;height:36px;border-radius:10px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.5);margin-top:.5rem;position:relative}
+.combo-strip::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%);pointer-events:none;border-radius:10px}
+.combo-strip div{flex:1;transition:flex .35s}
+.combo-strip div:hover{flex:2.5}
+.combo-tall{height:60px}
+.combo-name{font-size:.55rem;color:#8a7e72;text-align:center;margin-top:.3rem}
+
+
+/* Labeled swatches */
+.sw-wrap{text-align:center;cursor:pointer;position:relative;display:inline-flex;flex-direction:column;align-items:center;width:64px;flex-shrink:0}
+.sw-wrap .sw-nm{font-size:.52rem;color:#8a7e72;margin-top:.25rem;width:56px;text-align:center;line-height:1.2;letter-spacing:.03em}
+.sw-wrap .sw-hx{font-size:.48rem;color:#c9976a;font-family:monospace;margin-top:.1rem;opacity:.7}
+/* Toast */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(212,169,106,.95);color:#0e0a14;padding:.5rem 1.2rem;border-radius:10px;font-size:.75rem;font-weight:400;letter-spacing:.05em;opacity:0;transition:all .3s ease;z-index:999;pointer-events:none;box-shadow:0 4px 20px rgba(0,0,0,.4);backdrop-filter:blur(8px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Mobile-first fixes */
+
+
+  .combo-strip{flex-direction:row!important}
+.combo-strip div{min-height:100%}
+
+@media(max-width:768px){
+  .wrap{padding:1.5rem .8rem 3rem}
+  .header h1{font-size:2rem}
+  .header .season{font-size:1rem}
+  .header .sub{font-size:.58rem;letter-spacing:.12em}
+  .sec-head{font-size:1.1rem;margin-bottom:.8rem}
+  .pal-sub{font-size:.55rem;margin-bottom:.7rem}
+
+  /* Natural coloring — horizontal scroll if needed */
+  .nat-grid{gap:.5rem}
+  .nat-big{width:52px;height:52px;border-radius:10px}
+  .nat-nm{font-size:.48rem}
+  .nat-hx{font-size:.42rem}
+
+  /* Info cards stack */
+  .info-grid{grid-template-columns:1fr;gap:.7rem}
+  .icard{padding:.9rem}
+  .icard h3{font-size:.95rem}
+  .icard p{font-size:.76rem;line-height:1.55}
+
+  /* Metals smaller */
+  .metal-row{gap:.4rem;justify-content:flex-start}
+  .metal-chip{width:56px;height:56px;border-radius:10px}
+  .metal-lb{font-size:.42rem;bottom:3px}
+
+  /* Swatches — key fix: constrain size and let them wrap naturally */
+  .sw-grid{gap:.4rem}
+  .sw{width:42px;height:42px;border-radius:8px}
+  .sw-wrap{width:54px}
+  .nat-card{width:66px}
+  .sw-wrap .sw-nm{font-size:.42rem;max-width:48px;line-height:1.15}
+  .sw-wrap .sw-hx{font-size:.38rem}
+
+  /* Interactive sections — always stack vertically */
+  .makeup-zone,.outfit-zone,.build-zone{
+    flex-direction:column!important;
+    align-items:stretch!important;
+    gap:1.2rem!important;
+  }
+  .makeup-preview,.outfit-preview,.build-preview{
+    width:100%!important;
+    max-width:100%!important;
+  }
+  .makeup-pickers,.outfit-pickers,.build-pickers{
+    width:100%!important;
+    min-width:0!important;
+  }
+
+  /* Combo strip — always horizontal */
+  .combo-strip{
+    height:36px!important;
+    flex-direction:row!important;
+    min-height:36px;
+  }
+  .combo-strip div{flex:1!important;min-width:0!important}
+  .combo-tall{height:40px!important}
+  .combo-name{font-size:.5rem}
+
+  /* Makeup preview */
+  .mu-zone{gap:.5rem}
+  .mu-row{gap:.4rem}
+  .mu-swatch{width:38px;height:38px;border-radius:8px}
+  .mu-name{font-size:.62rem}
+  .mu-label{font-size:.5rem}
+  .mu-combo{height:20px;border-radius:6px}
+  .face-reset{font-size:.55rem;padding:.3rem .6rem}
+
+  /* Pick sections */
+  .pick-label{font-size:.6rem;margin-bottom:.4rem}
+  .pick-section{margin-bottom:1rem}
+
+  /* Section spacing */
+  .section{margin-bottom:2rem}
+
+  /* Watch SVG */
+  .build-preview svg{max-width:140px}
+}
+
+@media(max-width:400px){
+  .wrap{padding:1.2rem .6rem 2.5rem}
+  .header h1{font-size:1.7rem}
+  .header .season{font-size:.9rem}
+  .nat-big{width:44px;height:44px}
+  .sw{width:36px;height:36px;border-radius:7px}
+  .sw-wrap{width:46px}
+  .nat-card{width:54px}
+  
+  .sw-wrap .sw-nm{font-size:.38rem;max-width:40px}
+  .sw-wrap .sw-hx{font-size:.34rem}
+  .metal-chip{width:48px;height:48px}
+  .icard p{font-size:.72rem}
+}
+
+
+/* Ivan-specific: build-zone aliases */
+.build-zone{display:flex;gap:2rem;flex-wrap:wrap;align-items:flex-start}
+.build-preview{width:200px;background:linear-gradient(135deg,rgba(255,255,255,.03),rgba(255,255,255,.01));border:1px solid rgba(212,169,106,.15);border-radius:20px;padding:1.5rem;text-align:center}
+.build-preview h4{font-family:'Playfair Display',serif;font-size:.85rem;color:#d4a96a;margin-bottom:.8rem}
+.build-pickers{flex:1;min-width:260px}
+</style>
+</head>
+<body>
+<div class="bg-mesh"></div>
+<div class="sparkle-field" id="sparkles"></div>
+<div class="glow-orb a"></div><div class="glow-orb b"></div>
+
+<div class="wrap">
+  <div class="header">
+    <h1>Ivan</h1>
+    <div class="season">Golden Harvest</div>
+    <div class="sub">Warm Autumn · Warm Undertone · Moderate Contrast · Rich Warmth Throughout</div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Natural Coloring</div>
+    <div class="nat-grid">
+      <div class="nat-card"><div class="nat-big" style="background:#37373a"></div><div class="nat-nm">Hair (shadow)</div><div class="nat-hx">#37373a</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#433f38"></div><div class="nat-nm">Hair (warm brown)</div><div class="nat-hx">#433f38</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#5b3a2a"></div><div class="nat-nm">Iris</div><div class="nat-hx">#5b3a2a</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#3e3421"></div><div class="nat-nm">Iris (amber)</div><div class="nat-hx">#3e3421</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#cc967f"></div><div class="nat-nm">Skin</div><div class="nat-hx">#cc967f</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#e8be94"></div><div class="nat-nm">Skin (wrist)</div><div class="nat-hx">#e8be94</div></div>
+      <div class="nat-card"><div class="nat-big" style="background:#6b7a5a"></div><div class="nat-nm">Vein</div><div class="nat-hx">#6b7a5a</div></div>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="icard"><h3>Season Profile</h3><p>Golden Harvest — the warm heart of Autumn. Every measurement is warm (7–42°) with zero cool deviation. Hair is deep warm brown (H:37°, not black). Moderate value contrast (41–57pt spread). Iris has both amber (39°) and red-brown (10°) zones. Veins read olive-green through warm skin.</p></div>
+    <div class="icard"><h3>Best Colors</h3><p>Colors that echo the warm brown in your hair and the amber-brown of your iris. Your warm-through-and-through coloring means the richest mid-tones are your sweet spot — aged cognac, olive grove, lion's mane, iron oxide, wild honey. Warm neutrals from heartwood to beeswax for the foundation. Nothing cool, nothing stark.</p></div>
+    <div class="icard"><h3>Avoid</h3><p>Cool greys, navy, black (too stark — use chocolate or warm charcoal), icy blue, pink, silver, neon, cool whites. You need warmth in every piece near your face.</p></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Best Metals</div>
+    <div class="metal-row">
+      <div class="metal-chip on" style="background:linear-gradient(145deg,#d4a24c,#c99a3a,#e8c466)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Gold</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#cd7f32,#b8722a,#dda050)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Bronze</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#b87333,#a66228,#d4884a)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Copper</div></div>
+      <div class="metal-chip" style="background:linear-gradient(145deg,#e8c466,#d4b04c,#f0d88a)" onclick="this.parentElement.querySelectorAll('.metal-chip').forEach(m=>m.classList.remove('on'));this.classList.add('on')"><div class="metal-lb">Champagne</div></div>
+    </div>
+  </div>
+
+  <!-- ★ SUIT BUILDER — elongated fashion figure ★ -->
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Suit Builder</div>
+    <div class="pal-sub">Pick jacket, shirt, tie, and shoes — see your combination build</div>
+    <div class="build-zone">
+      <div class="build-preview">
+        <h4>Your Combo</h4>
+        <div id="suitCombo" class="combo-strip combo-tall" style="border-radius:14px">
+          <div id="sc1" style="background:#5a5040"></div>
+          <div id="sc2" style="background:#f0e2c8"></div>
+          <div id="sc3" style="background:#8b4513"></div>
+          <div id="sc4" style="background:#7a5a2a"></div>
+        </div>
+        <div class="combo-name" id="suitLabel">Smoke + Beeswax + Bridle Leather + Aged Cognac</div>
+      </div>
+      <div class="build-pickers">
+        <div class="pick-section">
+          <div class="pick-label">Jacket & Trousers</div>
+          <div class="sw-grid" id="jP">
+            <div class="sw-wrap"><div class="sw on" style="background:#5a5040" onclick="setJ(this,'#5a5040','Smoke');copyHex('#5a5040','Smoke')"></div><div class="sw-nm">Smoke</div><div class="sw-hx">#5a5040</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a6a3a" onclick="setJ(this,'#5a6a3a','Olive Grove');copyHex('#5a6a3a','Olive Grove')"></div><div class="sw-nm">Olive Grove</div><div class="sw-hx">#5a6a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b8a080" onclick="setJ(this,'#b8a080','Sun-Baked Clay');copyHex('#b8a080','Sun-Baked Clay')"></div><div class="sw-nm">Sun-Baked Clay</div><div class="sw-hx">#b8a080</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a3020" onclick="setJ(this,'#4a3020','Heartwood');copyHex('#4a3020','Heartwood')"></div><div class="sw-nm">Heartwood</div><div class="sw-hx">#4a3020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b7355" onclick="setJ(this,'#8b7355','Desert Sand');copyHex('#8b7355','Desert Sand')"></div><div class="sw-nm">Desert Sand</div><div class="sw-hx">#8b7355</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8a7e70" onclick="setJ(this,'#8a7e70','Sandstone');copyHex('#8a7e70','Sandstone')"></div><div class="sw-nm">Sandstone</div><div class="sw-hx">#8a7e70</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a4a3a" onclick="setJ(this,'#5a4a3a','Forest Floor');copyHex('#5a4a3a','Forest Floor')"></div><div class="sw-nm">Forest Floor</div><div class="sw-hx">#5a4a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a3c2a" onclick="setJ(this,'#1a3c2a','Evergreen');copyHex('#1a3c2a','Evergreen')"></div><div class="sw-nm">Evergreen</div><div class="sw-hx">#1a3c2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b2020" onclick="setJ(this,'#6b2020','Barrel Wine');copyHex('#6b2020','Barrel Wine')"></div><div class="sw-nm">Barrel Wine</div><div class="sw-hx">#6b2020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a4440" onclick="setJ(this,'#4a4440','Charred Oak');copyHex('#4a4440','Charred Oak')"></div><div class="sw-nm">Charred Oak</div><div class="sw-hx">#4a4440</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Shirt</div>
+          <div class="sw-grid" id="sP">
+            <div class="sw-wrap"><div class="sw on" style="background:#f0e2c8" onclick="setS(this,'#f0e2c8','Beeswax');copyHex('#f0e2c8','Beeswax')"></div><div class="sw-nm">Beeswax</div><div class="sw-hx">#f0e2c8</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4c4b0" onclick="setS(this,'#d4c4b0','Raw Cotton');copyHex('#d4c4b0','Raw Cotton')"></div><div class="sw-nm">Raw Cotton</div><div class="sw-hx">#d4c4b0</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#e8c99b" onclick="setS(this,'#e8c99b','Sunlit Grain');copyHex('#e8c99b','Sunlit Grain')"></div><div class="sw-nm">Sunlit Grain</div><div class="sw-hx">#e8c99b</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b8a898" onclick="setS(this,'#b8a898','Riverbed');copyHex('#b8a898','Riverbed')"></div><div class="sw-nm">Riverbed</div><div class="sw-hx">#b8a898</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c4764a" onclick="setS(this,'#c4764a','Persimmon');copyHex('#c4764a','Persimmon')"></div><div class="sw-nm">Persimmon</div><div class="sw-hx">#c4764a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#7a8a5a" onclick="setS(this,'#7a8a5a','Morning Sage');copyHex('#7a8a5a','Morning Sage')"></div><div class="sw-nm">Morning Sage</div><div class="sw-hx">#7a8a5a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c0885a" onclick="setS(this,'#c0885a','Iron Oxide');copyHex('#c0885a','Iron Oxide')"></div><div class="sw-nm">Iron Oxide</div><div class="sw-hx">#c0885a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#9a8a70" onclick="setS(this,'#9a8a70','Wheat Field');copyHex('#9a8a70','Wheat Field')"></div><div class="sw-nm">Wheat Field</div><div class="sw-hx">#9a8a70</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Tie / Pocket Square</div>
+          <div class="sw-grid" id="tP">
+            <div class="sw-wrap"><div class="sw on" style="background:#8b4513" onclick="setT(this,'#8b4513','Bridle Leather');copyHex('#8b4513','Bridle Leather')"></div><div class="sw-nm">Bridle Leather</div><div class="sw-hx">#8b4513</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c4764a" onclick="setT(this,'#c4764a','Copper Canyon');copyHex('#c4764a','Copper Canyon')"></div><div class="sw-nm">Copper Canyon</div><div class="sw-hx">#c4764a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b6b3a" onclick="setT(this,'#6b6b3a','Olive Grove');copyHex('#6b6b3a','Olive Grove')"></div><div class="sw-nm">Olive Grove</div><div class="sw-hx">#6b6b3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#b8860b" onclick="setT(this,'#b8860b','Wild Honey');copyHex('#b8860b','Wild Honey')"></div><div class="sw-nm">Wild Honey</div><div class="sw-hx">#b8860b</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b3226" onclick="setT(this,'#6b3226','Barrel Wine');copyHex('#6b3226','Barrel Wine')"></div><div class="sw-nm">Barrel Wine</div><div class="sw-hx">#6b3226</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a3c2a" onclick="setT(this,'#1a3c2a','Evergreen');copyHex('#1a3c2a','Evergreen')"></div><div class="sw-nm">Evergreen</div><div class="sw-hx">#1a3c2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#d4a96a" onclick="setT(this,'#d4a96a','Champagne Toast');copyHex('#d4a96a','Champagne Toast')"></div><div class="sw-nm">Champagne Toast</div><div class="sw-hx">#d4a96a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#2d4a3a" onclick="setT(this,'#2d4a3a','Deep Current');copyHex('#2d4a3a','Deep Current')"></div><div class="sw-nm">Deep Current</div><div class="sw-hx">#2d4a3a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#c0885a" onclick="setT(this,'#c0885a','Iron Oxide');copyHex('#c0885a','Iron Oxide')"></div><div class="sw-nm">Iron Oxide</div><div class="sw-hx">#c0885a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b6b3d" onclick="setT(this,'#8b6b3d','Heirloom');copyHex('#8b6b3d','Heirloom')"></div><div class="sw-nm">Heirloom</div><div class="sw-hx">#8b6b3d</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Shoes & Belt</div>
+          <div class="sw-grid" id="shP">
+            <div class="sw-wrap"><div class="sw on" style="background:#7a5a2a" onclick="setSh(this,'#7a5a2a','Aged Cognac');copyHex('#7a5a2a','Aged Cognac')"></div><div class="sw-nm">Aged Cognac</div><div class="sw-hx">#7a5a2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a3a1a" onclick="setSh(this,'#5a3a1a','Bourbon');copyHex('#5a3a1a','Bourbon')"></div><div class="sw-nm">Bourbon</div><div class="sw-hx">#5a3a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a3020" onclick="setSh(this,'#4a3020','Espresso Bean');copyHex('#4a3020','Espresso Bean')"></div><div class="sw-nm">Espresso Bean</div><div class="sw-hx">#4a3020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b6b3d" onclick="setSh(this,'#8b6b3d','Honey Leather');copyHex('#8b6b3d','Honey Leather')"></div><div class="sw-nm">Honey Leather</div><div class="sw-hx">#8b6b3d</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#a08050" onclick="setSh(this,'#a08050','Desert Dust');copyHex('#a08050','Desert Dust')"></div><div class="sw-nm">Desert Dust</div><div class="sw-hx">#a08050</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b4a2a" onclick="setSh(this,'#6b4a2a','Single Malt');copyHex('#6b4a2a','Single Malt')"></div><div class="sw-nm">Single Malt</div><div class="sw-hx">#6b4a2a</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ★ WATCH BUILDER ★ -->
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Watch Builder</div>
+    <div class="pal-sub">Configure case, dial, and strap</div>
+    <div class="build-zone">
+      <div class="build-preview">
+        <h4>Your Watch</h4>
+        <svg viewBox="0 0 160 260" fill="none" style="width:100%;max-width:150px;margin:0 auto;display:block">
+          <rect id="wStrapT" x="55" y="10" width="50" height="80" rx="6" fill="#7a5a2a"/>
+          <rect x="60" y="15" width="40" height="70" rx="4" fill="none" stroke="rgba(255,255,255,.06)"/>
+          <rect id="wStrapB" x="55" y="170" width="50" height="80" rx="6" fill="#7a5a2a"/>
+          <rect x="60" y="175" width="40" height="70" rx="4" fill="none" stroke="rgba(255,255,255,.06)"/>
+          <rect id="wBuckle" x="65" y="235" width="30" height="10" rx="3" fill="#d4a24c"/>
+          <circle id="wCase" cx="80" cy="130" r="48" fill="#d4a24c"/>
+          <circle cx="80" cy="130" r="44" fill="none" stroke="rgba(255,255,255,.15)"/>
+          <rect x="126" y="124" width="10" height="12" rx="3" fill="#d4a24c"/>
+          <circle id="wDial" cx="80" cy="130" r="40" fill="#1a1a1a"/>
+          <line x1="80" y1="94" x2="80" y2="98" stroke="#d4a96a" stroke-width="2"/>
+          <line x1="80" y1="162" x2="80" y2="166" stroke="#d4a96a" stroke-width="2"/>
+          <line x1="44" y1="130" x2="48" y2="130" stroke="#d4a96a" stroke-width="2"/>
+          <line x1="112" y1="130" x2="116" y2="130" stroke="#d4a96a" stroke-width="2"/>
+          <circle cx="80" cy="130" r="36" fill="none" stroke="#d4a96a" stroke-width=".5" opacity=".3"/>
+          <line x1="80" y1="130" x2="80" y2="102" stroke="#d4a96a" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="80" y1="130" x2="98" y2="122" stroke="#d4a96a" stroke-width="2" stroke-linecap="round"/>
+          <line x1="80" y1="130" x2="72" y2="118" stroke="#c4764a" stroke-width="1" stroke-linecap="round"/>
+          <circle cx="80" cy="130" r="3" fill="#d4a96a"/>
+          <ellipse cx="68" cy="118" rx="15" ry="20" fill="white" opacity=".04" transform="rotate(-20 68 118)"/>
+        </svg>
+      </div>
+      <div class="build-pickers">
+        <div class="pick-section">
+          <div class="pick-label">Case</div>
+          <div class="sw-grid" id="caseP">
+            <div class="sw-wrap"><div class="sw on" style="background:linear-gradient(145deg,#d4a24c,#c99a3a)" onclick="setCase(this,'#d4a24c');copyHex('#d4a24c','')"></div><div class="sw-hx">#d4a24c</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:linear-gradient(145deg,#cd7f32,#b8722a)" onclick="setCase(this,'#cd7f32');copyHex('#cd7f32','')"></div><div class="sw-hx">#cd7f32</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:linear-gradient(145deg,#b87333,#a66228)" onclick="setCase(this,'#b87333');copyHex('#b87333','')"></div><div class="sw-hx">#b87333</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:linear-gradient(145deg,#e8c466,#d4b04c)" onclick="setCase(this,'#e8c466');copyHex('#e8c466','')"></div><div class="sw-hx">#e8c466</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Dial</div>
+          <div class="sw-grid" id="dialP">
+            <div class="sw-wrap"><div class="sw on" style="background:#1a1a1a" onclick="setDial(this,'#1a1a1a');copyHex('#1a1a1a','')"></div><div class="sw-hx">#1a1a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#f0e2c8" onclick="setDial(this,'#f0e2c8');copyHex('#f0e2c8','')"></div><div class="sw-hx">#f0e2c8</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a3c2a" onclick="setDial(this,'#1a3c2a');copyHex('#1a3c2a','')"></div><div class="sw-hx">#1a3c2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a3020" onclick="setDial(this,'#4a3020');copyHex('#4a3020','')"></div><div class="sw-hx">#4a3020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#1a3a4a" onclick="setDial(this,'#1a3a4a');copyHex('#1a3a4a','')"></div><div class="sw-hx">#1a3a4a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a2a3a" onclick="setDial(this,'#5a2a3a');copyHex('#5a2a3a','')"></div><div class="sw-hx">#5a2a3a</div></div>
+          </div>
+        </div>
+        <div class="pick-section">
+          <div class="pick-label">Strap</div>
+          <div class="sw-grid" id="strapP">
+            <div class="sw-wrap"><div class="sw on" style="background:#7a5a2a" onclick="setStrap(this,'#7a5a2a');copyHex('#7a5a2a','')"></div><div class="sw-hx">#7a5a2a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#5a3a1a" onclick="setStrap(this,'#5a3a1a');copyHex('#5a3a1a','')"></div><div class="sw-hx">#5a3a1a</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#8b6b3d" onclick="setStrap(this,'#8b6b3d');copyHex('#8b6b3d','')"></div><div class="sw-hx">#8b6b3d</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#4a3020" onclick="setStrap(this,'#4a3020');copyHex('#4a3020','')"></div><div class="sw-hx">#4a3020</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#a08050" onclick="setStrap(this,'#a08050');copyHex('#a08050','')"></div><div class="sw-hx">#a08050</div></div>
+            <div class="sw-wrap"><div class="sw" style="background:#6b4a2a" onclick="setStrap(this,'#6b4a2a');copyHex('#6b4a2a','')"></div><div class="sw-hx">#6b4a2a</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- FULL WARDROBE -->
+  <div class="section">
+    <div class="sec-head"><span class="gem"></span> Full Wardrobe Palette</div>
+    <div class="pal-sub">Every color that works — neutrals to accents</div>
+    <div class="sw-grid" style="gap:.4rem">
+      <div class="sw-wrap" onclick="copyHex('#4a3020','Heartwood')"><div class="sw" style="background:#4a3020;cursor:pointer"></div><div class="sw-nm">Heartwood</div><div class="sw-hx">#4a3020</div></div>
+      <div class="sw-wrap" onclick="copyHex('#4a4440','Charred Oak')"><div class="sw" style="background:#4a4440;cursor:pointer"></div><div class="sw-nm">Charred Oak</div><div class="sw-hx">#4a4440</div></div>
+      <div class="sw-wrap" onclick="copyHex('#5a5040','Smoke')"><div class="sw" style="background:#5a5040;cursor:pointer"></div><div class="sw-nm">Smoke</div><div class="sw-hx">#5a5040</div></div>
+      <div class="sw-wrap" onclick="copyHex('#5a4a3a','Forest Floor')"><div class="sw" style="background:#5a4a3a;cursor:pointer"></div><div class="sw-nm">Forest Floor</div><div class="sw-hx">#5a4a3a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#6a5f58','Driftwood')"><div class="sw" style="background:#6a5f58;cursor:pointer"></div><div class="sw-nm">Driftwood</div><div class="sw-hx">#6a5f58</div></div>
+      <div class="sw-wrap" onclick="copyHex('#8a7e70','Sandstone')"><div class="sw" style="background:#8a7e70;cursor:pointer"></div><div class="sw-nm">Sandstone</div><div class="sw-hx">#8a7e70</div></div>
+      <div class="sw-wrap" onclick="copyHex('#9a8a70','Wheat Field')"><div class="sw" style="background:#9a8a70;cursor:pointer"></div><div class="sw-nm">Wheat Field</div><div class="sw-hx">#9a8a70</div></div>
+      <div class="sw-wrap" onclick="copyHex('#b8a080','Sun-Baked Clay')"><div class="sw" style="background:#b8a080;cursor:pointer"></div><div class="sw-nm">Sun-Baked Clay</div><div class="sw-hx">#b8a080</div></div>
+      <div class="sw-wrap" onclick="copyHex('#b8a898','Riverbed')"><div class="sw" style="background:#b8a898;cursor:pointer"></div><div class="sw-nm">Riverbed</div><div class="sw-hx">#b8a898</div></div>
+      <div class="sw-wrap" onclick="copyHex('#d4c4b0','Raw Cotton')"><div class="sw" style="background:#d4c4b0;cursor:pointer"></div><div class="sw-nm">Raw Cotton</div><div class="sw-hx">#d4c4b0</div></div>
+      <div class="sw-wrap" onclick="copyHex('#f0e2c8','Beeswax')"><div class="sw" style="background:#f0e2c8;cursor:pointer"></div><div class="sw-nm">Beeswax</div><div class="sw-hx">#f0e2c8</div></div>
+      <div class="sw-wrap" onclick="copyHex('#1a3c2a','Evergreen')"><div class="sw" style="background:#1a3c2a;cursor:pointer"></div><div class="sw-nm">Evergreen</div><div class="sw-hx">#1a3c2a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#5a6a3a','Olive Grove')"><div class="sw" style="background:#5a6a3a;cursor:pointer"></div><div class="sw-nm">Olive Grove</div><div class="sw-hx">#5a6a3a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#7a8a5a','Morning Sage')"><div class="sw" style="background:#7a8a5a;cursor:pointer"></div><div class="sw-nm">Morning Sage</div><div class="sw-hx">#7a8a5a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#2d4a3a','Deep Current')"><div class="sw" style="background:#2d4a3a;cursor:pointer"></div><div class="sw-nm">Deep Current</div><div class="sw-hx">#2d4a3a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#6b2020','Barrel Wine')"><div class="sw" style="background:#6b2020;cursor:pointer"></div><div class="sw-nm">Barrel Wine</div><div class="sw-hx">#6b2020</div></div>
+      <div class="sw-wrap" onclick="copyHex('#7a5a2a','Aged Cognac')"><div class="sw" style="background:#7a5a2a;cursor:pointer"></div><div class="sw-nm">Aged Cognac</div><div class="sw-hx">#7a5a2a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#8b5a30','Lion's Mane')"><div class="sw" style="background:#8b5a30;cursor:pointer"></div><div class="sw-nm">Lion's Mane</div><div class="sw-hx">#8b5a30</div></div>
+      <div class="sw-wrap" onclick="copyHex('#8b7355','Desert Sand')"><div class="sw" style="background:#8b7355;cursor:pointer"></div><div class="sw-nm">Desert Sand</div><div class="sw-hx">#8b7355</div></div>
+      <div class="sw-wrap" onclick="copyHex('#c0885a','Iron Oxide')"><div class="sw" style="background:#c0885a;cursor:pointer"></div><div class="sw-nm">Iron Oxide</div><div class="sw-hx">#c0885a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#c4764a','Persimmon')"><div class="sw" style="background:#c4764a;cursor:pointer"></div><div class="sw-nm">Persimmon</div><div class="sw-hx">#c4764a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#d47a50','October')"><div class="sw" style="background:#d47a50;cursor:pointer"></div><div class="sw-nm">October</div><div class="sw-hx">#d47a50</div></div>
+      <div class="sw-wrap" onclick="copyHex('#b8860b','Wild Honey')"><div class="sw" style="background:#b8860b;cursor:pointer"></div><div class="sw-nm">Wild Honey</div><div class="sw-hx">#b8860b</div></div>
+      <div class="sw-wrap" onclick="copyHex('#d4a96a','Amber Resin')"><div class="sw" style="background:#d4a96a;cursor:pointer"></div><div class="sw-nm">Amber Resin</div><div class="sw-hx">#d4a96a</div></div>
+      <div class="sw-wrap" onclick="copyHex('#e8c99b','Sunlit Grain')"><div class="sw" style="background:#e8c99b;cursor:pointer"></div><div class="sw-nm">Sunlit Grain</div><div class="sw-hx">#e8c99b</div></div>
+    </div>
+  </div>
+
+  <div class="combo-strip">
+    <div style="background:#37373a"></div><div style="background:#433f38"></div><div style="background:#5b3a2a"></div><div style="background:#3e3421"></div><div style="background:#cc967f"></div><div style="background:#e8be94"></div><div style="background:#6b7a5a"></div>
+  </div>
+  <div style="text-align:center;margin-top:.3rem;font-size:.6rem;color:#8a7e72;letter-spacing:.1em;text-transform:uppercase">Your natural color gradient</div>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+
+function copyHex(hex, name) {
+  navigator.clipboard.writeText(hex).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = name + '  ' + hex + '  — copied!';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 1500);
+  }).catch(() => {});
+}
+const sf=document.getElementById('sparkles');for(let i=0;i<35;i++){const s=document.createElement('div');s.className='sparkle';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.setProperty('--dur',(5+Math.random()*6)+'s');s.style.setProperty('--delay',(Math.random()*8)+'s');const sz=2+Math.random()*4;s.style.width=sz+'px';s.style.height=sz+'px';sf.appendChild(s)}
+function sel(el,gid){document.querySelectorAll('#'+gid+' .sw').forEach(s=>s.classList.remove('on'));el.classList.add('on')}
+
+// Suit
+let cJ='#5a5040',nJ='Smoke',cS='#f0e2c8',nS='Beeswax',cT='#8b4513',nT='Bridle Leather',cSh='#7a5a2a',nSh='Aged Cognac';
+function updateSuit(){
+  document.getElementById('sc1').style.background=cJ;document.getElementById('sc2').style.background=cS;
+  document.getElementById('sc3').style.background=cT;document.getElementById('sc4').style.background=cSh;
+  document.getElementById('suitLabel').textContent=nJ+' + '+nS+' + '+nT+' + '+nSh;
+}
+function setJ(el,c,n){sel(el,'jP');cJ=c;nJ=n;updateSuit()}
+function setS(el,c,n){sel(el,'sP');cS=c;nS=n;updateSuit()}
+function setT(el,c,n){sel(el,'tP');cT=c;nT=n;updateSuit()}
+function setSh(el,c,n){sel(el,'shP');cSh=c;nSh=n;updateSuit()}
+updateSuit();
+
+// Watch
+function setCase(el,c){sel(el,'caseP');document.getElementById('wCase').setAttribute('fill',c);document.getElementById('wBuckle').setAttribute('fill',c)}
+function setDial(el,c){sel(el,'dialP');document.getElementById('wDial').setAttribute('fill',c)}
+function setStrap(el,c){sel(el,'strapP');document.getElementById('wStrapT').setAttribute('fill',c);document.getElementById('wStrapB').setAttribute('fill',c)}
+
+// Watch
+</script>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
