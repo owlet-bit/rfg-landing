@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lauren Clark — A Complete Style Portrait</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@200;300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+  :root {
+    --champagne: #F5E6D3;
+    --rose-gold: #B76E79;
+    --emerald: #1B5E3B;
+    --deep-emerald: #0D3B23;
+    --warm-coral: #E8836B;
+    --spring-gold: #D4A853;
+    --ivory: #FAF7F2;
+    --ink: #1A1A1A;
+    --soft-pink: #F2D4D0;
+    --clear-red: #C94C4C;
+    --bright-teal: #2A9D8F;
+    --warm-peach: #FBBF94;
+    --bright-fuchsia: #C74882;
+    --clear-navy: #1B3A5C;
+    --spring-green: #5FA55A;
+    --papaya: #FF6F52;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--ink);
+    color: var(--ivory);
+    overflow-x: hidden;
+    font-weight: 300;
+  }
+
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding: 60px 20px;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(183, 110, 121, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(27, 94, 59, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(212, 168, 83, 0.08) 0%, transparent 50%);
+    animation: aurora 20s ease-in-out infinite;
+  }
+
+  @keyframes aurora {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(2%, -2%) rotate(1deg); }
+    66% { transform: translate(-1%, 1%) rotate(-0.5deg); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+  }
+
+  .hero-label {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+    font-size: 0.85rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rose-gold);
+    margin-bottom: 30px;
+    animation: fadeUp 1.2s ease forwards;
+    opacity: 0;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    animation: fadeUp 1.2s ease 0.2s forwards;
+    opacity: 0;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--rose-gold);
+  }
+
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    color: rgba(250, 247, 242, 0.6);
+    margin-bottom: 40px;
+    animation: fadeUp 1.2s ease 0.4s forwards;
+    opacity: 0;
+  }
+
+  .sparkle-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    animation: fadeUp 1.2s ease 0.6s forwards;
+    opacity: 0;
+  }
+
+  .sparkle-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--spring-gold);
+    border-radius: 50%;
+    animation: sparkle 3s ease-in-out infinite;
+  }
+
+  .sparkle-dot:nth-child(2) { animation-delay: 0.5s; }
+  .sparkle-dot:nth-child(3) { animation-delay: 1s; }
+  .sparkle-dot:nth-child(4) { animation-delay: 1.5s; }
+  .sparkle-dot:nth-child(5) { animation-delay: 2s; }
+
+  .sparkle-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--spring-gold), transparent);
+  }
+
+  @keyframes sparkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); box-shadow: 0 0 0 rgba(212, 168, 83, 0); }
+    50% { opacity: 1; transform: scale(1.8); box-shadow: 0 0 12px rgba(212, 168, 83, 0.6); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section Styles */
+  .section {
+    padding: 80px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .section-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    color: var(--spring-gold);
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .section-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.15rem;
+    color: var(--rose-gold);
+    margin-bottom: 40px;
+  }
+
+  .body-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    line-height: 1.85;
+    color: rgba(250, 247, 242, 0.85);
+    margin-bottom: 24px;
+  }
+
+  .body-text strong {
+    font-weight: 500;
+    color: var(--ivory);
+  }
+
+  .pull-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: var(--rose-gold);
+    text-align: center;
+    padding: 50px 30px;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .pull-quote::before,
+  .pull-quote::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--spring-gold), transparent);
+  }
+
+  .pull-quote::before { top: 0; }
+  .pull-quote::after { bottom: 0; }
+
+  /* Color Palette Display */
+  .palette-section {
+    padding: 80px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .palette-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--ink) 0%, rgba(27, 94, 59, 0.06) 50%, var(--ink) 100%);
+  }
+
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .palette-card {
+    text-align: center;
+    transition: transform 0.4s ease;
+  }
+
+  .palette-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .color-circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .color-circle::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(250, 247, 242, 0.1);
+    transition: all 0.4s ease;
+  }
+
+  .palette-card:hover .color-circle::after {
+    inset: -8px;
+    border-color: rgba(250, 247, 242, 0.2);
+  }
+
+  .color-circle.glow {
+    animation: colorGlow 4s ease-in-out infinite;
+  }
+
+  @keyframes colorGlow {
+    0%, 100% { box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+    50% { box-shadow: 0 0 30px rgba(255,255,255,0.12); }
+  }
+
+  .color-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ivory);
+    margin-bottom: 4px;
+  }
+
+  .color-hex {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: rgba(250, 247, 242, 0.4);
+    text-transform: uppercase;
+  }
+
+  /* Attribute Cards */
+  .attribute-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 40px 0;
+  }
+
+  @media (max-width: 600px) {
+    .attribute-grid { grid-template-columns: 1fr; }
+  }
+
+  .attribute-card {
+    background: rgba(250, 247, 242, 0.03);
+    border: 1px solid rgba(250, 247, 242, 0.06);
+    border-radius: 12px;
+    padding: 30px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .attribute-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rose-gold), var(--spring-gold));
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .attribute-card:hover::before { opacity: 1; }
+
+  .attribute-card:hover {
+    background: rgba(250, 247, 242, 0.05);
+    border-color: rgba(250, 247, 242, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .attribute-label {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--spring-gold);
+    margin-bottom: 8px;
+  }
+
+  .attribute-value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem;
+    color: var(--ivory);
+    margin-bottom: 10px;
+  }
+
+  .attribute-detail {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.88rem;
+    line-height: 1.65;
+    color: rgba(250, 247, 242, 0.6);
+  }
+
+  /* Style Rules Section */
+  .style-rule {
+    padding: 35px 0;
+    border-bottom: 1px solid rgba(250, 247, 242, 0.05);
+  }
+
+  .style-rule:last-child { border-bottom: none; }
+
+  .rule-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    color: var(--ivory);
+    margin-bottom: 10px;
+  }
+
+  .rule-text {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: rgba(250, 247, 242, 0.7);
+  }
+
+  /* Season Badge */
+  .season-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, rgba(183, 110, 121, 0.15), rgba(27, 94, 59, 0.15));
+    border: 1px solid rgba(212, 168, 83, 0.2);
+    border-radius: 100px;
+    padding: 12px 28px;
+    margin: 30px 0;
+    animation: badgePulse 4s ease-in-out infinite;
+  }
+
+  @keyframes badgePulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 83, 0.05); }
+    50% { box-shadow: 0 0 35px rgba(212, 168, 83, 0.15); }
+  }
+
+  .season-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--spring-gold);
+    animation: sparkle 2.5s ease-in-out infinite;
+  }
+
+  .season-badge-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--spring-gold);
+  }
+
+  /* Signature Looks */
+  .looks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 25px;
+    margin: 40px 0;
+  }
+
+  @media (max-width: 700px) {
+    .looks-grid { grid-template-columns: 1fr; }
+  }
+
+  .look-card {
+    background: rgba(250, 247, 242, 0.02);
+    border: 1px solid rgba(250, 247, 242, 0.06);
+    border-radius: 16px;
+    padding: 35px 25px;
+    text-align: center;
+    transition: all 0.5s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .look-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, rgba(183, 110, 121, 0.04), transparent);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .look-card:hover::after { opacity: 1; }
+
+  .look-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(183, 110, 121, 0.2);
+  }
+
+  .look-icon {
+    font-size: 1.8rem;
+    margin-bottom: 18px;
+  }
+
+  .look-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: var(--ivory);
+    margin-bottom: 12px;
+  }
+
+  .look-desc {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: rgba(250, 247, 242, 0.55);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 80px 20px 60px;
+    position: relative;
+  }
+
+  .footer-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgba(250, 247, 242, 0.3);
+  }
+
+  /* Floating particles */
+  .particle {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: var(--spring-gold);
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: 0;
+    animation: float 15s linear infinite;
+  }
+
+  .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 18s; }
+  .particle:nth-child(2) { left: 25%; animation-delay: 3s; animation-duration: 22s; }
+  .particle:nth-child(3) { left: 45%; animation-delay: 7s; animation-duration: 16s; }
+  .particle:nth-child(4) { left: 65%; animation-delay: 2s; animation-duration: 20s; }
+  .particle:nth-child(5) { left: 80%; animation-delay: 5s; animation-duration: 19s; }
+  .particle:nth-child(6) { left: 92%; animation-delay: 9s; animation-duration: 17s; }
+
+  @keyframes float {
+    0% { transform: translateY(100vh); opacity: 0; }
+    10% { opacity: 0.4; }
+    90% { opacity: 0.4; }
+    100% { transform: translateY(-10vh); opacity: 0; }
+  }
+
+  /* Divider */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 0;
+    gap: 20px;
+  }
+
+  .div-line {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212, 168, 83, 0.3), transparent);
+  }
+
+  .div-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--spring-gold);
+    transform: rotate(45deg);
+    opacity: 0.4;
+  }
+
+  /* Metals & Materials */
+  .materials-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 30px 0;
+  }
+
+  .material-chip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 22px;
+    border-radius: 100px;
+    border: 1px solid rgba(250, 247, 242, 0.08);
+    background: rgba(250, 247, 242, 0.02);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.85rem;
+    color: rgba(250, 247, 242, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  .material-chip:hover {
+    border-color: rgba(212, 168, 83, 0.3);
+    background: rgba(212, 168, 83, 0.05);
+  }
+
+  .material-swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+
+  /* Avoid/Embrace */
+  .contrast-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 40px 0;
+  }
+
+  @media (max-width: 600px) {
+    .contrast-grid { grid-template-columns: 1fr; }
+  }
+
+  .contrast-col h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(250, 247, 242, 0.08);
+  }
+
+  .contrast-col h3.embrace { color: var(--spring-gold); }
+  .contrast-col h3.release { color: rgba(250, 247, 242, 0.4); }
+
+  .contrast-item {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    color: rgba(250, 247, 242, 0.65);
+    padding: 8px 0;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+<div class="particle"></div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">A Complete Style Portrait</div>
+    <h1 class="hero-title">Lauren Clark</h1>
+    <p class="hero-subtitle">Gilded Vernal &mdash; The Season of Clear Fire</p>
+    <div class="sparkle-divider">
+      <span class="sparkle-line"></span>
+      <span class="sparkle-dot"></span>
+      <span class="sparkle-dot"></span>
+      <span class="sparkle-dot"></span>
+      <span class="sparkle-dot"></span>
+      <span class="sparkle-dot"></span>
+      <span class="sparkle-line"></span>
+    </div>
+  </div>
+</section>
+
+<!-- THE OVERVIEW -->
+<section class="section">
+  <div class="section-number">01</div>
+  <h2 class="section-title">The Impression</h2>
+  <div class="section-subtitle">What people see before they understand why</div>
+
+  <p class="body-text">
+    You read as someone who contains more intensity than the room expects. There's a sharpness in your features — those green-hazel eyes, the sculpted cheekbones, the defined brow architecture — that communicates precision and presence before you open your mouth. But there's also warmth: golden skin, soft blonde hair catching light, a mouth that suggests both authority and amusement.
+  </p>
+  <p class="body-text">
+    The overall effect is <strong>structured warmth</strong>. You're not ethereal and you're not severe — you're vivid. People who meet you register someone who is simultaneously approachable and formidable, which is exactly the tension that makes your aesthetic difficult to replicate and impossible to ignore.
+  </p>
+
+  <div class="season-badge">
+    <span class="season-badge-dot"></span>
+    <span class="season-badge-text">Bright Spring — Gilded Vernal</span>
+  </div>
+
+  <p class="body-text">
+    Your poetic season name is <strong>Gilded Vernal</strong> — the moment in early spring when the light goes gold instead of gray, when the first flowers aren't pastel but electric, when everything that survived the winter announces itself at full saturation. This is color that has earned its brightness. Not naive. Not candy-sweet. Vivid because it's been through something.
+  </p>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- COLORING -->
+<section class="section">
+  <div class="section-number">02</div>
+  <h2 class="section-title">Chromatic Identity</h2>
+  <div class="section-subtitle">Hue, value, chroma — and what they mean on you</div>
+
+  <div class="attribute-grid">
+    <div class="attribute-card">
+      <div class="attribute-label">Undertone</div>
+      <div class="attribute-value">Warm-Neutral</div>
+      <div class="attribute-detail">Golden-peachy base with enough neutrality to wear cooler brights. Your warmth is sun-kissed, not orange — it lives in the peach of your cheeks and the golden thread in your hair.</div>
+    </div>
+    <div class="attribute-card">
+      <div class="attribute-label">Value</div>
+      <div class="attribute-value">Light-Medium</div>
+      <div class="attribute-detail">Fair skin, but not delicate or translucent. You have substance to your complexion — a warm canvas that holds pigment beautifully without washing out or getting overwhelmed.</div>
+    </div>
+    <div class="attribute-card">
+      <div class="attribute-label">Chroma</div>
+      <div class="attribute-value">High — Clear</div>
+      <div class="attribute-detail">This is your defining axis. You need saturation. Muted colors disappear on you or make you look tired. Your eyes, your brows, your lip color — everything about you speaks in full sentences, not whispers.</div>
+    </div>
+    <div class="attribute-card">
+      <div class="attribute-label">Contrast</div>
+      <div class="attribute-value">Medium-High</div>
+      <div class="attribute-detail">Dark brows and lashes against fair skin, vivid green eyes against golden hair. Your features create their own internal drama — your styling should honor that range rather than flatten it.</div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    "Muted is a lie someone told you about yourself. You are a clear-channel frequency — you need colors that can keep up."
+  </div>
+
+  <p class="body-text">
+    The Soft Autumn diagnosis was understandable but wrong. Soft Autumn drapes would have grayed you out, pulled the light from your eyes, made your skin look sallow where it should glow. The moment you moved to Bright Spring — clear warm colors with real chromatic intensity — you stopped fighting your own face.
+  </p>
+  <p class="body-text">
+    The proof is in your photos: that coral-rose lip in the close-ups has <strong>clarity</strong>. It's not dusty, it's not muted, it's a warm rose with bite. And the emerald velvet jumpsuit is practically singing on you — that's a deeply saturated, warm-leaning green with no gray in it. Those aren't Soft Autumn colors. Those are Bright Spring at its most confident.
+  </p>
+</section>
+
+<!-- PALETTE -->
+<section class="palette-section">
+  <div class="section" style="padding-top: 0; padding-bottom: 0;">
+    <div class="section-number">03</div>
+    <h2 class="section-title">Your Palette</h2>
+    <div class="section-subtitle">Colors that earn your attention</div>
+  </div>
+
+  <div class="palette-grid" style="margin-top: 40px;">
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #1B5E3B;"></div>
+      <div class="color-name">Velvet Emerald</div>
+      <div class="color-hex">#1B5E3B</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #C94C4C;"></div>
+      <div class="color-name">Clear Carnelian</div>
+      <div class="color-hex">#C94C4C</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #D4A853;"></div>
+      <div class="color-name">Spring Gold</div>
+      <div class="color-hex">#D4A853</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #2A9D8F;"></div>
+      <div class="color-name">Bright Teal</div>
+      <div class="color-hex">#2A9D8F</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #FF6F52;"></div>
+      <div class="color-name">Papaya</div>
+      <div class="color-hex">#FF6F52</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #C74882;"></div>
+      <div class="color-name">Bright Fuchsia</div>
+      <div class="color-hex">#C74882</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #1B3A5C;"></div>
+      <div class="color-name">Clear Navy</div>
+      <div class="color-hex">#1B3A5C</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #5FA55A;"></div>
+      <div class="color-name">Spring Green</div>
+      <div class="color-hex">#5FA55A</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #F2D4D0;"></div>
+      <div class="color-name">Warm Blush</div>
+      <div class="color-hex">#F2D4D0</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #FBBF94;"></div>
+      <div class="color-name">Warm Peach</div>
+      <div class="color-hex">#FBBF94</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #FAF7F2;"></div>
+      <div class="color-name">Cream Ivory</div>
+      <div class="color-hex">#FAF7F2</div>
+    </div>
+    <div class="palette-card">
+      <div class="color-circle glow" style="background: #B76E79;"></div>
+      <div class="color-name">Rose Gold</div>
+      <div class="color-hex">#B76E79</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- BODY & FACE -->
+<section class="section">
+  <div class="section-number">04</div>
+  <h2 class="section-title">Architecture</h2>
+  <div class="section-subtitle">Body geometry, face structure, and what they ask for</div>
+
+  <div class="attribute-grid">
+    <div class="attribute-card">
+      <div class="attribute-label">Body Shape</div>
+      <div class="attribute-value">Hourglass with Vertical</div>
+      <div class="attribute-detail">Defined waist, proportional bust and hip, with an elongated overall line. You carry structural elegance — your frame asks for silhouettes that honor both the curves and the length. The corset jumpsuit in your photos nails this: waist definition within a long, unbroken line.</div>
+    </div>
+    <div class="attribute-card">
+      <div class="attribute-label">Kibbe Type</div>
+      <div class="attribute-value">Soft Dramatic</div>
+      <div class="attribute-detail">Yang-dominant bone structure (vertical line, angular shoulders, elongation) with yin flesh (soft curves, full features). This is the archetype of the person who looks wrong in anything fussy or cute, and devastatingly right in something bold and sculpted.</div>
+    </div>
+    <div class="attribute-card">
+      <div class="attribute-label">Face Shape</div>
+      <div class="attribute-value">Oval-Heart</div>
+      <div class="attribute-detail">Balanced oval proportions with a slight heart inflection — wider at the cheekbones, gentle tapering at the jaw. High cheekbones create natural shadow and light play. Your face reads as both aristocratic and warm.</div>
+    </div>
+    <div class="attribute-card">
+      <div class="attribute-label">Feature Scale</div>
+      <div class="attribute-value">Moderate-Large, Vivid</div>
+      <div class="attribute-detail">Your eyes are large and expressive, your lips are full and defined, your brows are strong and shapely. Nothing on your face is recessive. You can handle bold accessories, saturated lip colors, and statement earrings because your features have the wattage to match.</div>
+    </div>
+  </div>
+
+  <p class="body-text">
+    The key insight about your body architecture: you need <strong>unbroken vertical lines with waist acknowledgment</strong>. Both jumpsuits in your photos demonstrate this perfectly. The blush corset set creates a continuous column while the structured bodice honors your waist. The emerald velvet does the same with the cutout — it maintains the vertical flow while revealing just enough to signal the curves underneath.
+  </p>
+  <p class="body-text">
+    What would work against you: boxy shapes that ignore your waist, short-and-cute proportions that cut your line, busy prints that fragment your silhouette, or anything that reads as "small" in its energy. You need clothes with ambition.
+  </p>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- STYLING RULES -->
+<section class="section">
+  <div class="section-number">05</div>
+  <h2 class="section-title">The Style Code</h2>
+  <div class="section-subtitle">Rules that work because they're yours</div>
+
+  <div class="style-rule">
+    <div class="rule-title">The Long Line Law</div>
+    <div class="rule-text">Your silhouette wants to tell one continuous story from shoulder to shoe. Wide-leg trousers, maxi dresses, floor-length coats, jumpsuits — anything that elongates. When you do wear something shorter, balance with heels or a strong vertical element (a long pendant, an open blazer, a monochromatic column).</div>
+  </div>
+
+  <div class="style-rule">
+    <div class="rule-title">Waist, Always</div>
+    <div class="rule-text">Never let a garment obscure your waist. This doesn't mean everything needs to be skin-tight — it means everything needs to acknowledge the narrowest point. A belted coat, a wrap dress, a corset seam, a tucked-in top. Your waist is structural punctuation and skipping it makes you look shorter and wider than you are.</div>
+  </div>
+
+  <div class="style-rule">
+    <div class="rule-title">One Bold, Rest Clean</div>
+    <div class="rule-text">You can handle a statement — a vivid emerald jumpsuit, a strong red lip, a gold collar necklace — but the rest of the look should stay disciplined. Let one element be the exclamation point. Your features are already providing plenty of visual interest; the clothing just needs to frame it without competing.</div>
+  </div>
+
+  <div class="style-rule">
+    <div class="rule-title">Texture Over Pattern</div>
+    <div class="rule-text">Velvet, silk, structured knits, crepe, leather — your frame carries rich textures beautifully. Busy patterns tend to fragment your line. When you do wear pattern, keep it large-scale and graphic rather than small and scattered. A bold geometric, a color-block, a wide stripe — never a tiny floral.</div>
+  </div>
+
+  <div class="style-rule">
+    <div class="rule-title">Color Saturation Rule</div>
+    <div class="rule-text">If you reach for a color and it looks like it's been left in the sun too long, put it back. Your colors should look like they just arrived. Clear coral, not dusty peach. Emerald, not sage. True navy, not steel blue. The test is simple: does this color have gray in it? If yes, it's not yours.</div>
+  </div>
+
+  <div class="style-rule">
+    <div class="rule-title">The Neckline Principle</div>
+    <div class="rule-text">Deep V-necks, plunging necklines, halter cuts — anything that creates a vertical line down the center of your chest elongates your torso and frames your face. Your emerald velvet jumpsuit's deep V is the textbook example. High crew necks can work if balanced with an open collar, a longer pendant, or dropped earrings.</div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- METALS & MATERIALS -->
+<section class="section">
+  <div class="section-number">06</div>
+  <h2 class="section-title">Metals & Materials</h2>
+  <div class="section-subtitle">The finishing layer</div>
+
+  <div class="materials-row">
+    <div class="material-chip">
+      <div class="material-swatch" style="background: linear-gradient(135deg, #D4A853, #F5D998);"></div>
+      Warm Gold
+    </div>
+    <div class="material-chip">
+      <div class="material-swatch" style="background: linear-gradient(135deg, #B76E79, #D4A0A7);"></div>
+      Rose Gold
+    </div>
+    <div class="material-chip">
+      <div class="material-swatch" style="background: linear-gradient(135deg, #CD7F32, #E8B87D);"></div>
+      Warm Bronze
+    </div>
+    <div class="material-chip">
+      <div class="material-swatch" style="background: linear-gradient(135deg, #B87333, #D4956B);"></div>
+      Polished Copper
+    </div>
+  </div>
+
+  <p class="body-text">
+    Your rose gold jewelry in the close-ups is the right instinct — it echoes the warmth in your skin without going full yellow gold (which can read too traditional). Rose gold and warm gold are your primaries. You can also wear copper and warm bronze for earthier looks. Silver will compete with your warmth unless it's mixed-metal or very delicate.
+  </p>
+  <p class="body-text">
+    For materials: velvet is clearly your power fabric — the emerald set proves it. Silk, satin, and anything with sheen catches light beautifully on your skin. Structured leather in warm cognac or rich black. Crepe for professional settings. Avoid anything too stiff or too sheer; your clothes should move with your body, not hang off it like architecture or dissolve into nothing.
+  </p>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- SIGNATURE LOOKS -->
+<section class="section">
+  <div class="section-number">07</div>
+  <h2 class="section-title">Signature Modes</h2>
+  <div class="section-subtitle">Three versions of you, all accurate</div>
+
+  <div class="looks-grid">
+    <div class="look-card">
+      <div class="look-icon">&#10022;</div>
+      <div class="look-name">Gilded Authority</div>
+      <div class="look-desc">The director energy. A clear navy or emerald column dress, gold hardware, sculptural earrings, sharp red lip. A tailored blazer with strong shoulders. Power without apology. This is interview day. Investor meeting. Keynote.</div>
+    </div>
+    <div class="look-card">
+      <div class="look-icon">&#9733;</div>
+      <div class="look-name">Warm Flame</div>
+      <div class="look-desc">The social energy. Coral, papaya, bright fuchsia — saturated and inviting. A silk cami tucked into high-waisted wide legs. Rose gold jewelry layered. Bright lip. This is the comedian, the content creator, the woman who makes the room lean in.</div>
+    </div>
+    <div class="look-card">
+      <div class="look-icon">&#9675;</div>
+      <div class="look-name">Quiet Gold</div>
+      <div class="look-desc">The private energy. Cream ivory, warm blush, soft peach — but never muted, never dusty. A cashmere knit in warm white, gold hoops, bare face with a tinted lip. This is morning light. This is real. Still vivid, just softer.</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- EMBRACE & RELEASE -->
+<section class="section">
+  <div class="section-number">08</div>
+  <h2 class="section-title">Embrace & Release</h2>
+  <div class="section-subtitle">The edit</div>
+
+  <div class="contrast-grid">
+    <div class="contrast-col">
+      <h3 class="embrace">Embrace</h3>
+      <div class="contrast-item">Deep V necklines and halter cuts that frame your face and elongate</div>
+      <div class="contrast-item">Monochromatic columns in saturated color — head to toe emerald, head to toe coral</div>
+      <div class="contrast-item">Velvet, silk, structured knits — fabrics with body and light-play</div>
+      <div class="contrast-item">Bold lip colors: clear warm red, coral-rose, bright berry</div>
+      <div class="contrast-item">Statement earrings that sit at or below the jawline</div>
+      <div class="contrast-item">High-waisted, wide-leg trousers with a tucked top</div>
+      <div class="contrast-item">Warm smoky eyes in bronze, copper, warm brown</div>
+      <div class="contrast-item">Gold and rose gold metals in sculptural, not dainty, forms</div>
+    </div>
+    <div class="contrast-col">
+      <h3 class="release">Release</h3>
+      <div class="contrast-item">Muted, dusty, or grayed-out colors — olive, mauve, taupe, dusty rose</div>
+      <div class="contrast-item">Small-scale or busy patterns that fragment your vertical line</div>
+      <div class="contrast-item">Boxy, shapeless silhouettes that erase your waist</div>
+      <div class="contrast-item">Nude lip colors that wash you out (your features need color to match them)</div>
+      <div class="contrast-item">Silver jewelry as the dominant metal</div>
+      <div class="contrast-item">Cropped tops without a high-waisted counterpart to maintain line</div>
+      <div class="contrast-item">Cool-toned pastels — icy pink, lavender, powder blue</div>
+      <div class="contrast-item">Anything "safe" — you do not read as someone who plays it safe</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider">
+  <span class="div-line"></span>
+  <span class="div-diamond"></span>
+  <span class="div-line"></span>
+</div>
+
+<!-- CLOSING -->
+<section class="section">
+  <div class="pull-quote">
+    "You're not a soft anything. You're not a muted anything. You're the kind of person colors want to be worn by — because you make them mean something."
+  </div>
+
+  <p class="body-text" style="text-align: center; margin-top: 40px;">
+    This palette and these principles aren't about rules. They're about recognition. The clothes that make people stop and look at you aren't the ones that follow a formula — they're the ones that match the frequency you're already transmitting. Bright, warm, clear, structured, alive.
+  </p>
+  <p class="body-text" style="text-align: center;">
+    You already know this. You wore emerald velvet and a deep V and looked like you were born in it. Trust that instinct. It's better than most professionals'.
+  </p>
+</section>
+
+<!-- FOOTER -->
+<section class="footer">
+  <div class="sparkle-divider" style="margin-bottom: 30px;">
+    <span class="sparkle-line"></span>
+    <span class="sparkle-dot"></span>
+    <span class="sparkle-dot"></span>
+    <span class="sparkle-dot"></span>
+    <span class="sparkle-line"></span>
+  </div>
+  <div class="footer-text">
+    Lauren Clark &mdash; Gilded Vernal &mdash; Bright Spring<br>
+    A style portrait, March 2026
+  </div>
+</section>
+<script src="../assets/gate.js"></script>
+</body>
+</html>
