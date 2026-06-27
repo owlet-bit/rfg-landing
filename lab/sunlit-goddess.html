@@ -1,0 +1,571 @@
+import { useState, useEffect, useRef } from "react";
+
+const paletteData = [
+  {
+    category: "Hero Colors",
+    subtitle: "Your money colors — these make your eyes, skin, and hair come alive",
+    colors: [
+      { name: "Warm Sky Blue", hex: "#87CEEB" },
+      { name: "Aqua", hex: "#7EC8C8" },
+      { name: "Light Teal", hex: "#5FB8B0" },
+      { name: "Robin's Egg", hex: "#72C9D0" },
+      { name: "Shell Pink", hex: "#F2CEC4" },
+      { name: "Peach Pink", hex: "#F7BFA0" },
+      { name: "Coral Rose", hex: "#E88B80" },
+      { name: "Soft Watermelon", hex: "#E4817E" },
+      { name: "Champagne", hex: "#F7E7CE" },
+      { name: "Ivory", hex: "#FAF8F0" },
+      { name: "Pistachio", hex: "#B8D9A0" },
+      { name: "Fresh Leaf", hex: "#82BF82" },
+      { name: "Light Jade", hex: "#7DBFA2" },
+      { name: "Cream", hex: "#FFF8DC" },
+      { name: "Warm Rose", hex: "#D4838F" },
+      { name: "Soft Gold", hex: "#D4B06A" },
+    ],
+  },
+  {
+    category: "Neutrals",
+    subtitle: "Your foundation — build outfits on these",
+    colors: [
+      { name: "Ivory", hex: "#FAF8F0" },
+      { name: "Cream", hex: "#FFF8DC" },
+      { name: "Vanilla", hex: "#F3E5AB" },
+      { name: "Champagne Beige", hex: "#EDDCC4" },
+      { name: "Oatmeal", hex: "#DDD5C0" },
+      { name: "Warm Stone", hex: "#C4B6A2" },
+      { name: "Light Camel", hex: "#C4A86E" },
+      { name: "Pale Warm Taupe", hex: "#BFAB91" },
+      { name: "Light Cocoa", hex: "#A67B5B" },
+      { name: "Soft Warm Brown", hex: "#8B6F4E" },
+      { name: "Warm Navy", hex: "#3A4B6C" },
+      { name: "Light Denim", hex: "#7BA3C8" },
+      { name: "Soft Espresso", hex: "#5B3E2F" },
+    ],
+  },
+  {
+    category: "Pinks",
+    subtitle: "Fresh and warm — never dusty, never icy",
+    colors: [
+      { name: "Shell Pink", hex: "#F2CEC4" },
+      { name: "Peach Pink", hex: "#F7BFA0" },
+      { name: "Warm Baby Pink", hex: "#F4B8C1" },
+      { name: "Rose-Coral", hex: "#DF807E" },
+      { name: "Soft Watermelon", hex: "#E4817E" },
+      { name: "Light Flamingo", hex: "#F79CA0" },
+      { name: "Warm Ballet Pink", hex: "#EDAFB8" },
+      { name: "Strawberry Pink", hex: "#E87591" },
+    ],
+  },
+  {
+    category: "Blues",
+    subtitle: "Your strongest color family — lean into these",
+    colors: [
+      { name: "Aqua", hex: "#7EC8C8" },
+      { name: "Warm Sky Blue", hex: "#87CEEB" },
+      { name: "Robin's Egg", hex: "#72C9D0" },
+      { name: "Turquoise", hex: "#5CB8B2" },
+      { name: "Light Teal", hex: "#5FB8B0" },
+      { name: "Clear Periwinkle", hex: "#8E9FD5" },
+      { name: "Soft Cornflower", hex: "#8DAAD6" },
+      { name: "Warm Powder Blue", hex: "#A4C8E1" },
+      { name: "Cerulean", hex: "#5BA4CF" },
+      { name: "Soft Azure", hex: "#68B8D8" },
+      { name: "Lagoon", hex: "#4DA8A8" },
+      { name: "Glacier Blue", hex: "#9AC4D8" },
+      { name: "Light Sapphire", hex: "#6A98C8" },
+      { name: "Capri", hex: "#5EB8CC" },
+    ],
+  },
+  {
+    category: "Greens",
+    subtitle: "Echo the green-gold in your eyes",
+    colors: [
+      { name: "Pistachio", hex: "#B8D9A0" },
+      { name: "Celery", hex: "#B4C98E" },
+      { name: "Fresh Leaf", hex: "#82BF82" },
+      { name: "Light Moss", hex: "#8DAD78" },
+      { name: "Mint", hex: "#A8E0C8" },
+      { name: "Seafoam", hex: "#93DAC0" },
+      { name: "Light Jade", hex: "#7DBFA2" },
+      { name: "Spring Emerald", hex: "#50AD7C" },
+      { name: "Celadon", hex: "#ACE1C0" },
+      { name: "Eucalyptus", hex: "#6EAD8C" },
+      { name: "Honeydew", hex: "#C8E8BE" },
+      { name: "Soft Chartreuse", hex: "#C0D88A" },
+      { name: "Fresh Sage", hex: "#9AB88A" },
+      { name: "Spring Fern", hex: "#72A866" },
+    ],
+  },
+  {
+    category: "Reds",
+    subtitle: "Keep them warm and clear — never blue-based",
+    colors: [
+      { name: "Sheer Poppy", hex: "#E06050" },
+      { name: "Strawberry Red", hex: "#E04858" },
+      { name: "Watermelon Red", hex: "#E55B5B" },
+      { name: "Coral Red", hex: "#E8695A" },
+      { name: "Light Warm Red", hex: "#D9564A" },
+      { name: "Warm Vermillion", hex: "#D04830" },
+      { name: "Rose Red", hex: "#CC4E60" },
+      { name: "Soft Cherry", hex: "#C84858" },
+      { name: "Sunset Red", hex: "#D96048" },
+      { name: "Tomato Rose", hex: "#DA6458" },
+      { name: "Warm Cranberry", hex: "#C04050" },
+    ],
+  },
+  {
+    category: "Yellows & Oranges",
+    subtitle: "Use delicately — accents, not anchors",
+    colors: [
+      { name: "Buttercream", hex: "#F5EDBE" },
+      { name: "Pale Lemon", hex: "#F5EFA0" },
+      { name: "Soft Peach", hex: "#FECBA6" },
+      { name: "Apricot", hex: "#F7B88A" },
+      { name: "Melon", hex: "#F5A680" },
+      { name: "Light Salmon", hex: "#F5A08A" },
+    ],
+  },
+  {
+    category: "Purples",
+    subtitle: "Warm and light — orchid, not eggplant",
+    colors: [
+      { name: "Warm Lilac", hex: "#C8A2D0" },
+      { name: "Orchid Pink", hex: "#D5A0C0" },
+      { name: "Light Violet", hex: "#B8A0D4" },
+      { name: "Soft Plum-Rose", hex: "#C48AAA" },
+    ],
+  },
+  {
+    category: "Drama Colors",
+    subtitle: "Use instead of black — your gorgeous dark alternatives",
+    colors: [
+      { name: "Deep Teal", hex: "#1A6B6A" },
+      { name: "Peacock", hex: "#0A5F6A" },
+      { name: "Warm Navy", hex: "#3A4B6C" },
+      { name: "Cocoa", hex: "#6B4A3A" },
+      { name: "Dark Chocolate", hex: "#4A2C20" },
+      { name: "Soft Espresso", hex: "#5B3E2F" },
+      { name: "Warm Plum", hex: "#6A3555" },
+      { name: "Spring Emerald", hex: "#1E7A52" },
+      { name: "Teal Velvet", hex: "#1B5E5E" },
+    ],
+  },
+  {
+    category: "Lip Colors",
+    subtitle: "Your best lip shades — cream, satin, or gloss finish",
+    colors: [
+      { name: "Warm Rose", hex: "#CC7A85" },
+      { name: "Peach Rose", hex: "#D9998F" },
+      { name: "Rose-Coral", hex: "#D68078" },
+      { name: "Coral Pink", hex: "#E88A80" },
+      { name: "Soft Watermelon", hex: "#D4706E" },
+      { name: "Pinky Nude", hex: "#CF9B8F" },
+      { name: "Sheer Poppy", hex: "#CC5A4A" },
+      { name: "Strawberry Pink", hex: "#D96880" },
+      { name: "Warm Rosewood", hex: "#B06A68" },
+      { name: "Peachy Gloss", hex: "#E8A88A" },
+    ],
+  },
+  {
+    category: "Eye Shadows",
+    subtitle: "Warm, lifted, luminous — champagne to bronze",
+    colors: [
+      { name: "Champagne", hex: "#F2DFC0" },
+      { name: "Peach Beige", hex: "#E8C8A8" },
+      { name: "Rose Gold", hex: "#C9917A" },
+      { name: "Soft Bronze", hex: "#AD8A64" },
+      { name: "Warm Taupe", hex: "#9A8878" },
+      { name: "Cocoa", hex: "#7A5E4A" },
+      { name: "Light Copper", hex: "#C48A5A" },
+      { name: "Soft Olive", hex: "#8A9468" },
+      { name: "Golden Beige", hex: "#D4B88A" },
+      { name: "Peach Shimmer", hex: "#F0C0A0" },
+      { name: "Pale Aqua", hex: "#A8D8D8" },
+      { name: "Light Teal", hex: "#6AADA8" },
+      { name: "Plum-Brown", hex: "#8A5A6A" },
+    ],
+  },
+  {
+    category: "Metals & Stones",
+    subtitle: "Champagne gold, pearl, moonstone — found in a sea cave by a wealthy oracle",
+    colors: [
+      { name: "Champagne Gold", hex: "#D4AF6A" },
+      { name: "Soft Yellow Gold", hex: "#CFAA4C" },
+      { name: "Rose Gold", hex: "#C4877A" },
+      { name: "Pearl", hex: "#F0EAE0" },
+      { name: "Opal", hex: "#D0E0E8" },
+      { name: "Moonstone", hex: "#C8D8E8" },
+      { name: "Aquamarine", hex: "#7DC8C0" },
+      { name: "Morganite", hex: "#E8B8B0" },
+      { name: "Rose Quartz", hex: "#E0B0B8" },
+      { name: "Peridot", hex: "#A0C868" },
+      { name: "Mother of Pearl", hex: "#EAE0D8" },
+    ],
+  },
+];
+
+function Sparkle({ style }) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        width: 3,
+        height: 3,
+        borderRadius: "50%",
+        background: "rgba(255,255,255,0.8)",
+        boxShadow: "0 0 6px 2px rgba(255,255,255,0.4)",
+        pointerEvents: "none",
+        ...style,
+      }}
+    />
+  );
+}
+
+export default function SunlitGoddessPalette() {
+  const [copied, setCopied] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [sparkles, setSparkles] = useState([]);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSparkles((prev) => {
+        const now = Date.now();
+        const filtered = prev.filter((s) => now - s.born < 2500);
+        const newSparkle = {
+          id: now + Math.random(),
+          born: now,
+          x: Math.random() * 100,
+          y: Math.random() * 100,
+          size: Math.random() * 3 + 1,
+          delay: Math.random() * 0.5,
+        };
+        return [...filtered, newSparkle].slice(-25);
+      });
+    }, 300);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleCopy = (hex, name) => {
+    navigator.clipboard?.writeText(hex);
+    setCopied(name);
+    setTimeout(() => setCopied(null), 1800);
+  };
+
+  const displayData = activeCategory
+    ? paletteData.filter((g) => g.category === activeCategory)
+    : paletteData;
+
+  const getLuminance = (hex) => {
+    const r = parseInt(hex.slice(1, 3), 16) / 255;
+    const g = parseInt(hex.slice(3, 5), 16) / 255;
+    const b = parseInt(hex.slice(5, 7), 16) / 255;
+    return 0.299 * r + 0.587 * g + 0.114 * b;
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(165deg, #0C2D3A 0%, #133B4A 30%, #1A4A5A 60%, #0E3040 100%)",
+        padding: "32px 20px 60px",
+        fontFamily: "'Georgia', 'Times New Roman', serif",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      <style>{`
+        @keyframes pulseGlow {
+          0%, 100% { box-shadow: 0 2px 12px rgba(255,255,255,0.08); }
+          50% { box-shadow: 0 4px 20px rgba(255,255,255,0.18); }
+        }
+        @keyframes sparkleFloat {
+          0% { opacity: 0; transform: translateY(0) scale(0); }
+          20% { opacity: 1; transform: translateY(-8px) scale(1); }
+          80% { opacity: 0.6; transform: translateY(-30px) scale(0.8); }
+          100% { opacity: 0; transform: translateY(-45px) scale(0); }
+        }
+        @keyframes titleGlow {
+          0%, 100% { text-shadow: 0 0 20px rgba(212,175,106,0.3), 0 0 40px rgba(212,175,106,0.1); }
+          50% { text-shadow: 0 0 30px rgba(212,175,106,0.5), 0 0 60px rgba(212,175,106,0.2); }
+        }
+        @keyframes subtitlePulse {
+          0%, 100% { opacity: 0.7; }
+          50% { opacity: 1; }
+        }
+        @keyframes copiedPop {
+          0% { transform: scale(0.8); opacity: 0; }
+          50% { transform: scale(1.05); }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .swatch:hover {
+          transform: translateY(-3px) scale(1.04);
+          box-shadow: 0 8px 28px rgba(255,255,255,0.2) !important;
+        }
+        .swatch { transition: all 0.25s ease; cursor: pointer; }
+        .cat-btn { transition: all 0.2s ease; cursor: pointer; border: none; }
+        .cat-btn:hover { transform: translateY(-1px); }
+      `}</style>
+
+      {sparkles.map((s) => (
+        <div
+          key={s.id}
+          style={{
+            position: "absolute",
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            width: s.size,
+            height: s.size,
+            borderRadius: "50%",
+            background: "rgba(255,255,255,0.7)",
+            boxShadow: `0 0 ${s.size * 3}px rgba(212,175,106,0.4)`,
+            animation: `sparkleFloat 2.5s ease-out forwards`,
+            animationDelay: `${s.delay}s`,
+            pointerEvents: "none",
+            zIndex: 1,
+          }}
+        />
+      ))}
+
+      <div style={{ position: "relative", zIndex: 2, maxWidth: 900, margin: "0 auto" }}>
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: 36 }}>
+          <div
+            style={{
+              fontSize: 11,
+              letterSpacing: 5,
+              color: "#D4AF6A",
+              textTransform: "uppercase",
+              marginBottom: 10,
+              animation: "subtitlePulse 3s ease-in-out infinite",
+            }}
+          >
+            Personal Color System
+          </div>
+          <h1
+            style={{
+              fontSize: 32,
+              fontWeight: 400,
+              color: "#F0E8D8",
+              margin: 0,
+              lineHeight: 1.2,
+              animation: "titleGlow 4s ease-in-out infinite",
+            }}
+          >
+            Sunlit Soft Dramatic
+          </h1>
+          <div
+            style={{
+              fontSize: 14,
+              color: "rgba(212,175,106,0.6)",
+              marginTop: 8,
+              fontStyle: "italic",
+            }}
+          >
+            Light Spring · Warm Neutral · Light Summer Crossover
+          </div>
+          <div
+            style={{
+              width: 60,
+              height: 1,
+              background: "linear-gradient(90deg, transparent, #D4AF6A, transparent)",
+              margin: "16px auto 0",
+            }}
+          />
+        </div>
+
+        {/* Category Filter */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: 6,
+            justifyContent: "center",
+            marginBottom: 28,
+          }}
+        >
+          <button
+            className="cat-btn"
+            onClick={() => setActiveCategory(null)}
+            style={{
+              padding: "6px 14px",
+              borderRadius: 20,
+              fontSize: 11,
+              letterSpacing: 0.5,
+              background: !activeCategory
+                ? "rgba(212,175,106,0.25)"
+                : "rgba(255,255,255,0.06)",
+              color: !activeCategory ? "#F0E8D8" : "rgba(240,232,216,0.5)",
+              fontFamily: "inherit",
+            }}
+          >
+            All
+          </button>
+          {paletteData.map((group) => (
+            <button
+              key={group.category}
+              className="cat-btn"
+              onClick={() =>
+                setActiveCategory(
+                  activeCategory === group.category ? null : group.category
+                )
+              }
+              style={{
+                padding: "6px 14px",
+                borderRadius: 20,
+                fontSize: 11,
+                letterSpacing: 0.5,
+                background:
+                  activeCategory === group.category
+                    ? "rgba(212,175,106,0.25)"
+                    : "rgba(255,255,255,0.06)",
+                color:
+                  activeCategory === group.category
+                    ? "#F0E8D8"
+                    : "rgba(240,232,216,0.5)",
+                fontFamily: "inherit",
+              }}
+            >
+              {group.category}
+            </button>
+          ))}
+        </div>
+
+        {/* Color Groups */}
+        {displayData.map((group) => (
+          <div key={group.category} style={{ marginBottom: 36 }}>
+            <div style={{ marginBottom: 12 }}>
+              <h2
+                style={{
+                  fontSize: 18,
+                  fontWeight: 400,
+                  color: "#F0E8D8",
+                  margin: 0,
+                  letterSpacing: 1,
+                }}
+              >
+                {group.category}
+              </h2>
+              <div
+                style={{
+                  fontSize: 12,
+                  color: "rgba(212,175,106,0.5)",
+                  marginTop: 3,
+                  fontStyle: "italic",
+                }}
+              >
+                {group.subtitle}
+              </div>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
+                gap: 10,
+              }}
+            >
+              {group.colors.map((color) => {
+                const isLight = getLuminance(color.hex) > 0.65;
+                const isCopied = copied === color.name;
+                return (
+                  <div
+                    key={color.name + color.hex}
+                    className="swatch"
+                    onClick={() => handleCopy(color.hex, color.name)}
+                    style={{
+                      borderRadius: 10,
+                      overflow: "hidden",
+                      animation: "pulseGlow 4s ease-in-out infinite",
+                      animationDelay: `${Math.random() * 3}s`,
+                      position: "relative",
+                    }}
+                  >
+                    <div
+                      style={{
+                        background: color.hex,
+                        height: 70,
+                        position: "relative",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {isCopied && (
+                        <div
+                          style={{
+                            animation: "copiedPop 0.3s ease-out forwards",
+                            color: isLight ? "#2A2A2A" : "#FFFFFF",
+                            fontSize: 11,
+                            fontWeight: 600,
+                            letterSpacing: 1,
+                            textTransform: "uppercase",
+                          }}
+                        >
+                          Copied
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      style={{
+                        background: "rgba(10,30,40,0.85)",
+                        padding: "7px 8px",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: 10,
+                          color: "#D0C8B8",
+                          lineHeight: 1.3,
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {color.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: 9,
+                          color: "rgba(180,170,155,0.6)",
+                          fontFamily: "monospace",
+                          marginTop: 1,
+                        }}
+                      >
+                        {color.hex}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+
+        {/* Footer */}
+        <div
+          style={{
+            textAlign: "center",
+            marginTop: 40,
+            padding: "20px 0",
+            borderTop: "1px solid rgba(212,175,106,0.12)",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 12,
+              color: "rgba(212,175,106,0.35)",
+              fontStyle: "italic",
+              lineHeight: 1.6,
+            }}
+          >
+            Champagne light · Green eyes · Strong shoulders · Lush curve
+            <br />
+            Goddess, not girl-next-door
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
