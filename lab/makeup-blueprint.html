@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Makeup Blueprint</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: linear-gradient(170deg, #1A1225 0%, #1E1830 25%, #1A2035 50%, #162030 75%, #0E1828 100%);
+    font-family: Georgia, 'Times New Roman', serif;
+    color: #E8E0D8;
+    overflow-x: hidden;
+  }
+
+  .sparkle-field {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .sparkle-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(212,175,140,0.6);
+    animation: sparkDrift 3s ease-out forwards;
+  }
+
+  @keyframes sparkDrift {
+    0% { opacity: 0; transform: translateY(0) scale(0); }
+    15% { opacity: 1; transform: translateY(-6px) scale(1); }
+    85% { opacity: 0.4; transform: translateY(-35px) scale(0.6); }
+    100% { opacity: 0; transform: translateY(-50px) scale(0); }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(212,175,140,0.06); }
+    50% { box-shadow: 0 0 35px rgba(212,175,140,0.12); }
+  }
+
+  @keyframes titleShimmer {
+    0%, 100% { text-shadow: 0 0 20px rgba(212,175,140,0.2); }
+    50% { text-shadow: 0 0 35px rgba(212,175,140,0.4), 0 0 60px rgba(212,175,140,0.1); }
+  }
+
+  @keyframes accentGlow {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes swatchPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(0,0,0,0.2); }
+    50% { transform: scale(1.05); box-shadow: 0 0 16px rgba(255,255,255,0.1); }
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .header-label {
+    font-size: 10px;
+    letter-spacing: 6px;
+    color: rgba(212,175,140,0.5);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    animation: accentGlow 3s ease-in-out infinite;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 400;
+    color: #F0E8DC;
+    line-height: 1.3;
+    animation: titleShimmer 4s ease-in-out infinite;
+    margin-bottom: 8px;
+  }
+
+  .header-sub {
+    font-size: 13px;
+    color: rgba(212,175,140,0.45);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .divider {
+    width: 50px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(212,175,140,0.3), transparent);
+    margin: 32px auto;
+  }
+
+  .section {
+    margin-bottom: 44px;
+    animation: glowPulse 5s ease-in-out infinite;
+    padding: 28px 24px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(212,175,140,0.06);
+  }
+
+  .section-icon {
+    font-size: 20px;
+    margin-bottom: 8px;
+  }
+
+  .section h2 {
+    font-size: 18px;
+    font-weight: 400;
+    color: #F0E8DC;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+
+  .section-why {
+    font-size: 12px;
+    color: rgba(212,175,140,0.5);
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  .section p, .section .step {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #D0C8BE;
+    margin-bottom: 12px;
+  }
+
+  .step {
+    padding-left: 0;
+    position: relative;
+  }
+
+  .step-label {
+    color: rgba(212,175,140,0.7);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .color-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 10px 0 14px;
+    align-items: center;
+  }
+
+  .color-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    animation: swatchPulse 4s ease-in-out infinite;
+    position: relative;
+    cursor: default;
+  }
+
+  .color-dot-label {
+    font-size: 9px;
+    color: rgba(212,175,140,0.5);
+    margin-top: 2px;
+    text-align: center;
+    max-width: 50px;
+    line-height: 1.2;
+  }
+
+  .color-chip {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .emphasis {
+    color: #E8D4C0;
+    font-style: italic;
+  }
+
+  .avoid-note {
+    font-size: 12px;
+    color: rgba(200,160,140,0.45);
+    font-style: italic;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(212,175,140,0.06);
+  }
+
+  .key-principle {
+    background: rgba(212,175,140,0.05);
+    border-left: 2px solid rgba(212,175,140,0.15);
+    padding: 12px 16px;
+    margin: 14px 0;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #D4C4B4;
+    line-height: 1.6;
+    font-style: italic;
+  }
+
+  .look-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(212,175,140,0.08);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+  }
+
+  .look-card h3 {
+    font-size: 14px;
+    font-weight: 400;
+    color: rgba(212,175,140,0.7);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .look-card p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #C8C0B4;
+    margin-bottom: 8px;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(212,175,140,0.08);
+  }
+
+  .footer p {
+    font-size: 12px;
+    color: rgba(212,175,140,0.25);
+    font-style: italic;
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<div class="sparkle-field" id="sparkleField"></div>
+
+<div class="container">
+
+  <div class="header">
+    <div class="header-label">Designed for Your Face</div>
+    <h1>The Makeup Blueprint</h1>
+    <div class="header-sub">
+      Built from your actual proportions, coloring, and features —<br>
+      not generic recommendations
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- FEATURE ANALYSIS -->
+  <div class="section">
+    <div class="section-icon">✦</div>
+    <h2>What I'm Working With</h2>
+    <div class="section-why">Your face, specifically</div>
+
+    <p><span class="emphasis">Face shape:</span> Long oval with soft heart influence. Your face has elegant vertical length, a soft chin taper, and forehead presence. This means every placement decision should add lift and soft horizontal width — never more length.</p>
+
+    <p><span class="emphasis">Eyes:</span> Large, green-gold, and expressive. These are your headline feature. The warm gold flecks in the green mean warm metals and bronzes will create a complementary vibration that makes them look almost backlit. They're set with enough space for lid work and respond dramatically to color.</p>
+
+    <p><span class="emphasis">Lips:</span> Full and romantic, naturally mauve-rose. Your lower lip has beautiful volume. They can carry bold color without being overwhelmed, and they look their best with dimension — satin, cream, gloss — rather than flat matte.</p>
+
+    <p><span class="emphasis">Brows:</span> Naturally defined, darker than your hair, well-shaped. They provide structure without needing heavy product. They just need refinement, not reconstruction.</p>
+
+    <p><span class="emphasis">Skin:</span> Light with warm-neutral undertone. Naturally luminous quality. Some redness across the forehead and nose that you can spot-correct rather than masking with full coverage. Your skin looks best when it still looks like skin.</p>
+
+    <p><span class="emphasis">Cheekbones:</span> Refined and present but not sharply angular. Blush and light will do more for you than contour.</p>
+
+    <div class="key-principle">
+      The governing principle: your face is already architecturally strong. Makeup should illuminate and warm it, not construct something new. Think light manipulation, not reshaping.
+    </div>
+  </div>
+
+  <!-- FACE CHARTS -->
+  <div class="section" style="padding: 28px 16px;">
+    <div class="section-icon">✦</div>
+    <h2>Placement Maps</h2>
+    <div class="section-why">Your face, marked up like a MAC chart — zones, directions, and colors</div>
+
+    <!-- FULL FACE MAP -->
+    <div style="text-align: center; margin: 20px 0 8px;">
+      <div style="font-size: 12px; color: rgba(212,175,140,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Full Face — Front View</div>
+      <svg viewBox="0 0 440 520" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px; width: 100%;">
+        <defs>
+          <radialGradient id="blushL" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#E88880" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#E88880" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="blushR" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#E88880" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#E88880" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="bronzerGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#C4A060" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#C4A060" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="highlightGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F5E8D0" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#F5E8D0" stop-opacity="0"/>
+          </radialGradient>
+          <linearGradient id="noseHighlight" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#F5E8D0" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#F5E8D0" stop-opacity="0.1"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Face outline - long oval with soft heart/chin taper -->
+        <path d="M 220 62 
+                 C 290 62, 340 120, 345 190 
+                 C 350 240, 345 290, 330 330 
+                 C 315 370, 290 410, 260 435 
+                 Q 220 460, 220 460 
+                 Q 220 460, 180 435 
+                 C 150 410, 125 370, 110 330 
+                 C 95 290, 90 240, 95 190 
+                 C 100 120, 150 62, 220 62 Z" 
+              fill="rgba(240,225,210,0.08)" stroke="rgba(212,190,170,0.3)" stroke-width="1.2"/>
+
+        <!-- Neck -->
+        <path d="M 175 445 L 170 510 M 265 445 L 270 510" stroke="rgba(212,190,170,0.15)" stroke-width="1" fill="none"/>
+        <path d="M 170 510 Q 220 520 270 510" stroke="rgba(212,190,170,0.1)" stroke-width="1" fill="none"/>
+
+        <!-- ============ BRONZER ZONES ============ -->
+        <!-- Temple left -->
+        <ellipse cx="118" cy="150" rx="35" ry="40" fill="url(#bronzerGrad)" opacity="0.9"/>
+        <!-- Temple right -->
+        <ellipse cx="322" cy="150" rx="35" ry="40" fill="url(#bronzerGrad)" opacity="0.9"/>
+        <!-- Below cheekbone left - subtle -->
+        <ellipse cx="125" cy="300" rx="30" ry="15" fill="url(#bronzerGrad)" opacity="0.6" transform="rotate(-15, 125, 300)"/>
+        <!-- Below cheekbone right -->
+        <ellipse cx="315" cy="300" rx="30" ry="15" fill="url(#bronzerGrad)" opacity="0.6" transform="rotate(15, 315, 300)"/>
+        <!-- Jawline left -->
+        <ellipse cx="145" cy="390" rx="25" ry="12" fill="url(#bronzerGrad)" opacity="0.4" transform="rotate(-25, 145, 390)"/>
+        <!-- Jawline right -->
+        <ellipse cx="295" cy="390" rx="25" ry="12" fill="url(#bronzerGrad)" opacity="0.4" transform="rotate(25, 295, 390)"/>
+
+        <!-- ============ BLUSH ZONES ============ -->
+        <!-- Blush left - HIGH on cheekbone, swept outward/upward -->
+        <ellipse cx="148" cy="265" rx="42" ry="22" fill="url(#blushL)" opacity="1" transform="rotate(-12, 148, 265)"/>
+        <!-- Blush right -->
+        <ellipse cx="292" cy="265" rx="42" ry="22" fill="url(#blushR)" opacity="1" transform="rotate(12, 292, 265)"/>
+
+        <!-- Blush direction arrows -->
+        <line x1="155" y1="268" x2="110" y2="248" stroke="rgba(232,136,128,0.5)" stroke-width="1" stroke-dasharray="3,3"/>
+        <polygon points="110,248 115,254 108,253" fill="rgba(232,136,128,0.5)"/>
+        <line x1="285" y1="268" x2="330" y2="248" stroke="rgba(232,136,128,0.5)" stroke-width="1" stroke-dasharray="3,3"/>
+        <polygon points="330,248 325,254 332,253" fill="rgba(232,136,128,0.5)"/>
+
+        <!-- ============ HIGHLIGHT ZONES ============ -->
+        <!-- Cheekbone tops left -->
+        <ellipse cx="140" cy="255" rx="28" ry="8" fill="url(#highlightGrad)" opacity="0.8" transform="rotate(-8, 140, 255)"/>
+        <!-- Cheekbone tops right -->
+        <ellipse cx="300" cy="255" rx="28" ry="8" fill="url(#highlightGrad)" opacity="0.8" transform="rotate(8, 300, 255)"/>
+        <!-- Nose bridge -->
+        <rect x="215" y="210" width="10" height="60" rx="5" fill="url(#noseHighlight)" opacity="0.7"/>
+        <!-- Cupid's bow -->
+        <ellipse cx="220" cy="345" rx="10" ry="5" fill="url(#highlightGrad)" opacity="0.7"/>
+        <!-- Brow bone left -->
+        <ellipse cx="168" cy="178" rx="22" ry="6" fill="url(#highlightGrad)" opacity="0.5" transform="rotate(-5, 168, 178)"/>
+        <!-- Brow bone right -->
+        <ellipse cx="272" cy="178" rx="22" ry="6" fill="url(#highlightGrad)" opacity="0.5" transform="rotate(5, 272, 178)"/>
+
+        <!-- ============ FEATURES ============ -->
+        <!-- Brows - defined, slightly arched for lift -->
+        <path d="M 145 186 Q 165 175 185 178 Q 195 180 198 183" 
+              stroke="rgba(138,115,90,0.6)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 242 183 Q 245 180 255 178 Q 275 175 295 186" 
+              stroke="rgba(138,115,90,0.6)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Eyes - large, almond, Lauren's proportions -->
+        <!-- Left eye -->
+        <path d="M 150 210 Q 168 196 188 210 Q 168 222 150 210 Z" 
+              fill="rgba(30,35,30,0.05)" stroke="rgba(180,160,140,0.4)" stroke-width="1"/>
+        <!-- Left iris -->
+        <circle cx="170" cy="210" r="10" fill="rgba(120,145,95,0.3)" stroke="rgba(120,145,95,0.4)" stroke-width="0.8"/>
+        <circle cx="170" cy="210" r="5" fill="rgba(40,50,35,0.5)"/>
+        <!-- Right eye -->
+        <path d="M 252 210 Q 272 196 290 210 Q 272 222 252 210 Z" 
+              fill="rgba(30,35,30,0.05)" stroke="rgba(180,160,140,0.4)" stroke-width="1"/>
+        <!-- Right iris -->
+        <circle cx="270" cy="210" r="10" fill="rgba(120,145,95,0.3)" stroke="rgba(120,145,95,0.4)" stroke-width="0.8"/>
+        <circle cx="270" cy="210" r="5" fill="rgba(40,50,35,0.5)"/>
+
+        <!-- Nose -->
+        <path d="M 220 200 L 218 270 Q 210 285 205 282" 
+              stroke="rgba(180,160,140,0.2)" stroke-width="1" fill="none"/>
+        <path d="M 220 200 L 222 270 Q 230 285 235 282" 
+              stroke="rgba(180,160,140,0.2)" stroke-width="1" fill="none"/>
+
+        <!-- Lips - full, romantic, Lauren's proportions -->
+        <!-- Upper lip with cupid's bow -->
+        <path d="M 195 350 Q 207 342 220 348 Q 233 342 245 350" 
+              stroke="rgba(200,130,120,0.5)" stroke-width="1.5" fill="rgba(200,130,120,0.15)"/>
+        <!-- Lower lip - fuller -->
+        <path d="M 195 350 Q 220 372 245 350" 
+              stroke="rgba(200,130,120,0.5)" stroke-width="1.5" fill="rgba(200,130,120,0.15)"/>
+
+        <!-- ============ POWDER ZONE (T-zone only) ============ -->
+        <!-- Indicated with subtle dotted outline -->
+        <path d="M 190 100 L 190 280 Q 190 295 220 295 Q 250 295 250 280 L 250 100" 
+              stroke="rgba(200,190,180,0.12)" stroke-width="1" stroke-dasharray="4,4" fill="none"/>
+
+        <!-- ============ LABELS ============ -->
+        <!-- Bronzer labels -->
+        <text x="60" y="135" font-size="9" fill="rgba(196,160,96,0.7)" font-family="Georgia" font-style="italic">bronzer</text>
+        <line x1="88" y1="138" x2="105" y2="148" stroke="rgba(196,160,96,0.3)" stroke-width="0.5"/>
+        <text x="335" y="135" font-size="9" fill="rgba(196,160,96,0.7)" font-family="Georgia" font-style="italic">bronzer</text>
+        <line x1="352" y1="138" x2="340" y2="148" stroke="rgba(196,160,96,0.3)" stroke-width="0.5"/>
+
+        <!-- Blush labels -->
+        <text x="42" y="270" font-size="9" fill="rgba(232,136,128,0.7)" font-family="Georgia" font-style="italic">blush</text>
+        <text x="42" y="282" font-size="7.5" fill="rgba(232,136,128,0.45)" font-family="Georgia">sweep ↗</text>
+        <line x1="67" y1="272" x2="108" y2="268" stroke="rgba(232,136,128,0.3)" stroke-width="0.5"/>
+        <text x="340" y="270" font-size="9" fill="rgba(232,136,128,0.7)" font-family="Georgia" font-style="italic">blush</text>
+        <text x="340" y="282" font-size="7.5" fill="rgba(232,136,128,0.45)" font-family="Georgia">↖ sweep</text>
+        <line x1="367" y1="272" x2="332" y2="268" stroke="rgba(232,136,128,0.3)" stroke-width="0.5"/>
+
+        <!-- Highlight labels -->
+        <text x="48" y="250" font-size="8" fill="rgba(245,232,208,0.5)" font-family="Georgia" font-style="italic">highlight</text>
+        <text x="332" y="250" font-size="8" fill="rgba(245,232,208,0.5)" font-family="Georgia" font-style="italic">highlight</text>
+        
+        <!-- Nose highlight -->
+        <text x="240" y="240" font-size="7.5" fill="rgba(245,232,208,0.45)" font-family="Georgia" font-style="italic">nose bridge</text>
+        <text x="240" y="250" font-size="7.5" fill="rgba(245,232,208,0.45)" font-family="Georgia" font-style="italic">highlight</text>
+
+        <!-- Cupid's bow -->
+        <text x="240" y="350" font-size="7.5" fill="rgba(245,232,208,0.45)" font-family="Georgia" font-style="italic">cupid's bow</text>
+        <line x1="240" y1="348" x2="232" y2="347" stroke="rgba(245,232,208,0.2)" stroke-width="0.5"/>
+
+        <!-- Brow bone -->
+        <text x="155" y="170" font-size="7.5" fill="rgba(245,232,208,0.4)" font-family="Georgia" font-style="italic">brow bone</text>
+
+        <!-- T-zone powder label -->
+        <text x="200" y="92" font-size="7.5" fill="rgba(200,190,180,0.3)" font-family="Georgia" text-anchor="middle" font-style="italic">powder T-zone only</text>
+
+        <!-- Jawline bronzer -->
+        <text x="55" y="400" font-size="7.5" fill="rgba(196,160,96,0.45)" font-family="Georgia" font-style="italic">light bronzer</text>
+        <line x1="95" y1="397" x2="122" y2="392" stroke="rgba(196,160,96,0.2)" stroke-width="0.5"/>
+
+        <!-- Under cheekbone -->
+        <text x="45" y="310" font-size="7.5" fill="rgba(196,160,96,0.45)" font-family="Georgia" font-style="italic">subtle warmth</text>
+        <line x1="90" y1="307" x2="100" y2="302" stroke="rgba(196,160,96,0.2)" stroke-width="0.5"/>
+
+        <!-- NO ZONE indicator -->
+        <line x1="185" y1="320" x2="185" y2="340" stroke="rgba(200,100,90,0.2)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <text x="155" y="335" font-size="7" fill="rgba(200,100,90,0.35)" font-family="Georgia" font-style="italic">no blush</text>
+        <text x="155" y="344" font-size="7" fill="rgba(200,100,90,0.35)" font-family="Georgia" font-style="italic">below here</text>
+      </svg>
+    </div>
+
+    <!-- LEGEND -->
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin: 16px 0 32px; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: rgba(196,160,96,0.5);"></div>
+        <span style="font-size: 10px; color: rgba(196,160,96,0.7);">Bronzer</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: rgba(232,136,128,0.5);"></div>
+        <span style="font-size: 10px; color: rgba(232,136,128,0.7);">Blush</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: rgba(245,232,208,0.5);"></div>
+        <span style="font-size: 10px; color: rgba(245,232,208,0.7);">Highlight</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <div style="width: 14px; height: 14px; border-radius: 50%; border: 1px dashed rgba(200,190,180,0.3);"></div>
+        <span style="font-size: 10px; color: rgba(200,190,180,0.5);">Powder zone</span>
+      </div>
+    </div>
+
+    <!-- EYE DETAIL MAP -->
+    <div style="text-align: center; margin: 28px 0 8px;">
+      <div style="font-size: 12px; color: rgba(212,175,140,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Eye Detail — Shadow Placement</div>
+      <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 420px; width: 100%;">
+        <defs>
+          <radialGradient id="lidShimmer" cx="45%" cy="60%" r="50%">
+            <stop offset="0%" stop-color="#F2DFC0" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#F2DFC0" stop-opacity="0.15"/>
+          </radialGradient>
+          <radialGradient id="creaseColor" cx="50%" cy="40%" r="55%">
+            <stop offset="0%" stop-color="#AD8A64" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#AD8A64" stop-opacity="0.05"/>
+          </radialGradient>
+          <radialGradient id="outerV" cx="70%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#7A5E4A" stop-opacity="0.55"/>
+            <stop offset="100%" stop-color="#7A5E4A" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#F5ECDA" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#F5ECDA" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+
+        <!-- Brow - arched, defined -->
+        <path d="M 70 88 Q 140 55 240 60 Q 340 62 410 85" 
+              stroke="rgba(138,115,90,0.5)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Crease / socket line -->
+        <path d="M 80 155 Q 240 100 420 150" 
+              stroke="rgba(180,160,140,0.12)" stroke-width="1" fill="none"/>
+
+        <!-- ============ SHADOW ZONES ============ -->
+
+        <!-- Crease zone - bronze/warm taupe - outer 2/3 -->
+        <path d="M 210 138 Q 310 105 415 145 L 400 158 Q 300 125 210 150 Z"
+              fill="url(#creaseColor)" opacity="0.8"/>
+
+        <!-- Outer V - cocoa - swept UPWARD toward brow tail -->
+        <path d="M 365 148 Q 425 135 440 170 L 420 178 Q 410 158 365 158 Z"
+              fill="url(#outerV)" opacity="0.9"/>
+
+        <!-- Lid zone - champagne shimmer (between crease and lash line) -->
+        <path d="M 100 175 Q 120 162 200 155 Q 300 148 400 165 L 440 175 Q 350 190 250 192 Q 150 192 100 175 Z"
+              fill="url(#lidShimmer)" opacity="0.9"/>
+
+        <!-- Inner corner highlight -->
+        <ellipse cx="92" cy="178" rx="18" ry="12" fill="url(#innerGlow)" opacity="0.9"/>
+
+        <!-- ============ EYE OUTLINE ============ -->
+        <!-- Upper lid - strong curve, almond shape -->
+        <path d="M 75 180 Q 130 148 250 145 Q 370 148 445 178" 
+              fill="none" stroke="rgba(180,160,140,0.4)" stroke-width="1.3"/>
+        <!-- Lower lid - much flatter curve -->
+        <path d="M 75 180 Q 200 202 320 198 Q 400 192 445 178" 
+              fill="none" stroke="rgba(180,160,140,0.3)" stroke-width="1"/>
+
+        <!-- Iris -->
+        <ellipse cx="260" cy="176" rx="24" ry="20" fill="rgba(120,145,95,0.2)" stroke="rgba(120,145,95,0.3)" stroke-width="0.8"/>
+        <circle cx="260" cy="176" r="11" fill="rgba(40,50,35,0.4)"/>
+        <circle cx="254" cy="170" r="4" fill="rgba(255,255,255,0.15)"/>
+
+        <!-- Upper lash line - thicker, smudged liner zone -->
+        <path d="M 85 179 Q 200 150 350 153 Q 410 158 442 176" 
+              stroke="rgba(91,62,47,0.45)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Lower lash - outer third only, soft -->
+        <path d="M 340 196 Q 390 194 440 180" 
+              stroke="rgba(155,135,120,0.3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+        <!-- Lower inner - champagne shimmer touch -->
+        <path d="M 85 182 Q 170 202 280 198" 
+              stroke="rgba(242,223,192,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+
+        <!-- Upper lashes indicated -->
+        <line x1="150" y1="152" x2="147" y2="143" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="200" y1="148" x2="198" y2="138" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="250" y1="146" x2="249" y2="136" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="300" y1="148" x2="300" y2="138" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="350" y1="152" x2="353" y2="142" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="400" y1="160" x2="405" y2="151" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+
+        <!-- ============ DIRECTION ARROWS ============ -->
+        <!-- Outer V sweep direction - UP toward brow -->
+        <line x1="420" y1="155" x2="410" y2="120" stroke="rgba(122,94,74,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+        <polygon points="410,120 406,128 414,127" fill="rgba(122,94,74,0.4)"/>
+
+        <!-- Crease blend direction - up and out -->
+        <line x1="310" y1="118" x2="300" y2="98" stroke="rgba(173,138,100,0.35)" stroke-width="1" stroke-dasharray="3,3"/>
+        <polygon points="300,98 296,106 304,105" fill="rgba(173,138,100,0.35)"/>
+
+        <!-- ============ LABELS ============ -->
+        <!-- Lid -->
+        <text x="250" y="180" font-size="10" fill="rgba(242,223,192,0.7)" font-family="Georgia" font-style="italic" text-anchor="middle">champagne shimmer</text>
+
+        <!-- Crease -->
+        <text x="320" y="108" font-size="9.5" fill="rgba(173,138,100,0.7)" font-family="Georgia" font-style="italic">bronze / warm taupe</text>
+        <text x="320" y="120" font-size="8" fill="rgba(173,138,100,0.45)" font-family="Georgia" font-style="italic">outer ⅔ of crease</text>
+
+        <!-- Outer V -->
+        <text x="448" y="148" font-size="9.5" fill="rgba(122,94,74,0.7)" font-family="Georgia" font-style="italic">cocoa</text>
+        <text x="448" y="160" font-size="8" fill="rgba(122,94,74,0.45)" font-family="Georgia" font-style="italic">sweep ↑</text>
+
+        <!-- Inner corner -->
+        <text x="20" y="170" font-size="9" fill="rgba(245,236,218,0.6)" font-family="Georgia" font-style="italic">champagne</text>
+        <text x="20" y="182" font-size="9" fill="rgba(245,236,218,0.6)" font-family="Georgia" font-style="italic">highlight</text>
+
+        <!-- Upper liner -->
+        <text x="190" y="232" font-size="9" fill="rgba(91,62,47,0.6)" font-family="Georgia" font-style="italic">smudged espresso / bronze liner</text>
+
+        <!-- Lower outer -->
+        <text x="365" y="218" font-size="8.5" fill="rgba(155,135,120,0.5)" font-family="Georgia" font-style="italic">soft bronze</text>
+        <text x="365" y="229" font-size="8.5" fill="rgba(155,135,120,0.5)" font-family="Georgia" font-style="italic">outer ⅓ only</text>
+
+        <!-- Lower inner -->
+        <text x="105" y="218" font-size="8" fill="rgba(242,223,192,0.4)" font-family="Georgia" font-style="italic">champagne inner ⅔</text>
+
+        <!-- Brow bone -->
+        <text x="200" y="78" font-size="9" fill="rgba(245,232,208,0.4)" font-family="Georgia" font-style="italic">subtle highlight under brow</text>
+      </svg>
+    </div>
+
+    <!-- LIP MAP -->
+    <div style="text-align: center; margin: 28px 0 8px;">
+      <div style="font-size: 12px; color: rgba(212,175,140,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Lip Detail — Statement vs. Everyday</div>
+      <svg viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg" style="max-width: 400px; width: 100%;">
+        
+        <!-- LEFT LIPS - Statement -->
+        <text x="125" y="28" font-size="11" fill="rgba(212,175,140,0.6)" font-family="Georgia" font-style="italic" text-anchor="middle">Statement</text>
+
+        <!-- Upper lip -->
+        <path d="M 50 100 Q 80 78 125 92 Q 170 78 200 100" 
+              stroke="rgba(200,90,74,0.6)" stroke-width="1.5" fill="rgba(200,90,74,0.35)"/>
+        <!-- Lower lip - fuller -->
+        <path d="M 50 100 Q 125 138 200 100" 
+              stroke="rgba(200,90,74,0.6)" stroke-width="1.5" fill="rgba(200,90,74,0.35)"/>
+        
+        <!-- Highlight center lower lip -->
+        <ellipse cx="125" cy="112" rx="15" ry="8" fill="rgba(255,255,255,0.12)"/>
+        
+        <!-- Cupid's bow highlight -->
+        <ellipse cx="125" cy="90" rx="8" ry="4" fill="rgba(245,232,208,0.25)"/>
+
+        <text x="125" y="112" font-size="8.5" fill="rgba(255,240,230,0.6)" font-family="Georgia" font-style="italic" text-anchor="middle">coral red / poppy</text>
+        <text x="125" y="155" font-size="8" fill="rgba(212,175,140,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">gloss touch at center</text>
+        <text x="125" y="166" font-size="8" fill="rgba(212,175,140,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">for dimension</text>
+        <line x1="125" y1="122" x2="125" y2="145" stroke="rgba(212,175,140,0.15)" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+        <!-- RIGHT LIPS - Everyday -->
+        <text x="375" y="28" font-size="11" fill="rgba(212,175,140,0.6)" font-family="Georgia" font-style="italic" text-anchor="middle">Everyday</text>
+
+        <!-- Upper lip -->
+        <path d="M 300 100 Q 330 78 375 92 Q 420 78 450 100" 
+              stroke="rgba(204,122,133,0.5)" stroke-width="1.5" fill="rgba(204,122,133,0.2)"/>
+        <!-- Lower lip -->
+        <path d="M 300 100 Q 375 138 450 100" 
+              stroke="rgba(204,122,133,0.5)" stroke-width="1.5" fill="rgba(204,122,133,0.2)"/>
+        
+        <!-- Balm sheen -->
+        <ellipse cx="375" cy="108" rx="22" ry="12" fill="rgba(255,255,255,0.08)"/>
+
+        <text x="375" y="110" font-size="8.5" fill="rgba(255,230,220,0.5)" font-family="Georgia" font-style="italic" text-anchor="middle">warm rose / peach balm</text>
+        <text x="375" y="155" font-size="8" fill="rgba(212,175,140,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">satin or balm finish</text>
+        <text x="375" y="166" font-size="8" fill="rgba(212,175,140,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">enhances natural color</text>
+        <line x1="375" y1="122" x2="375" y2="145" stroke="rgba(212,175,140,0.15)" stroke-width="0.5" stroke-dasharray="2,2"/>
+
+        <!-- Divider -->
+        <line x1="250" y1="40" x2="250" y2="170" stroke="rgba(212,175,140,0.1)" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="key-principle">
+      All directions flow upward and outward. Blush sweeps toward the temple. Outer corner shadow lifts toward the brow tail. Bronzer warms the perimeter without dragging down. Every placement choice counters the natural elongation of the oval and adds lift.
+    </div>
+  </div>
+
+  <!-- BASE -->
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Base</h2>
+    <div class="section-why">Because your skin is already doing most of the work</div>
+
+    <div class="step">
+      <span class="step-label">Foundation</span>
+      Satin or luminous finish, light-medium coverage. Match to your jawline in natural light — you're warm-neutral, so avoid anything too pink or too yellow. A skin-tint or tinted moisturizer works beautifully on you for everyday. Your skin's natural luminosity is an asset; don't bury it under matte powder.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Concealer</span>
+      Brightening under-eye concealer one shade lighter than your base, with a peachy-warm corrector underneath if needed. Your under-eyes show some hollow/darkness — a light-reflecting formula here will lift the whole face. Spot conceal redness on the forehead and nose rather than adding coverage everywhere.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Powder</span>
+      Minimal. Only where you truly need oil control — likely the forehead and nose. Use a finely milled translucent warm powder. Never powder the cheekbones or under-eyes. You want those surfaces catching light.
+    </div>
+
+    <div class="avoid-note">Skip: heavy matte foundation, full-face powder, cool-pink bases, overly yellow bases</div>
+  </div>
+
+  <!-- BLUSH -->
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Blush</h2>
+    <div class="section-why">The single most important step for your face shape</div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #F0A8A0; animation-delay: 0s;"></div>
+        <span class="color-dot-label">peach pink</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E8887E; animation-delay: 0.5s;"></div>
+        <span class="color-dot-label">coral rose</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #F4B0B0; animation-delay: 1s;"></div>
+        <span class="color-dot-label">warm baby pink</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E0807E; animation-delay: 1.5s;"></div>
+        <span class="color-dot-label">soft watermelon</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #F09098; animation-delay: 2s;"></div>
+        <span class="color-dot-label">strawberry</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Placement — This Is Critical</span>
+      Your face is a long oval. Blush placement should add horizontal lift, never vertical drag. Apply high on the cheekbone — start at the apple when you smile, then sweep outward and slightly upward toward the temple. Do not bring blush below the nose line. Do not drag it down toward the jawline. The goal is to create a soft horizontal band of warmth across the upper-mid face that visually shortens the oval and adds life.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Formula</span>
+      Cream or liquid blush on your skin type. It melts into your natural luminosity rather than sitting on top. Apply to bare or lightly powdered skin, blend with fingers or a damp sponge. If you use powder blush, apply it before powder, or use a stippling brush so it doesn't look chalky.
+    </div>
+
+    <div class="key-principle">
+      Blush is doing more for your face than contour ever will. It's adding the warmth and dimension that makes everything else work. If you skip one step, don't let it be this one.
+    </div>
+
+    <div class="avoid-note">Skip: dusty mauve, gray-rose, any blush placed low or in a diagonal contour stripe</div>
+  </div>
+
+  <!-- BRONZER & HIGHLIGHT -->
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Bronzer & Highlight</h2>
+    <div class="section-why">Light sculpting, not face reconstruction</div>
+
+    <div class="step">
+      <span class="step-label">Bronzer</span>
+      Soft golden-beige or honey-beige, applied lightly at the temples, outer forehead, and softly beneath the cheekbone only at the outer edge. You're warming and adding subtle dimension, not sculpting cheekbones you don't need sculpted. A light dusting along the jawline and neck blends the face into the body. Never use orange or muddy bronzer — keep it golden and sheer.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #D4AD80; animation-delay: 0s;"></div>
+        <span class="color-dot-label">golden beige</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #C8A070; animation-delay: 0.5s;"></div>
+        <span class="color-dot-label">honey beige</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #D4B898; animation-delay: 1s;"></div>
+        <span class="color-dot-label">light peach tan</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Highlight</span>
+      Champagne or pearl-gold, applied to the tops of the cheekbones, the bridge of the nose, the cupid's bow, and the inner corners of the eyes. Your skin already has a natural sheen — you're amplifying, not creating. Use a cream or liquid highlighter and tap it on. Avoid anything with visible glitter particles or icy-white shift.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #F0E0C8; animation-delay: 0s;"></div>
+        <span class="color-dot-label">champagne</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E8D8C4; animation-delay: 0.5s;"></div>
+        <span class="color-dot-label">pearl gold</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E0C8B8; animation-delay: 1s;"></div>
+        <span class="color-dot-label">rose gold</span>
+      </div>
+    </div>
+
+    <div class="avoid-note">Skip: gray contour, heavy sculpting, orange bronzer, icy white highlight, silver shimmer</div>
+  </div>
+
+  <!-- EYES -->
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Eyes</h2>
+    <div class="section-why">The headline act — warm bronze makes your green-gold irises look backlit</div>
+
+    <div class="step">
+      <span class="step-label">Why This Works on You Specifically</span>
+      Bronze, copper, and warm taupe are red-orange family colors — the direct complement to green on the color wheel. When you place these warm metals around your eyes, they create a chromatic vibration that makes the green-gold in your irises intensify. This is why the coral lip made your eyes pop in that photo. Same principle, applied directly.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #F2DFC0; animation-delay: 0s;"></div>
+        <span class="color-dot-label">champagne</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E8C8A8; animation-delay: 0.3s;"></div>
+        <span class="color-dot-label">peach beige</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #C9917A; animation-delay: 0.6s;"></div>
+        <span class="color-dot-label">rose gold</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #AD8A64; animation-delay: 0.9s;"></div>
+        <span class="color-dot-label">soft bronze</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #9A8878; animation-delay: 1.2s;"></div>
+        <span class="color-dot-label">warm taupe</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #7A5E4A; animation-delay: 1.5s;"></div>
+        <span class="color-dot-label">cocoa</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #C48A5A; animation-delay: 1.8s;"></div>
+        <span class="color-dot-label">light copper</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Lid</span>
+      Champagne shimmer or peach shimmer across the full lid. This catches light and creates the luminous, awake quality your eyes want. The shimmer picks up the gold flecks in your irises and echoes them.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Crease</span>
+      Soft bronze or warm taupe blended into the crease with a fluffy brush. Keep the depth concentrated in the outer two-thirds of the crease. Blend upward and outward — this lifts the eye and complements the long oval face by adding horizontal movement.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Outer Corner</span>
+      Deepen with cocoa or a warm brown, placed at the outer V and swept upward toward the tail of the brow. Never drag it downward. The direction of this shadow shapes the perceived angle of your eye — up and out is your friend.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Inner Corner</span>
+      Champagne or pale gold highlight. Tap it right at the inner corner and slightly onto the inner lid. This opens the eye and adds brightness to the whole face. On you, this one small detail makes a disproportionate difference.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Liner</span>
+      Smudged bronze, espresso, or warm brown along the upper lash line. Not a sharp liquid line — press the color into the lashes and smudge slightly with a small brush or smudger tip. This defines without hardening. For more drama: deep teal or plum-brown, still smudged. Save black liner for stage.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #8A6A48; animation-delay: 0s;"></div>
+        <span class="color-dot-label">bronze liner</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #5B3E2F; animation-delay: 0.4s;"></div>
+        <span class="color-dot-label">espresso</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #1A6B6A; animation-delay: 0.8s;"></div>
+        <span class="color-dot-label">deep teal</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #8A5A6A; animation-delay: 1.2s;"></div>
+        <span class="color-dot-label">plum brown</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Lower Lash Line</span>
+      Softly define only the outer third with warm taupe or soft bronze. Never line the full lower lash line — on your large eyes, it would close them down. A tiny bit of champagne shimmer smudged along the lower inner third keeps things open and bright.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Lashes</span>
+      Curl first — always. Brown-black mascara for daytime (keeps things warm and soft). Black for evening, stage, and photos. Focus on the upper lashes, especially the outer corners. One coat on lower lashes only at the outer edge, if at all.
+    </div>
+
+    <div class="avoid-note">Skip: cool gray smoky eye, harsh black liquid liner as default, icy silver shadow, heavy lower lash lining, thick graphic wings</div>
+  </div>
+
+  <!-- BROWS -->
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Brows</h2>
+    <div class="section-why">They're already good — refine, don't rebuild</div>
+
+    <div class="step">
+      <span class="step-label">Product</span>
+      Taupe-brown or neutral brown pencil or brow gel. Your brows are naturally darker than your champagne blonde hair, and that's correct — it gives your face structure. Don't try to match them to your hair color; they'd disappear.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Technique</span>
+      Feather light hairstrokes through any sparse areas. Keep the front edge soft and natural — feathered, not blocky. Define the arch slightly for lift on the long oval face. Brush up with a clear or tinted brow gel to set. Clean up underneath with concealer on a small brush if needed, but preserve the natural fullness above.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #8A7A68; animation-delay: 0s;"></div>
+        <span class="color-dot-label">taupe brown</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #7A6A58; animation-delay: 0.5s;"></div>
+        <span class="color-dot-label">neutral brown</span>
+      </div>
+    </div>
+
+    <div class="avoid-note">Skip: black-brown products, squared-off fronts, over-carved Instagram brows, too-thin shaping</div>
+  </div>
+
+  <!-- LIPS -->
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Lips</h2>
+    <div class="section-why">Full, romantic, and naturally mauve-rose — they can carry bold or soft equally well</div>
+
+    <div class="key-principle">
+      The rule: when your eyes are the focus, soften the lip. When the lip is the statement, soften the eyes. Your features are strong enough that both at full volume competes — choose your lead and let the other play support.
+    </div>
+
+    <div class="step">
+      <span class="step-label">Everyday Lip</span>
+      Warm rose, peach rose, or pinky nude in a cream or balm formula. This enhances your natural lip color without competing with a bronze eye. It's the "I look polished but I'm not trying" lip.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #CC7A85; animation-delay: 0s;"></div>
+        <span class="color-dot-label">warm rose</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #D9998F; animation-delay: 0.4s;"></div>
+        <span class="color-dot-label">peach rose</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #CF9B8F; animation-delay: 0.8s;"></div>
+        <span class="color-dot-label">pinky nude</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E8A88A; animation-delay: 1.2s;"></div>
+        <span class="color-dot-label">peachy gloss</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Statement Lip</span>
+      Coral red, sheer poppy, strawberry pink, or soft watermelon. This is the lip from your photo — warm-based, clear, alive. When you go bold, pull the eyes back to champagne shimmer and mascara only, and let the lip lead. Your full lips carry bold color without looking overdone; it reads confident, not costume.
+    </div>
+
+    <div class="color-row">
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E8695A; animation-delay: 0s;"></div>
+        <span class="color-dot-label">coral red</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #E06050; animation-delay: 0.4s;"></div>
+        <span class="color-dot-label">sheer poppy</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #D96880; animation-delay: 0.8s;"></div>
+        <span class="color-dot-label">strawberry</span>
+      </div>
+      <div class="color-chip">
+        <div class="color-dot" style="background: #D4706E; animation-delay: 1.2s;"></div>
+        <span class="color-dot-label">watermelon</span>
+      </div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Finish</span>
+      Always cream, satin, gloss, or balm. Your lips are full and romantic — they want dimension and life, not flat matte. If you use a matte formula, blot it and add a touch of gloss to the center of the lower lip for movement.
+    </div>
+
+    <div class="avoid-note">Skip: gray mauve, dusty purple, brown nude, blue-red, burgundy, wine, bone-dry matte as default</div>
+  </div>
+
+  <!-- COMPLETE LOOKS -->
+  <div class="section">
+    <div class="section-icon">✦</div>
+    <h2>Your Looks — Assembled</h2>
+    <div class="section-why">Five complete combinations, each calibrated for your face</div>
+
+    <div class="look-card">
+      <h3>Everyday Luminous</h3>
+      <p>Skin-tint or light foundation, spot concealed. Cream peach-pink blush high on cheekbones. Champagne shimmer across lids. One coat brown-black mascara, curled. Brows brushed up with gel. Warm rose balm on lips. Champagne highlight on cheekbone tops. Done in six minutes, looks like you woke up in golden hour.</p>
+    </div>
+
+    <div class="look-card">
+      <h3>Polished Professional</h3>
+      <p>Satin foundation, light-medium coverage. Soft bronze blended through the crease, champagne on the lid, cocoa smudged at outer corners. Espresso liner smudged along upper lashes. Defined brows. Coral-rose blush swept high. Peach-rose satin lip. This is the "I run things and I look incredible doing it" face.</p>
+    </div>
+
+    <div class="look-card">
+      <h3>Date Night</h3>
+      <p>Luminous base, brightened under-eyes. Rose gold shimmer on lid, warm bronze in crease, cocoa outer corner swept upward. Bronze liner smudged upper lash line. Full curled lashes, black mascara. Coral-rose blush. Champagne highlight on cheekbones and cupid's bow. Soft watermelon lip in satin finish. Pearl or gold earrings.</p>
+    </div>
+
+    <div class="look-card">
+      <h3>Bold Lip Night</h3>
+      <p>Luminous base. Champagne wash across lids — shimmer, minimal crease work. Brown-black mascara, curled lashes. Peach-pink blush. Coral red or sheer poppy lip, cream finish. The lip is the entire event. Eyes stay bright and open but don't compete. This is the look from your blonde photo with the coral top — you already know it works.</p>
+    </div>
+
+    <div class="look-card">
+      <h3>Stage / Comedy</h3>
+      <p>Build up the professional look with more intensity: stronger bronze eye, defined crease, espresso liner slightly thicker, black mascara with an extra coat. Strawberry pink or coral-pink lip — warm and lively, reads well under lights. Brighter blush. The goal is a face that's warm and expressive from the back row — not dark and heavy. Keep the palette warm even when you add volume.</p>
+    </div>
+  </div>
+
+  <!-- PRINCIPLES -->
+  <div class="section">
+    <div class="section-icon">✦</div>
+    <h2>The Governing Principles</h2>
+    <div class="section-why">So you can improvise and still get it right</div>
+
+    <p><span class="emphasis">Warm over cool, always.</span> Every shadow, liner, blush, and lip should lean warm-neutral. The moment you go cool (gray, icy, blue-based), your skin flattens and your eyes lose their fire.</p>
+
+    <p><span class="emphasis">Luminous over matte.</span> Your skin has a natural quality that matte products fight against. Satin, cream, sheer, dewy — these are your textures. Powder only where you truly need it.</p>
+
+    <p><span class="emphasis">Lift, always lift.</span> Every placement should pull upward and outward. Blush high, outer corner shadow swept up, liner slightly winged if winged at all, brow arch gently emphasized. Your long oval face rewards vertical lift and horizontal expansion.</p>
+
+    <p><span class="emphasis">One star, one supporting cast.</span> Bold eye + soft lip, or bold lip + soft eye. Your features are each strong enough to lead — don't make them fight for the spotlight.</p>
+
+    <p><span class="emphasis">Bronze is your secret weapon.</span> It's the complement to green. Every time you put warm bronze near your eyes, you're using color theory to make your irises glow. This isn't decorative — it's optical.</p>
+  </div>
+
+  <div class="footer">
+    <p>
+      Champagne shimmer · Bronze crease · Coral lip · Peach blush<br>
+      Warm everything · Lift everything · Glow from the inside
+    </p>
+  </div>
+
+</div>
+
+<script>
+function createSparkle() {
+  const field = document.getElementById('sparkleField');
+  const particle = document.createElement('div');
+  particle.className = 'sparkle-particle';
+  const size = Math.random() * 3 + 1;
+  particle.style.width = size + 'px';
+  particle.style.height = size + 'px';
+  particle.style.left = Math.random() * 100 + '%';
+  particle.style.top = Math.random() * 100 + '%';
+  particle.style.boxShadow = `0 0 ${size * 3}px rgba(212,175,140,0.3)`;
+  particle.style.animationDelay = (Math.random() * 0.5) + 's';
+  field.appendChild(particle);
+  setTimeout(() => particle.remove(), 3500);
+}
+setInterval(createSparkle, 350);
+</script>
+
+</body>
+</html>
