@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Velvet Siren — Color Palette</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;background:linear-gradient(165deg,#0C2D3A 0%,#133B4A 30%,#1A4A5A 60%,#0E3040 100%);font-family:Georgia,'Times New Roman',serif;position:relative;overflow-x:hidden}
+  .sparkle-canvas{position:fixed;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:1;overflow:hidden}
+  .sparkle{position:absolute;border-radius:50%;background:rgba(136,176,192,0.7);animation:sparkleFloat 2.5s ease-out forwards;pointer-events:none}
+  @keyframes sparkleFloat{0%{opacity:0;transform:translateY(0) scale(0)}20%{opacity:1;transform:translateY(-8px) scale(1)}80%{opacity:.6;transform:translateY(-30px) scale(.8)}100%{opacity:0;transform:translateY(-45px) scale(0)}}
+  @keyframes titleGlow{0%,100%{text-shadow:0 0 20px rgba(136,176,192,.3),0 0 40px rgba(136,176,192,.1)}50%{text-shadow:0 0 30px rgba(136,176,192,.5),0 0 60px rgba(136,176,192,.2)}}
+  @keyframes subtitlePulse{0%,100%{opacity:.7}50%{opacity:1}}
+  @keyframes pulseGlow{0%,100%{box-shadow:0 2px 12px rgba(255,255,255,.08)}50%{box-shadow:0 4px 20px rgba(255,255,255,.18)}}
+  @keyframes copiedPop{0%{transform:scale(.8);opacity:0}50%{transform:scale(1.05)}100%{transform:scale(1);opacity:1}}
+  .container{max-width:920px;margin:0 auto;padding:32px 20px 60px;position:relative;z-index:2}
+  .header{text-align:center;margin-bottom:36px}
+  .header-label{font-size:11px;letter-spacing:5px;color:#88B0C0;text-transform:uppercase;margin-bottom:10px;animation:subtitlePulse 3s ease-in-out infinite}
+  .header h1{font-size:32px;font-weight:400;color:#F0E8D8;line-height:1.2;animation:titleGlow 4s ease-in-out infinite}
+  .header-sub{font-size:14px;color:rgba(136,176,192,.6);margin-top:8px;font-style:italic}
+  .header-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,#88B0C0,transparent);margin:16px auto 0}
+  .filters{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:28px}
+  .filter-btn{padding:6px 14px;border-radius:20px;font-size:11px;letter-spacing:.5px;background:rgba(255,255,255,.06);color:rgba(240,232,216,.5);border:none;cursor:pointer;font-family:inherit;transition:all .2s}
+  .filter-btn:hover{transform:translateY(-1px)}
+  .filter-btn.active{background:rgba(136,176,192,.25);color:#F0E8D8}
+  .color-group{margin-bottom:36px}
+  .group-title{font-size:18px;font-weight:400;color:#F0E8D8;letter-spacing:1px;margin-bottom:3px}
+  .group-subtitle{font-size:12px;color:rgba(136,176,192,.5);font-style:italic;margin-bottom:12px}
+  .color-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px}
+  .swatch{border-radius:10px;overflow:hidden;cursor:pointer;transition:all .25s;animation:pulseGlow 4s ease-in-out infinite;position:relative}
+  .swatch:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 8px 28px rgba(255,255,255,.2)!important}
+  .swatch-color{height:70px;display:flex;align-items:center;justify-content:center;position:relative}
+  .swatch-info{background:rgba(10,30,40,.85);padding:7px 8px}
+  .swatch-name{font-size:10px;color:#D0C8B8;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .swatch-hex{font-size:9px;color:rgba(180,170,155,.6);font-family:monospace;margin-top:1px}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(136,176,192,.2);backdrop-filter:blur(12px);color:#F0E8D8;padding:10px 20px;border-radius:24px;font-size:12px;letter-spacing:1px;pointer-events:none;opacity:0;transition:all .3s;z-index:100;border:1px solid rgba(136,176,192,.15)}
+  .toast.visible{transform:translateX(-50%) translateY(0);opacity:1}
+</style>
+</head>
+<body>
+<div class="sparkle-canvas" id="sparkleCanvas"></div>
+<div class="container">
+  <div class="header">
+    <div class="header-label">Personal Color System</div>
+    <h1>The Velvet Siren</h1>
+    <div class="header-sub">Contrasting Light Summer · Cool-Neutral · Spring Modifier</div>
+    <div class="header-line"></div>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div id="paletteContainer"></div>
+  <div style="text-align:center;margin-top:40px;padding:20px 0;border-top:1px solid rgba(136,176,192,.12)">
+    <p style="font-size:12px;color:rgba(136,176,192,.35);font-style:italic;line-height:1.6">
+      Cool-neutral base · Spring warmth modifier · Contrast capacity<br>
+      Romantic severity · Gothic femininity · Intellectual sensuality
+    </p>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const paletteData=[
+  {category:"Hero Colors",subtitle:"Your signature colors — the ones that make everything click",colors:[
+    {name:"Soft Coral",hex:"#D4817A"},{name:"Dusty Rose",hex:"#D4A5A5"},{name:"Seafoam",hex:"#5A9A82"},{name:"Sky Mist",hex:"#98B8C0"},{name:"Soft Teal",hex:"#88C0C0"},{name:"Soft Lavender",hex:"#E8D8F0"},{name:"Pink Champagne",hex:"#E0B8C0"},{name:"Mint Whisper",hex:"#A8C8B8"},{name:"Orchid",hex:"#A888B8"},{name:"Ivory",hex:"#F5F0EB"}]},
+  {category:"Neutrals",subtitle:"Cool-neutral foundations — ivory through charcoal",colors:[
+    {name:"Ivory",hex:"#F5F0EB"},{name:"Cream",hex:"#E8E0D8"},{name:"Champagne",hex:"#F7E7CE"},{name:"Rose Taupe",hex:"#B89888"},{name:"Mushroom",hex:"#A08070"},{name:"Pebble",hex:"#98807A"},{name:"Driftwood",hex:"#786058"},{name:"Coffee",hex:"#5C4033"},{name:"Espresso",hex:"#4A352D"},{name:"Dark Chocolate",hex:"#3D2B24"},{name:"Charcoal",hex:"#2D2D35"},{name:"Soft Black",hex:"#1A1A1F"}]},
+  {category:"Corals",subtitle:"Your spring modifier — warm-neutral and clear",colors:[
+    {name:"Petal",hex:"#F4C8C0"},{name:"Shell Pink",hex:"#F0B0A8"},{name:"Morning Flush",hex:"#E8A090"},{name:"Coral Glow",hex:"#E09888"},{name:"Living Coral",hex:"#E07068"},{name:"Soft Coral",hex:"#D4817A"},{name:"Desert Rose",hex:"#C97268"},{name:"Deep Coral",hex:"#C4716A"},{name:"Terracotta Rose",hex:"#B86860"},{name:"Terra Cotta",hex:"#B05050"}]},
+  {category:"Pinks",subtitle:"Cool-leaning, muted, dusty — not warm candy pink",colors:[
+    {name:"Barely Pink",hex:"#F0D0D8"},{name:"Blush Cloud",hex:"#E8C4C4"},{name:"Pink Champagne",hex:"#E0B8C0"},{name:"Rose Quartz",hex:"#D4B0B0"},{name:"Dusty Rose",hex:"#D4A5A5"},{name:"Mauve Rose",hex:"#C8A0A8"},{name:"Antique Pink",hex:"#C89898"},{name:"Peony",hex:"#E07088"},{name:"Warm Pink",hex:"#C07090"},{name:"Berry Pink",hex:"#A87088"}]},
+  {category:"Blues",subtitle:"Cool foundation — your blue family runs deep",colors:[
+    {name:"Sky Mist",hex:"#98B8C0"},{name:"Sea Glass",hex:"#78A0A8"},{name:"Coastal",hex:"#5A8898"},{name:"Stonewash",hex:"#607888"},{name:"Slate Blue",hex:"#4A7080"},{name:"True Blue",hex:"#4682B4"},{name:"Steel Blue",hex:"#3A5A6A"},{name:"Cobalt",hex:"#305090"},{name:"Prussian",hex:"#2C4A5C"},{name:"Midnight Navy",hex:"#1C3A4D"}]},
+  {category:"Teals",subtitle:"Your power family — cool-neutral and magnetic",colors:[
+    {name:"Teal Mist",hex:"#A0C8C8"},{name:"Soft Teal",hex:"#88C0C0"},{name:"Sea Teal",hex:"#68A8A8"},{name:"Aqua Teal",hex:"#4A9898"},{name:"Bright Teal",hex:"#3A8080"},{name:"Peacock",hex:"#387878"},{name:"Teal",hex:"#2A6868"},{name:"Deep Teal",hex:"#1A4A4A"},{name:"Dark Petrol",hex:"#1A3838"}]},
+  {category:"Greens",subtitle:"Sage and eucalyptus, not pistachio — muted and cool-leaning",colors:[
+    {name:"Sage Mist",hex:"#C8D8C8"},{name:"Mint Whisper",hex:"#A8C8B8"},{name:"Soft Sage",hex:"#8AB8A0"},{name:"Seafoam",hex:"#5A9A82"},{name:"Muted Jade",hex:"#5A7A70"},{name:"Jade",hex:"#4A7D68"},{name:"Eucalyptus",hex:"#4A6B62"},{name:"Dark Sage",hex:"#355C50"},{name:"Emerald Deep",hex:"#2D5A4A"},{name:"Forest Velvet",hex:"#1E4D3D"}]},
+  {category:"Purples",subtitle:"A full register — wisteria to nightshade",colors:[
+    {name:"Soft Lavender",hex:"#E8D8F0"},{name:"Wisteria",hex:"#D4C4E0"},{name:"Lilac",hex:"#C0A8D0"},{name:"Hazy Iris",hex:"#B8A0C8"},{name:"Orchid",hex:"#A888B8"},{name:"Dusty Purple",hex:"#9878A8"},{name:"Amethyst",hex:"#8868A0"},{name:"Smoky Grape",hex:"#7A6890"},{name:"Deep Violet",hex:"#684880"},{name:"Nightshade",hex:"#604070"}]},
+  {category:"Reds & Berries",subtitle:"Cool-based reds and deep berries — your contrast colors",colors:[
+    {name:"Raspberry Red",hex:"#C83050"},{name:"Cherry",hex:"#B82040"},{name:"True Red",hex:"#A01830"},{name:"Crimson",hex:"#9A2030"},{name:"Raspberry",hex:"#A86878"},{name:"Mulberry",hex:"#8B4858"},{name:"Cranberry",hex:"#8A4050"},{name:"Wine",hex:"#783848"},{name:"Deep Wine",hex:"#6B2C3A"},{name:"Oxblood",hex:"#5C2434"}]},
+  {category:"Indigos",subtitle:"Your moody depths — the Velvet Siren signature",colors:[
+    {name:"Soft Indigo",hex:"#7878B8"},{name:"Storm Indigo",hex:"#6868A8"},{name:"Twilight",hex:"#484885"},{name:"Violet Indigo",hex:"#3A3A70"},{name:"Ink",hex:"#2D2D5A"},{name:"Deep Indigo",hex:"#252545"},{name:"Black Iris",hex:"#1E1E3A"},{name:"Midnight Indigo",hex:"#1A1A2E"}]},
+  {category:"Drama Colors",subtitle:"Your contrast capacity — deep, rich, commanding",colors:[
+    {name:"Forest Velvet",hex:"#1E4D3D"},{name:"Midnight Navy",hex:"#1C3A4D"},{name:"Deep Indigo",hex:"#252545"},{name:"Black Iris",hex:"#1E1E3A"},{name:"Deep Wine",hex:"#6B2C3A"},{name:"Garnet",hex:"#7B2030"},{name:"Dark Chocolate",hex:"#3D2B24"},{name:"Soft Black",hex:"#1A1A1F"},{name:"True Black",hex:"#000000"}]},
+  {category:"Lip Colors",subtitle:"Dusty roses through berries and true red",colors:[
+    {name:"Antique Pink",hex:"#C89898"},{name:"Dusty Rose",hex:"#D4A5A5"},{name:"Mauve Rose",hex:"#C8A0A8"},{name:"Soft Coral",hex:"#D4817A"},{name:"Dusty Coral",hex:"#DB8A80"},{name:"Warm Pink",hex:"#C07090"},{name:"Mulberry",hex:"#8B4858"},{name:"Cranberry",hex:"#8A4050"},{name:"True Red",hex:"#A01830"},{name:"Deep Wine",hex:"#6B2C3A"}]},
+  {category:"Eye Shadows",subtitle:"Taupe, smoke, teal, and velvet — muted depth",colors:[
+    {name:"Champagne",hex:"#F7E7CE"},{name:"Rose Taupe",hex:"#B89888"},{name:"Mushroom",hex:"#A08070"},{name:"Pebble",hex:"#98807A"},{name:"Coffee",hex:"#5C4033"},{name:"Dark Chocolate",hex:"#3D2B24"},{name:"Bright Teal",hex:"#3A8080"},{name:"Dark Sage",hex:"#355C50"},{name:"Deep Indigo",hex:"#252545"},{name:"Orchid",hex:"#A888B8"},{name:"Soft Coral",hex:"#D4817A"}]},
+  {category:"Metals",subtitle:"Silver AND gold — your neutral undertone handles both",colors:[
+    {name:"Silver",hex:"#C0C0C0"},{name:"Antique Gold",hex:"#CFB53B"},{name:"Warm Gold",hex:"#D4A878"},{name:"Rose Gold",hex:"#B87850"},{name:"Bronze",hex:"#CD7F32"},{name:"Burnished Copper",hex:"#B87333"},{name:"Antique Bronze",hex:"#8C7853"}]}
+];
+
+let activeCategory=null;
+function getLuminance(hex){const r=parseInt(hex.slice(1,3),16)/255,g=parseInt(hex.slice(3,5),16)/255,b=parseInt(hex.slice(5,7),16)/255;return .299*r+.587*g+.114*b}
+function showToast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('visible');setTimeout(()=>el.classList.remove('visible'),1800)}
+function copyHex(hex,name){navigator.clipboard.writeText(hex).then(()=>showToast(`${name} · ${hex} copied`)).catch(()=>showToast(hex))}
+function renderPalette(){
+  const c=document.getElementById('paletteContainer');
+  const data=activeCategory?paletteData.filter(g=>g.category===activeCategory):paletteData;
+  c.innerHTML=data.map(group=>`<div class="color-group"><div class="group-title">${group.category}</div><div class="group-subtitle">${group.subtitle}</div><div class="color-grid">${group.colors.map(color=>{const delay=(Math.random()*3).toFixed(1);return`<div class="swatch" onclick="copyHex('${color.hex}','${color.name.replace(/'/g,"\\'")}')" style="animation-delay:${delay}s"><div class="swatch-color" style="background:${color.hex}"></div><div class="swatch-info"><div class="swatch-name">${color.name}</div><div class="swatch-hex">${color.hex}</div></div></div>`}).join('')}</div></div>`).join('')}
+function renderFilters(){
+  const c=document.getElementById('filters');
+  const cats=['All',...paletteData.map(g=>g.category)];
+  c.innerHTML=cats.map(cat=>{const isActive=(cat==='All'&&!activeCategory)||cat===activeCategory;return`<button class="filter-btn ${isActive?'active':''}" onclick="setFilter('${cat==='All'?'':cat.replace(/'/g,"\\'")}')">${cat}</button>`}).join('')}
+function setFilter(cat){activeCategory=cat||null;renderFilters();renderPalette()}
+function createSparkle(){const canvas=document.getElementById('sparkleCanvas');const s=document.createElement('div');s.className='sparkle';const size=Math.random()*3+1;s.style.width=size+'px';s.style.height=size+'px';s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';s.style.boxShadow=`0 0 ${size*3}px rgba(136,176,192,.4)`;s.style.animationDelay=(Math.random()*.5)+'s';canvas.appendChild(s);setTimeout(()=>s.remove(),3000)}
+setInterval(createSparkle,300);
+renderFilters();renderPalette();
+</script>
+</body>
+</html>
