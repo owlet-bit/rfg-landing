@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFG Color Picker</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(170deg,#0C1A28,#101E30,#0A1820);font-family:Georgia,serif;color:#E0D8D0;padding:24px 16px 80px}
+@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:.6}}
+@keyframes pop{0%{transform:scale(.9);opacity:0}100%{transform:scale(1);opacity:1}}
+.pick-canvas{cursor:crosshair;touch-action:none}
+.swatch-item{animation:pop .2s ease-out}
+.swatch-item:hover .remove-btn{opacity:1}
+.remove-btn{opacity:0;transition:opacity .2s}
+.btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#B0A8A0;padding:6px 12px;border-radius:8px;font-size:11px;cursor:pointer;font-family:inherit}
+.btn:hover{background:rgba(255,255,255,.1)}
+.btn-accent{background:rgba(136,176,192,.15);border:1px solid rgba(136,176,192,.25);color:#88B0C0}
+</style>
+</head>
+<body>
+<div id="sparkles"></div>
+<div style="max-width:520px;margin:0 auto;position:relative;z-index:1">
+  <div style="text-align:center;margin-bottom:20px">
+    <div style="font-size:10px;letter-spacing:5px;color:rgba(136,176,192,.5);text-transform:uppercase;margin-bottom:6px">RFG Palette System</div>
+    <h1 style="font-size:22px;font-weight:400;color:#F0E8DC">Color Picker</h1>
+    <div style="font-size:11px;color:rgba(136,176,192,.35);margin-top:4px;font-style:italic">Upload a card, tap colors, build your palette</div>
+  </div>
+  <div id="uploadZone" onclick="document.getElementById('fileInput').click()" style="border:1px dashed rgba(136,176,192,.25);border-radius:16px;padding:50px 24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02)">
+    <div style="font-size:28px;margin-bottom:10px;opacity:.4">✦</div>
+    <div style="font-size:14px;color:rgba(136,176,192,.6)">Upload a color card</div>
+  </div>
+  <div id="canvasArea" style="display:none">
+    <div style="position:relative;margin-bottom:12px;border-radius:10px;overflow:hidden;border:1px solid rgba(136,176,192,.1)">
+      <canvas id="imgCanvas" style="width:100%;height:auto;display:block;cursor:crosshair;touch-action:none"></canvas>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px;justify-content:space-between">
+      <button class="btn" onclick="document.getElementById('fileInput').click()">change image</button>
+      <div style="display:flex;gap:6px">
+        <button class="btn" onclick="setZoom(-1)">−</button>
+        <span id="zoomLabel" style="font-size:11px;color:rgba(136,176,192,.4);align-self:center">1x</span>
+        <button class="btn" onclick="setZoom(1)">+</button>
+      </div>
+    </div>
+  </div>
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+  <div id="currentColor" style="display:none;background:rgba(255,255,255,.03);border:1px solid rgba(136,176,192,.15);border-radius:12px;padding:16px;margin-top:16px">
+    <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+      <div id="colorPreview" style="width:56px;height:56px;border-radius:10px;border:1px solid rgba(255,255,255,.1);flex-shrink:0"></div>
+      <div style="flex:1">
+        <div id="hexDisplay" style="font-size:18px;font-family:monospace;color:#F0E8DC;margin-bottom:4px;cursor:pointer"></div>
+        <div id="rgbDisplay" style="font-size:10px;color:rgba(136,176,192,.4)"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <input id="colorName" placeholder="Name this color..." style="flex:1;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:8px 12px;color:#E0D8D0;font-size:13px;font-family:inherit;outline:none">
+      <button class="btn btn-accent" onclick="saveColor()" style="white-space:nowrap">+ Save</button>
+    </div>
+  </div>
+  <div id="savedSection" style="display:none;margin-top:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <div style="font-size:10px;letter-spacing:3px;color:rgba(136,176,192,.5);text-transform:uppercase"><span id="colorCount">0</span> Colors Saved</div>
+      <button class="btn btn-accent" onclick="showCode()" style="font-size:10px" id="codeBtn">Show as code</button>
+    </div>
+    <div id="codeBlock" style="display:none;margin-bottom:12px;background:rgba(0,0,0,.3);border-radius:8px;padding:12px;border:1px solid rgba(136,176,192,.1)">
+      <div style="font-size:9px;color:rgba(136,176,192,.4);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase">Select all → Copy</div>
+      <textarea id="codeOutput" readonly style="width:100%;min-height:120px;background:transparent;border:none;color:#A8D8A0;font-size:11px;font-family:monospace;line-height:1.6;resize:vertical;outline:none"></textarea>
+    </div>
+    <div id="savedColors"></div>
+  </div>
+</div>
+<div id="toast" style="position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:rgba(136,176,192,.2);backdrop-filter:blur(12px);color:#F0E8D8;padding:10px 20px;border-radius:24px;font-size:12px;letter-spacing:1px;pointer-events:none;opacity:0;transition:all .3s;z-index:100;border:1px solid rgba(136,176,192,.15)"></div>
+
+<script>
+let colors=[],currentHex=null,zoom=1,img=null;
+const canvas=document.getElementById('imgCanvas');
+const ctx=canvas.getContext('2d');
+
+document.getElementById('fileInput').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    img=new Image();
+    img.onload=()=>{
+      canvas.width=img.width;canvas.height=img.height;
+      ctx.drawImage(img,0,0);
+      document.getElementById('uploadZone').style.display='none';
+      document.getElementById('canvasArea').style.display='block';
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+canvas.addEventListener('click',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const sx=canvas.width/rect.width,sy=canvas.height/rect.height;
+  const x=Math.floor((e.clientX-rect.left)*sx),y=Math.floor((e.clientY-rect.top)*sy);
+  const d=ctx.getImageData(Math.max(0,x-2),Math.max(0,y-2),5,5).data;
+  let r=0,g=0,b=0,n=0;
+  for(let i=0;i<d.length;i+=4){r+=d[i];g+=d[i+1];b+=d[i+2];n++}
+  r=Math.round(r/n);g=Math.round(g/n);b=Math.round(b/n);
+  currentHex=`#${r.toString(16).padStart(2,'0').toUpperCase()}${g.toString(16).padStart(2,'0').toUpperCase()}${b.toString(16).padStart(2,'0').toUpperCase()}`;
+  document.getElementById('colorPreview').style.background=currentHex;
+  document.getElementById('hexDisplay').textContent=currentHex;
+  document.getElementById('rgbDisplay').textContent=`RGB(${r}, ${g}, ${b})`;
+  document.getElementById('currentColor').style.display='block';
+  document.getElementById('colorName').value='';
+});
+
+function setZoom(dir){zoom=Math.max(1,Math.min(4,zoom+dir*.5));canvas.style.transform=`scale(${zoom})`;canvas.style.transformOrigin='top left';document.getElementById('zoomLabel').textContent=zoom+'x'}
+
+function saveColor(){
+  if(!currentHex)return;
+  const name=document.getElementById('colorName').value||`Swatch ${colors.length+1}`;
+  colors.push({hex:currentHex,name});
+  document.getElementById('colorName').value='';
+  renderSaved();
+}
+
+function removeColor(i){colors.splice(i,1);renderSaved()}
+function copyHex(hex){navigator.clipboard.writeText(hex).catch(()=>{});const t=document.getElementById('toast');t.textContent=hex+' copied';t.style.opacity='1';t.style.transform='translateX(-50%) translateY(0)';setTimeout(()=>{t.style.opacity='0';t.style.transform='translateX(-50%) translateY(60px)'},1500)}
+
+function showCode(){
+  const block=document.getElementById('codeBlock');
+  block.style.display=block.style.display==='none'?'block':'none';
+  document.getElementById('codeOutput').value=colors.map(c=>`      { name: "${c.name}", hex: "${c.hex}" },`).join('\n');
+}
+
+function renderSaved(){
+  document.getElementById('savedSection').style.display=colors.length?'block':'none';
+  document.getElementById('colorCount').textContent=colors.length;
+  const el=document.getElementById('savedColors');
+  el.innerHTML=colors.map((c,i)=>`<div class="swatch-item" style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.02);border-radius:8px;padding:8px 10px;border:1px solid rgba(255,255,255,.04);margin-bottom:6px">
+    <div style="width:32px;height:32px;border-radius:6px;background:${c.hex};flex-shrink:0;border:1px solid rgba(255,255,255,.08)"></div>
+    <div style="flex:1;min-width:0"><div style="font-size:12px;color:#D0C8BE;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${c.name}</div><div style="font-size:10px;font-family:monospace;color:rgba(136,176,192,.45);cursor:pointer" onclick="copyHex('${c.hex}')">${c.hex}</div></div>
+    <button class="remove-btn" onclick="removeColor(${i})" style="background:none;border:none;color:rgba(200,150,140,.3);font-size:16px;cursor:pointer;padding:0 4px">×</button></div>`).join('');
+  if(document.getElementById('codeBlock').style.display==='block')showCode();
+}
+
+// Sparkles
+setInterval(()=>{const el=document.getElementById('sparkles');const s=document.createElement('div');s.style.cssText=`position:fixed;width:2px;height:2px;border-radius:50%;background:rgba(136,176,192,.5);box-shadow:0 0 6px rgba(136,176,192,.3);left:${Math.random()*100}%;top:${Math.random()*100}%;animation:shimmer ${2+Math.random()*2}s ease-in-out;pointer-events:none;z-index:0`;el.appendChild(s);setTimeout(()=>s.remove(),4000)},500);
+</script>
+</body>
+</html>
