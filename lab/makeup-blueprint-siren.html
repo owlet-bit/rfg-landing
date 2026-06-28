@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Velvet Siren — Makeup Blueprint</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { min-height: 100vh; background: linear-gradient(170deg, #1A1225 0%, #1E1830 25%, #1A2035 50%, #162030 75%, #0E1828 100%); font-family: Georgia, 'Times New Roman', serif; color: #E8E0D8; overflow-x: hidden; }
+  .sparkle-field { position: fixed; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .sparkle-particle { position: absolute; border-radius: 50%; background: rgba(180,200,210,0.6); animation: sparkDrift 3s ease-out forwards; }
+  @keyframes sparkDrift { 0% { opacity: 0; transform: translateY(0) scale(0); } 15% { opacity: 1; transform: translateY(-6px) scale(1); } 85% { opacity: 0.4; transform: translateY(-35px) scale(0.6); } 100% { opacity: 0; transform: translateY(-50px) scale(0); } }
+  @keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(180,200,210,0.06); } 50% { box-shadow: 0 0 35px rgba(180,200,210,0.12); } }
+  @keyframes titleShimmer { 0%, 100% { text-shadow: 0 0 20px rgba(180,200,210,0.2); } 50% { text-shadow: 0 0 35px rgba(180,200,210,0.4), 0 0 60px rgba(180,200,210,0.1); } }
+  @keyframes accentGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.7; } }
+  @keyframes swatchPulse { 0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(0,0,0,0.2); } 50% { transform: scale(1.05); box-shadow: 0 0 16px rgba(255,255,255,0.1); } }
+  .container { max-width: 680px; margin: 0 auto; padding: 40px 24px 80px; position: relative; z-index: 1; }
+  .header { text-align: center; margin-bottom: 48px; }
+  .header-label { font-size: 10px; letter-spacing: 6px; color: rgba(136,176,192,0.5); text-transform: uppercase; margin-bottom: 12px; animation: accentGlow 3s ease-in-out infinite; }
+  .header h1 { font-size: 28px; font-weight: 400; color: #F0E8DC; line-height: 1.3; animation: titleShimmer 4s ease-in-out infinite; margin-bottom: 8px; }
+  .header-sub { font-size: 13px; color: rgba(136,176,192,0.45); font-style: italic; line-height: 1.5; }
+  .divider { width: 50px; height: 1px; background: linear-gradient(90deg, transparent, rgba(136,176,192,0.3), transparent); margin: 32px auto; }
+  .section { margin-bottom: 44px; animation: glowPulse 5s ease-in-out infinite; padding: 28px 24px; border-radius: 16px; background: rgba(255,255,255,0.02); border: 1px solid rgba(136,176,192,0.06); }
+  .section-icon { font-size: 20px; margin-bottom: 8px; }
+  .section h2 { font-size: 18px; font-weight: 400; color: #F0E8DC; letter-spacing: 1px; margin-bottom: 4px; }
+  .section-why { font-size: 12px; color: rgba(136,176,192,0.5); font-style: italic; margin-bottom: 16px; line-height: 1.5; }
+  .section p, .section .step { font-size: 14px; line-height: 1.7; color: #D0C8BE; margin-bottom: 12px; }
+  .step-label { color: rgba(136,176,192,0.7); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 4px; }
+  .color-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 14px; align-items: center; }
+  .color-dot { width: 28px; height: 28px; border-radius: 50%; animation: swatchPulse 4s ease-in-out infinite; }
+  .color-dot-label { font-size: 9px; color: rgba(136,176,192,0.5); margin-top: 2px; text-align: center; max-width: 50px; line-height: 1.2; }
+  .color-chip { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .emphasis { color: #C8D8E0; font-style: italic; }
+  .avoid-note { font-size: 12px; color: rgba(180,160,150,0.45); font-style: italic; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(136,176,192,0.06); }
+  .key-principle { background: rgba(136,176,192,0.05); border-left: 2px solid rgba(136,176,192,0.15); padding: 12px 16px; margin: 14px 0; border-radius: 0 8px 8px 0; font-size: 13px; color: #C0D0D8; line-height: 1.6; font-style: italic; }
+  .look-card { background: rgba(255,255,255,0.03); border: 1px solid rgba(136,176,192,0.08); border-radius: 12px; padding: 20px; margin: 16px 0; }
+  .look-card h3 { font-size: 14px; font-weight: 400; color: rgba(136,176,192,0.7); letter-spacing: 1px; margin-bottom: 10px; }
+  .look-card p { font-size: 13px; line-height: 1.7; color: #C8C0B4; margin-bottom: 8px; }
+  .footer { text-align: center; margin-top: 48px; padding-top: 24px; border-top: 1px solid rgba(136,176,192,0.08); }
+  .footer p { font-size: 12px; color: rgba(136,176,192,0.25); font-style: italic; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="sparkle-field" id="sparkleField"></div>
+<div class="container">
+
+  <div class="header">
+    <div class="header-label">Designed for Your Face</div>
+    <h1>The Velvet Siren</h1>
+    <div class="header-sub">Contrasting Light Summer · Cool-Neutral · Spring Modifier<br>Romantic severity meets luminous softness</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="section-icon">✦</div>
+    <h2>Your Coloring, Corrected</h2>
+    <div class="section-why">What two professional drapings and a decade of training actually tell us</div>
+    <p><span class="emphasis">Undertone:</span> Cool-neutral, not warm-neutral. You have a warm overtone — peachiness, golden quality — sitting on top of a cool undertone. This is why warm colors don't clash but cool-neutral colors make you luminous. The spring modifier means a touch of yellow warmth in your cool base, which is why you can wear corals and warm browns that a pure Light Summer couldn't.</p>
+    <p><span class="emphasis">Dominant characteristic:</span> Lightness. Confirmed by every draping exercise. Depth overwhelms you unless it's in cool or neutral hues with enough contrast to justify it.</p>
+    <p><span class="emphasis">Contrast capacity:</span> Higher than standard Light Summer. Your dark brows against fair skin and the intensity of your green eyes mean you can handle depth for drama — midnight navy, forest velvet, deep wine, true black — that would bury a non-contrasting Light Summer.</p>
+    <p><span class="emphasis">Chroma:</span> Mixed. You need both muted mid-tones for everyday AND clear, saturated accents for impact. This is why neither Light Summer (too soft) nor Bright Winter (too intense) felt complete — you require both registers.</p>
+    <div class="key-principle">Your makeup should be muted and cool-toned in its foundations, with the capacity to go deep and dramatic through contrast. Soft daily, striking when you want to be.</div>
+  </div>
+
+  <div class="section" style="padding: 28px 16px;">
+    <div class="section-icon">✦</div>
+    <h2>Placement Maps</h2>
+    <div class="section-why">Your face, marked up — zones, directions, and colors</div>
+
+    <div style="text-align: center; margin: 20px 0 8px;">
+      <div style="font-size: 12px; color: rgba(136,176,192,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Full Face — Front View</div>
+      <svg viewBox="0 0 440 520" xmlns="http://www.w3.org/2000/svg" style="max-width: 380px; width: 100%;">
+        <defs>
+          <radialGradient id="blushL" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C8A0A8" stop-opacity="0.5"/><stop offset="100%" stop-color="#C8A0A8" stop-opacity="0"/></radialGradient>
+          <radialGradient id="blushR" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#C8A0A8" stop-opacity="0.5"/><stop offset="100%" stop-color="#C8A0A8" stop-opacity="0"/></radialGradient>
+          <radialGradient id="bronzerGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#98807A" stop-opacity="0.4"/><stop offset="100%" stop-color="#98807A" stop-opacity="0"/></radialGradient>
+          <radialGradient id="highlightGrad" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#E8E0D8" stop-opacity="0.6"/><stop offset="100%" stop-color="#E8E0D8" stop-opacity="0"/></radialGradient>
+          <linearGradient id="noseHighlight" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#E8E0D8" stop-opacity="0.5"/><stop offset="100%" stop-color="#E8E0D8" stop-opacity="0.1"/></linearGradient>
+        </defs>
+        <path d="M 220 62 C 290 62, 340 120, 345 190 C 350 240, 345 290, 330 330 C 315 370, 290 410, 260 435 Q 220 460, 220 460 Q 220 460, 180 435 C 150 410, 125 370, 110 330 C 95 290, 90 240, 95 190 C 100 120, 150 62, 220 62 Z" fill="rgba(240,225,210,0.08)" stroke="rgba(180,200,210,0.3)" stroke-width="1.2"/>
+        <path d="M 175 445 L 170 510 M 265 445 L 270 510" stroke="rgba(180,200,210,0.15)" stroke-width="1" fill="none"/>
+        <path d="M 170 510 Q 220 520 270 510" stroke="rgba(180,200,210,0.1)" stroke-width="1" fill="none"/>
+        <ellipse cx="118" cy="150" rx="35" ry="40" fill="url(#bronzerGrad)" opacity="0.9"/>
+        <ellipse cx="322" cy="150" rx="35" ry="40" fill="url(#bronzerGrad)" opacity="0.9"/>
+        <ellipse cx="125" cy="300" rx="30" ry="15" fill="url(#bronzerGrad)" opacity="0.6" transform="rotate(-15, 125, 300)"/>
+        <ellipse cx="315" cy="300" rx="30" ry="15" fill="url(#bronzerGrad)" opacity="0.6" transform="rotate(15, 315, 300)"/>
+        <ellipse cx="145" cy="390" rx="25" ry="12" fill="url(#bronzerGrad)" opacity="0.4" transform="rotate(-25, 145, 390)"/>
+        <ellipse cx="295" cy="390" rx="25" ry="12" fill="url(#bronzerGrad)" opacity="0.4" transform="rotate(25, 295, 390)"/>
+        <ellipse cx="148" cy="265" rx="42" ry="22" fill="url(#blushL)" opacity="1" transform="rotate(-12, 148, 265)"/>
+        <ellipse cx="292" cy="265" rx="42" ry="22" fill="url(#blushR)" opacity="1" transform="rotate(12, 292, 265)"/>
+        <line x1="155" y1="268" x2="110" y2="248" stroke="rgba(200,160,168,0.5)" stroke-width="1" stroke-dasharray="3,3"/><polygon points="110,248 115,254 108,253" fill="rgba(200,160,168,0.5)"/>
+        <line x1="285" y1="268" x2="330" y2="248" stroke="rgba(200,160,168,0.5)" stroke-width="1" stroke-dasharray="3,3"/><polygon points="330,248 325,254 332,253" fill="rgba(200,160,168,0.5)"/>
+        <ellipse cx="140" cy="255" rx="28" ry="8" fill="url(#highlightGrad)" opacity="0.8" transform="rotate(-8, 140, 255)"/>
+        <ellipse cx="300" cy="255" rx="28" ry="8" fill="url(#highlightGrad)" opacity="0.8" transform="rotate(8, 300, 255)"/>
+        <rect x="215" y="210" width="10" height="60" rx="5" fill="url(#noseHighlight)" opacity="0.7"/>
+        <ellipse cx="220" cy="345" rx="10" ry="5" fill="url(#highlightGrad)" opacity="0.7"/>
+        <ellipse cx="168" cy="178" rx="22" ry="6" fill="url(#highlightGrad)" opacity="0.5" transform="rotate(-5, 168, 178)"/>
+        <ellipse cx="272" cy="178" rx="22" ry="6" fill="url(#highlightGrad)" opacity="0.5" transform="rotate(5, 272, 178)"/>
+        <path d="M 145 186 Q 165 175 185 178 Q 195 180 198 183" stroke="rgba(120,105,95,0.6)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 242 183 Q 245 180 255 178 Q 275 175 295 186" stroke="rgba(120,105,95,0.6)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 150 210 Q 168 196 188 210 Q 168 222 150 210 Z" fill="rgba(30,35,30,0.05)" stroke="rgba(180,160,140,0.4)" stroke-width="1"/>
+        <circle cx="170" cy="210" r="10" fill="rgba(120,145,95,0.3)" stroke="rgba(120,145,95,0.4)" stroke-width="0.8"/><circle cx="170" cy="210" r="5" fill="rgba(40,50,35,0.5)"/>
+        <path d="M 252 210 Q 272 196 290 210 Q 272 222 252 210 Z" fill="rgba(30,35,30,0.05)" stroke="rgba(180,160,140,0.4)" stroke-width="1"/>
+        <circle cx="270" cy="210" r="10" fill="rgba(120,145,95,0.3)" stroke="rgba(120,145,95,0.4)" stroke-width="0.8"/><circle cx="270" cy="210" r="5" fill="rgba(40,50,35,0.5)"/>
+        <path d="M 220 200 L 218 270 Q 210 285 205 282" stroke="rgba(180,160,140,0.2)" stroke-width="1" fill="none"/>
+        <path d="M 220 200 L 222 270 Q 230 285 235 282" stroke="rgba(180,160,140,0.2)" stroke-width="1" fill="none"/>
+        <path d="M 195 350 Q 207 342 220 348 Q 233 342 245 350" stroke="rgba(200,160,168,0.5)" stroke-width="1.5" fill="rgba(200,160,168,0.15)"/>
+        <path d="M 195 350 Q 220 372 245 350" stroke="rgba(200,160,168,0.5)" stroke-width="1.5" fill="rgba(200,160,168,0.15)"/>
+        <path d="M 190 100 L 190 280 Q 190 295 220 295 Q 250 295 250 280 L 250 100" stroke="rgba(200,190,180,0.12)" stroke-width="1" stroke-dasharray="4,4" fill="none"/>
+        <text x="60" y="135" font-size="9" fill="rgba(152,128,122,0.7)" font-family="Georgia" font-style="italic">bronzer</text>
+        <text x="335" y="135" font-size="9" fill="rgba(152,128,122,0.7)" font-family="Georgia" font-style="italic">bronzer</text>
+        <text x="42" y="270" font-size="9" fill="rgba(200,160,168,0.7)" font-family="Georgia" font-style="italic">blush</text>
+        <text x="42" y="282" font-size="7.5" fill="rgba(200,160,168,0.45)" font-family="Georgia">sweep ↗</text>
+        <text x="340" y="270" font-size="9" fill="rgba(200,160,168,0.7)" font-family="Georgia" font-style="italic">blush</text>
+        <text x="340" y="282" font-size="7.5" fill="rgba(200,160,168,0.45)" font-family="Georgia">↖ sweep</text>
+        <text x="48" y="250" font-size="8" fill="rgba(232,224,216,0.5)" font-family="Georgia" font-style="italic">highlight</text>
+        <text x="332" y="250" font-size="8" fill="rgba(232,224,216,0.5)" font-family="Georgia" font-style="italic">highlight</text>
+        <text x="240" y="240" font-size="7.5" fill="rgba(232,224,216,0.45)" font-family="Georgia" font-style="italic">nose bridge</text>
+        <text x="240" y="250" font-size="7.5" fill="rgba(232,224,216,0.45)" font-family="Georgia" font-style="italic">cool pearl</text>
+        <text x="240" y="350" font-size="7.5" fill="rgba(232,224,216,0.45)" font-family="Georgia" font-style="italic">cupid's bow</text>
+        <text x="155" y="170" font-size="7.5" fill="rgba(232,224,216,0.4)" font-family="Georgia" font-style="italic">brow bone</text>
+        <text x="200" y="92" font-size="7.5" fill="rgba(200,190,180,0.3)" font-family="Georgia" text-anchor="middle" font-style="italic">powder T-zone only</text>
+        <text x="55" y="400" font-size="7.5" fill="rgba(152,128,122,0.45)" font-family="Georgia" font-style="italic">cool bronzer</text>
+        <text x="45" y="310" font-size="7.5" fill="rgba(152,128,122,0.45)" font-family="Georgia" font-style="italic">subtle warmth</text>
+        <line x1="185" y1="320" x2="185" y2="340" stroke="rgba(200,100,90,0.2)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <text x="155" y="335" font-size="7" fill="rgba(200,100,90,0.35)" font-family="Georgia" font-style="italic">no blush</text>
+        <text x="155" y="344" font-size="7" fill="rgba(200,100,90,0.35)" font-family="Georgia" font-style="italic">below here</text>
+      </svg>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin: 16px 0 32px; padding: 16px; background: rgba(255,255,255,0.02); border-radius: 10px;">
+      <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 14px; height: 14px; border-radius: 50%; background: rgba(152,128,122,0.5);"></div><span style="font-size: 10px; color: rgba(152,128,122,0.7);">Cool Bronzer</span></div>
+      <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 14px; height: 14px; border-radius: 50%; background: rgba(200,160,168,0.5);"></div><span style="font-size: 10px; color: rgba(200,160,168,0.7);">Blush</span></div>
+      <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 14px; height: 14px; border-radius: 50%; background: rgba(232,224,216,0.5);"></div><span style="font-size: 10px; color: rgba(232,224,216,0.7);">Cool Highlight</span></div>
+      <div style="display: flex; align-items: center; gap: 6px;"><div style="width: 14px; height: 14px; border-radius: 50%; border: 1px dashed rgba(200,190,180,0.3);"></div><span style="font-size: 10px; color: rgba(200,190,180,0.5);">Powder zone</span></div>
+    </div>
+
+    <div style="text-align: center; margin: 28px 0 8px;">
+      <div style="font-size: 12px; color: rgba(136,176,192,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Eye Detail — Shadow Placement</div>
+      <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 420px; width: 100%;">
+        <defs>
+          <radialGradient id="lidShimmer" cx="45%" cy="60%" r="50%"><stop offset="0%" stop-color="#F7E7CE" stop-opacity="0.5"/><stop offset="100%" stop-color="#F7E7CE" stop-opacity="0.15"/></radialGradient>
+          <radialGradient id="creaseColor" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#A08070" stop-opacity="0.5"/><stop offset="100%" stop-color="#A08070" stop-opacity="0.05"/></radialGradient>
+          <radialGradient id="outerV" cx="70%" cy="50%" r="50%"><stop offset="0%" stop-color="#5C4033" stop-opacity="0.55"/><stop offset="100%" stop-color="#5C4033" stop-opacity="0"/></radialGradient>
+          <radialGradient id="innerGlow" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#F5F0EB" stop-opacity="0.7"/><stop offset="100%" stop-color="#F5F0EB" stop-opacity="0"/></radialGradient>
+        </defs>
+        <path d="M 70 88 Q 140 55 240 60 Q 340 62 410 85" stroke="rgba(120,105,95,0.5)" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M 80 155 Q 240 100 420 150" stroke="rgba(180,160,140,0.12)" stroke-width="1" fill="none"/>
+        <path d="M 210 138 Q 310 105 415 145 L 400 158 Q 300 125 210 150 Z" fill="url(#creaseColor)" opacity="0.8"/>
+        <path d="M 365 148 Q 425 135 440 170 L 420 178 Q 410 158 365 158 Z" fill="url(#outerV)" opacity="0.9"/>
+        <path d="M 100 175 Q 120 162 200 155 Q 300 148 400 165 L 440 175 Q 350 190 250 192 Q 150 192 100 175 Z" fill="url(#lidShimmer)" opacity="0.9"/>
+        <ellipse cx="92" cy="178" rx="18" ry="12" fill="url(#innerGlow)" opacity="0.9"/>
+        <path d="M 75 180 Q 130 148 250 145 Q 370 148 445 178" fill="none" stroke="rgba(180,160,140,0.4)" stroke-width="1.3"/>
+        <path d="M 75 180 Q 200 202 320 198 Q 400 192 445 178" fill="none" stroke="rgba(180,160,140,0.3)" stroke-width="1"/>
+        <ellipse cx="260" cy="176" rx="24" ry="20" fill="rgba(120,145,95,0.2)" stroke="rgba(120,145,95,0.3)" stroke-width="0.8"/>
+        <circle cx="260" cy="176" r="11" fill="rgba(40,50,35,0.4)"/><circle cx="254" cy="170" r="4" fill="rgba(255,255,255,0.15)"/>
+        <path d="M 85 179 Q 200 150 350 153 Q 410 158 442 176" stroke="rgba(92,64,51,0.45)" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <path d="M 340 196 Q 390 194 440 180" stroke="rgba(152,128,122,0.3)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M 85 182 Q 170 202 280 198" stroke="rgba(245,240,235,0.2)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <line x1="150" y1="152" x2="147" y2="143" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="200" y1="148" x2="198" y2="138" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="250" y1="146" x2="249" y2="136" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="300" y1="148" x2="300" y2="138" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="350" y1="152" x2="353" y2="142" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="400" y1="160" x2="405" y2="151" stroke="rgba(80,60,45,0.25)" stroke-width="0.8"/>
+        <line x1="420" y1="155" x2="410" y2="120" stroke="rgba(92,64,51,0.4)" stroke-width="1" stroke-dasharray="3,3"/><polygon points="410,120 406,128 414,127" fill="rgba(92,64,51,0.4)"/>
+        <line x1="310" y1="118" x2="300" y2="98" stroke="rgba(160,128,112,0.35)" stroke-width="1" stroke-dasharray="3,3"/><polygon points="300,98 296,106 304,105" fill="rgba(160,128,112,0.35)"/>
+        <text x="250" y="180" font-size="10" fill="rgba(247,231,206,0.7)" font-family="Georgia" font-style="italic" text-anchor="middle">champagne</text>
+        <text x="320" y="108" font-size="9.5" fill="rgba(160,128,112,0.7)" font-family="Georgia" font-style="italic">mushroom / rose taupe</text>
+        <text x="320" y="120" font-size="8" fill="rgba(160,128,112,0.45)" font-family="Georgia" font-style="italic">outer ⅔ of crease</text>
+        <text x="448" y="148" font-size="9.5" fill="rgba(92,64,51,0.7)" font-family="Georgia" font-style="italic">coffee</text>
+        <text x="448" y="160" font-size="8" fill="rgba(92,64,51,0.45)" font-family="Georgia" font-style="italic">sweep ↑</text>
+        <text x="20" y="170" font-size="9" fill="rgba(245,240,235,0.6)" font-family="Georgia" font-style="italic">ivory</text>
+        <text x="20" y="182" font-size="9" fill="rgba(245,240,235,0.6)" font-family="Georgia" font-style="italic">highlight</text>
+        <text x="190" y="232" font-size="9" fill="rgba(92,64,51,0.6)" font-family="Georgia" font-style="italic">smudged mushroom / pebble liner</text>
+        <text x="365" y="218" font-size="8.5" fill="rgba(152,128,122,0.5)" font-family="Georgia" font-style="italic">pebble</text>
+        <text x="365" y="229" font-size="8.5" fill="rgba(152,128,122,0.5)" font-family="Georgia" font-style="italic">outer ⅓ only</text>
+        <text x="105" y="218" font-size="8" fill="rgba(245,240,235,0.4)" font-family="Georgia" font-style="italic">champagne inner ⅔</text>
+        <text x="200" y="78" font-size="9" fill="rgba(232,224,216,0.4)" font-family="Georgia" font-style="italic">subtle highlight under brow</text>
+      </svg>
+    </div>
+
+    <div style="text-align: center; margin: 28px 0 8px;">
+      <div style="font-size: 12px; color: rgba(136,176,192,0.6); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Lip Detail — Three Registers</div>
+      <svg viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg" style="max-width: 440px; width: 100%;">
+        <text x="85" y="28" font-size="10" fill="rgba(136,176,192,0.6)" font-family="Georgia" font-style="italic" text-anchor="middle">Everyday</text>
+        <path d="M 30 110 Q 55 90 85 100 Q 115 90 140 110" stroke="rgba(200,160,168,0.5)" stroke-width="1.5" fill="rgba(200,160,168,0.2)"/>
+        <path d="M 30 110 Q 85 142 140 110" stroke="rgba(200,160,168,0.5)" stroke-width="1.5" fill="rgba(200,160,168,0.2)"/>
+        <ellipse cx="85" cy="118" rx="15" ry="8" fill="rgba(255,255,255,0.08)"/>
+        <text x="85" y="115" font-size="8" fill="rgba(255,230,220,0.5)" font-family="Georgia" font-style="italic" text-anchor="middle">dusty rose</text>
+        <text x="85" y="165" font-size="7.5" fill="rgba(136,176,192,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">satin or balm</text>
+
+        <text x="255" y="28" font-size="10" fill="rgba(136,176,192,0.6)" font-family="Georgia" font-style="italic" text-anchor="middle">Warm Accent</text>
+        <path d="M 200 110 Q 225 90 255 100 Q 285 90 310 110" stroke="rgba(212,129,122,0.5)" stroke-width="1.5" fill="rgba(212,129,122,0.25)"/>
+        <path d="M 200 110 Q 255 142 310 110" stroke="rgba(212,129,122,0.5)" stroke-width="1.5" fill="rgba(212,129,122,0.25)"/>
+        <ellipse cx="255" cy="118" rx="15" ry="8" fill="rgba(255,255,255,0.08)"/>
+        <text x="255" y="115" font-size="8" fill="rgba(255,230,220,0.5)" font-family="Georgia" font-style="italic" text-anchor="middle">soft coral</text>
+        <text x="255" y="165" font-size="7.5" fill="rgba(136,176,192,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">spring modifier</text>
+
+        <text x="420" y="28" font-size="10" fill="rgba(136,176,192,0.6)" font-family="Georgia" font-style="italic" text-anchor="middle">Drama</text>
+        <path d="M 365 110 Q 390 90 420 100 Q 450 90 475 110" stroke="rgba(107,44,58,0.6)" stroke-width="1.5" fill="rgba(107,44,58,0.35)"/>
+        <path d="M 365 110 Q 420 142 475 110" stroke="rgba(107,44,58,0.6)" stroke-width="1.5" fill="rgba(107,44,58,0.35)"/>
+        <text x="420" y="115" font-size="8" fill="rgba(255,220,220,0.5)" font-family="Georgia" font-style="italic" text-anchor="middle">deep wine</text>
+        <text x="420" y="165" font-size="7.5" fill="rgba(136,176,192,0.35)" font-family="Georgia" font-style="italic" text-anchor="middle">contrast capacity</text>
+
+        <line x1="160" y1="50" x2="160" y2="180" stroke="rgba(136,176,192,0.08)" stroke-width="1"/>
+        <line x1="340" y1="50" x2="340" y2="180" stroke="rgba(136,176,192,0.08)" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="key-principle">All directions flow upward and outward. Blush sweeps toward the temple. Outer corner shadow lifts toward the brow tail. The lip diagram now shows three registers instead of two — everyday dusty rose, warm-accent coral, and drama wine — reflecting your full range as a contrasting Light Summer.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Base</h2>
+    <div class="section-why">Cool-neutral undertone, luminous finish</div>
+    <div class="step">
+      <span class="step-label">Foundation</span>
+      Satin or luminous finish, light-medium coverage. Your undertone is cool-neutral — avoid strongly yellow or strongly pink bases. Look for "neutral" or "cool neutral" shade matches. Your skin's natural luminosity is an asset; don't bury it.
+    </div>
+    <div class="step">
+      <span class="step-label">Concealer</span>
+      Brightening under-eye concealer with a slightly peachy corrector underneath — the peach counteracts the blue-purple of under-eye darkness on cool skin. Spot conceal redness on the forehead and nose rather than full coverage everywhere.
+    </div>
+    <div class="step">
+      <span class="step-label">Powder</span>
+      Minimal. T-zone only. Finely milled translucent — not yellow-toned. Never powder cheekbones or under-eyes.
+    </div>
+    <div class="avoid-note">Skip: heavily warm/yellow foundations, full matte coverage, thick powder</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Blush</h2>
+    <div class="section-why">Cooler and dustier than you've been wearing — this is the biggest shift</div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#D4A5A5;animation-delay:0s"></div><span class="color-dot-label">dusty rose</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#C8A0A8;animation-delay:.5s"></div><span class="color-dot-label">mauve rose</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#D4817A;animation-delay:1s"></div><span class="color-dot-label">soft coral</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#E0B8C0;animation-delay:1.5s"></div><span class="color-dot-label">pink champagne</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#C07090;animation-delay:2s"></div><span class="color-dot-label">warm pink</span></div>
+    </div>
+    <div class="step">
+      <span class="step-label">The Shift</span>
+      Your blush was peach-pink in the Light Spring blueprint. Now it moves to dusty rose and mauve rose as the primary shades, with soft coral as the warm option via your spring modifier. The cool-muted pinks will harmonize with your undertone instead of fighting it. This is the single change most likely to make your everyday face read as "right."
+    </div>
+    <div class="step">
+      <span class="step-label">Placement</span>
+      Same as before — high on the cheekbone, swept outward and upward. Your long oval face shape hasn't changed; the lift principle still applies. Cream or liquid formula, blended with fingers.
+    </div>
+    <div class="avoid-note">Skip: warm peach (too warm), orange-coral, bright pink (too saturated for everyday)</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Eyes</h2>
+    <div class="section-why">Cooler base, same green-eye color theory, more depth capacity</div>
+    <div class="step">
+      <span class="step-label">The New Foundation Shades</span>
+      Your everyday eye shadows shift from champagne-bronze to mushroom, rose taupe, and pebble. These are cool-neutral muted tones that harmonize with your undertone. The warm bronze still works for your eyes because of complementary color theory (warm tones activate green irises), but the surrounding base should be cool-neutral rather than warm.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#F7E7CE;animation-delay:0s"></div><span class="color-dot-label">champagne</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#B89888;animation-delay:.3s"></div><span class="color-dot-label">rose taupe</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#A08070;animation-delay:.6s"></div><span class="color-dot-label">mushroom</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#98807A;animation-delay:.9s"></div><span class="color-dot-label">pebble</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#5C4033;animation-delay:1.2s"></div><span class="color-dot-label">coffee</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#3D2B24;animation-delay:1.5s"></div><span class="color-dot-label">dark chocolate</span></div>
+    </div>
+    <div class="step">
+      <span class="step-label">Your Expanded Range</span>
+      Your contrast capacity means you can go places standard Light Summer can't. Teal liner. Deep indigo smoke. Forest velvet smudged along the lashes. Dark sage. These drama shades work because your features have enough contrast to hold them without being swallowed.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#3A8080;animation-delay:0s"></div><span class="color-dot-label">bright teal</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#355C50;animation-delay:.4s"></div><span class="color-dot-label">dark sage</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#252545;animation-delay:.8s"></div><span class="color-dot-label">deep indigo</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#1E4D3D;animation-delay:1.2s"></div><span class="color-dot-label">forest velvet</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#A888B8;animation-delay:1.6s"></div><span class="color-dot-label">orchid</span></div>
+    </div>
+    <div class="step">
+      <span class="step-label">Liner</span>
+      Your default shifts from espresso to mushroom or pebble for everyday — cooler, softer. For drama: deep indigo, forest velvet, midnight navy, or dark sage. Teal liner is a signature move for you — it activates your green eyes through adjacent-hue intensification while sitting in your cool-neutral palette.
+    </div>
+    <div class="step">
+      <span class="step-label">Mascara</span>
+      Brown-black for daytime (still correct — warm enough for the spring modifier). Black for evening, stage, photos.
+    </div>
+    <div class="avoid-note">Skip: warm golden bronze as the primary base, orange-toned eyeshadow, warm brown liner as default</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Brows</h2>
+    <div class="section-why">Cool taupe — same technique, cooler product</div>
+    <div class="step">
+      <span class="step-label">Product</span>
+      Shift from taupe-brown to cool taupe or ash-brown. Your brows are naturally darker than your hair and provide contrast — they should stay defined but the product undertone should lean cool rather than warm. A brow gel in taupe or soft gray-brown.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#8A8078;animation-delay:0s"></div><span class="color-dot-label">cool taupe</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#786860;animation-delay:.5s"></div><span class="color-dot-label">ash brown</span></div>
+    </div>
+    <div class="avoid-note">Skip: warm brown, golden-brown, auburn brow products</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Lips</h2>
+    <div class="section-why">Your biggest range — from dusty nude to true red to deep wine</div>
+    <div class="key-principle">Same principle: bold eye + soft lip, or bold lip + soft eye. But your lip palette is now wider and more complex because your contrast capacity lets you go deeper than Light Summer typically allows.</div>
+
+    <div class="step">
+      <span class="step-label">Everyday</span>
+      Dusty rose, mauve rose, antique pink. These are your "polished but not trying" shades — cool enough to harmonize, warm enough to not look dead. Cream, satin, or balm finish.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#D4A5A5;animation-delay:0s"></div><span class="color-dot-label">dusty rose</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#C8A0A8;animation-delay:.4s"></div><span class="color-dot-label">mauve rose</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#C89898;animation-delay:.8s"></div><span class="color-dot-label">antique pink</span></div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Statement — Warm Register</span>
+      Soft coral — your spring modifier at work. This is the lip from last night that landed perfectly. Clear, warm enough to activate your eyes, cool enough in base to not fight your undertone.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#D4817A;animation-delay:0s"></div><span class="color-dot-label">soft coral</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#DB8A80;animation-delay:.4s"></div><span class="color-dot-label">dusty coral</span></div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Statement — Cool Register</span>
+      Cranberry, mulberry, true red, deep wine. These are your Velvet Siren lips — the ones that use your contrast capacity. True red on you is blue-based, not orange-based. Deep wine is your evening power move.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#8A4050;animation-delay:0s"></div><span class="color-dot-label">cranberry</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#8B4858;animation-delay:.4s"></div><span class="color-dot-label">mulberry</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#A01830;animation-delay:.8s"></div><span class="color-dot-label">true red</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#6B2C3A;animation-delay:1.2s"></div><span class="color-dot-label">deep wine</span></div>
+    </div>
+
+    <div class="step">
+      <span class="step-label">Finish</span>
+      Still cream, satin, gloss, or balm for everyday. Your full lips look best with dimension. For the deep statement shades, a satin-matte works because the color itself is doing the drama.
+    </div>
+    <div class="avoid-note">Skip: warm peachy nude, orange-coral, brown nude, bright warm pink</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✧</div>
+    <h2>Bronzer & Highlight</h2>
+    <div class="section-why">Light sculpting with cool-neutral products</div>
+    <div class="step">
+      <span class="step-label">Bronzer</span>
+      Cool-toned or neutral bronzer — not golden or orange. A soft taupe-brown that adds dimension without adding warmth. Apply at temples, outer forehead, and softly beneath the outer cheekbone. Very light hand.
+    </div>
+    <div class="step">
+      <span class="step-label">Highlight</span>
+      Silver-champagne or cool pearl rather than warm gold. Your cool undertone means an icy-to-neutral highlight will look like your skin's natural luminosity amplified, while a warm gold highlight will sit on top looking like a separate layer.
+    </div>
+    <div class="color-row">
+      <div class="color-chip"><div class="color-dot" style="background:#E8E0D8;animation-delay:0s"></div><span class="color-dot-label">cool pearl</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#C0C0C0;animation-delay:.5s"></div><span class="color-dot-label">silver</span></div>
+      <div class="color-chip"><div class="color-dot" style="background:#F7E7CE;animation-delay:1s"></div><span class="color-dot-label">champagne</span></div>
+    </div>
+    <div class="avoid-note">Skip: warm golden bronzer, orange bronzer, warm gold highlight</div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✦</div>
+    <h2>Your Looks — The Velvet Siren</h2>
+    <div class="section-why">Seven looks from everyday to stage, all recalibrated</div>
+
+    <div class="look-card">
+      <h3>The Everyday</h3>
+      <p>Luminous skin-tint, cream dusty rose blush high on cheeks. Champagne wash on lids, mushroom in crease. Brown-black mascara, curled. Cool taupe brow gel. Mauve rose balm. You look polished, soft, and effortlessly right.</p>
+    </div>
+    <div class="look-card">
+      <h3>The Polished Professional</h3>
+      <p>Rose taupe blended through the crease, pebble in the outer corner, champagne on the lid. Mushroom liner smudged along upper lashes. Dusty rose blush. Soft coral satin lip. This is the warm register — the spring modifier doing its quiet work.</p>
+    </div>
+    <div class="look-card">
+      <h3>The Coral Moment</h3>
+      <p>Champagne wash on lids, mascara only. Pink champagne blush. Soft coral or dusty coral lip at full saturation. The lip leads. The face supports. This is what worked last night.</p>
+    </div>
+    <div class="look-card">
+      <h3>The Velvet Siren</h3>
+      <p>Coffee or dark chocolate smoked through the crease and outer corner. Rose taupe on lid. Pebble liner smudged. Mauve rose blush. Deep wine or cranberry lip, satin finish. Your green eyes against the cool smoke with that dark lip — this is romantic severity in action.</p>
+    </div>
+    <div class="look-card">
+      <h3>The Forest Witch</h3>
+      <p>Forest velvet or dark sage smudged along upper lashes as liner. Mushroom on lid. Mauve rose blush. Deep wine lip. The green liner activates your irises through adjacent-hue intensification. Witchy, grounded, and entirely yours.</p>
+    </div>
+    <div class="look-card">
+      <h3>The Indigo Dream</h3>
+      <p>Deep indigo smoked on outer lid and crease. Orchid or soft lavender on inner lid. Dusty rose blush. Cranberry lip. Your drama register at full power — the contrast between the light lavender and deep indigo uses your contrast capacity and the purple family flatters your cool undertone.</p>
+    </div>
+    <div class="look-card">
+      <h3>Stage / Comedy</h3>
+      <p>Build from the Professional or Velvet Siren with more intensity. Deeper crease, stronger liner, extra coat of black mascara. Warm pink or soft coral blush (reads better under stage lights than dusty rose, which can wash out). True red lip — blue-based, satin. Keep the face warm and alive from the back row without going warm-toned in the base.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-icon">✦</div>
+    <h2>The Governing Principles — Revised</h2>
+    <div class="section-why">Updated for cool-neutral undertone with spring modifier</div>
+    <p><span class="emphasis">Cool-neutral base, warm accents.</span> Your default should be cool-neutral (mushroom, rose taupe, dusty rose, mauve). Your spring modifier allows warm accents (soft coral, champagne, bronze eye shadow) but they're the exception, not the foundation.</p>
+    <p><span class="emphasis">Muted for everyday, saturated for impact.</span> Your daily palette is dusty and soft. Your drama palette is clear and deep. You need both registers, and the contrast between them is what makes you a Velvet Siren rather than a standard Light Summer.</p>
+    <p><span class="emphasis">Lift, always lift.</span> Same as before. Every placement pulls upward and outward on your long oval face.</p>
+    <p><span class="emphasis">One star, one supporting cast.</span> Still applies. Bold eye or bold lip, not both.</p>
+    <p><span class="emphasis">Both metals work.</span> Your neutral undertone means silver AND gold flatter you. Silver is technically more harmonious with your cool base; gold works because of the spring modifier. Wear both. Mix them.</p>
+    <p><span class="emphasis">Your depth capacity is real.</span> Standard Light Summer advice would tell you to avoid dark colors. You can wear midnight navy, deep wine, forest velvet, true black, and espresso because you have the contrast for it. This is what makes you contrasting Light Summer, not just Light Summer.</p>
+  </div>
+
+  <div class="footer">
+    <p>The Velvet Siren · Contrasting Light Summer<br>Cool-neutral base · Spring warmth modifier · Contrast capacity<br>Romantic severity · Gothic femininity · Intellectual sensuality</p>
+  </div>
+
+</div>
+<script>
+function createSparkle() {
+  const field = document.getElementById('sparkleField');
+  const p = document.createElement('div');
+  p.className = 'sparkle-particle';
+  const size = Math.random() * 3 + 1;
+  p.style.width = size + 'px'; p.style.height = size + 'px';
+  p.style.left = Math.random() * 100 + '%'; p.style.top = Math.random() * 100 + '%';
+  p.style.boxShadow = `0 0 ${size*3}px rgba(136,176,192,0.3)`;
+  p.style.animationDelay = (Math.random() * 0.5) + 's';
+  field.appendChild(p);
+  setTimeout(() => p.remove(), 3500);
+}
+setInterval(createSparkle, 350);
+</script>
+</body>
+</html>
