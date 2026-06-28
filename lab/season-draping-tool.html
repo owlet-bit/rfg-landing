@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Season Draping Tool</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(170deg,#0C1A28,#101E30,#0A1820);font-family:Georgia,serif;color:#E0D8D0;overflow-x:hidden}
+@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:.6}}
+@keyframes cardGlow{0%,100%{box-shadow:0 2px 16px rgba(255,255,255,.04)}50%{box-shadow:0 4px 24px rgba(255,255,255,.08)}}
+.nav-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#C0B8B0;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;transition:all .2s}
+.nav-btn:hover{background:rgba(255,255,255,.1);color:#E8E0D8}
+.swatch-btn{cursor:pointer;transition:all .2s;border:2px solid transparent}
+.swatch-btn:hover{transform:scale(1.08)}
+.swatch-btn.active{border-color:rgba(255,255,255,.6);transform:scale(1.08)}
+</style>
+</head>
+<body>
+<div id="sparkles"></div>
+<div style="max-width:520px;margin:0 auto;padding:28px 16px 60px;position:relative;z-index:1">
+  <div style="text-align:center;margin-bottom:24px">
+    <div style="font-size:10px;letter-spacing:5px;color:rgba(136,176,192,.5);text-transform:uppercase;margin-bottom:6px">NDU Colors · Virtual Draping</div>
+    <h1 style="font-size:24px;font-weight:400;color:#F0E8DC;margin:0">Season Draping</h1>
+  </div>
+  <div id="uploadZone" onclick="document.getElementById('fileInput').click()" style="border:1px dashed rgba(136,176,192,.25);border-radius:16px;padding:60px 24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02);margin-bottom:24px">
+    <div style="font-size:32px;margin-bottom:12px;opacity:.4">✦</div>
+    <div style="font-size:14px;color:rgba(136,176,192,.6);margin-bottom:6px">Upload a bare-face photo</div>
+    <div style="font-size:11px;color:rgba(136,176,192,.3)">Hair pulled back, no makeup, natural light</div>
+  </div>
+  <div id="drapeArea" style="display:none"></div>
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+  <div id="seasonNav"></div>
+  <div id="pips" style="display:flex;justify-content:center;gap:4px;margin-bottom:20px;flex-wrap:wrap"></div>
+  <div id="paletteCard"></div>
+  <div id="allSeasons" style="margin-top:24px"></div>
+  <div style="text-align:center;margin-top:32px;padding-top:16px;border-top:1px solid rgba(136,176,192,.08)"><div style="font-size:11px;color:rgba(136,176,192,.25);font-style:italic">RFG Palette System · NDU Colors · Virtual Draping</div></div>
+</div>
+
+<script>
+const SEASONS=[
+  {name:"Light Spring",family:"Spring",description:"Light + warm · peach-gold clarity",colors:[{name:"1",hex:"#DBD2C0"},{name:"2",hex:"#A07659"},{name:"3",hex:"#CAA783"},{name:"4",hex:"#A4AB89"},{name:"5",hex:"#FEF0A1"},{name:"6",hex:"#FD7A60"},{name:"7",hex:"#FB7189"},{name:"8",hex:"#3DB266"},{name:"9",hex:"#AFE089"},{name:"10",hex:"#A991DC"},{name:"11",hex:"#546DC5"},{name:"12",hex:"#03D4C0"}]},
+  {name:"True Spring",family:"Spring",description:"Warm + bright · golden energy",colors:[{name:"1",hex:"#FEE7B3"},{name:"2",hex:"#845024"},{name:"3",hex:"#92500B"},{name:"4",hex:"#C0A050"},{name:"5",hex:"#FEA064"},{name:"6",hex:"#F1563F"},{name:"7",hex:"#FA3749"},{name:"8",hex:"#036AB9"},{name:"9",hex:"#01CBB4"},{name:"10",hex:"#789A01"},{name:"11",hex:"#FED563"},{name:"12",hex:"#9D7BDD"}]},
+  {name:"Bright Spring",family:"Spring",description:"Bright + warm · vivid clarity",colors:[{name:"1",hex:"#74F2D9"},{name:"2",hex:"#F2F0EC"},{name:"3",hex:"#AD520F"},{name:"4",hex:"#4E413F"},{name:"5",hex:"#EE2657"},{name:"6",hex:"#FC1803"},{name:"7",hex:"#FD937A"},{name:"8",hex:"#F19B32"},{name:"9",hex:"#FFE965"},{name:"10",hex:"#019F57"},{name:"11",hex:"#07A0FA"},{name:"12",hex:"#420194"}]},
+  {name:"Light Summer",family:"Summer",description:"Light + cool · powder softness",colors:[{name:"1",hex:"#E74052"},{name:"2",hex:"#FD9CA5"},{name:"3",hex:"#FF91B0"},{name:"4",hex:"#C83670"},{name:"5",hex:"#A6BAC0"},{name:"6",hex:"#7E7B8A"},{name:"7",hex:"#EEE7D2"},{name:"8",hex:"#37C7DB"},{name:"9",hex:"#08D1CB"},{name:"10",hex:"#027D8C"},{name:"11",hex:"#02B375"},{name:"12",hex:"#FEE491"}]},
+  {name:"True Summer",family:"Summer",description:"Cool + soft · blue-based muted",colors:[{name:"1",hex:"#016777"},{name:"2",hex:"#EDEBDA"},{name:"3",hex:"#57585D"},{name:"4",hex:"#7D9EAE"},{name:"5",hex:"#E36186"},{name:"6",hex:"#FCA8C7"},{name:"7",hex:"#C9579A"},{name:"8",hex:"#58C4A6"},{name:"9",hex:"#FAF1A7"},{name:"10",hex:"#4B3F84"},{name:"11",hex:"#0375AB"},{name:"12",hex:"#54C8E7"}]},
+  {name:"Soft Summer",family:"Summer",description:"Soft + cool · grayed blue",colors:[{name:"1",hex:"#EEE3D0"},{name:"2",hex:"#84786C"},{name:"3",hex:"#7F6A5C"},{name:"4",hex:"#B2B2B2"},{name:"5",hex:"#C04964"},{name:"6",hex:"#376097"},{name:"7",hex:"#B0D0B0"},{name:"8",hex:"#917EAE"},{name:"9",hex:"#27584E"},{name:"10",hex:"#E69FA3"},{name:"11",hex:"#FAE6AB"},{name:"12",hex:"#92BBB5"}]},
+  {name:"Soft Autumn",family:"Autumn",description:"Soft + warm · muted earth",colors:[{name:"1",hex:"#FF96AC"},{name:"2",hex:"#F47271"},{name:"3",hex:"#C44F68"},{name:"4",hex:"#5F2A2E"},{name:"5",hex:"#028169"},{name:"6",hex:"#6BBA97"},{name:"7",hex:"#FFD384"},{name:"8",hex:"#A2B6F1"},{name:"9",hex:"#C7C597"},{name:"10",hex:"#B8B195"},{name:"11",hex:"#4C4B46"},{name:"12",hex:"#AF6E62"}]},
+  {name:"True Autumn",family:"Autumn",description:"Warm + muted · golden earth",colors:[{name:"1",hex:"#D22C2C"},{name:"2",hex:"#E9715D"},{name:"3",hex:"#8A6B27"},{name:"4",hex:"#939458"},{name:"5",hex:"#1F702B"},{name:"6",hex:"#E9B38F"},{name:"7",hex:"#CFB480"},{name:"8",hex:"#D29F16"},{name:"9",hex:"#FDAF6E"},{name:"10",hex:"#AE451F"},{name:"11",hex:"#E1C9A5"},{name:"12",hex:"#938161"}]},
+  {name:"Deep Autumn",family:"Autumn",description:"Deep + warm · rich earth",colors:[{name:"1",hex:"#F57F6E"},{name:"2",hex:"#B4241B"},{name:"3",hex:"#006CAA"},{name:"4",hex:"#037A84"},{name:"5",hex:"#415C32"},{name:"6",hex:"#214732"},{name:"7",hex:"#903F2B"},{name:"8",hex:"#D5A251"},{name:"9",hex:"#1B1D39"},{name:"10",hex:"#D3AC68"},{name:"11",hex:"#423736"},{name:"12",hex:"#413736"}]},
+  {name:"Deep Winter",family:"Winter",description:"Deep + cool · dark drama",colors:[{name:"1",hex:"#FEC8D6"},{name:"2",hex:"#FBF59C"},{name:"3",hex:"#C3E9F1"},{name:"4",hex:"#010101"},{name:"5",hex:"#042076"},{name:"6",hex:"#C30D3E"},{name:"7",hex:"#B60125"},{name:"8",hex:"#955BC1"},{name:"9",hex:"#018E9E"},{name:"10",hex:"#3F5D20"},{name:"11",hex:"#02534C"},{name:"12",hex:"#732181"}]},
+  {name:"True Winter",family:"Winter",description:"Cool + bright · icy contrast",colors:[{name:"1",hex:"#EB0129"},{name:"2",hex:"#FFC7FD"},{name:"3",hex:"#5CF3FE"},{name:"4",hex:"#E85DBE"},{name:"5",hex:"#F53696"},{name:"6",hex:"#19036E"},{name:"7",hex:"#004C37"},{name:"8",hex:"#30393D"},{name:"9",hex:"#EEF0F4"},{name:"10",hex:"#AC003A"},{name:"11",hex:"#8E7E7C"},{name:"12",hex:"#037BA6"}]},
+  {name:"Bright Winter",family:"Winter",description:"Bright + cool · electric vivid",colors:[{name:"1",hex:"#FDFBF7"},{name:"2",hex:"#3A4044"},{name:"3",hex:"#010103"},{name:"4",hex:"#63C000"},{name:"5",hex:"#AAE9DF"},{name:"6",hex:"#FEED2D"},{name:"7",hex:"#FE6EC4"},{name:"8",hex:"#FF54E0"},{name:"9",hex:"#495CCB"},{name:"10",hex:"#250A95"},{name:"11",hex:"#C9023E"},{name:"12",hex:"#048377"}]},
+  {name:"Your Border Zone",family:"Your Cards",description:"Where warm Light Summer meets cool Light Spring",colors:[{name:"Dusty Rose",hex:"#D4A5A5"},{name:"Soft Coral",hex:"#D4817A"},{name:"Mauve Rose",hex:"#C8A0A8"},{name:"Seafoam",hex:"#5A9A82"},{name:"Soft Teal",hex:"#88C0C0"},{name:"Sky Mist",hex:"#98B8C0"},{name:"Orchid",hex:"#A888B8"},{name:"Pink Champagne",hex:"#E0B8C0"},{name:"Mint Whisper",hex:"#A8C8B8"},{name:"Ivory",hex:"#F5F0EB"},{name:"Soft Lavender",hex:"#E8D8F0"},{name:"Champagne",hex:"#F7E7CE"}]},
+];
+const FC={Spring:"#C8B860",Summer:"#9898C0",Autumn:"#B88040",Winter:"#7090C0","Your Cards":"#88B0C0"};
+const FB={Spring:"rgba(200,180,80,.15)",Summer:"rgba(140,140,200,.15)",Autumn:"rgba(180,120,60,.15)",Winter:"rgba(100,140,200,.15)","Your Cards":"rgba(136,176,192,.15)"};
+
+let seasonIdx=0,colorIdx=0,showAll=false,photo=null;
+function lum(h){const r=parseInt(h.slice(1,3),16)/255,g=parseInt(h.slice(3,5),16)/255,b=parseInt(h.slice(5,7),16)/255;return .299*r+.587*g+.114*b}
+function S(){return SEASONS[seasonIdx]}
+function C(){return S().colors[colorIdx]}
+
+document.getElementById('fileInput').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{photo=ev.target.result;document.getElementById('uploadZone').style.display='none';render()};r.readAsDataURL(f)});
+
+function render(){
+  const s=S(),c=C(),fc=FC[s.family],fb=FB[s.family];
+  // Drape area
+  if(photo){
+    const allHtml=showAll?s.colors.map((cl,i)=>`<div style="flex:1;background:${cl.hex};cursor:pointer;opacity:${i===colorIdx?1:.85}" onclick="colorIdx=${i};showAll=false;render()"></div>`).join(''):'';
+    document.getElementById('drapeArea').style.display='block';
+    document.getElementById('drapeArea').innerHTML=`
+      <div style="display:flex;align-items:stretch;border-radius:12px;overflow:hidden;animation:cardGlow 4s ease-in-out infinite;max-height:420px;margin-bottom:10px">
+        <div style="width:${showAll?30:70}px;background:${c.hex};transition:background .4s,width .3s;flex-shrink:0">${showAll?`<div style="display:flex;flex-direction:column;height:100%">${allHtml}</div>`:''}</div>
+        <div style="flex:0 1 auto;max-width:300px"><img src="${photo}" style="display:block;width:100%;height:100%;object-fit:cover;max-height:420px"></div>
+        <div style="width:${showAll?30:70}px;background:${c.hex};transition:background .4s,width .3s;flex-shrink:0">${showAll?`<div style="display:flex;flex-direction:column;height:100%">${allHtml}</div>`:''}</div>
+      </div>
+      <div style="text-align:center"><span style="font-size:13px;color:rgba(136,176,192,.7);font-style:italic">${c.name}</span><span style="font-size:11px;color:rgba(136,176,192,.35);margin-left:8px;font-family:monospace">${c.hex}</span></div>
+      <div style="display:flex;justify-content:center;gap:12px;margin-top:10px">
+        <button class="nav-btn" onclick="colorIdx=(colorIdx-1+s().colors.length)%s().colors.length;render()" style="padding:6px 14px;font-size:12px">← color</button>
+        <button class="nav-btn" onclick="showAll=!showAll;render()" style="padding:6px 14px;font-size:11px;opacity:.7">${showAll?'single':'show all'}</button>
+        <button class="nav-btn" onclick="colorIdx=(colorIdx+1)%s().colors.length;render()" style="padding:6px 14px;font-size:12px">color →</button>
+      </div>
+      <div style="text-align:center;margin-top:8px"><button onclick="document.getElementById('fileInput').click()" style="background:none;border:none;color:rgba(136,176,192,.3);font-size:11px;cursor:pointer;font-family:inherit;text-decoration:underline">change photo</button></div>`;
+  }
+  // Season nav
+  document.getElementById('seasonNav').innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+    <button class="nav-btn" onclick="seasonIdx=(seasonIdx-1+SEASONS.length)%SEASONS.length;colorIdx=0;render()">←</button>
+    <div style="text-align:center;flex:1"><div style="font-size:10px;letter-spacing:3px;color:${fc};text-transform:uppercase;opacity:.7">${s.family}</div><div style="font-size:18px;color:#F0E8DC;font-weight:400">${s.name}</div><div style="font-size:11px;color:rgba(136,176,192,.4);font-style:italic;margin-top:2px">${s.description}</div></div>
+    <button class="nav-btn" onclick="seasonIdx=(seasonIdx+1)%SEASONS.length;colorIdx=0;render()">→</button></div>`;
+  // Pips
+  document.getElementById('pips').innerHTML=SEASONS.map((ss,i)=>`<button onclick="seasonIdx=${i};colorIdx=0;render()" style="width:${i>=12?10:7}px;height:${i>=12?10:7}px;border-radius:50%;cursor:pointer;border:none;background:${i===seasonIdx?FC[ss.family]:FB[ss.family]};opacity:${i===seasonIdx?1:.4};box-shadow:${i===seasonIdx?`0 0 8px ${FC[ss.family]}40`:'none'}"></button>`).join('');
+  // Palette card
+  document.getElementById('paletteCard').innerHTML=`<div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px;animation:cardGlow 4s ease-in-out infinite">
+    <div style="font-size:10px;letter-spacing:3px;color:${fc};text-transform:uppercase;margin-bottom:12px;text-align:center;opacity:.7">${s.name}</div>
+    <div style="display:flex;border-radius:10px;overflow:hidden;height:80px;flex-wrap:wrap">${s.colors.map((cl,i)=>`<div class="swatch-btn ${i===colorIdx?'active':''}" onclick="colorIdx=${i};render()" style="flex:${s.colors.length>10?'0 0 8.33%':'1'};height:${s.colors.length>10?40:80}px;background:${cl.hex};display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px">${i===colorIdx?`<div style="width:5px;height:5px;border-radius:50%;background:${lum(cl.hex)>.5?'rgba(0,0,0,.4)':'rgba(255,255,255,.7)'}"></div>`:''}</div>`).join('')}</div></div>`;
+  // All seasons
+  const families=["Your Cards","Spring","Summer","Autumn","Winter"];
+  document.getElementById('allSeasons').innerHTML=`<div style="font-size:10px;letter-spacing:3px;color:rgba(136,176,192,.35);text-transform:uppercase;text-align:center;margin-bottom:10px">All Seasons</div>`+families.map(fam=>`<div style="margin-bottom:8px"><div style="font-size:9px;color:${FC[fam]};letter-spacing:1px;text-transform:uppercase;opacity:.6;margin-bottom:4px">${fam}</div><div style="display:flex;flex-wrap:wrap;gap:4px">${SEASONS.filter(ss=>ss.family===fam).map(ss=>{const gi=SEASONS.indexOf(ss);return`<button onclick="seasonIdx=${gi};colorIdx=0;render()" style="padding:5px 10px;background:${gi===seasonIdx?FB[fam]:'rgba(255,255,255,.02)'};border:${gi===seasonIdx?`1px solid ${FC[fam]}40`:'1px solid rgba(255,255,255,.04)'};border-radius:6px;color:${gi===seasonIdx?'#E8E0D8':'rgba(200,190,180,.5)'};font-size:9px;font-family:inherit;cursor:pointer">${ss.name}</button>`}).join('')}</div></div>`).join('');
+}
+function s(){return SEASONS[seasonIdx]}
+render();
+setInterval(()=>{const el=document.getElementById('sparkles');const s=document.createElement('div');s.style.cssText=`position:fixed;width:2px;height:2px;border-radius:50%;background:rgba(136,176,192,.5);box-shadow:0 0 6px rgba(136,176,192,.3);left:${Math.random()*100}%;top:${Math.random()*100}%;animation:shimmer ${2+Math.random()*2}s ease-in-out;pointer-events:none;z-index:0`;el.appendChild(s);setTimeout(()=>s.remove(),4000)},500);
+</script>
+</body>
+</html>
