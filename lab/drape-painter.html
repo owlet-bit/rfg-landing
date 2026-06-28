@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drape Painter</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:linear-gradient(170deg,#0C1A28,#101E30,#0A1820);font-family:Georgia,serif;color:#E0D8D0;padding:20px 12px 80px;user-select:none}
+@keyframes shimmer{0%,100%{opacity:.3}50%{opacity:.6}}
+.ctrl-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#C0B8B0;padding:6px 12px;border-radius:8px;font-family:inherit;font-size:11px;cursor:pointer;transition:all .15s}
+.ctrl-btn:hover{background:rgba(255,255,255,.1)}
+.ctrl-btn.active{background:rgba(136,176,192,.2);border-color:rgba(136,176,192,.4);color:#88B0C0}
+.swatch{width:32px;height:32px;border-radius:6px;cursor:pointer;border:2px solid transparent;transition:all .15s;flex-shrink:0;display:inline-block}
+.swatch:hover{transform:scale(1.1)}
+.swatch.active{border-color:#fff;transform:scale(1.1);box-shadow:0 0 10px rgba(255,255,255,.2)}
+input[type=range]{-webkit-appearance:none;background:rgba(255,255,255,.1);height:4px;border-radius:2px;outline:none;width:100%}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#88B0C0;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="sparkles"></div>
+<div style="max-width:520px;margin:0 auto;position:relative;z-index:1">
+  <div style="text-align:center;margin-bottom:16px">
+    <div style="font-size:10px;letter-spacing:5px;color:rgba(136,176,192,.5);text-transform:uppercase">Virtual Draping</div>
+    <h1 style="font-size:20px;font-weight:400;color:#F0E8DC;margin:4px 0">Drape Painter</h1>
+  </div>
+  <div id="uploadZone" onclick="document.getElementById('fileInput').click()" style="border:1px dashed rgba(136,176,192,.25);border-radius:16px;padding:50px 24px;text-align:center;cursor:pointer;background:rgba(255,255,255,.02)">
+    <div style="font-size:28px;margin-bottom:8px;opacity:.4">✦</div>
+    <div style="font-size:14px;color:rgba(136,176,192,.6)">Upload a photo</div>
+    <div style="font-size:11px;color:rgba(136,176,192,.3);margin-top:4px">You'll paint colors directly onto it</div>
+  </div>
+  <div id="paintArea" style="display:none">
+    <div id="canvasWrap" style="position:relative;overflow:hidden;border-radius:10px;border:1px solid rgba(136,176,192,.1);margin-bottom:12px;touch-action:none">
+      <div id="canvasInner" style="position:relative"><canvas id="bgCanvas" style="display:block;width:100%"></canvas><canvas id="paintCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%"></canvas></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;justify-content:center">
+      <button class="ctrl-btn active" id="paintBtn" onclick="setMode('paint')">🖌 Paint</button>
+      <button class="ctrl-btn" id="panBtn" onclick="setMode('pan')">✋ Pan</button>
+      <button class="ctrl-btn" onclick="zoomIn()">+ Zoom</button>
+      <button class="ctrl-btn" onclick="resetView()">Fit</button>
+      <button class="ctrl-btn" onclick="undo()">↩ Undo</button>
+      <button class="ctrl-btn" onclick="clearPaint()">Clear</button>
+      <button class="ctrl-btn" onclick="document.getElementById('fileInput').click()" style="opacity:.6">📷</button>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:14px;align-items:center;padding:0 4px">
+      <div style="flex:1"><div style="font-size:9px;color:rgba(136,176,192,.4);margin-bottom:4px">Brush: <span id="brushLabel">40</span>px</div><input type="range" min="10" max="120" value="40" id="brushSlider" oninput="brushSize=+this.value;document.getElementById('brushLabel').textContent=this.value"></div>
+      <div style="flex:1"><div style="font-size:9px;color:rgba(136,176,192,.4);margin-bottom:4px">Opacity: <span id="opacityLabel">85</span>%</div><input type="range" min="30" max="100" value="85" id="opacitySlider" oninput="opacity=+this.value/100;document.getElementById('opacityLabel').textContent=this.value"></div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:8px 12px;background:rgba(255,255,255,.03);border-radius:8px">
+      <div id="activePreview" style="width:36px;height:36px;border-radius:8px;border:1px solid rgba(255,255,255,.15)"></div>
+      <div><div id="activeSeason" style="font-size:13px;color:#E8E0D8"></div><div id="activeHexLabel" style="font-size:11px;font-family:monospace;color:rgba(136,176,192,.5)"></div></div>
+    </div>
+  </div>
+  <input type="file" id="fileInput" accept="image/*" style="display:none">
+  <div id="seasonBtns" style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-bottom:12px"></div>
+  <div id="swatches" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:12px 8px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid rgba(255,255,255,.05)"></div>
+  <div style="text-align:center;margin-top:24px;font-size:11px;color:rgba(136,176,192,.2);font-style:italic">RFG Palette System · Drape Painter</div>
+</div>
+
+<script>
+const SEASONS=[
+  {name:"Light Spring",family:"Spring",colors:[{n:"1",h:"#DBD2C0"},{n:"2",h:"#A07659"},{n:"3",h:"#CAA783"},{n:"4",h:"#A4AB89"},{n:"5",h:"#FEF0A1"},{n:"6",h:"#FD7A60"},{n:"7",h:"#FB7189"},{n:"8",h:"#3DB266"},{n:"9",h:"#AFE089"},{n:"10",h:"#A991DC"},{n:"11",h:"#546DC5"},{n:"12",h:"#03D4C0"}]},
+  {name:"Light Summer",family:"Summer",colors:[{n:"1",h:"#E74052"},{n:"2",h:"#FD9CA5"},{n:"3",h:"#FF91B0"},{n:"4",h:"#C83670"},{n:"5",h:"#A6BAC0"},{n:"6",h:"#7E7B8A"},{n:"7",h:"#EEE7D2"},{n:"8",h:"#37C7DB"},{n:"9",h:"#08D1CB"},{n:"10",h:"#027D8C"},{n:"11",h:"#02B375"},{n:"12",h:"#FEE491"}]},
+  {name:"True Spring",family:"Spring",colors:[{n:"1",h:"#FEE7B3"},{n:"2",h:"#845024"},{n:"3",h:"#92500B"},{n:"4",h:"#C0A050"},{n:"5",h:"#FEA064"},{n:"6",h:"#F1563F"},{n:"7",h:"#FA3749"},{n:"8",h:"#036AB9"},{n:"9",h:"#01CBB4"},{n:"10",h:"#789A01"},{n:"11",h:"#FED563"},{n:"12",h:"#9D7BDD"}]},
+  {name:"True Summer",family:"Summer",colors:[{n:"1",h:"#016777"},{n:"2",h:"#EDEBDA"},{n:"3",h:"#57585D"},{n:"4",h:"#7D9EAE"},{n:"5",h:"#E36186"},{n:"6",h:"#FCA8C7"},{n:"7",h:"#C9579A"},{n:"8",h:"#58C4A6"},{n:"9",h:"#FAF1A7"},{n:"10",h:"#4B3F84"},{n:"11",h:"#0375AB"},{n:"12",h:"#54C8E7"}]},
+  {name:"Bright Spring",family:"Spring",colors:[{n:"1",h:"#74F2D9"},{n:"2",h:"#F2F0EC"},{n:"3",h:"#AD520F"},{n:"4",h:"#4E413F"},{n:"5",h:"#EE2657"},{n:"6",h:"#FC1803"},{n:"7",h:"#FD937A"},{n:"8",h:"#F19B32"},{n:"9",h:"#FFE965"},{n:"10",h:"#019F57"},{n:"11",h:"#07A0FA"},{n:"12",h:"#420194"}]},
+  {name:"Soft Summer",family:"Summer",colors:[{n:"1",h:"#EEE3D0"},{n:"2",h:"#84786C"},{n:"3",h:"#7F6A5C"},{n:"4",h:"#B2B2B2"},{n:"5",h:"#C04964"},{n:"6",h:"#376097"},{n:"7",h:"#B0D0B0"},{n:"8",h:"#917EAE"},{n:"9",h:"#27584E"},{n:"10",h:"#E69FA3"},{n:"11",h:"#FAE6AB"},{n:"12",h:"#92BBB5"}]},
+  {name:"Soft Autumn",family:"Autumn",colors:[{n:"1",h:"#FF96AC"},{n:"2",h:"#F47271"},{n:"3",h:"#C44F68"},{n:"4",h:"#5F2A2E"},{n:"5",h:"#028169"},{n:"6",h:"#6BBA97"},{n:"7",h:"#FFD384"},{n:"8",h:"#A2B6F1"},{n:"9",h:"#C7C597"},{n:"10",h:"#B8B195"},{n:"11",h:"#4C4B46"},{n:"12",h:"#AF6E62"}]},
+  {name:"True Autumn",family:"Autumn",colors:[{n:"1",h:"#D22C2C"},{n:"2",h:"#E9715D"},{n:"3",h:"#8A6B27"},{n:"4",h:"#939458"},{n:"5",h:"#1F702B"},{n:"6",h:"#E9B38F"},{n:"7",h:"#CFB480"},{n:"8",h:"#D29F16"},{n:"9",h:"#FDAF6E"},{n:"10",h:"#AE451F"},{n:"11",h:"#E1C9A5"},{n:"12",h:"#938161"}]},
+  {name:"Deep Autumn",family:"Autumn",colors:[{n:"1",h:"#F57F6E"},{n:"2",h:"#B4241B"},{n:"3",h:"#006CAA"},{n:"4",h:"#037A84"},{n:"5",h:"#415C32"},{n:"6",h:"#214732"},{n:"7",h:"#903F2B"},{n:"8",h:"#D5A251"},{n:"9",h:"#1B1D39"},{n:"10",h:"#D3AC68"},{n:"11",h:"#423736"},{n:"12",h:"#413736"}]},
+  {name:"Deep Winter",family:"Winter",colors:[{n:"1",h:"#FEC8D6"},{n:"2",h:"#FBF59C"},{n:"3",h:"#C3E9F1"},{n:"4",h:"#010101"},{n:"5",h:"#042076"},{n:"6",h:"#C30D3E"},{n:"7",h:"#B60125"},{n:"8",h:"#955BC1"},{n:"9",h:"#018E9E"},{n:"10",h:"#3F5D20"},{n:"11",h:"#02534C"},{n:"12",h:"#732181"}]},
+  {name:"True Winter",family:"Winter",colors:[{n:"1",h:"#EB0129"},{n:"2",h:"#FFC7FD"},{n:"3",h:"#5CF3FE"},{n:"4",h:"#E85DBE"},{n:"5",h:"#F53696"},{n:"6",h:"#19036E"},{n:"7",h:"#004C37"},{n:"8",h:"#30393D"},{n:"9",h:"#EEF0F4"},{n:"10",h:"#AC003A"},{n:"11",h:"#8E7E7C"},{n:"12",h:"#037BA6"}]},
+  {name:"Bright Winter",family:"Winter",colors:[{n:"1",h:"#FDFBF7"},{n:"2",h:"#3A4044"},{n:"3",h:"#010103"},{n:"4",h:"#63C000"},{n:"5",h:"#AAE9DF"},{n:"6",h:"#FEED2D"},{n:"7",h:"#FE6EC4"},{n:"8",h:"#FF54E0"},{n:"9",h:"#495CCB"},{n:"10",h:"#250A95"},{n:"11",h:"#C9023E"},{n:"12",h:"#048377"}]},
+];
+
+let sIdx=0,activeHex=SEASONS[0].colors[0].h,brushSize=40,opacity=.85,drawing=false,mode='paint',history=[],zoom=1,panX=0,panY=0,panning=false,lastPX=0,lastPY=0;
+const bgCanvas=document.getElementById('bgCanvas'),paintCanvas=document.getElementById('paintCanvas');
+const bgCtx=bgCanvas.getContext('2d'),paintCtx=paintCanvas.getContext('2d');
+const wrap=document.getElementById('canvasWrap'),inner=document.getElementById('canvasInner');
+
+document.getElementById('fileInput').addEventListener('change',e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=ev=>{
+    const img=new Image();img.onload=()=>{
+      const maxW=Math.min(500,window.innerWidth-32),scale=maxW/img.width;
+      const w=Math.floor(img.width*scale),h=Math.floor(img.height*scale);
+      bgCanvas.width=w;bgCanvas.height=h;paintCanvas.width=w;paintCanvas.height=h;
+      bgCtx.drawImage(img,0,0,w,h);paintCtx.clearRect(0,0,w,h);
+      history=[];zoom=1;panX=0;panY=0;updateTransform();
+      document.getElementById('uploadZone').style.display='none';
+      document.getElementById('paintArea').style.display='block';
+    };img.src=ev.target.result;
+  };r.readAsDataURL(f);
+});
+
+function updateTransform(){inner.style.transform=`scale(${zoom}) translate(${panX/zoom}px,${panY/zoom}px)`;inner.style.transformOrigin='top left'}
+function setMode(m){mode=m;document.getElementById('paintBtn').className='ctrl-btn'+(m==='paint'?' active':'');document.getElementById('panBtn').className='ctrl-btn'+(m==='pan'?' active':'');wrap.style.cursor=m==='pan'?'grab':'crosshair'}
+function zoomIn(){zoom=Math.min(4,zoom+.5);updateTransform()}
+function resetView(){zoom=1;panX=0;panY=0;updateTransform()}
+function saveState(){history.push(paintCtx.getImageData(0,0,paintCanvas.width,paintCanvas.height));if(history.length>20)history.shift()}
+function undo(){if(!history.length)return;paintCtx.putImageData(history.pop(),0,0)}
+function clearPaint(){saveState();paintCtx.clearRect(0,0,paintCanvas.width,paintCanvas.height)}
+
+function getPos(e){const rect=wrap.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:(t.clientX-rect.left-panX)/zoom,y:(t.clientY-rect.top-panY)/zoom}}
+function paint(x,y){const r=parseInt(activeHex.slice(1,3),16),g=parseInt(activeHex.slice(3,5),16),b=parseInt(activeHex.slice(5,7),16);paintCtx.globalAlpha=opacity;paintCtx.fillStyle=`rgb(${r},${g},${b})`;paintCtx.beginPath();paintCtx.arc(x,y,brushSize/2/zoom,0,Math.PI*2);paintCtx.fill();paintCtx.globalAlpha=1}
+
+wrap.addEventListener('mousedown',e=>{e.preventDefault();if(mode==='pan'){panning=true;lastPX=e.clientX;lastPY=e.clientY}else{saveState();drawing=true;const p=getPos(e);paint(p.x,p.y)}});
+wrap.addEventListener('mousemove',e=>{e.preventDefault();if(mode==='pan'&&panning){panX+=e.clientX-lastPX;panY+=e.clientY-lastPY;lastPX=e.clientX;lastPY=e.clientY;updateTransform()}else if(drawing){const p=getPos(e);paint(p.x,p.y)}});
+wrap.addEventListener('mouseup',()=>{drawing=false;panning=false});
+wrap.addEventListener('mouseleave',()=>{drawing=false;panning=false});
+wrap.addEventListener('touchstart',e=>{e.preventDefault();if(mode==='pan'){panning=true;lastPX=e.touches[0].clientX;lastPY=e.touches[0].clientY}else{saveState();drawing=true;const p=getPos(e);paint(p.x,p.y)}},{passive:false});
+wrap.addEventListener('touchmove',e=>{e.preventDefault();if(mode==='pan'&&panning){panX+=e.touches[0].clientX-lastPX;panY+=e.touches[0].clientY-lastPY;lastPX=e.touches[0].clientX;lastPY=e.touches[0].clientY;updateTransform()}else if(drawing){const p=getPos(e);paint(p.x,p.y)}},{passive:false});
+wrap.addEventListener('touchend',()=>{drawing=false;panning=false});
+
+function renderUI(){
+  const s=SEASONS[sIdx];
+  document.getElementById('activePreview').style.background=activeHex;
+  document.getElementById('activeSeason').textContent=s.name;
+  document.getElementById('activeHexLabel').textContent=activeHex;
+  document.getElementById('seasonBtns').innerHTML=SEASONS.map((ss,i)=>`<button onclick="sIdx=${i};activeHex=SEASONS[${i}].colors[0].h;renderUI()" style="padding:4px 8px;border-radius:6px;font-size:9px;font-family:inherit;cursor:pointer;background:${i===sIdx?'rgba(136,176,192,.2)':'rgba(255,255,255,.03)'};border:${i===sIdx?'1px solid rgba(136,176,192,.3)':'1px solid rgba(255,255,255,.05)'};color:${i===sIdx?'#E8E0D8':'rgba(200,190,180,.45)'}">${ss.name}</button>`).join('');
+  document.getElementById('swatches').innerHTML=s.colors.map(c=>`<div class="swatch ${activeHex===c.h?'active':''}" style="background:${c.h}" onclick="activeHex='${c.h}';renderUI()"></div>`).join('');
+}
+renderUI();
+setInterval(()=>{const el=document.getElementById('sparkles');const s=document.createElement('div');s.style.cssText=`position:fixed;width:2px;height:2px;border-radius:50%;background:rgba(136,176,192,.4);box-shadow:0 0 6px rgba(136,176,192,.3);left:${Math.random()*100}%;top:${Math.random()*100}%;animation:shimmer ${2+Math.random()*2}s ease-in-out;pointer-events:none;z-index:0`;el.appendChild(s);setTimeout(()=>s.remove(),4000)},500);
+</script>
+</body>
+</html>
