@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Infinite Aviary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Outfit:wght@300..700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --dusk:#1a1330; --dusk2:#251b42; --ink:#100b22;
+  --plume:#f5eefc; --plume-dim:#b9a9d6;
+  --gold:#f2b877; --rose:#e88fae; --moss:#9dd6a8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Outfit',sans-serif; color:var(--plume);
+  background:radial-gradient(1200px 700px at 70% -10%, #322153 0%, var(--dusk) 45%, var(--ink) 100%);
+  min-height:100vh; overflow-x:hidden; position:relative;
+}
+/* ambient firefly field */
+.spark{position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  background:radial-gradient(circle, rgba(242,184,119,.95), rgba(242,184,119,0) 70%);
+  animation:twinkle var(--dur) ease-in-out var(--del) infinite;}
+@keyframes twinkle{0%,100%{opacity:0;transform:translateY(0) scale(.6)}
+  40%{opacity:.9;transform:translateY(-14px) scale(1)}
+  70%{opacity:.35;transform:translateY(-26px) scale(.8)}}
+.wrap{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:34px 20px 70px}
+header{text-align:center;margin-bottom:26px}
+h1{font-family:'Fraunces',serif;font-weight:560;font-size:clamp(2.1rem,5.5vw,3.4rem);
+  letter-spacing:.01em;
+  background:linear-gradient(100deg,var(--gold),var(--rose) 55%,var(--plume));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 18px rgba(232,143,174,.25));}
+.tag{color:var(--plume-dim);font-weight:300;margin-top:6px;font-size:1.02rem;font-style:italic;font-family:'Fraunces',serif}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:linear-gradient(160deg,rgba(51,36,86,.75),rgba(24,16,45,.85));
+  border:1px solid rgba(242,184,119,.16);border-radius:22px;padding:22px;
+  box-shadow:0 18px 50px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.05);}
+.stage{position:relative;display:flex;flex-direction:column;align-items:center}
+#perch{width:100%;max-width:460px;aspect-ratio:320/270;position:relative}
+#perch svg{width:100%;height:100%;animation:bob 5.5s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+#perch.hatch svg{animation:hatchIn .55s cubic-bezier(.2,1.4,.4,1), bob 5.5s ease-in-out .6s infinite}
+@keyframes hatchIn{0%{transform:scale(.3) rotate(-8deg);opacity:0}70%{transform:scale(1.06)}100%{transform:scale(1);opacity:1}}
+.irid{animation:iridesce 6s linear infinite}
+@keyframes iridesce{from{filter:hue-rotate(0deg) saturate(1.15)}to{filter:hue-rotate(360deg) saturate(1.15)}}
+.bird-name{font-family:'Fraunces',serif;font-size:clamp(1.25rem,3vw,1.7rem);font-weight:520;text-align:center;margin-top:4px;text-shadow:0 0 22px rgba(242,184,119,.35)}
+.rarity{display:inline-block;margin-top:6px;font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(242,184,119,.45);border-radius:999px;padding:3px 12px;
+  animation:pulseGlow 2.2s ease-in-out infinite}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 6px rgba(242,184,119,.25)}50%{box-shadow:0 0 20px rgba(242,184,119,.7)}}
+.swatches{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.chip{display:flex;align-items:center;gap:9px;background:rgba(16,11,34,.6);border:1px solid rgba(185,169,214,.18);
+  border-radius:12px;padding:7px 12px 7px 8px;transition:transform .2s, box-shadow .2s}
+.chip:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.4)}
+.chip .dot{width:26px;height:26px;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18), 0 0 10px -2px currentColor}
+.chip .lbl{display:flex;flex-direction:column;line-height:1.15}
+.chip .cname{font-weight:600;font-size:.86rem}
+.chip .role{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--plume-dim)}
+.controls h2{font-family:'Fraunces',serif;font-weight:520;font-size:1.25rem;margin-bottom:14px;color:var(--gold)}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+button{font-family:'Outfit',sans-serif;font-weight:600;font-size:.95rem;border:none;border-radius:14px;
+  padding:12px 18px;cursor:pointer;transition:transform .15s ease, box-shadow .2s;color:var(--ink)}
+button:active{transform:scale(.96)}
+button:focus-visible{outline:2px solid var(--plume);outline-offset:2px}
+.primary{background:linear-gradient(120deg,var(--gold),var(--rose));animation:breath 2.6s ease-in-out infinite}
+@keyframes breath{0%,100%{box-shadow:0 0 14px rgba(232,143,174,.35)}50%{box-shadow:0 0 30px rgba(242,184,119,.75)}}
+.ghost{background:rgba(245,238,252,.1);color:var(--plume);border:1px solid rgba(185,169,214,.35)}
+.ghost:hover{background:rgba(245,238,252,.18)}
+.field{display:flex;align-items:center;gap:12px;margin:10px 0 4px}
+.field label{font-size:.9rem;color:var(--plume-dim)}
+input[type=color]{width:52px;height:38px;border:none;border-radius:10px;background:none;cursor:pointer;padding:0}
+input[type=color]::-webkit-color-swatch{border-radius:10px;border:1px solid rgba(255,255,255,.25)}
+input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+.switch{position:relative;width:44px;height:24px;flex:none}
+.switch input{opacity:0;width:100%;height:100%;position:absolute;cursor:pointer;margin:0}
+.track{position:absolute;inset:0;border-radius:999px;background:rgba(185,169,214,.25);transition:.2s}
+.knob{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--plume);transition:.2s}
+.switch input:checked ~ .track{background:linear-gradient(120deg,var(--gold),var(--rose))}
+.switch input:checked ~ .knob{left:23px}
+.count{margin-top:14px;font-size:.85rem;color:var(--plume-dim)}
+.count b{color:var(--gold);font-weight:700}
+.aviary{margin-top:26px}
+.aviary h2{font-family:'Fraunces',serif;font-weight:520;font-size:1.3rem;color:var(--rose);margin-bottom:4px}
+.aviary .note{font-size:.82rem;color:var(--plume-dim);margin-bottom:14px;font-style:italic}
+.roost{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:14px}
+.roost:empty::after{content:"No keepers yet. Hatch until one demands permanence.";grid-column:1/-1;
+  color:var(--plume-dim);font-style:italic;font-size:.9rem;padding:18px;text-align:center;
+  border:1px dashed rgba(185,169,214,.3);border-radius:14px}
+.mini{background:rgba(16,11,34,.55);border:1px solid rgba(185,169,214,.16);border-radius:16px;padding:10px 8px 12px;
+  text-align:center;cursor:pointer;position:relative;transition:transform .2s, box-shadow .2s}
+.mini:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(0,0,0,.5), 0 0 18px rgba(232,143,174,.2)}
+.mini svg{width:100%;height:auto}
+.mini .mname{font-size:.72rem;font-weight:600;line-height:1.2;margin-top:4px}
+.mini .rm{position:absolute;top:6px;right:8px;background:none;border:none;color:var(--plume-dim);font-size:1rem;padding:2px 6px;cursor:pointer}
+.mini .rm:hover{color:var(--rose)}
+.floatnote{position:absolute;font-size:1.05rem;color:var(--gold);pointer-events:none;
+  animation:noteUp 1.3s ease-out forwards;text-shadow:0 0 10px rgba(242,184,119,.8)}
+@keyframes noteUp{0%{opacity:0;transform:translateY(0) rotate(0)}20%{opacity:1}
+  100%{opacity:0;transform:translateY(-70px) rotate(14deg)}}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none !important;transition:none !important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>The Infinite Aviary</h1>
+    <p class="tag">procedurally hatched songbirds, occasionally magnificent</p>
+  </header>
+
+  <div class="grid">
+    <div class="card stage">
+      <div id="perch"></div>
+      <div class="bird-name" id="birdName"></div>
+      <div id="rareTag"></div>
+      <div class="swatches" id="swatches"></div>
+    </div>
+
+    <div class="card controls">
+      <h2>Nest controls</h2>
+      <div class="btnrow">
+        <button class="primary" id="hatchBtn">Hatch a bird</button>
+        <button class="ghost" id="singBtn">Sing</button>
+        <button class="ghost" id="keepBtn">Keep her</button>
+      </div>
+      <div class="field">
+        <input type="color" id="huePick" value="#e88fae" aria-label="Base plumage color">
+        <span class="switch">
+          <input type="checkbox" id="hueLock" aria-label="Hatch in chosen color">
+          <span class="track"></span><span class="knob"></span>
+        </span>
+        <label for="hueLock">Hatch in this color</label>
+      </div>
+      <div class="count">№ hatched this session: <b id="hatchCount">0</b></div>
+      <div class="count" style="margin-top:6px">Roughly 1 in 20 arrives iridescent — hue-shifting plumage plus a pulsing ✦ tag under her name. She will announce herself.</div>
+    </div>
+  </div>
+
+  <div class="aviary card">
+    <h2>The Aviary</h2>
+    <p class="note">Keepers live only in this session — screenshot the ones you love.</p>
+    <div class="roost" id="roost"></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+/* ---------- seeded rng ---------- */
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);
+  t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+const R=(rng,a,b)=>a+(b-a)*rng();
+const RI=(rng,a,b)=>Math.floor(R(rng,a,b+1));
+const P=(rng,arr)=>arr[Math.floor(rng()*arr.length)];
+const CH=(rng,p)=>rng()<p;
+
+/* ---------- color helpers ---------- */
+const css=c=>`hsl(${c.h.toFixed(1)},${c.s.toFixed(1)}%,${c.l.toFixed(1)}%)`;
+function hex(c){const s=c.s/100,l=c.l/100,k=n=>(n+c.h/30)%12,
+  a=s*Math.min(l,1-l),f=n=>l-a*Math.max(-1,Math.min(k(n)-3,9-k(n),1));
+  return '#'+[f(0),f(8),f(4)].map(v=>Math.round(v*255).toString(16).padStart(2,'0')).join('');}
+function shift(c,dh,ds,dl){return{h:(c.h+dh+360)%360,s:Math.max(0,Math.min(100,c.s+ds)),l:Math.max(4,Math.min(96,c.l+dl))};}
+function hexToHue(hx){const r=parseInt(hx.slice(1,3),16)/255,g=parseInt(hx.slice(3,5),16)/255,b=parseInt(hx.slice(5,7),16)/255;
+  const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0;
+  if(mx!==mn){const d=mx-mn;h=mx===r?((g-b)/d+(g<b?6:0)):mx===g?((b-r)/d+2):((r-g)/d+4);h*=60;}
+  return h;}
+
+/* ---------- naming ---------- */
+const MODS=['Dustbath','Vesper','Marsh','Thistle','Creekbed','Lantern','Moth','Twilight','Gooseberry','Cinder','Willow','Bramble','Nectar','Hollow','Solstice','Sparrowgrass','Windfall','Chapel','Feverfew','Milkweed'];
+const MOODS=['Hush','Static','Murmur','Glow','Sigh','Reverie','Vertigo','Lull'];
+function hueNoun(rng,c){
+  if(c.s<13)return P(rng,['Ash','Smoke','Pewter','Fog','Chalk']);
+  if(c.l>86)return P(rng,['Milk','Pearl','Frost']);
+  const h=c.h;
+  if(h<15||h>=345)return c.l<40?P(rng,['Wine','Garnet']):P(rng,['Poppy','Ember','Cherry']);
+  if(h<40)return c.l>65?P(rng,['Apricot','Marmalade']):P(rng,['Rust','Copper','Clay']);
+  if(h<65)return c.l>70?P(rng,['Butter','Pollen']):P(rng,['Gold','Honey','Ochre']);
+  if(h<150)return c.s<40?P(rng,['Sage','Lichen']):c.l<40?P(rng,['Moss','Pine']):P(rng,['Fern','Clover']);
+  if(h<200)return P(rng,['Tidepool','Verdigris','Lagoon']);
+  if(h<250)return c.s<40?P(rng,['Slate','Harbor']):c.l<32?P(rng,['Ink','Midnight']):P(rng,['Cornflower','Fjord']);
+  if(h<290)return c.l<45?P(rng,['Plum','Damson']):c.l>65?P(rng,['Lilac','Wisteria']):P(rng,['Iris','Violet']);
+  return c.s<45?P(rng,['Mauve','Heather']):c.l<45?P(rng,['Foxglove','Beetroot']):P(rng,['Rose','Orchid']);
+}
+function paintName(rng,c,used){
+  for(let i=0;i<8;i++){
+    const n=CH(rng,.7)?`${P(rng,MODS)} ${hueNoun(rng,c)}`:`${hueNoun(rng,c)} ${P(rng,MOODS)}`;
+    if(!used.has(n)){used.add(n);return n;}
+  }
+  return `${P(rng,MODS)} ${hueNoun(rng,c)}`;
+}
+const ADJS=['Lacquered','Thistledown','Gilded','Sooty','Peppered','Moonlit','Cinnamon','Frosted','Marbled','Ribboned','Dappled','Velvet','Whistling','Storied','Opaline','Tufted'];
+const TYPES=['Warbler','Tanager','Finch','Wren','Sparrow','Bunting','Chat','Vireo','Kinglet','Grosbeak','Waxwing','Thrush','Pipit','Redstart','Flycatcher','Oriole','Siskin','Titmouse'];
+const BEAK_TYPES={
+  conical:['Seedeater','Canary','Grosbeak'],
+  needle:['Gnatcatcher','Treecreeper','Sunangel'],
+  curved:['Thrasher','Sunbird','Scimitarbill'],
+  hooked:['Parrotlet','Lorikeet','Hanging-Parrot'],
+};
+const PARTS=['throated','crowned','winged','breasted','cheeked','rumped'];
+function speciesName(rng,accent,beak){
+  const pool=TYPES.concat(BEAK_TYPES[beak]||[]);
+  return CH(rng,.5)
+    ? `${hueNoun(rng,accent)}-${P(rng,PARTS)} ${P(rng,pool)}`
+    : `${P(rng,ADJS)} ${P(rng,pool)}`;
+}
+
+/* ---------- plumage families ---------- */
+function genColors(rng,lockedHue){
+  const fam=P(rng,['earth','tropic','pastel','jewel','desert','sea']);
+  const bh=lockedHue!=null?lockedHue:R(rng,0,360);
+  let c={};
+  if(fam==='earth'){
+    c.body={h:lockedHue!=null?bh:R(rng,20,42),s:R(rng,30,48),l:R(rng,32,48)};
+    c.belly={h:36,s:R(rng,26,40),l:R(rng,68,80)};
+    c.accent=CH(rng,.6)?{h:R(rng,16,46),s:R(rng,60,78),l:R(rng,48,58)}:{h:R(rng,60,90),s:R(rng,30,45),l:R(rng,38,50)};
+  }else if(fam==='tropic'){
+    c.body={h:bh,s:R(rng,78,95),l:R(rng,45,58)};
+    c.belly=CH(rng,.5)?shift(c.body,R(rng,140,200),-10,R(rng,8,18)):{h:R(rng,45,58),s:R(rng,80,95),l:R(rng,55,65)};
+    c.accent=shift(c.body,R(rng,100,150),0,R(rng,-4,8));
+  }else if(fam==='pastel'){
+    c.body={h:bh,s:R(rng,38,58),l:R(rng,72,84)};
+    c.belly=shift(c.body,R(rng,20,60),-8,R(rng,4,9));
+    c.accent=shift(c.body,R(rng,50,90),R(rng,8,20),-R(rng,6,14));
+  }else if(fam==='jewel'){
+    c.body={h:bh,s:R(rng,62,85),l:R(rng,30,44)};
+    c.belly=shift(c.body,R(rng,-15,15),-18,R(rng,16,24));
+    c.accent=shift(c.body,R(rng,35,80),R(rng,5,15),R(rng,14,24));
+  }else if(fam==='desert'){
+    c.body={h:lockedHue!=null?bh:R(rng,12,38),s:R(rng,28,45),l:R(rng,45,58)};
+    c.belly={h:34,s:24,l:76};
+    c.accent={h:R(rng,340,356),s:R(rng,42,55),l:R(rng,56,66)};
+  }else{ /* sea */
+    c.body={h:lockedHue!=null?bh:R(rng,175,225),s:R(rng,35,60),l:R(rng,40,55)};
+    c.belly={h:200,s:20,l:80};
+    c.accent=CH(rng,.55)?{h:R(rng,20,45),s:R(rng,68,80),l:R(rng,56,64)}:shift(c.body,R(rng,-20,20),15,-14);
+  }
+  c.wing=shift(c.body,R(rng,-6,6),R(rng,2,8),-R(rng,10,16));
+  c.breast=CH(rng,.45)?shift(c.accent,R(rng,-10,10),-R(rng,5,15),R(rng,6,16)):null;
+  c.cap=CH(rng,.5)?shift(c.accent,R(rng,-15,15),0,R(rng,-8,6)):shift(c.body,0,6,-18);
+  c.bar={h:c.belly.h,s:Math.min(30,c.belly.s),l:88};
+  c.streak=shift(c.body,0,4,-22);
+  c.beak=CH(rng,.3)?{h:R(rng,25,45),s:R(rng,55,75),l:R(rng,45,55)}:{h:30,s:22,l:R(rng,18,30)};
+  c.leg={h:18,s:26,l:R(rng,40,58)};
+  c.fam=fam;
+  return c;
+}
+
+/* ---------- pattern flags ---------- */
+function genPatterns(rng,fam){
+  const p={
+    crest:CH(rng,.26),
+    mask:CH(rng,.3),
+    cap:CH(rng,.36),
+    eyering:CH(rng,.36),
+    wingbars:CH(rng,.5)?RI(rng,1,2):0,
+    streaks:CH(rng,fam==='earth'||fam==='desert'?.55:.2),
+    throat:CH(rng,.26),
+    brow:CH(rng,.24),
+    rump:CH(rng,.22),
+    tailband:CH(rng,.32),
+  };
+  if(!p.crest&&!p.mask&&!p.cap&&!p.eyering&&p.wingbars===0&&!p.streaks&&!p.throat&&!p.brow)
+    (CH(rng,.5)?p.eyering=true:p.wingbars=1);
+  return p;
+}
+
+/* ---------- song ---------- */
+const SONG_RANGE={conical:[1500,3300],needle:[2200,4200],curved:[1700,3600],hooked:[1200,2900]};
+function genSong(rng,beak){
+  const [fLo,fHi]=SONG_RANGE[beak]||[1600,3800];
+  const n=RI(rng,3,7),notes=[];
+  let usedChatter=false;
+  for(let i=0;i<n;i++){
+    if(beak==='hooked'&&!usedChatter&&CH(rng,.4)){
+      usedChatter=true;
+      const f1=R(rng,fLo,fLo+700);
+      notes.push({type:'chatter',f1,f2:f1*R(rng,1.25,1.6),reps:RI(rng,6,11),dur:.05,gap:.018,after:R(rng,.05,.12)});
+    }else if(CH(rng,.22)){
+      notes.push({type:'trill',f:R(rng,fLo+400,fHi-400),reps:RI(rng,5,9),dur:.045,gap:.02,after:R(rng,.05,.12)});
+    }else if(beak!=='needle'&&CH(rng,.12)){
+      notes.push({type:'buzz',f:R(rng,850,1400),reps:RI(rng,10,16),dur:.03,gap:.012,after:R(rng,.05,.1)});
+    }else{
+      const f0=R(rng,fLo,fHi);
+      notes.push({type:'note',f0,f1:f0*R(rng,.72,1.5),dur:R(rng,.06,.16),after:R(rng,.04,.13)});
+    }
+  }
+  return notes;
+}
+let actx=null;
+function playSong(bird){
+  if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();
+  if(actx.state==='suspended')actx.resume();
+  let t=actx.currentTime+.05;
+  const master=actx.createGain();master.gain.value=.22;master.connect(actx.destination);
+  const blip=(f0,f1,dur,start)=>{
+    const o=actx.createOscillator(),g=actx.createGain();
+    o.type='sine';o.frequency.setValueAtTime(f0,start);
+    o.frequency.exponentialRampToValueAtTime(Math.max(80,f1),start+dur);
+    g.gain.setValueAtTime(0,start);
+    g.gain.linearRampToValueAtTime(1,start+.008);
+    g.gain.exponentialRampToValueAtTime(.0008,start+dur);
+    o.connect(g);g.connect(master);o.start(start);o.stop(start+dur+.02);
+  };
+  for(const nt of bird.song){
+    if(nt.type==='trill'){
+      for(let r=0;r<nt.reps;r++){blip(nt.f,nt.f*1.06,nt.dur,t);t+=nt.dur+nt.gap;}
+      t+=nt.after;
+    }else if(nt.type==='chatter'){
+      for(let r=0;r<nt.reps;r++){const f=r%2?nt.f2:nt.f1;blip(f,f*1.03,nt.dur,t);t+=nt.dur+nt.gap;}
+      t+=nt.after;
+    }else if(nt.type==='buzz'){
+      for(let r=0;r<nt.reps;r++){blip(nt.f,nt.f*.97,nt.dur,t);t+=nt.dur+nt.gap;}
+      t+=nt.after;
+    }else{blip(nt.f0,nt.f1,nt.dur,t);t+=nt.dur+nt.after;}
+  }
+  const total=(t-actx.currentTime)*1000;
+  const stage=document.getElementById('perch');
+  let notesDropped=0;
+  const iv=setInterval(()=>{
+    if(notesDropped++>Math.min(8,bird.song.length+2)){clearInterval(iv);return;}
+    const s=document.createElement('span');
+    s.className='floatnote';s.textContent=Math.random()<.7?'♪':'✦';
+    s.style.left=(52+Math.random()*30)+'%';s.style.top=(18+Math.random()*20)+'%';
+    stage.appendChild(s);setTimeout(()=>s.remove(),1400);
+  },Math.max(140,total/8));
+}
+
+/* ---------- svg builder ---------- */
+function birdSVG(b,uid,forStage){
+  const c=b.colors,p=b.pat,g=b.geom;
+  const rad=d=>d*Math.PI/180;
+  const bX=150-g.bodyRx+8;
+  const dx=-Math.cos(rad(g.tailAng))*g.tailLen, dy=Math.sin(rad(g.tailAng))*g.tailLen;
+  const tail=`M${bX.toFixed(1)} 141 L${(bX+dx).toFixed(1)} ${(149+dy-g.tailTip).toFixed(1)} L${(bX+dx).toFixed(1)} ${(149+dy+g.tailTip).toFixed(1)} L${bX.toFixed(1)} 157 Z`;
+  const tb=g.tailLen*.24;
+  const tdx=-Math.cos(rad(g.tailAng))*tb, tdy=Math.sin(rad(g.tailAng))*tb;
+  const tailBand=`M${(bX+dx).toFixed(1)} ${(149+dy-g.tailTip).toFixed(1)} L${(bX+dx).toFixed(1)} ${(149+dy+g.tailTip).toFixed(1)} L${(bX+dx-tdx).toFixed(1)} ${(149+dy-tdy+g.tailTip+1.4).toFixed(1)} L${(bX+dx-tdx).toFixed(1)} ${(149+dy-tdy-g.tailTip-1.4).toFixed(1)} Z`;
+  let streaks='';
+  if(p.streaks){const srng=mulberry32(b.seed^0x5f5f);
+    for(let i=0;i<12;i++){const x=R(srng,132,182),y=R(srng,136,176);
+      streaks+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="2.6" height="9" rx="1.3" transform="rotate(64 ${x.toFixed(1)} ${y.toFixed(1)})" fill="${css(c.streak)}"/>`;}}
+  let bars='';
+  if(p.wingbars>=1)bars+=`<rect x="126" y="146" width="36" height="5" rx="2.5" transform="rotate(-16 144 148)" fill="${css(c.bar)}"/>`;
+  if(p.wingbars>=2)bars+=`<rect x="132" y="158" width="34" height="5" rx="2.5" transform="rotate(-16 148 160)" fill="${css(c.bar)}"/>`;
+  const crest=p.crest?`<g transform="translate(0 ${(30-g.headR).toFixed(1)})">
+    <path d="M189 76 q-3 -24 -9 -30" stroke="${css(c.cap)}" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M196 74 q5 -26 1 -34" stroke="${css(shift(c.cap,8,4,6))}" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+    <path d="M203 76 q12 -22 15 -28" stroke="${css(c.cap)}" stroke-width="5" stroke-linecap="round" fill="none"/></g>`:'';
+  const bx=192+g.headR-3;
+  let beak='';
+  if(g.beakType==='conical'){
+    beak=`<path d="M${bx.toFixed(1)} ${(97-g.beakDeep).toFixed(1)} L${(bx+g.beakLen).toFixed(1)} 97.5 L${bx.toFixed(1)} ${(97+g.beakDeep).toFixed(1)} Z" fill="${css(c.beak)}"/>
+      <path d="M${bx.toFixed(1)} 97.4 L${(bx+g.beakLen-1.5).toFixed(1)} 97.4" stroke="${css(shift(c.beak,0,0,-12))}" stroke-width="1.1"/>`;
+  }else if(g.beakType==='needle'){
+    beak=`<path d="M${bx.toFixed(1)} 94 L${(bx+g.beakLen).toFixed(1)} ${(97-g.beakDrop).toFixed(1)} L${bx.toFixed(1)} 100.5 Z" fill="${css(c.beak)}"/>
+      <path d="M${bx.toFixed(1)} 97.2 L${(bx+g.beakLen-2).toFixed(1)} ${(97.2-g.beakDrop*.5).toFixed(1)}" stroke="${css(shift(c.beak,0,0,-12))}" stroke-width="1"/>`;
+  }else if(g.beakType==='curved'){
+    const L=g.beakLen;
+    beak=`<path d="M${bx.toFixed(1)} 92.5 Q${(bx+L*.7).toFixed(1)} 92 ${(bx+L).toFixed(1)} 100.5 Q${(bx+L*.5).toFixed(1)} 101.5 ${bx.toFixed(1)} 100 Z" fill="${css(c.beak)}"/>`;
+  }else{ /* hooked — tiny parrot */
+    beak=`<path d="M${(bx-1).toFixed(1)} 90.5 q10.5 -3 13 4.5 q1.8 5.5 -3.8 9.2 q-1.6 1 -2.6 -.4 q2.8 -2.8 1.9 -5.8 q-1.4 -4.6 -7.5 -3.6 Z" fill="${css(c.beak)}"/>
+      <path d="M${bx.toFixed(1)} 99.2 q4.5 2.4 7.8 1 l-1 2.3 q-4.2 1 -7.4 -1.5 Z" fill="${css(shift(c.beak,0,0,-10))}"/>`;
+  }
+  const legTop=(150+g.bodyRy-8).toFixed(1);
+  const sx=(g.bodyRx/50).toFixed(3), sy=(g.bodyRy/42).toFixed(3);
+  const size=forStage?'':'width="128" height="108"';
+  return `<svg ${size} viewBox="0 0 320 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${b.name}">
+  <defs>
+    <clipPath id="cb${uid}"><ellipse cx="150" cy="150" rx="${g.bodyRx}" ry="${g.bodyRy}"/></clipPath>
+    <clipPath id="ch${uid}"><circle cx="192" cy="100" r="${g.headR}"/></clipPath>
+  </defs>
+  <path d="M8 236 Q160 224 312 240" stroke="#5e4634" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <path d="M216 232 q26 -12 40 -32" stroke="#5e4634" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="252" cy="204" rx="7" ry="3.5" fill="#4d6b46" transform="rotate(-38 252 204)"/>
+  <ellipse cx="240" cy="216" rx="6" ry="3" fill="#42603d" transform="rotate(-30 240 216)"/>
+  <g stroke="${css(c.leg)}" stroke-width="3" stroke-linecap="round">
+    <path d="M142 ${legTop} L138 231 M138 231 l-6 3 M138 231 l6 4"/>
+    <path d="M162 ${legTop} L166 232 M166 232 l-6 4 M166 232 l7 3"/>
+  </g>
+  <g class="${b.irid?'irid':''}">
+    <g transform="rotate(${g.tilt} 150 150)">
+      <path d="${tail}" fill="${css(c.wing)}"/>
+      ${p.tailband?`<path d="${tailBand}" fill="${css(c.accent)}"/>`:''}
+      <ellipse cx="150" cy="150" rx="${g.bodyRx}" ry="${g.bodyRy}" fill="${css(c.body)}"/>
+      <g clip-path="url(#cb${uid})">
+        <g transform="translate(150 150) scale(${sx} ${sy}) translate(-150 -150)">
+        <ellipse cx="144" cy="168" rx="47" ry="28" fill="${css(c.belly)}"/>
+        ${c.breast?`<ellipse cx="170" cy="144" rx="30" ry="25" fill="${css(c.breast)}"/>`:''}
+        ${p.rump?`<ellipse cx="116" cy="138" rx="13" ry="9" fill="${css(c.accent)}"/>`:''}
+        <path d="M116 142 q34 -20 66 -2 q4 26 -26 35 q-36 9 -46 -11 q-5 -14 6 -22 Z" fill="${css(c.wing)}"/>
+        ${bars}
+        ${streaks}
+        </g>
+      </g>
+    </g>
+    <g transform="translate(${g.headDx} ${g.headDy}) rotate(${g.headTilt} 178 116)">
+      ${crest}
+      <circle cx="192" cy="100" r="${g.headR}" fill="${css(c.body)}"/>
+      <g clip-path="url(#ch${uid})">
+        ${p.cap?`<rect x="160" y="68" width="66" height="${g.capH}" fill="${css(c.cap)}"/>`:''}
+        ${p.mask?`<ellipse cx="201" cy="96" rx="18" ry="10" fill="${css(shift(c.accent,0,5,-24))}"/>`:''}
+        ${p.throat?`<ellipse cx="197" cy="126" rx="16" ry="12" fill="${css(c.accent)}"/>`:''}
+        ${p.brow?`<path d="M172 87 q22 -11 42 -3" stroke="${css(c.bar)}" stroke-width="3.2" fill="none" stroke-linecap="round"/>`:''}
+      </g>
+      ${p.eyering?`<circle cx="202" cy="94" r="6.6" fill="none" stroke="${css(c.bar)}" stroke-width="2.3"/>`:''}
+      <circle cx="202" cy="94" r="3.9" fill="#181223"/>
+      <circle cx="203.4" cy="92.6" r="1.2" fill="#fff"/>
+      ${beak}
+    </g>
+  </g>
+</svg>`;
+}
+
+/* ---------- bird assembly ---------- */
+let uidCounter=0;
+function makeBird(seed,lockedHue){
+  const rng=mulberry32(seed);
+  const colors=genColors(rng,lockedHue);
+  const pat=genPatterns(rng,colors.fam);
+  const irid=CH(rng,.05);
+  const bodyType=P(rng,['plump','sleek','upright','chunky']);
+  const B={
+    plump:  {rx:[45,51],ry:[39,45],hdx:[-2,2], hdy:[-2,2], hr:[28,31],tilt:[-8,10], tlen:[38,68],tang:[-22,8]},
+    sleek:  {rx:[54,60],ry:[29,33],hdx:[3,7],  hdy:[4,8],  hr:[25,27],tilt:[-6,8],  tlen:[52,85],tang:[-26,4]},
+    upright:{rx:[40,45],ry:[43,49],hdx:[-6,-2],hdy:[-9,-4],hr:[27,29],tilt:[-14,-4],tlen:[40,66],tang:[6,24]},
+    chunky: {rx:[50,56],ry:[42,47],hdx:[1,5],  hdy:[3,7],  hr:[29,32],tilt:[-6,8],  tlen:[34,58],tang:[-18,8]},
+  }[bodyType];
+  const roll=rng();
+  const beakType=bodyType==='chunky'?(roll<.55?'conical':roll<.7?'hooked':roll<.85?'curved':'needle')
+    :bodyType==='sleek'?(roll<.5?'needle':roll<.7?'curved':roll<.85?'conical':'hooked')
+    :(roll<.3?'conical':roll<.55?'needle':roll<.8?'curved':'hooked');
+  const geom={
+    bodyType,beakType,
+    bodyRx:R(rng,B.rx[0],B.rx[1]),
+    bodyRy:R(rng,B.ry[0],B.ry[1]),
+    headDx:R(rng,B.hdx[0],B.hdx[1]).toFixed(1),
+    headDy:R(rng,B.hdy[0],B.hdy[1]).toFixed(1),
+    headR:R(rng,B.hr[0],B.hr[1]),
+    tilt:R(rng,B.tilt[0],B.tilt[1]).toFixed(1),
+    headTilt:R(rng,-8,10).toFixed(1),
+    tailLen:R(rng,B.tlen[0],B.tlen[1]),
+    tailAng:R(rng,B.tang[0],B.tang[1]),
+    tailTip:R(rng,3,7),
+    beakLen:beakType==='needle'?R(rng,16,24):beakType==='curved'?R(rng,14,20):R(rng,9,13),
+    beakDeep:R(rng,5.5,7.5),
+    beakDrop:R(rng,0,4),
+    capH:R(rng,22,32).toFixed(0),
+  };
+  const song=genSong(rng,beakType);
+  const name=speciesName(rng,colors.accent,beakType);
+  const used=new Set();
+  const swatches=[['back',colors.body],['belly',colors.belly],['wing',colors.wing],['accent',colors.accent]];
+  if(pat.cap||pat.crest)swatches.push(['crown',colors.cap]);
+  const named=swatches.map(([role,col])=>({role,col,pname:paintName(rng,col,used)}));
+  return {seed,lockedHue,colors,pat,geom,song,name,irid,named,uid:++uidCounter};
+}
+
+/* ---------- app state & render ---------- */
+let current=null,hatched=0;
+const aviary=[];
+function render(bird){
+  current=bird;
+  const perch=document.getElementById('perch');
+  perch.classList.remove('hatch');void perch.offsetWidth;
+  perch.innerHTML=birdSVG(bird,bird.uid,true);
+  perch.classList.add('hatch');
+  document.getElementById('birdName').textContent=bird.name;
+  document.getElementById('rareTag').innerHTML=bird.irid?'<span class="rarity">✦ iridescent ✦</span>':'';
+  document.getElementById('swatches').innerHTML=bird.named.map(s=>
+    `<div class="chip"><span class="dot" style="background:${css(s.col)};color:${css(s.col)}"></span>
+     <span class="lbl"><span class="cname">${s.pname}</span><span class="role">${s.role} · ${hex(s.col)}</span></span></div>`).join('');
+}
+function hatch(){
+  const lock=document.getElementById('hueLock').checked;
+  const hue=lock?hexToHue(document.getElementById('huePick').value):null;
+  const bird=makeBird((Math.random()*2**31)|0,hue);
+  hatched++;document.getElementById('hatchCount').textContent=hatched;
+  render(bird);
+}
+function keep(){
+  if(!current)return;
+  if(aviary.some(b=>b.seed===current.seed))return;
+  aviary.push(current);
+  renderRoost();
+}
+function renderRoost(){
+  const roost=document.getElementById('roost');
+  roost.innerHTML=aviary.map((b,i)=>
+    `<div class="mini" data-i="${i}" title="Return her to the perch">
+       ${birdSVG(b,'m'+b.uid,false)}
+       <div class="mname">${b.name}</div>
+       <button class="rm" data-rm="${i}" aria-label="Release ${b.name}">×</button>
+     </div>`).join('');
+  roost.querySelectorAll('.mini').forEach(el=>{
+    el.addEventListener('click',e=>{
+      if(e.target.dataset.rm!==undefined)return;
+      render(aviary[+el.dataset.i]);
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+  roost.querySelectorAll('.rm').forEach(el=>{
+    el.addEventListener('click',e=>{e.stopPropagation();aviary.splice(+el.dataset.rm,1);renderRoost();});
+  });
+}
+document.getElementById('hatchBtn').addEventListener('click',hatch);
+document.getElementById('singBtn').addEventListener('click',()=>current&&playSong(current));
+document.getElementById('keepBtn').addEventListener('click',keep);
+
+/* ---------- ambient sparkles ---------- */
+(function(){
+  for(let i=0;i<34;i++){
+    const s=document.createElement('div');s.className='spark';
+    const sz=2+Math.random()*4;
+    s.style.width=s.style.height=sz+'px';
+    s.style.left=Math.random()*100+'vw';
+    s.style.top=Math.random()*100+'vh';
+    s.style.setProperty('--dur',(3+Math.random()*5)+'s');
+    s.style.setProperty('--del',(Math.random()*6)+'s');
+    document.body.appendChild(s);
+  }
+})();
+
+/* ---------- self-checks (sandbox-safe) ---------- */
+const check=(ok,msg)=>{if(!ok){try{console.warn('check failed: '+msg);}catch(_){/* console shimmed */}}};
+check(MODS.length>10&&TYPES.length>10,'name pools populated');
+(function(){const t=makeBird(12345,null);
+  check(t.named.length>=4,'bird has named swatches');
+  check(t.song.length>=3,'bird has a song');
+  check(['plump','sleek','upright','chunky'].includes(t.geom.bodyType),'body plan assigned');
+  check(['conical','needle','curved','hooked'].includes(t.geom.beakType),'beak form assigned');
+  const t2=makeBird(12345,null);
+  check(t.name===t2.name,'generation is deterministic by seed');
+})();
+
+/* first bird */
+hatch();
+</script>
+</body>
+</html>
