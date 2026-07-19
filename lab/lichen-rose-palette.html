@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lichen–Rose Palette</title>
+<style>
+:root {
+  --paper:#f3eee7; --paper2:#e8dfd5; --ink:#26302e; --muted:#6f7068;
+  --line:rgba(38,48,46,.16); --card:rgba(255,255,255,.58); --shadow:rgba(48,42,36,.10);
+}
+[data-theme="night"] {
+  --paper:#1d2322; --paper2:#28302e; --ink:#ebe5dc; --muted:#bab7ae;
+  --line:rgba(255,255,255,.14); --card:rgba(255,255,255,.055); --shadow:rgba(0,0,0,.30);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+  background:
+    radial-gradient(circle at 12% 18%,rgba(168,168,133,.16),transparent 27rem),
+    radial-gradient(circle at 88% 6%,rgba(228,182,182,.17),transparent 24rem),
+    radial-gradient(circle at 70% 82%,rgba(0,90,95,.10),transparent 30rem),
+    linear-gradient(135deg,var(--paper),var(--paper2));
+  min-height:100vh;
+}
+body:before,body:after{
+  content:"";position:fixed;z-index:-1;opacity:.18;pointer-events:none;
+  width:35rem;height:35rem;border:1px solid var(--ink);border-radius:54% 46% 65% 35%;
+}
+body:before{left:-24rem;top:12rem;transform:rotate(21deg)}
+body:after{right:-26rem;bottom:-8rem;transform:rotate(-18deg)}
+.wrap{max-width:1180px;margin:auto;padding:28px 22px 70px}
+.hero{
+  border:1px solid var(--line); background:var(--card); backdrop-filter:blur(14px);
+  box-shadow:0 20px 60px var(--shadow); border-radius:28px; padding:42px;
+  position:relative;overflow:hidden;
+}
+.hero:after{
+ content:"LICHEN • SHELL • ROSE • DEEP WATER";
+ position:absolute;right:-38px;bottom:28px;transform:rotate(-90deg);
+ letter-spacing:.24em;font:10px/1.2 Arial,sans-serif;color:var(--muted);
+}
+.eyebrow{font:600 11px/1 Arial,sans-serif;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(40px,8vw,86px);line-height:.92;margin:18px 0 18px;font-weight:500;letter-spacing:-.045em}
+.subtitle{max-width:760px;font-size:18px;line-height:1.65;margin:0;color:var(--muted)}
+.quote{margin:28px 0 0;padding-left:20px;border-left:2px solid #A8A885;font-style:italic;font-size:19px}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+button,.filter{
+ border:1px solid var(--line);background:var(--card);color:var(--ink);
+ padding:10px 14px;border-radius:999px;cursor:pointer;font:600 12px/1 Arial,sans-serif;
+ letter-spacing:.03em;transition:.18s ease;
+}
+button:hover,.filter:hover,.filter.active{transform:translateY(-1px);background:var(--ink);color:var(--paper)}
+.section{margin-top:38px}
+.section-head{display:flex;justify-content:space-between;gap:18px;align-items:end;margin-bottom:14px}
+h2{font-weight:500;font-size:29px;margin:0}
+.small{font:12px/1.5 Arial,sans-serif;color:var(--muted)}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}
+.search{
+ width:min(360px,100%);padding:12px 15px;border-radius:999px;border:1px solid var(--line);
+ background:var(--card);color:var(--ink);font:14px Arial,sans-serif;outline:none
+}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:14px}
+.card{
+ min-height:190px;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+ background:var(--card);box-shadow:0 10px 30px var(--shadow);cursor:pointer;transition:.2s ease;
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 16px 40px var(--shadow)}
+.swatch{height:118px;position:relative}
+.swatch:after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.25),transparent 45%,rgba(0,0,0,.08))}
+.meta{padding:14px 15px 16px}
+.name{font-size:18px;margin-bottom:6px}
+.hex{font:600 12px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.05em}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tag{font:10px/1 Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;padding:5px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted)}
+.chord{
+ display:grid;grid-template-columns:repeat(4,1fr);border-radius:26px;overflow:hidden;
+ border:1px solid var(--line);min-height:180px;box-shadow:0 16px 45px var(--shadow)
+}
+.chord-cell{padding:18px;display:flex;align-items:end;min-height:180px}
+.chord-label{padding:8px 10px;border-radius:12px;background:rgba(255,255,255,.74);color:#202522;font:600 11px/1.4 Arial,sans-serif;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.rules{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px}
+.rule{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:20px;line-height:1.55}
+.rule strong{display:block;font-size:18px;margin-bottom:7px}
+.footer{margin-top:42px;padding-top:20px;border-top:1px solid var(--line);font:12px/1.6 Arial,sans-serif;color:var(--muted)}
+.toast{position:fixed;right:18px;bottom:18px;background:var(--ink);color:var(--paper);padding:12px 16px;border-radius:12px;font:12px Arial,sans-serif;opacity:0;transform:translateY(10px);transition:.2s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+@media(max-width:650px){.hero{padding:30px 24px}.hero:after{display:none}.chord{grid-template-columns:1fr 1fr}.chord-cell{min-height:130px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">The Style Codex · Lauren Clark</div>
+    <h1>Lichen–Rose</h1>
+    <p class="subtitle">A bespoke palette of weathered botanicals, shell light, faded petals, old stone, patinated metal, and deep water. Muted does not mean beige. The drama comes from relationship—not volume.</p>
+    <p class="quote">One deep anchor + two softened middle values + one pale or metallic light.</p>
+    <div class="actions">
+      <button id="compose">Compose a chord</button>
+      <button id="theme">Twilight mode</button>
+      <button id="showAll">Show all colors</button>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="eyebrow">Interactive field guide</div><h2>The complete palette</h2></div>
+      <div class="small">Click any swatch to copy its hex code.</div>
+    </div>
+    <input id="search" class="search" placeholder="Search name, family, value, or role">
+    <div id="filters" class="toolbar"></div>
+    <div id="grid" class="grid"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <div><div class="eyebrow">The governing chord</div><h2>Today’s composition</h2></div>
+      <div id="chordText" class="small"></div>
+    </div>
+    <div id="chord" class="chord"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><div><div class="eyebrow">Dressing intelligence</div><h2>Four laws</h2></div></div>
+    <div class="rules">
+      <div class="rule"><strong>Patina over glare</strong>Choose velvet, washed silk, matte crepe, suede, brushed metal, irregular pearl, and softly returning light.</div>
+      <div class="rule"><strong>Depth is structural</strong>Warm Ink, Forest Ink, Deep Petrol, and Aubergine can anchor a long column without becoming harsh.</div>
+      <div class="rule"><strong>The middle must earn entry</strong>A midtone works through kinship, useful chroma, or attachment to a pale or deep pole—not as undifferentiated fog.</div>
+      <div class="rule"><strong>Curve carries the color</strong>Fit the bust, locate the natural waist, skim the hip, and continue the eye downward.</div>
+    </div>
+  </section>
+
+  <div class="footer">Palette values transcribed from the complete Lichen–Rose Color &amp; Style Portrait. Digital hex values are practical references; physical fabric, finish, and lighting change perceived color.</div>
+</div>
+<div id="toast" class="toast">Copied</div>
+
+<script>
+const colors = [{"family": "Neutrals", "name": "Oyster", "hex": "#EDE4DC", "value": "Light", "role": "Near face"}, {"family": "Neutrals", "name": "Shell Stone", "hex": "#DECFC7", "value": "Light", "role": "Near face"}, {"family": "Neutrals", "name": "Parchment", "hex": "#D1C5B4", "value": "Light", "role": "Bridge"}, {"family": "Neutrals", "name": "Oat", "hex": "#BDAE9D", "value": "Mid", "role": "Bridge"}, {"family": "Neutrals", "name": "Mushroom", "hex": "#9F9187", "value": "Mid", "role": "Second skin"}, {"family": "Neutrals", "name": "Root Taupe", "hex": "#797167", "value": "Mid", "role": "Second skin"}, {"family": "Neutrals", "name": "Smoked Umber", "hex": "#5F524A", "value": "Deep", "role": "Anchor"}, {"family": "Neutrals", "name": "Soft Charcoal", "hex": "#363C41", "value": "Deep", "role": "Anchor"}, {"family": "Neutrals", "name": "Warm Ink", "hex": "#21292C", "value": "Deep", "role": "Anchor"}, {"family": "Rose", "name": "Shell Rose", "hex": "#E4B6B6", "value": "Light", "role": "Near face"}, {"family": "Rose", "name": "Peach Veil", "hex": "#E5BBAA", "value": "Light", "role": "Near face"}, {"family": "Rose", "name": "Apricot Sand", "hex": "#D0AD8E", "value": "Mid", "role": "Bridge"}, {"family": "Rose", "name": "Tea Rose", "hex": "#CB8E8E", "value": "Mid", "role": "Near face"}, {"family": "Rose", "name": "Cinnamon Rose", "hex": "#B47367", "value": "Mid", "role": "Accent"}, {"family": "Rose", "name": "Rosewood", "hex": "#965A5C", "value": "Deep", "role": "Near face"}, {"family": "Rose", "name": "Muted Coral", "hex": "#C6876D", "value": "Mid", "role": "Accent"}, {"family": "Rose", "name": "Terracotta Rose", "hex": "#A8664F", "value": "Deep", "role": "Accent"}, {"family": "Water", "name": "Sea Glass", "hex": "#8FC5C9", "value": "Light", "role": "Near face"}, {"family": "Water", "name": "Rain Blue", "hex": "#73AFC0", "value": "Mid", "role": "Near face"}, {"family": "Water", "name": "Weathered Denim", "hex": "#508EA6", "value": "Mid", "role": "Column"}, {"family": "Water", "name": "Slate Teal", "hex": "#207784", "value": "Deep", "role": "Near face"}, {"family": "Water", "name": "Deep Petrol", "hex": "#005A5F", "value": "Deep", "role": "Authority"}, {"family": "Lichen", "name": "Old Gold", "hex": "#B29B6A", "value": "Mid", "role": "Accent"}, {"family": "Lichen", "name": "Lichen", "hex": "#A8A885", "value": "Mid", "role": "Near face"}, {"family": "Lichen", "name": "Sage", "hex": "#7F9174", "value": "Mid", "role": "Near face"}, {"family": "Lichen", "name": "Eucalyptus", "hex": "#587D66", "value": "Deep", "role": "Near face"}, {"family": "Lichen", "name": "Moss", "hex": "#5D6740", "value": "Deep", "role": "Column"}, {"family": "Lichen", "name": "Deep Olive", "hex": "#4E4D29", "value": "Deep", "role": "Anchor"}, {"family": "Lichen", "name": "Smoky Teal", "hex": "#286359", "value": "Deep", "role": "Column"}, {"family": "Violet", "name": "Heather", "hex": "#AB9ABC", "value": "Light", "role": "Accent"}, {"family": "Violet", "name": "Dusty Mauve", "hex": "#A7809C", "value": "Mid", "role": "Near face"}, {"family": "Violet", "name": "Plum Smoke", "hex": "#7B6790", "value": "Mid", "role": "Near face"}, {"family": "Violet", "name": "Damson", "hex": "#6C486E", "value": "Deep", "role": "Accent"}, {"family": "Violet", "name": "Storm Violet", "hex": "#556689", "value": "Deep", "role": "Accent"}, {"family": "Violet", "name": "Aubergine Ink", "hex": "#4C3957", "value": "Deep", "role": "Anchor"}, {"family": "Deep Accents", "name": "Garnet Rose", "hex": "#7D3C45", "value": "Deep", "role": "Accent"}, {"family": "Deep Accents", "name": "Oxidized Bronze", "hex": "#71573E", "value": "Deep", "role": "Accent"}, {"family": "Deep Accents", "name": "Forest Ink", "hex": "#2B432D", "value": "Deep", "role": "Anchor"}, {"family": "Metals", "name": "Champagne Gold", "hex": "#C8B07A", "value": "Metal", "role": "Light"}, {"family": "Metals", "name": "Antique Gold", "hex": "#A88649", "value": "Metal", "role": "Accent"}, {"family": "Metals", "name": "Soft Rose Gold", "hex": "#B98C7E", "value": "Metal", "role": "Accent"}, {"family": "Metals", "name": "Pewter", "hex": "#858887", "value": "Metal", "role": "Light"}, {"family": "Metals", "name": "Brushed Silver", "hex": "#B8BABC", "value": "Metal", "role": "Light"}, {"family": "Metals", "name": "Oxidized Bronze", "hex": "#796149", "value": "Metal", "role": "Accent"}];
+const grid = document.getElementById('grid');
+const filters = document.getElementById('filters');
+const search = document.getElementById('search');
+const toast = document.getElementById('toast');
+let active = 'All';
+
+const families = ['All', ...new Set(colors.map(c=>c.family))];
+families.forEach(f=>{
+  const b=document.createElement('button'); b.className='filter'+(f==='All'?' active':''); b.textContent=f;
+  b.onclick=()=>{active=f;document.querySelectorAll('.filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');render();};
+  filters.appendChild(b);
+});
+
+function textColor(hex){
+  const n=parseInt(hex.slice(1),16), r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  return (0.299*r+0.587*g+0.114*b)>155?'#202522':'#fffaf3';
+}
+function notify(msg){toast.textContent=msg;toast.classList.add('show');setTimeout(()=>toast.classList.remove('show'),1100)}
+function render(){
+  const q=search.value.trim().toLowerCase();
+  const shown=colors.filter(c=>(active==='All'||c.family===active)&&(!q||Object.values(c).join(' ').toLowerCase().includes(q)));
+  grid.innerHTML='';
+  shown.forEach(c=>{
+    const card=document.createElement('article');card.className='card';
+    card.innerHTML=`<div class="swatch" style="background:${c.hex}"></div>
+      <div class="meta"><div class="name">${c.name}</div><div class="hex">${c.hex}</div>
+      <div class="tags"><span class="tag">${c.family}</span><span class="tag">${c.value}</span><span class="tag">${c.role}</span></div></div>`;
+    card.onclick=async()=>{try{await navigator.clipboard.writeText(c.hex);notify(`${c.name} · ${c.hex} copied`)}catch(e){notify(`${c.name} · ${c.hex}`)}};
+    grid.appendChild(card);
+  });
+}
+search.addEventListener('input',render);
+document.getElementById('showAll').onclick=()=>{active='All';search.value='';document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x.textContent==='All'));render();};
+
+const pale=colors.filter(c=>c.value==='Light');
+const mid=colors.filter(c=>c.value==='Mid');
+const deep=colors.filter(c=>c.value==='Deep');
+const metal=colors.filter(c=>c.value==='Metal');
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+function compose(){
+  const set=[pick(deep),pick(mid),pick(mid),pick(Math.random()>.45?metal:pale)];
+  document.getElementById('chord').innerHTML=set.map(c=>`<div class="chord-cell" style="background:${c.hex}"><div class="chord-label">${c.name}<br>${c.hex}</div></div>`).join('');
+  document.getElementById('chordText').textContent=set.map(c=>c.name).join(' · ');
+}
+document.getElementById('compose').onclick=compose;
+document.getElementById('theme').onclick=()=>{
+  const night=document.documentElement.getAttribute('data-theme')==='night';
+  document.documentElement.setAttribute('data-theme',night?'day':'night');
+  document.getElementById('theme').textContent=night?'Twilight mode':'Paper mode';
+};
+render();compose();
+</script>
+</body>
+</html>
