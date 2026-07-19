@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Vermeer Summer — Lauren's Measured Color Identity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Karla:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#10191B; --panel:#182629; --panel2:#1D2E31; --line:#2C4145;
+  --pearl:#F3E8E0; --pearl-dim:#C9BCB2; --faint:#8FA0A0;
+  --celadon:#879EA4; --slate:#4E6F7D; --rose:#CFA895; --lip:#9B6260;
+  --ochre:#9C8969; --sage:#7F775E; --silver:#848077;
+  --glowc:135,158,164; --glowr:207,168,149;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:
+    radial-gradient(1100px 600px at 78% -8%, rgba(135,158,164,.10), transparent 60%),
+    radial-gradient(900px 700px at 8% 108%, rgba(207,168,149,.07), transparent 55%),
+    var(--ink);
+  color:var(--pearl); font-family:'Karla',system-ui,sans-serif;
+  font-weight:300; line-height:1.65; overflow-x:hidden;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:0 28px}
+::selection{background:rgba(135,158,164,.35)}
+
+/* ---------- hero ---------- */
+header{position:relative;padding:88px 0 60px;text-align:center}
+.eyebrow{
+  font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;color:var(--celadon);
+  margin-bottom:22px;font-weight:500;
+}
+h1{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+  font-size:clamp(2.6rem,6.5vw,4.4rem);line-height:1.05;letter-spacing:.01em;
+}
+h1 em{font-style:italic;color:var(--rose)}
+.subtitle{
+  font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;
+  font-size:clamp(1.15rem,2.5vw,1.5rem);color:var(--pearl-dim);margin-top:14px;
+}
+.verdict-line{margin-top:26px;font-size:.95rem;color:var(--faint);max-width:640px;margin-left:auto;margin-right:auto}
+.verdict-line b{color:var(--pearl);font-weight:500}
+
+/* the pearl */
+.pearl-stage{position:relative;width:300px;height:300px;margin:46px auto 8px}
+.pearl{
+  position:absolute;inset:90px;border-radius:50%;
+  background:radial-gradient(circle at 36% 30%, #FCF3EC 0%, #EECFC0 38%, #B7A296 72%, #6E6159 100%);
+  box-shadow:0 0 46px 8px rgba(238,207,192,.28), 0 0 120px 30px rgba(135,158,164,.14);
+  animation:pearlPulse 6.5s ease-in-out infinite;
+}
+@keyframes pearlPulse{
+  0%,100%{box-shadow:0 0 40px 6px rgba(238,207,192,.24),0 0 110px 26px rgba(135,158,164,.12);transform:scale(1)}
+  50%{box-shadow:0 0 64px 14px rgba(238,207,192,.42),0 0 150px 44px rgba(135,158,164,.22);transform:scale(1.035)}
+}
+.orbit{position:absolute;inset:0;animation:spin 46s linear infinite}
+.orbit.o2{inset:26px;animation-duration:64s;animation-direction:reverse}
+@keyframes spin{to{transform:rotate(360deg)}}
+.dot{
+  position:absolute;width:15px;height:15px;border-radius:50%;
+  box-shadow:0 0 12px 2px rgba(255,255,255,.14), 0 0 10px 1px currentColor;
+}
+.mote{
+  position:fixed;width:3px;height:3px;border-radius:50%;pointer-events:none;z-index:0;
+  background:rgba(243,232,224,.7);opacity:0;
+  animation:drift 11s linear infinite;
+}
+@keyframes drift{
+  0%{transform:translateY(16px) scale(.6);opacity:0}
+  12%{opacity:.7}
+  85%{opacity:.35}
+  100%{transform:translateY(-120px) scale(1.05);opacity:0}
+}
+
+/* ---------- sections ---------- */
+section{position:relative;z-index:1;padding:58px 0}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+.sec-kicker{font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--celadon);font-weight:500;white-space:nowrap}
+.sec-rule{flex:1;height:1px;background:linear-gradient(90deg,var(--line),transparent)}
+h2{
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:500;
+  font-size:clamp(1.7rem,3.6vw,2.4rem);margin-bottom:14px;
+}
+.lede{color:var(--pearl-dim);max-width:720px;font-size:1.02rem}
+.lede b{color:var(--pearl);font-weight:500}
+
+/* verdict table */
+.rank{margin-top:30px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--panel)}
+.rank-row{
+  display:grid;grid-template-columns:44px 1fr auto auto;gap:12px;align-items:center;
+  padding:13px 20px;border-bottom:1px solid rgba(44,65,69,.6);font-size:.93rem;
+}
+.rank-row:last-child{border-bottom:none}
+.rank-row.win{
+  background:linear-gradient(90deg, rgba(135,158,164,.14), rgba(207,168,149,.07));
+  position:relative;overflow:hidden;
+}
+.rank-row.win::after{
+  content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(105deg,transparent,rgba(243,232,224,.09),transparent);
+  animation:sweep 4.6s ease-in-out infinite;
+}
+@keyframes sweep{0%{left:-60%}55%,100%{left:130%}}
+.rank-n{font-family:'Cormorant Garamond',serif;font-size:1.25rem;color:var(--faint)}
+.win .rank-n{color:var(--rose)}
+.rank-t{font-weight:400}
+.win .rank-t{font-weight:500}
+.rank-s{font-size:.8rem;color:var(--faint);font-variant-numeric:tabular-nums}
+.win .rank-s{color:var(--pearl-dim)}
+.chips{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.chip{
+  display:flex;align-items:center;gap:8px;padding:7px 13px;border:1px solid var(--line);
+  border-radius:999px;font-size:.8rem;color:var(--pearl-dim);background:var(--panel);
+}
+.chip i{width:11px;height:11px;border-radius:50%;display:inline-block;flex:none;box-shadow:0 0 8px 1px currentColor}
+.chip b{color:var(--pearl);font-weight:500}
+
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:30px}
+.stat{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px 20px;
+  transition:border-color .3s, box-shadow .3s;
+}
+.stat:hover{border-color:var(--celadon);box-shadow:0 0 24px rgba(var(--glowc),.15)}
+.stat .v{font-family:'Cormorant Garamond',serif;font-size:2.1rem;color:var(--pearl);line-height:1.1}
+.stat .l{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--celadon);margin-top:8px;font-weight:500}
+.stat .d{font-size:.85rem;color:var(--faint);margin-top:8px}
+
+/* swatches */
+.group{margin-top:44px}
+.group h3{
+  font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.45rem;margin-bottom:4px;
+  position:relative;display:inline-block;overflow:hidden;padding-right:6px;
+}
+.group h3::after{
+  content:"";position:absolute;top:0;left:-70%;width:45%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(243,232,224,.10),transparent);
+  animation:sweep 6.5s ease-in-out infinite;
+}
+.group .gnote{font-size:.86rem;color:var(--faint);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
+.sw{
+  border-radius:13px;border:1px solid var(--line);overflow:hidden;background:var(--panel2);
+  transition:transform .28s, box-shadow .28s, border-color .28s;position:relative;
+}
+.sw:hover{transform:translateY(-4px);border-color:rgba(243,232,224,.35);box-shadow:0 10px 30px rgba(0,0,0,.45), 0 0 22px var(--g,rgba(255,255,255,.12))}
+.sw .c{height:86px;position:relative}
+.sw.meas .c::after{
+  content:"● measured";position:absolute;top:8px;right:9px;font-size:.6rem;letter-spacing:.09em;
+  padding:3px 8px;border-radius:999px;background:rgba(16,25,27,.66);color:var(--pearl);
+  animation:badgeGlow 3.8s ease-in-out infinite;
+}
+@keyframes badgeGlow{0%,100%{box-shadow:0 0 4px rgba(243,232,224,.25)}50%{box-shadow:0 0 12px rgba(243,232,224,.6)}}
+.sw .m{padding:11px 13px}
+.sw .n{font-size:.9rem;font-weight:500;color:var(--pearl)}
+.sw .hx{font-size:.74rem;color:var(--celadon);letter-spacing:.06em;margin-top:2px}
+.sw .lch{font-size:.68rem;color:var(--faint);margin-top:1px;font-variant-numeric:tabular-nums}
+.sw .r{font-size:.72rem;color:var(--pearl-dim);margin-top:6px;font-style:italic}
+
+/* tester */
+.tester{
+  margin-top:34px;background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  padding:26px;display:flex;flex-wrap:wrap;gap:24px;align-items:center;
+}
+.tester input[type=color]{
+  appearance:none;-webkit-appearance:none;width:76px;height:76px;border:none;border-radius:50%;
+  background:none;cursor:pointer;padding:0;
+  box-shadow:0 0 0 2px var(--line), 0 0 20px rgba(var(--glowc),.2);
+  animation:pearlPulse 6s ease-in-out infinite;
+}
+.tester input[type=color]::-webkit-color-swatch-wrapper{padding:0}
+.tester input[type=color]::-webkit-color-swatch{border:none;border-radius:50%}
+.tester .out{flex:1;min-width:240px}
+.tester .out .headline{font-family:'Cormorant Garamond',serif;font-size:1.3rem}
+.tester .out .detail{font-size:.88rem;color:var(--faint);margin-top:5px}
+.tester .near{display:flex;align-items:center;gap:9px;margin-top:10px;font-size:.85rem}
+.tester .near i{width:20px;height:20px;border-radius:6px;display:inline-block;border:1px solid rgba(255,255,255,.18)}
+
+/* metals + makeup */
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:28px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px}
+.card h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.4rem;margin-bottom:10px}
+.card p{font-size:.93rem;color:var(--pearl-dim);margin-bottom:12px}
+.card p b{color:var(--pearl);font-weight:500}
+.minis{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.mini{width:34px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.14);position:relative;transition:transform .2s}
+.mini:hover{transform:scale(1.14)}
+.mini::after{
+  content:attr(data-n);position:absolute;bottom:-26px;left:50%;transform:translateX(-50%);
+  font-size:.62rem;color:var(--faint);white-space:nowrap;opacity:0;transition:opacity .2s;
+}
+.mini:hover::after{opacity:1}
+
+/* archetype */
+.essence{
+  margin-top:30px;border-left:2px solid var(--rose);padding:6px 0 6px 26px;max-width:760px;
+}
+.essence p{font-family:'Cormorant Garamond',serif;font-size:1.28rem;line-height:1.6;color:var(--pearl)}
+.essence p + p{margin-top:14px}
+.essence em{color:var(--rose)}
+.rules{margin-top:26px;max-width:760px;color:var(--pearl-dim);font-size:.96rem}
+.rules b{color:var(--pearl);font-weight:500}
+
+/* line & silhouette */
+.ledger{margin-top:34px;display:grid;gap:20px;max-width:780px}
+.led{display:grid;grid-template-columns:104px 1fr 48px;gap:14px;align-items:center}
+.led .nm{font-family:'Cormorant Garamond',serif;font-size:1.08rem;color:var(--pearl)}
+.led .bar{height:10px;border-radius:999px;background:rgba(255,255,255,.055);overflow:hidden}
+.led .fill{height:100%;border-radius:999px;width:0;animation:barGrow 1.7s cubic-bezier(.2,.7,.2,1) forwards;box-shadow:0 0 14px 1px currentColor}
+@keyframes barGrow{to{width:var(--w)}}
+.led .pc{font-variant-numeric:tabular-nums;color:var(--pearl-dim);font-size:.9rem;text-align:right}
+.led .ev{grid-column:1/-1;font-size:.8rem;color:var(--faint);margin-top:-8px;line-height:1.5}
+.line-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px;margin-top:18px}
+.line-card h3{font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.4rem;margin-bottom:10px}
+.line-card p{font-size:.94rem;color:var(--pearl-dim);margin-bottom:11px}
+.line-card p:last-child{margin-bottom:0}
+.line-card p b{color:var(--pearl);font-weight:500}
+.audit{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:26px}
+.audit .card h3 em{font-style:italic;color:var(--rose)}
+.flagrow{display:flex;align-items:center;gap:10px;font-size:.84rem;color:var(--pearl-dim);padding:6px 0;border-bottom:1px solid rgba(44,65,69,.5)}
+.flagrow:last-child{border-bottom:none}
+.flagrow i{width:22px;height:22px;border-radius:7px;flex:none;border:1px solid rgba(255,255,255,.15);box-shadow:0 0 8px rgba(255,255,255,.06)}
+.flagrow b{color:var(--pearl);font-weight:500}
+.flagrow .cv{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--rose);white-space:nowrap}
+.methodnote{font-size:.8rem;color:var(--faint);font-style:italic;margin-top:16px;max-width:760px}
+
+footer{padding:50px 0 70px;text-align:center;color:var(--faint);font-size:.78rem;letter-spacing:.06em}
+footer .sig{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:var(--pearl-dim);margin-top:8px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
+@media (max-width:560px){
+  .rank-row{grid-template-columns:34px 1fr;grid-auto-flow:row}
+  .rank-s{grid-column:2}
+}
+</style>
+</head>
+<body>
+
+<header class="wrap">
+  <div class="eyebrow">Pixel-derived color identity · 25 sampled regions · ~1.3M pixels clustered in CIELAB</div>
+  <h1>The <em>Vermeer</em> Summer</h1>
+  <div class="subtitle">Delft Twilight — a bespoke Caygill-type essence for Lauren Clark</div>
+
+  <div class="pearl-stage" aria-hidden="true">
+    <div class="orbit">
+      <span class="dot" style="background:#3C3830;color:#3C3830;top:0;left:50%"></span>
+      <span class="dot" style="background:#848077;color:#848077;top:50%;left:0"></span>
+      <span class="dot" style="background:#CFA895;color:#CFA895;top:50%;right:0"></span>
+      <span class="dot" style="background:#9B6260;color:#9B6260;bottom:0;left:50%"></span>
+    </div>
+    <div class="orbit o2">
+      <span class="dot" style="background:#879EA4;color:#879EA4;top:0;left:50%"></span>
+      <span class="dot" style="background:#7F775E;color:#7F775E;top:50%;right:0"></span>
+      <span class="dot" style="background:#C2BBA3;color:#C2BBA3;bottom:0;left:50%"></span>
+      <span class="dot" style="background:#EECFC0;color:#EECFC0;top:50%;left:0"></span>
+    </div>
+    <div class="pearl"></div>
+  </div>
+
+  <p class="verdict-line">Tested against eleven canvases by weighted ΔE2000. <b>Girl with a Pearl Earring</b> won on both metrics: every one of your measured features exists inside it, and more of its canvas is made of your tones than any other painting tested.</p>
+</header>
+
+<section class="wrap" id="verdict">
+  <div class="sec-head"><span class="sec-kicker">01 · The Painting Test</span><span class="sec-rule"></span></div>
+  <h2>Where your pixels are most at home</h2>
+  <p class="lede">Each candidate was clustered to its ten dominant Lab colors. <b>Containment</b> is the weighted mean ΔE2000 from your ten anchor colors to their nearest match in the canvas — can the painting hold you. <b>Coverage</b> is the share-weighted distance from every region of the canvas back to your anchors — is the painting made of you. Lower is closer. Vermeer ranked first and second respectively; no other work placed top-three on both.</p>
+
+  <div class="rank">
+    <div class="rank-row win"><span class="rank-n">1</span><span class="rank-t">Vermeer — Girl with a Pearl Earring</span><span class="rank-s">containment 9.54</span><span class="rank-s">coverage 7.46</span></div>
+    <div class="rank-row"><span class="rank-n">2</span><span class="rank-t">Botticelli — The Birth of Venus</span><span class="rank-s">9.70</span><span class="rank-s">7.93</span></div>
+    <div class="rank-row"><span class="rank-n">3</span><span class="rank-t">Zorn — Midsummer Dance</span><span class="rank-s">11.09</span><span class="rank-s">7.26</span></div>
+    <div class="rank-row"><span class="rank-n">4</span><span class="rank-t">Sargent — Lady Agnew of Lochnaw</span><span class="rank-s">10.31</span><span class="rank-s">9.11</span></div>
+    <div class="rank-row"><span class="rank-n">5</span><span class="rank-t">Winterhalter — Empress Elisabeth</span><span class="rank-s">12.30</span><span class="rank-s">8.11</span></div>
+    <div class="rank-row"><span class="rank-n">11</span><span class="rank-t">Krøyer — Summer Evening on Skagen Beach</span><span class="rank-s">15.68</span><span class="rank-s">10.98</span></div>
+  </div>
+
+  <div class="chips">
+    <span class="chip"><i style="background:#879EA4;color:#879EA4"></i>celadon iris → the turban, <b>ΔE 4.6</b></span>
+    <span class="chip"><i style="background:#392F26;color:#392F26"></i>brow → the dark ground, <b>ΔE 5.8</b></span>
+    <span class="chip"><i style="background:#3C3830;color:#3C3830"></i>root ash → the ground, <b>ΔE 6.0</b></span>
+    <span class="chip"><i style="background:#EECFC0;color:#EECFC0"></i>lit skin → her lit cheek, <b>ΔE 6.5</b></span>
+    <span class="chip"><i style="background:#8E866F;color:#8E866F"></i>blonde → the ochre jacket, <b>ΔE 7.0</b></span>
+    <span class="chip"><i style="background:#CFA895;color:#CFA895"></i>flush → the warm half-light, <b>ΔE 8.1</b></span>
+  </div>
+</section>
+
+<section class="wrap" id="numbers">
+  <div class="sec-head"><span class="sec-kicker">02 · The Measurements</span><span class="sec-rule"></span></div>
+  <h2>What the pixels say</h2>
+  <p class="lede">Twenty-five regions across six photos, grid-verified, masked for specular highlights, shadow, sclera and scalp, then k-means clustered in CIELAB. These four numbers are the spine of everything below.</p>
+  <div class="stats">
+    <div class="stat"><div class="v">53.6°</div><div class="l">Skin hue angle — neutral</div><div class="d">Every skin patch landed h 50–56°, the exact midline between rose and gold. You are not warm or cool. You are the fulcrum.</div></div>
+    <div class="stat"><div class="v">71.8°</div><div class="l">ITA — very light</div><div class="d">Lit-skin Individual Typology Angle. Ambient reading 54.2°. Category: light to very light, with real luminosity.</div></div>
+    <div class="stat"><div class="v">C 5–25</div><div class="l">Chroma ceiling — muted</div><div class="d">Hair C 5.3, silver C 5.1, iris C 9–15, flush C 19, lips C 25. Nothing on you is loud. Softness is structural, not styled.</div></div>
+    <div class="stat"><div class="v">ΔL 61.8</div><div class="l">Value contrast — high</div><div class="d">Lit skin L 85.4 against natural root L 23.6. A Winter's contrast inside a Summer's chroma — the rare combination.</div></div>
+  </div>
+  <div class="chips" style="margin-top:26px">
+    <span class="chip"><i style="background:#848077;color:#848077"></i>silver strands: <b>14.8%</b> of root pixels — pewter, C 5.1</span>
+    <span class="chip"><i style="background:#7F775E;color:#7F775E"></i>iris sage-olive: h 96–100°</span>
+    <span class="chip"><i style="background:#879EA4;color:#879EA4"></i>iris celadon: h 220° — your eyes live on both flanks of green</span>
+    <span class="chip"><i style="background:#CFA895;color:#CFA895"></i>flush h 52.8° = skin h 53.6° — you blush <b>in your own hue</b></span>
+  </div>
+</section>
+
+<section class="wrap" id="palette">
+  <div class="sec-head"><span class="sec-kicker">03 · The Bespoke Palette</span><span class="sec-rule"></span></div>
+  <h2>Twenty-seven colors, ten of them literally yours</h2>
+  <p class="lede">Every derived swatch is a rotation of a measured anchor in LCh — analogues at ±30°, complements at 180°, value anchors along your own axis — with chroma held under your measured ceiling. The complements of your skin, flush, and hair all converge on the same place: <b>slate blue</b>. Which is the turban. The math found the painting before the painting test did.</p>
+  <div id="groups"></div>
+
+  <div class="tester">
+    <input type="color" id="probe" value="#4E6F7D" aria-label="Pick a color to test against the palette">
+    <div class="out">
+      <div class="headline" id="t-head">Hold any color against the palette</div>
+      <div class="detail" id="t-detail">Pick a shade — fabric, paint, lipstick — and it will be measured against all 27 swatches in Lab space.</div>
+      <div class="near" id="t-near" style="display:none"><i id="t-swatch"></i><span id="t-name"></span></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="metals">
+  <div class="sec-head"><span class="sec-kicker">04 · Metals & Makeup</span><span class="sec-rule"></span></div>
+  <h2>Grounded in the same numbers</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Metals</h3>
+      <p><b>Primary: silver, pewter, platinum, brushed white gold.</b> Your natural hair is a near-achromatic ash (C 5.3) silvering into pewter (C 5.1) — polished silver is not an accessory choice for you, it is a repeat of a measured feature. Satin and brushed finishes over mirror-bright, honoring the muted ceiling.</p>
+      <p><b>Bridge: champagne and greige gold.</b> Your blonde measures h 92°, C 13 — a low-yellow ash-gold. A muted champagne gold echoes it. Antiqued or matte yellow gold works as the Vermeer-ochre accent.</p>
+      <p><b>Limit: bright polished yellow gold and high-shine copper.</b> Their chroma sits far above your C 25 ceiling; they shout where you speak.</p>
+      <div class="minis">
+        <span class="mini" data-n="Silver" style="background:linear-gradient(135deg,#D8D8D6,#9A9C9B)"></span>
+        <span class="mini" data-n="Pewter" style="background:linear-gradient(135deg,#A8A6A0,#77756E)"></span>
+        <span class="mini" data-n="White gold" style="background:linear-gradient(135deg,#E9E5DC,#B9B4A8)"></span>
+        <span class="mini" data-n="Champagne" style="background:linear-gradient(135deg,#DCCCAE,#A8977B)"></span>
+        <span class="mini" data-n="Antique ochre" style="background:linear-gradient(135deg,#B49E77,#8A7454)"></span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Makeup</h3>
+      <p><b>Blush:</b> your measured flush is #CFA895 — a neutral rose at your skin's own hue. Cream blush in soft neutral rose or rose-tan. Blue-pink and orange-coral both fight a measured fact.</p>
+      <p><b>Lips:</b> natural lip is #9B6260, a muted brick-rose-mauve — your MLBB is literal. Day: dusty rose, rose-brown. Evening: berry-plum around L 34. Skip clear orange-reds and fuchsias; they breach the chroma ceiling.</p>
+      <p><b>Eyes:</b> two levers, both measured. Plum and orchid tones (green's complement) turn the sage flank on; spruce, slate, and celadon liner turn the Delft flank on. Taupe #4D443A is your no-makeup shadow — it is your iris shadow-tone. Brows in cool taupe, never warm auburn.</p>
+      <p><b>Skin finish:</b> satin-to-dewy, sheer. Your L 85 luminosity is the asset; a flat matte erases the pearl.</p>
+      <div class="minis">
+        <span class="mini" data-n="Flush #CFA895" style="background:#CFA895"></span>
+        <span class="mini" data-n="Lip #9B6260" style="background:#9B6260"></span>
+        <span class="mini" data-n="Berry plum" style="background:#69474E"></span>
+        <span class="mini" data-n="Orchid" style="background:#9E8493"></span>
+        <span class="mini" data-n="Slate liner" style="background:#4E6F7D"></span>
+        <span class="mini" data-n="Taupe" style="background:#4D443A"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap" id="line">
+  <div class="sec-head"><span class="sec-kicker">05 · Line &amp; Silhouette</span><span class="sec-rule"></span></div>
+  <h2>The style analysis — measured where it can be</h2>
+  <p class="lede">Facial geometry was measured with a 478-point landmark model on three photos and replicated; every ratio below is scale-invariant, so lens distance doesn't bias it. Full-length photographs arrived and closed the loop: the torso ratios below were read from segmentation contours over labeled grids — hand-verified the same way every color region was — across three fitted looks, with the sleeved look used for vertical only. <b>The silhouette guidance is now measured end to end.</b></p>
+
+  <div class="stats">
+    <div class="stat"><div class="v">1.36</div><div class="l">Facial index — long oval</div><div class="d">Face length over cheekbone width, mean of three photos. Real vertical in the face; length-echoing lines will always read native.</div></div>
+    <div class="stat"><div class="v">0.79</div><div class="l">Jaw taper — clean V</div><div class="d">Jaw width is 79% of cheekbone width: a genuinely tapered lower face, nothing blunt or square anywhere in the mandible data.</div></div>
+    <div class="stat"><div class="v">155°</div><div class="l">Jawline bend — curved</div><div class="d">The mandible line bends at 155° — a continuous soft curve, not an angle. Chin apex 97.5°: softly pointed, yin taper.</div></div>
+    <div class="stat"><div class="v">0.50</div><div class="l">Lip fullness — full</div><div class="d">Lip height is half the mouth's width (typical is 0.30–0.40), lower lip 2.0× the upper. The strongest single Romantic datapoint on the face.</div></div>
+    <div class="stat"><div class="v">0.247</div><div class="l">Eye scale — large &amp; open</div><div class="d">Each eye spans 24.7% of face width with a 0.39 openness ratio — large, rounded-almond, light-catching. Feature scale runs moderate-large, not delicate.</div></div>
+    <div class="stat"><div class="v">1.15</div><div class="l">Eye set — wide</div><div class="d">Intercanthal distance is 1.15 eye-widths (classic canon is 1.0). Wide-set and luminous — the measurable seat of the Ethereal current.</div></div>
+  </div>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.5rem;margin-top:44px">The silhouette, measured</h3>
+  <div class="stats" style="margin-top:18px">
+    <div class="stat"><div class="v">0.68</div><div class="l">Waist over hip — hourglass</div><div class="d">Median across three fitted looks, as dressed. The waist is genuinely, measurably indented — the hinge of the silhouette is real, not styled in.</div></div>
+    <div class="stat"><div class="v">32%</div><div class="l">Waist indentation</div><div class="d">The waist sits roughly a third narrower than the widest point of the silhouette. Any garment that skips the waist forfeits a third of the composition.</div></div>
+    <div class="stat"><div class="v">0.91</div><div class="l">Shoulder over hip — refined</div><div class="d">Natural shoulder line from the unpadded look: slightly narrower than the hip line, softly sloped. Bust and hip read balanced — a true X, weighted a breath low.</div></div>
+    <div class="stat"><div class="v">0.47</div><div class="l">Leg over height — moderate</div><div class="d">Hip-to-ankle over full height, landmark-based, three photos. The vertical is moderate — and every photographed look manufactures more of it with a high waist. Correctly.</div></div>
+  </div>
+
+  <h3 style="font-family:'Cormorant Garamond',serif;font-weight:500;font-size:1.5rem;margin-top:44px">The essence ledger</h3>
+  <p class="lede" style="margin-top:6px">Weights are interpretive — essences can't be extracted from pixels and I won't pretend otherwise — but every weight below cites its measurement.</p>
+  <div class="ledger">
+    <div class="led"><span class="nm">Romantic</span><span class="bar"><span class="fill" style="--w:40%;background:linear-gradient(90deg,#CFA895,#9B6260);color:#CFA895"></span></span><span class="pc">40%</span>
+      <span class="ev">Lip fullness 0.50 · jawline 155° curve · chin 97.5° soft taper · eye aspect 0.39 · flesh softness over the zygomatic. Curve is the governing line of the face — and now of the record below it: waist/hip 0.68, indentation 32%. Cut must follow the body's curve — wrap, cowl, corset seam, bias, drape.</span></div>
+    <div class="led"><span class="nm">Dramatic</span><span class="bar"><span class="fill" style="--w:25%;background:linear-gradient(90deg,#4E6F7D,#1A2D2E);color:#4E6F7D"></span></span><span class="pc">25%</span>
+      <span class="ev">Facial index 1.36 · jaw taper 0.79 V-line · brow arch 0.47 · and above all ΔL 61.8 — chiaroscuro-grade value contrast is itself a dramatic instrument. Long vertical lines, decisive necklines, light-against-dark composition. Leg-to-height measures 0.47 — the vertical is moderate; contrast, not limb length, is the dramatic engine, and high-rise styling supplies the rest.</span></div>
+    <div class="led"><span class="nm">Classic</span><span class="bar"><span class="fill" style="--w:16%;background:linear-gradient(90deg,#848077,#B8B4AA);color:#A8A49A"></span></span><span class="pc">16%</span>
+      <span class="ev">Nose-to-intercanthal ratio 0.97 (canon is 1.0) · mid and lower thirds balanced 35/35 · disciplined brow. The face carries real symmetry; finish and proportion should stay exact, never sloppy.</span></div>
+    <div class="led"><span class="nm">Ethereal</span><span class="bar"><span class="fill" style="--w:15%;background:linear-gradient(90deg,#879EA4,#A5B9C4);color:#879EA4"></span></span><span class="pc">15%</span>
+      <span class="ev">Wide-set eyes 1.15 · celadon iris h 220° · skin L 85.4 luminosity · pewter silvering. This is the current that earns translucent layers, pearl surfaces, and silver light.</span></div>
+    <div class="led"><span class="nm">Natural</span><span class="bar"><span class="fill" style="--w:4%;background:linear-gradient(90deg,#7F775E,#8E866F);color:#7F775E"></span></span><span class="pc">4%</span>
+      <span class="ev">Almost structurally absent — no bluntness or width measured anywhere. Hair wave and matte texture supply the only ease. Relaxed shapes borrow against the line; texture, not cut, is where "undone" belongs.</span></div>
+  </div>
+
+  <div class="line-card">
+    <h3>The line</h3>
+    <p><b>Curve leads the cut; vertical carries it; contrast lights it.</b> The face is a soft-tapered long oval with full features — clothing lines that echo it are curved and continuous: wrap and surplice closings, cowls, bias flow, princess and corset seaming, draped rather than pressed-flat surfaces. Sharp minimalist geometry and stiff boxes argue with a 155° jawline. And the torso now agrees on record — bust and hip balanced, waist a third narrower: <b>fit the bust, hinge at the waist, skim the hip.</b> That architecture is measured, not assumed.</p>
+    <p><b>Necklines,</b> from the geometry: open, curved, and descending. V and deep V repeat the jaw's taper and extend the facial vertical; sweetheart and scoop repeat the lip and eye curves; cowl adds the Ethereal drape; a soft square frames the collarbone the photos show. High, tight crews compress the full lower third — wear them only fitted, with a strong vertical below. Halter and off-shoulder suit the narrow, softly sloped shoulder line that is visible in the photos.</p>
+    <p><b>The contrast rule is where I break from convention for a muted palette:</b> your value range is 62 L* — dress it. One light and one deep in the same outfit is your signature chord: pearl against ink spruce, celadon against aubergine shadow, flax against delft slate. Head-to-toe mid-values — the standard "soft season" tonal column — greys you out; your own face never presents as mid-on-mid. If you wear monochrome, weight it deep or light, and let texture make the middle.</p>
+    <p><b>Scale:</b> features measure moderate-large, so detail should too — elongated earrings with real presence, substantial buttons, one sculptural cuff. Tiny scattered details read as noise against a 24.7%-of-face eye. Elongate everything: drops over studs, Y-lines over chokers, long slits over hem interest.</p>
+  </div>
+
+  <div class="line-card">
+    <h3>Fabric, finish, pattern</h3>
+    <p><b>Surface law, derived from L 85.4 + C ≤ 25:</b> fabrics should absorb light and return it softly — velvet, matte crepe, brushed wool, washed silk, suede, fine rib, satin-back worn matte-side out. Hard shine raises effective chroma past your ceiling; flat dead-matte erases the pearl. The finish target is exactly your skin's own behavior: luminous, never glossy.</p>
+    <p><b>Pattern is where the measured contrast changes the standard advice.</b> You don't need low-contrast prints — you need low-<b>chroma</b> prints that can carry high <b>value</b> contrast: ink botanicals on pearl ground, charcoal toile, delft-blue chinoiserie on shell, smoke-and-cream marbling. That is a Vermeer surface — dark drawing on luminous ground — and it is yours in a way that soft tone-on-tone florals only half are. Keep motifs elongated or diagonal, medium-to-large, matching feature scale.</p>
+    <p><b>True black:</b> permitted in a way "medium contrast" verdicts would deny you — your own root is L 23.6 and your brow L 20.1, so a deep field near the face has an anchor to answer to. Choose ink, spruce-black, or blue-black in matte textures over warm jet with shine.</p>
+  </div>
+
+  <div class="line-card">
+    <h3>Jewelry, hair, eyewear</h3>
+    <p><b>Jewelry:</b> silver, pewter, and brushed white gold as the primary metals — your hair measures C 5.1, which is to say your hair <i>is</i> pewter; jewelry in it is literal self-quotation. Forms: elongated drops, tapered hoops, irregular baroque pearls (the earring, obviously), hammered and antiqued surfaces, one sculptural piece rather than a committee. Champagne gold as the warm bridge only.</p>
+    <p><b>Hair:</b> the measured silver (14.8% of root pixels, C 5.1) and near-achromatic root (C 5.3) mean ash is the native axis. If lightening: beige-ash, mushroom, pearl ribbons — fine and diffused, never hard gold stripes; your current blonde sits at h 92° and any warmer fights the skin's h 53.6 neutrality. Shape: the long oval face carries length and volume; keep a soft center or slightly-off part, face-framing layers that curve (echoing the jaw), crown lift over jaw-width. As the pewter grows in, the palette data says it will harmonize <i>better</i>, not worse.</p>
+    <p><b>Eyewear,</b> from the eye-set measurement: wide-set eyes (1.15) want visual weight at the outer edges — a subtle cat-eye lift or elongated oval with an upswept outer corner, thin and low-key at the bridge (a heavy bridge exaggerates the set). The 0.47 brow arch wants the top rim to follow, not fight, the arch. Colors: brushed pewter, smoke tortoise, translucent taupe, spruce, plum-brown.</p>
+  </div>
+
+  <div class="line-card">
+    <h3>The four looks, measured</h3>
+    <p><b>Emerald velvet jumpsuit — the thesis, worn.</b> The velvet clusters at L 17, h 233 — ΔE 4.0 from Ink Spruce. The garment <i>is</i> her depth anchor, and with L 85 skin at the plunge the outfit is the literal Vermeer chord: pearl against ink, a 68-point value drop in one silhouette. Strongest look of the four by the contrast law, with the waist twist and long flare executing the line rules verbatim. The structured shoulder is welcome — that's the 25% Dramatic collecting its due.</p>
+    <div class="chips" style="margin-top:0;margin-bottom:14px"><span class="chip"><i style="background:#182D35;color:#182D35"></i>velvet → Ink Spruce, <b>ΔE 4.0</b></span><span class="chip"><i style="background:#EECFC0;color:#EECFC0"></i>skin at plunge → <b>ΔL 68 vs garment</b></span></div>
+    <p><b>Blush corset jumpsuit — home colors, missing chord.</b> The bodice measures ΔE 0.6 from Pearl Light — statistically <i>identical</i> — and the pants sit in the Dusty Rose zone at ΔE 2.4. Every color is inside the palette; chroma 8–15, well under ceiling. What the look lacks isn't a better pink — it's her value range: garment L 73–91 against skin L 67–85 is a nude-illusion monochrome. The other analysis prescribed a deeper shell; the contrast data says keep the blush exactly as it is and hand it one deep anchor — ink shoe, aubergine lip, slate earring — so the pearl has darkness to shine against.</p>
+    <div class="chips" style="margin-top:0;margin-bottom:14px"><span class="chip"><i style="background:#F5E2D9;color:#F5E2D9"></i>bodice → Pearl Light, <b>ΔE 0.6</b></span><span class="chip"><i style="background:#D2ABAA;color:#D2ABAA"></i>pants → Dusty Rose, <b>ΔE 2.4</b></span></div>
+    <p><b>Blue floral maxi — right street, volume high.</b> The ground measures h 269 — precisely her periwinkle axis — at C 33, eight points over ceiling. This is her color one notch too clear: Rain Blue or Periwinkle Gray is the same dress inside her chroma. The cut scores perfectly on the line rules — cowl, defined waist, long slit — and the dark foliage motif on light ground is structurally her print formula, just awaiting a muted rerun.</p>
+    <div class="chips" style="margin-top:0;margin-bottom:14px"><span class="chip"><i style="background:#83B0E9;color:#83B0E9"></i>ground h 269 — her axis, <b>C 33 vs ceiling 25</b></span></div>
+    <p><b>Retro print halter — her geometry, someone else's palette.</b> The halter, plunge, and waist shaping execute the neckline table almost line by line, and the print's cream ground measures ΔE 2.8 from Rose Shell. But the motifs cluster at C 76–80 — three times her measured ceiling. The other analysis said keep the silhouette, weather the print; the pixels agree and supply the number.</p>
+    <div class="chips" style="margin-top:0"><span class="chip"><i style="background:#F3D6CE;color:#F3D6CE"></i>ground → Rose Shell, <b>ΔE 2.8</b></span><span class="chip"><i style="background:#F76D22;color:#F76D22"></i>motif <b>C 79.7</b> — 3.1× ceiling</span><span class="chip"><i style="background:#F93865;color:#F93865"></i>motif <b>C 76.1</b> — over</span></div>
+  </div>
+
+  <div class="sec-head" style="margin-top:52px"><span class="sec-kicker">Cross-examination</span><span class="sec-rule"></span></div>
+  <h2 style="font-size:clamp(1.4rem,3vw,1.9rem)">Testing the Lichen–Rose portrait against the pixels</h2>
+  <p class="lede">The other analysis was run through the same instruments rather than taken on faith. Verdict: roughly seventy percent territorial agreement, and the disagreements are systematic — every one points the same direction.</p>
+  <div class="audit">
+    <div class="card">
+      <h3>Where we <em>converge</em></h3>
+      <p>Its Warm Ink #21292C measures L 16, h 230 — nearly identical to my Ink Spruce, found independently. Its Oyster ≈ my Pearl Light; its Rain Blue and Slate Teal sit on my Delft Axis; its plum-damson eye complements match my Rose Line logic. Its hair guidance (ash ribbons, no gold stripes) agrees with the silver data. And its essence recipe — 40 Romantic · 25 Dramatic — lands almost exactly where my landmark-driven ledger does, by an entirely different route. Two methods, same shape: that part holds.</p>
+    </div>
+    <div class="card">
+      <h3>Where the pixels <em>object</em></h3>
+      <p><b>Contrast.</b> It sampled a root of L 38 (a silver-blend average) and called you medium contrast at ΔL ≈ 40. The masked darkest strand cluster is L 23.6 and your brow is L 20.1 — the real range is 62. That single sampling choice cascades into its most consequential advice: "one deep anchor + softened middles" under-dresses you.</p>
+      <p><b>Temperature.</b> Same hue data (h ≈ 51–55), different call: it leans Neutral Autumn warm; at C 14–19 that hue zone is the neutral fulcrum, and your cool celadon axis is load-bearing, not a footnote.</p>
+      <p><b>Chroma.</b> Eleven of its forty-one swatches breach your measured ceiling of C 25.4 — including both of its lead metals:</p>
+      <div style="margin-top:10px">
+        <div class="flagrow"><i style="background:#A88649"></i><b>Antique Gold</b><span class="cv">C 37.8 — over</span></div>
+        <div class="flagrow"><i style="background:#A8664F"></i><b>Terracotta Rose</b><span class="cv">C 34.1 — over</span></div>
+        <div class="flagrow"><i style="background:#C6876D"></i><b>Muted Coral</b><span class="cv">C 31.7 — over</span></div>
+        <div class="flagrow"><i style="background:#C8B07A"></i><b>Champagne Gold</b><span class="cv">C 30.9 — over</span></div>
+        <div class="flagrow"><i style="background:#7D3C45"></i><b>Garnet Rose</b><span class="cv">C 30.1 — over</span></div>
+        <div class="flagrow"><i style="background:#B47367"></i><b>Cinnamon Rose</b><span class="cv">C 29.8 — over</span></div>
+        <div class="flagrow"><i style="background:#B29B6A"></i><b>Old Gold</b><span class="cv">C 28.9 — over</span></div>
+      </div>
+    </div>
+  </div>
+  <p class="methodnote">Update: the full-length photographs arrived and the torso claims went under the same instruments. Its hourglass reading is <b>confirmed</b> — waist/hip 0.68, indentation 32%, bust and hip balanced, natural shoulders at 0.91 of the hip line: refined and slightly narrow, exactly as it described. One amendment: the vertical measures moderate (leg/height 0.47), not long — the elongation in the photographs is styled in with high waists, which is the correct prescription either way. The essence convergence stands. The contrast disagreement also stands — and the wardrobe evidence sides with the pixels: her strongest look is her highest-contrast one.</p>
+</section>
+
+<section class="wrap" id="essence">
+  <div class="sec-head"><span class="sec-kicker">06 · The Essence</span><span class="sec-rule"></span></div>
+  <h2>Delft Twilight</h2>
+  <div class="essence">
+    <p>A Caygill-type reading of the data: you are a <em>Summer of high contrast</em> — pearl light held against true darkness, everything between them hushed. Muted is your chroma, not your presence. The presence is in the value gap: L 85 skin over L 24 ash, a sixty-point drop, chiaroscuro worn as a body.</p>
+    <p>Your eyes refuse to pick a side of green and your skin refuses to pick a temperature, which is why cusp colors — celadon, sage, slate, greige, rose-taupe — don't just suit you, they <em>describe</em> you. And the silver isn't age arriving. It's the palette resolving toward its own neutral axis. The data says you were always headed toward pewter.</p>
+  </div>
+  <div class="rules">
+    <p style="margin-bottom:14px"><b>The style archetype, named:</b> the <b>Chiaroscuro Romantic</b> — Vermeer's light on a Romantic line. Curve in the cut, chiaroscuro in the palette, pearl in the finish. Glamour is native; loudness is not.</p><p><b>Wearing rules, from the metrics:</b> keep value contrast high and chroma contrast low — Ink Spruce with Pearl Light beats any head-to-toe mid-tone, which greys you out. Pair one deep anchor with one pearl and let a single muted color carry the middle. Matte silk, brushed wool, unglazed surfaces; shine belongs on the pearl, the eye, the metal — nowhere else. Your warm limit is Antique Ochre; your loud limit is your own lip.</p>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div>Method: EXIF-corrected sampling · HSV feature masks · k-means in CIELAB · ΔE2000 scoring against 11 canvases · 478-point landmark geometry · silhouette from grid-verified segmentation contours across 3 fitted looks · July 18, 2026</div>
+  <div class="sig">Built from her own pixels, for Lauren — the leading lady of the composition.</div>
+</footer>
+
+<script>
+const GROUPS = [
+ {t:"Pearl Neutrals", n:"from your skin, silver, and ash", s:[
+  {n:"Pearl Light",x:"#F7E5DC",l:"L 92 · C 8 · h 54",r:"skin lifted to ivory",m:0},
+  {n:"Vermeer Flesh",x:"#EECFC0",l:"L 85.4 · C 14.4 · h 53.6",r:"measured lit skin",m:1},
+  {n:"Rose Shell",x:"#EBCBC2",l:"L 84 · C 13 · h 40",r:"skin analogue, rose side",m:0},
+  {n:"Greige Veil",x:"#A1938B",l:"L 62 · C 7 · h 60",r:"your under-eye veiling, lifted",m:0},
+  {n:"Pewter Silver",x:"#848077",l:"L 53.6 · C 5.1 · h 90.8",r:"measured silver strands",m:1},
+  {n:"Mushroom Taupe",x:"#74695E",l:"L 45 · C 8 · h 70",r:"root analogue, warm side",m:0},
+  {n:"Deep Ash Umber",x:"#3C3830",l:"L 23.6 · C 5.3 · h 85.8",r:"measured natural root",m:1},
+  {n:"Ink Spruce",x:"#1A2D2E",l:"L 17 · C 8 · h 205",r:"depth anchor, celadon axis",m:0}]},
+ {t:"The Delft Axis", n:"the shared complement of your skin, flush, and hair — and the analogue of your iris", s:[
+  {n:"Celadon Mist",x:"#879EA4",l:"L 63.7 · C 9.1 · h 219.8",r:"measured iris light-tone",m:1},
+  {n:"Rain Blue",x:"#A5B9C4",l:"L 74 · C 9 · h 240",r:"skin complement, lifted",m:0},
+  {n:"Delft Slate",x:"#4E6F7D",l:"L 45 · C 14 · h 235",r:"flush + skin complement",m:0},
+  {n:"Spruce Teal",x:"#3D5D5D",l:"L 37 · C 12 · h 200",r:"celadon deepened",m:0},
+  {n:"Periwinkle Gray",x:"#8897A9",l:"L 62 · C 11 · h 262",r:"silver + hair complement",m:0},
+  {n:"Violet Smoke",x:"#73798A",l:"L 51 · C 10 · h 277",r:"sage complement",m:0}]},
+ {t:"The Green Line", n:"your eyes, extended", s:[
+  {n:"Sage Olive",x:"#7F775E",l:"L 50.2 · C 14.8 · h 95.8",r:"measured iris sage",m:1},
+  {n:"Eucalyptus",x:"#919F8E",l:"L 64 · C 11 · h 140",r:"true-green analogue",m:0},
+  {n:"Celadon Jade",x:"#9BB3AA",l:"L 71 · C 10 · h 170",r:"light green-blue bridge",m:0},
+  {n:"Moss Shadow",x:"#4E4F3F",l:"L 33 · C 10 · h 110",r:"sage deepened",m:0}]},
+ {t:"The Rose Line", n:"your flush and lips, extended — the complement of your green", s:[
+  {n:"Neutral Rose Flush",x:"#CFA895",l:"L 71.7 · C 19 · h 52.8",r:"measured cheek flush",m:1},
+  {n:"Dusty Rose",x:"#B38D89",l:"L 62 · C 16 · h 28",r:"lip analogue, lifted",m:0},
+  {n:"Brick Rose Mauve",x:"#9B6260",l:"L 47.6 · C 25.4 · h 25.1",r:"measured natural lip",m:1},
+  {n:"Orchid Smoke",x:"#9E8493",l:"L 58 · C 13 · h 340",r:"green-eye complement",m:0},
+  {n:"Berry Plum",x:"#69474E",l:"L 34 · C 16 · h 5",r:"lip deepened, evening",m:0},
+  {n:"Aubergine Shadow",x:"#453743",l:"L 25 · C 10 · h 330",r:"deepest rose anchor",m:0}]},
+ {t:"The Honey Bridge", n:"your blonde — the warm allowance, and the Vermeer jacket", s:[
+  {n:"Pale Flax",x:"#C2BBA3",l:"L 75.9 · C 13 · h 98.1",r:"measured blonde light",m:1},
+  {n:"Ash Honey",x:"#8E866F",l:"L 56 · C 13.2 · h 92.4",r:"measured blonde base",m:1},
+  {n:"Antique Ochre",x:"#9C8969",l:"L 58 · C 20 · h 84",r:"your warm limit",m:0}]}
+];
+
+const wrap = document.getElementById('groups');
+GROUPS.forEach(g=>{
+  const div = document.createElement('div'); div.className='group';
+  div.innerHTML = `<h3>${g.t}</h3><div class="gnote">${g.n}</div>`;
+  const grid = document.createElement('div'); grid.className='grid';
+  g.s.forEach(s=>{
+    const el = document.createElement('div');
+    el.className = 'sw'+(s.m?' meas':'');
+    el.style.setProperty('--g', s.x+'44');
+    el.innerHTML = `<div class="c" style="background:${s.x}"></div>
+      <div class="m"><div class="n">${s.n}</div><div class="hx">${s.x}</div>
+      <div class="lch">${s.l}</div><div class="r">${s.r}</div></div>`;
+    grid.appendChild(el);
+  });
+  div.appendChild(grid); wrap.appendChild(div);
+});
+
+// motes
+for(let i=0;i<14;i++){
+  const m=document.createElement('span');m.className='mote';
+  m.style.left=(Math.random()*100)+'vw';
+  m.style.top=(30+Math.random()*70)+'vh';
+  m.style.animationDelay=(Math.random()*11)+'s';
+  m.style.animationDuration=(9+Math.random()*7)+'s';
+  document.body.appendChild(m);
+}
+
+// ---- harmony tester (sRGB -> Lab, deltaE76) ----
+function hex2rgb(h){return [1,3,5].map(i=>parseInt(h.slice(i,i+2),16))}
+function rgb2lab(rgb){
+  let [r,g,b]=rgb.map(v=>{v/=255;return v>0.04045?Math.pow((v+0.055)/1.055,2.4):v/12.92});
+  let x=(r*0.4124+g*0.3576+b*0.1805)/0.95047,
+      y=(r*0.2126+g*0.7152+b*0.0722),
+      z=(r*0.0193+g*0.1192+b*0.9505)/1.08883;
+  const f=t=>t>0.008856?Math.cbrt(t):(7.787*t)+16/116;
+  x=f(x);y=f(y);z=f(z);
+  return [116*y-16,500*(x-y),200*(y-z)];
+}
+const ALL = GROUPS.flatMap(g=>g.s);
+const probe=document.getElementById('probe');
+function judge(){
+  const lab=rgb2lab(hex2rgb(probe.value));
+  const C=Math.hypot(lab[1],lab[2]);
+  let best=null,bd=1e9;
+  ALL.forEach(s=>{
+    const l2=rgb2lab(hex2rgb(s.x));
+    const d=Math.hypot(lab[0]-l2[0],lab[1]-l2[1],lab[2]-l2[2]);
+    if(d<bd){bd=d;best=s}
+  });
+  const head=document.getElementById('t-head'),det=document.getElementById('t-detail'),
+        near=document.getElementById('t-near');
+  near.style.display='flex';
+  document.getElementById('t-swatch').style.background=best.x;
+  document.getElementById('t-name').textContent=`nearest: ${best.n} ${best.x} — ΔE ${bd.toFixed(1)}`;
+  if(bd<10){head.textContent='Already home.';det.textContent='This shade sits inside the palette — wear it without a second thought.';}
+  else if(bd<20&&C<=30){head.textContent='Harmonizes.';det.textContent='Close enough to converse with the palette; anchor it with a measured neutral.';}
+  else if(C>30){head.textContent='Above the softness ceiling.';det.textContent=`Chroma ${C.toFixed(0)} vs your measured max of ~25 — mute it toward ${best.n} and it becomes yours.`;}
+  else{head.textContent='Outside the story.';det.textContent=`Nearest door in is ${best.n} — shift toward it to bring this shade into the composition.`;}
+}
+probe.addEventListener('input',judge);
+</script>
+</body>
+</html>
