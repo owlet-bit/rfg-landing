@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arrangement in Silver and Rose — Lauren Clark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground-0:#0A121B; --ground-1:#101C29; --ground-2:#0D1722;
+    --rail:#2A3846; --silver:#C9C4BE; --silver-dim:#8E8B87; --silver-faint:#5C6168;
+    --rose:#864749; --petal:#FFC7C9; --rose-glow:rgba(255,199,201,.55);
+    --wire-glow:rgba(80,140,180,.35); --corona:#E0B37E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    font-family:'Jost',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 700px at 70% -10%, var(--ground-1), transparent 60%),
+      radial-gradient(900px 600px at 10% 110%, var(--ground-2), transparent 55%),
+      var(--ground-0);
+    color:var(--silver); min-height:100vh; overflow-x:hidden;
+  }
+  #dust{position:fixed;inset:0;pointer-events:none;z-index:0}
+  .mote{position:absolute;border-radius:50%;
+    background:radial-gradient(circle, rgba(230,228,224,.95) 0%, rgba(230,228,224,0) 70%);
+    animation:drift var(--dur) linear var(--delay) infinite, twinkle var(--tw) ease-in-out var(--delay) infinite;opacity:0}
+  .mote.rose{background:radial-gradient(circle, rgba(255,199,201,1) 0%, rgba(255,199,201,0) 72%);box-shadow:0 0 10px 2px var(--rose-glow)}
+  @keyframes drift{0%{transform:translate3d(0,12vh,0)}100%{transform:translate3d(var(--dx),-14vh,0)}}
+  @keyframes twinkle{0%,100%{opacity:0}12%{opacity:var(--op)}55%{opacity:calc(var(--op)*.45)}82%{opacity:var(--op)}}
+
+  .plate{position:relative;z-index:1;max-width:1060px;margin:0 auto;padding:64px 28px 90px}
+  header{padding:26px 0 34px}
+  .eyebrow{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--silver-dim);margin-bottom:18px}
+  h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(38px,6vw,64px);line-height:1.05;color:#E7E3DD;animation:breathe 7s ease-in-out infinite}
+  h1 .rose-word{color:var(--petal);font-style:italic;font-weight:500}
+  @keyframes breathe{0%,100%{text-shadow:0 0 0 rgba(231,227,221,0)}50%{text-shadow:0 0 26px rgba(231,227,221,.22),0 0 60px rgba(255,199,201,.10)}}
+  .underline{height:2px;margin-top:20px;background:linear-gradient(90deg,var(--silver) 0%,var(--silver-faint) 55%,var(--rose) 100%);transform-origin:left;transform:scaleX(0);animation:drawline 1.8s cubic-bezier(.2,.7,.2,1) .3s forwards}
+  @keyframes drawline{to{transform:scaleX(1)}}
+  .subtitle{margin-top:22px;font-weight:300;font-size:15px;color:var(--silver-dim);letter-spacing:.04em;max-width:660px;line-height:1.65}
+  .subtitle em{color:var(--silver);font-style:normal}
+
+  section{margin-top:56px}
+  .rail-head{display:flex;align-items:baseline;gap:16px;border-bottom:1px solid var(--rail);padding-bottom:10px;flex-wrap:wrap}
+  .rail-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:#DDD8D1}
+  .rail-note{font-size:12.5px;font-weight:300;color:var(--silver-dim)}
+  .drapes{display:grid;gap:14px;padding-top:22px;grid-template-columns:repeat(auto-fill,minmax(134px,1fr))}
+  .drape{position:relative;border-radius:0 0 10px 10px;height:168px;cursor:pointer;
+    border:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;justify-content:flex-end;
+    padding:12px;overflow:hidden;outline:none;
+    transition:transform .35s cubic-bezier(.2,.8,.25,1), box-shadow .35s ease}
+  .drape::before{content:"";position:absolute;top:-1px;left:50%;transform:translateX(-50%);width:26px;height:3px;background:var(--rail);border-radius:0 0 3px 3px}
+  .drape::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.18) 48%,transparent 62%);transform:translateX(-130%);transition:transform .9s ease}
+  .drape:hover,.drape:focus-visible{transform:translateY(-7px);box-shadow:0 18px 40px -14px rgba(0,0,0,.7)}
+  .drape:hover::after,.drape:focus-visible::after{transform:translateX(130%)}
+  .drape:focus-visible{border-color:var(--petal)}
+  .swatch-name{font-size:13.5px;font-weight:500;line-height:1.25}
+  .swatch-hex{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:11.5px;opacity:.85;margin-top:3px}
+  .swatch-note{font-size:10.5px;font-weight:300;line-height:1.45;margin-top:7px;opacity:.82}
+  .drape.light{color:#23282C}.drape.dark{color:#F0EDE8}
+  .tag{position:absolute;top:8px;right:8px;font-size:8.5px;letter-spacing:.16em;text-transform:uppercase;
+    padding:3px 7px;border-radius:999px;background:rgba(10,16,24,.55);color:#DCD7D0;border:1px solid rgba(255,255,255,.14)}
+  .tag.ignite{color:#BFE0F2;border-color:rgba(120,180,220,.5)}
+  .tag.measured{color:#F2D9C9;border-color:rgba(240,200,170,.4)}
+  .tag.kin{color:#EAD9C4;border-color:rgba(220,190,150,.4)}
+  .tag.rose{color:#F6CBCB;border-color:rgba(255,180,185,.45)}
+  .tag.chroma{color:#BFE0F2;border-color:rgba(120,180,220,.5)}
+
+  .wirepulse{animation:wirepulse 5.5s ease-in-out infinite}
+  @keyframes wirepulse{0%,100%{box-shadow:0 0 0 0 rgba(80,140,180,0)}50%{box-shadow:0 0 24px 2px var(--wire-glow)}}
+  .coronaglow{animation:coronaglow 4.8s ease-in-out infinite}
+  @keyframes coronaglow{0%,100%{box-shadow:0 0 4px 0 rgba(224,179,126,.15)}50%{box-shadow:0 0 26px 4px rgba(224,179,126,.45)}}
+
+  /* gallery */
+  .gallery{display:flex;flex-direction:column;gap:16px;padding-top:22px}
+  .painting{border:1px solid var(--rail);border-radius:12px;padding:16px 18px;background:linear-gradient(180deg,rgba(255,255,255,.02),transparent)}
+  .painting-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .painting-name{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:#E2DDD6}
+  .painting-rank{font-size:11px;letter-spacing:.14em;color:var(--silver-dim);text-transform:uppercase}
+  .painting-strip{display:flex;height:34px;border-radius:7px;overflow:hidden;margin:12px 0 10px;border:1px solid rgba(255,255,255,.08)}
+  .painting-strip span{flex:1}
+  .painting-cite{font-size:12px;font-weight:300;color:var(--silver-dim);line-height:1.6}
+  .painting-cite b{color:var(--silver);font-weight:500}
+  .axis-note{margin-top:14px;font-size:13px;font-weight:300;color:var(--silver-dim);line-height:1.7;max-width:760px}
+  .axis-note b{color:var(--silver);font-weight:500}
+  .axis-note .accent{color:var(--petal)}
+
+  .plate-caption{margin-top:16px;font-size:12.5px;font-weight:300;color:var(--silver-dim);line-height:1.6;max-width:740px}
+  .plate-caption strong{color:var(--silver);font-weight:500}
+  .risk .drape{opacity:.42;height:118px;filter:saturate(.75)}
+  .risk .drape:hover{opacity:.85;transform:translateY(-4px)}
+  .hatch{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(45deg,transparent 0 9px,rgba(10,14,18,.35) 9px 11px)}
+  .ghost{opacity:.42;filter:saturate(.75)}.ghost:hover{opacity:.85}
+
+  .metal .drape{height:148px}
+  .metal-sterling{background:linear-gradient(160deg,#EDEBE7 0%,#B9B5AF 45%,#8F8B87 70%,#D9D6D1 100%)}
+  .metal-pewter{background:linear-gradient(160deg,#C4BFB9 0%,#8B8781 45%,#5F5B57 75%,#A9A5A0 100%)}
+  .metal-whitegold{background:linear-gradient(160deg,#F4EFE4 0%,#D9CFB9 45%,#B7AC93 75%,#EAE3D3 100%)}
+  .metal-gold{background:linear-gradient(160deg,#EBDCB3 0%,#C7AC72 45%,#9A7F4B 75%,#DFCB9C 100%)}
+  .metal-shimmer{animation:metalsheen 6s ease-in-out infinite}
+  @keyframes metalsheen{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
+
+  .seam{margin-top:22px;border:1px solid var(--rail);border-radius:12px;padding:24px;
+    background:linear-gradient(90deg,rgba(120,150,170,.06) 0%,rgba(255,199,201,.05) 100%)}
+  .seam-track{position:relative;height:10px;border-radius:999px;margin:18px 0 10px;
+    background:linear-gradient(90deg,#7D93A6 0%,#B9B2A4 50%,#B58A6C 100%);opacity:.85}
+  .seam-pin{position:absolute;top:50%;left:50%;width:16px;height:16px;border-radius:50%;
+    transform:translate(-50%,-50%);background:#F1EAE6;border:2px solid var(--ground-0);
+    animation:pinpulse 4.5s ease-in-out infinite}
+  @keyframes pinpulse{0%,100%{box-shadow:0 0 8px 2px rgba(241,234,230,.35)}50%{box-shadow:0 0 20px 6px rgba(241,234,230,.6)}}
+  .seam-labels{display:flex;justify-content:space-between;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--silver-dim)}
+  .seam p{font-size:13px;font-weight:300;line-height:1.7;color:var(--silver-dim);margin-top:14px}
+  .seam p b{color:var(--silver);font-weight:500}
+  .seam p .accent{color:var(--petal)}
+
+  .plates{display:grid;gap:14px;padding-top:22px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+  .lawcard{border:1px solid var(--rail);border-radius:12px;padding:20px 20px 18px;
+    background:linear-gradient(180deg,rgba(255,255,255,.025),rgba(255,255,255,0))}
+  .lawcard h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:600;color:#DDD8D1;margin-bottom:9px}
+  .lawcard p{font-size:12.5px;font-weight:300;line-height:1.65;color:var(--silver-dim)}
+  .lawcard p b{color:var(--silver);font-weight:500}
+  .lawcard .accent{color:var(--petal)}
+
+  footer{margin-top:74px;border-top:1px solid var(--rail);padding-top:30px}
+  .formula{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3vw,27px);font-weight:500;color:#E2DDD6;line-height:1.4}
+  .formula .rose-word{color:var(--petal);font-style:italic}
+  .provenance{margin-top:16px;font-size:12px;font-weight:300;color:var(--silver-faint);letter-spacing:.05em;line-height:1.7}
+
+  #toast{position:fixed;left:50%;bottom:34px;transform:translate(-50%,20px);
+    background:#141F2B;border:1px solid var(--rail);color:var(--silver);font-size:13px;
+    padding:10px 18px;border-radius:999px;opacity:0;pointer-events:none;
+    transition:opacity .3s ease,transform .3s ease;z-index:5;box-shadow:0 10px 30px -10px rgba(0,0,0,.8)}
+  #toast.show{opacity:1;transform:translate(-50%,0)}
+  #toast b{color:var(--petal);font-weight:500}
+
+  @media (max-width:560px){
+    .drapes{grid-template-columns:repeat(auto-fill,minmax(102px,1fr));gap:10px}
+    .drape{height:148px;padding:10px}
+    .plate{padding:44px 18px 70px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .mote,h1,.underline,.wirepulse,.coronaglow,.drape,.drape::after,.seam-pin,.metal-shimmer{animation:none!important;transition:none!important}
+    .underline{transform:scaleX(1)}
+  }
+</style>
+</head>
+<body>
+<div id="dust" aria-hidden="true"></div>
+
+<main class="plate">
+  <header>
+    <div class="eyebrow">A measured palette · Lauren Clark · July 2026</div>
+    <h1>Arrangement in Silver<br>and <span class="rose-word">Rose</span></h1>
+    <div class="underline"></div>
+    <p class="subtitle">
+      A silver ground, a graphic dark line, one rare living color — and, confirmed by radial measurement,
+      <em>an amber corona at the center of the eye.</em> Every hex below was measured from the original
+      eleven photographs or derived by stated arithmetic from a measured hue. Tap any drape to copy it.
+    </p>
+  </header>
+
+  <section aria-label="The sitter, measured">
+    <div class="rail-head"><span class="rail-title">I · The Sitter, Measured</span>
+      <span class="rail-note">what you are made of — including the corona, found</span></div>
+    <div class="drapes" id="sitter"></div>
+    <p class="plate-caption"><strong>The eye is a two-country landscape, measured:</strong> hue rotates from
+      53° at the pupil to 94° at the rim — an amber-olive inner zone resolving into the gray-green field.
+      The first analysis tested yellowness alone and missed warmth carried in redness; the radial test found it.
+      You said it existed. It does.</p>
+  </section>
+
+  <section aria-label="The painting field">
+    <div class="rail-head"><span class="rail-title">II · The Painting Field</span>
+      <span class="rail-note">the original question — seventeen paintings, two calibrations, three data treatments</span></div>
+    <div class="gallery" id="gallery"></div>
+    <p class="axis-note">
+      <b>You live on an axis between two worlds.</b> One pole is the Tonalist silver atmosphere — Morisot,
+      Monet, Lady Agnew — where your <b>surfaces</b> are native. The other is graphic pallor-on-dark —
+      Madame X, Vermeer — where your <b>structure</b> is native. Your iris is your universal passport
+      (top-three in every leading painting; ΔE 2.4 inside Madame X). Your hair is what Morisot claims.
+      Your flush is your rarest color — the one old-master palettes barely stock —
+      <span class="accent">the pigment you must supply yourself.</span>
+      The stable bottom: saturated warmth and dark interiors (Botticelli 13th–14th, Ophelia 15th–16th,
+      Hammershøi last). Containment measures harmony, not ignition — the mirror still outranks the math.
+    </p>
+  </section>
+
+  <section aria-label="The grounds">
+    <div class="rail-head"><span class="rail-title">III · The Wardrobe — The Grounds</span>
+      <span class="rail-note">the light pole, L≈84–93, swept around the hue wheel</span></div>
+    <div class="drapes" id="grounds"></div>
+  </section>
+
+  <section aria-label="The half-lights">
+    <div class="rail-head"><span class="rail-title">IV · The Wardrobe — The Half-Lights</span>
+      <span class="rail-note">the register between veil and trap, L≈73–78 — lawful: it belongs to the light pole</span></div>
+    <div class="drapes" id="halflights"></div>
+    <p class="plate-caption"><strong>Why this shelf is legal:</strong> the trap's core is foreign mutes at
+      L≈48–68. Above that band, soft color reads as an extension of your luminous surface — a light,
+      slightly weathered. Wear these as grounds with one true pole nearby, and they behave.</p>
+  </section>
+
+  <section aria-label="The second skins">
+    <div class="rail-head"><span class="rail-title">V · The Wardrobe — The Second Skins</span>
+      <span class="rail-note">your own midtones — the lawful exceptions</span></div>
+    <div class="drapes" id="skins"></div>
+    <p class="plate-caption"><strong>Why these midtones are exempt from the midtone law:</strong> they are you.
+      A mid-value mute that matches your own hair or iris reads as an extension of your body — a neutral,
+      like skin in fabric form. A <em>foreign</em> mid-value mute reads as fog. Same register, opposite verdict:
+      the difference is whether the color already lives on your head.</p>
+  </section>
+
+  <section aria-label="The bridges">
+    <div class="rail-head"><span class="rail-title">VI · The Wardrobe — The Bridges</span>
+      <span class="rail-note">midtones, lawfully admitted — each carries its visa</span></div>
+    <div class="drapes" id="bridges"></div>
+    <p class="plate-caption"><strong>Three visas admit a midtone:</strong> kinship (it is one of your own hues,
+      worn at mid-value), chroma (lifted to C≈18–26 it reads as color instead of fog — the whole
+      difference between the slate that failed you at C≈10 and a French blue at C22), or pole-lean.
+      The wearing rule is unchanged: <strong>a bridge is pinned to at least one worn pole</strong> —
+      it carries the outfit across the gulf; it never is the outfit.</p>
+  </section>
+
+  <section aria-label="The inks">
+    <div class="rail-head"><span class="rail-title">VII · The Wardrobe — The Inks</span>
+      <span class="rail-note">the deep pole, L≈20–43, swept around the hue wheel — glowing drapes are the computed igniters</span></div>
+    <div class="drapes" id="inks"></div>
+  </section>
+
+  <section aria-label="The rule of the middle" class="risk">
+    <div class="rail-head"><span class="rail-title">VIII · The Rule of the Middle</span>
+      <span class="rail-note">foreign midtones, illustrated — demoted, not forbidden</span></div>
+    <div class="drapes" id="risk"></div>
+    <p class="plate-caption">Mid-value muted color holding <strong>no visa</strong> — not your hue, not chroma-lifted, not pole-leaning —
+      lives between your poles and belongs to neither — the measured mechanism of every mousy failure: slate, plum smoke, damson,
+      bordeaux-smoke, mid-olive. A foreign midtone earns its place only as a bridge pinned between two worn
+      poles, never as the outfit's voice.</p>
+  </section>
+
+  <section aria-label="The seasonal question">
+    <div class="rail-head"><span class="rail-title">IX · The Seasonal Question</span>
+      <span class="rail-note">where the filing cabinet would put you, honestly</span></div>
+    <div class="seam">
+      <div class="seam-labels"><span>Soft Summer</span><span>the soft-neutral seam</span><span>Soft Autumn</span></div>
+      <div class="seam-track"><div class="seam-pin" title="You, measured"></div></div>
+      <p>Chroma says <b>Soft</b> everywhere. Temperature splits the vote — skin a half-step warm, ash hair and
+      true silver a half-step cool — and the corona finding moves the eye itself onto the seam:
+      <b>a warm amber center inside a cool green field.</b> You are the seam, in one iris. The measurement
+      uncertainty between calibrations is literally the seam's width, which is why one evening produced
+      Summer and Autumn verdicts in alternation: each grabbed one true half.</p>
+      <p>The third axis breaks every soft filing: <b>41.5 L* of brow-to-skin contrast is Winter-grade</b>, and no
+      soft season carries it. The whole sentence: <b>a soft-neutral seam surface — Summer by hair, Autumn by
+      skin, both at once in the eye — worn with <span class="accent">Winter's poles</span>.</b></p>
+    </div>
+  </section>
+
+  <section aria-label="Metals" class="metal">
+    <div class="rail-head"><span class="rail-title">X · The Metals</span>
+      <span class="rail-note">settled by measurement — your hair is chroma-4 silver</span></div>
+    <div class="drapes" id="metals"></div>
+    <p class="plate-caption"><strong>Sterling leads; gold whispers — now with one earned exception:</strong>
+      the corona gives muted antique gold a small legitimate harmony at the face (it repeats the eye's amber
+      center). Sterling, pewter, and white gold still lead — they repeat the larger fact. Stones: moonstone,
+      gray pearl, labradorite, rose quartz; amber or golden citrine <em>small</em>, as corona-kin; rose garnet
+      or dark sapphire for the pole.</p>
+  </section>
+
+  <section aria-label="Makeup">
+    <div class="rail-head"><span class="rail-title">XI · The Makeup Arithmetic</span>
+      <span class="rail-note">every product color derived from a measured feature</span></div>
+    <div class="drapes" id="makeup"></div>
+    <p class="plate-caption"><strong>The double-complement result:</strong> the outer field (h≈94) is ignited by
+      blue-violet; the corona (h≈58) is ignited by petrol-blue. Both complements are blues — so
+      <strong>ink-navy and petrol liner light up both countries of the eye at once.</strong> Olive-bronze shadow is
+      reinstated as corona-kin — harmony, worn soft; the liner does the igniting. Brows need nothing; they are
+      already your strongest line.</p>
+  </section>
+
+  <section aria-label="The essence and silhouette">
+    <div class="rail-head"><span class="rail-title">XII · The Silhouette</span>
+      <span class="rail-note">committed calls from your visible architecture — long vertical, soft curve, one graphic line</span></div>
+    <div class="plates">
+      <div class="lawcard"><h3>The Essence Blend</h3>
+        <p><b>Romantic 35 · Dramatic 25 · Ethereal 20 · Classic 15 · Natural 5.</b>
+        Softness with substance leads; the long decisive line is non-negotiable; the light is load-bearing.
+        Every garment call below serves those three masters at once.</p></div>
+      <div class="lawcard"><h3>The Body Line</h3>
+        <p>Keep the vertical <b>unbroken</b>: columns, bias slips, full-length trousers, long open layers.
+        The waist is the hinge — <b>define it</b> (wrap, belt, seam). Shoulders are narrow and soft:
+        shaped seams yes, boxy volume and dropped shoulders no — they erase your line.</p></div>
+      <div class="lawcard"><h3>Fit Doctrine</h3>
+        <p><b>Fitted or draped — never boxy.</b> The bodice acknowledges the curve; volume, when worn,
+        gathers back into a line (a cuffed bishop sleeve, a belted trench, a slip that pools).
+        Chunky oversized knits swallow you; fine fitted knits crown you.</p></div>
+    </div>
+  </section>
+
+  <section aria-label="The garment map">
+    <div class="rail-head"><span class="rail-title">XIII · The Garment Map</span>
+      <span class="rail-note">piece by piece — what serves the arrangement</span></div>
+    <div class="plates">
+      <div class="lawcard"><h3>Necklines</h3>
+        <p><b>V, wrap, surplice, scoop, portrait, off-shoulder, soft cowl.</b> The ink or black turtleneck is
+        Madame X as knitwear — yours. Skip: crew necks in foreign midtones, fussy high ruffles that
+        argue with the brow.</p></div>
+      <div class="lawcard"><h3>Sleeves &amp; Shoulders</h3>
+        <p><b>Long fitted, bracelet, soft bishop gathered to a cuff.</b> A clean set-in shoulder or a whisper
+        of structure. Skip: aggressive puffs, dropped seams, cap sleeves that stop the eye at your
+        narrowest point.</p></div>
+      <div class="lawcard"><h3>Skirts &amp; Dresses</h3>
+        <p><b>Bias slip, column, wrap, sheath, long A-line with movement.</b> Hems long or true-mini —
+        the awkward mid-calf-stiff zone chops the vertical the way midtones chop the palette.</p></div>
+      <div class="lawcard"><h3>Trousers &amp; Denim</h3>
+        <p><b>High-rise wide-leg, straight, trouser-cut jeans</b> in Mid Denim, Indigo, ink, or oyster.
+        Full length over ankle-crop. The denim shelf exists so your casual body keeps its column.</p></div>
+      <div class="lawcard"><h3>Outerwear</h3>
+        <p><b>The long-line coat is your power object:</b> ink navy, espresso, oyster, sterling gray.
+        A belted trench in Silver White or ink. Leather in Espresso Ink or black — never warm tan.</p></div>
+      <div class="lawcard"><h3>Fabric Shelf</h3>
+        <p><b>Silk crepe, washed satin, velvet in pole colors, fine merino, cashmere, suede, brushed wool,
+        crisp poplin for the white shirt.</b> Matte-luminous always; loud gloss and stiff shine out-chroma you.</p></div>
+    </div>
+  </section>
+
+  <section aria-label="The finishing">
+    <div class="rail-head"><span class="rail-title">XIV · The Finishing</span>
+      <span class="rail-note">shoes, bags, eyewear, nails, hair — the last ten percent that reads first</span></div>
+    <div class="plates">
+      <div class="lawcard"><h3>Shoes</h3>
+        <p><b>Pointed and almond profiles, sleek boots in ink or espresso, your nude is Shell-to-Rose-Taupe,
+        metallic flats in sterling.</b> Sleek over chunky: the shoe finishes the column or breaks it.</p></div>
+      <div class="lawcard"><h3>Bags</h3>
+        <p><b>Structured, medium scale, silver hardware.</b> Oyster, ink navy, espresso, pewter leather.
+        One sculptural object, not an accumulation — same rule as the jewelry.</p></div>
+      <div class="lawcard"><h3>Eyewear</h3>
+        <p><b>Elongated soft rectangles and gentle cat-eyes</b> — the frame repeats your vertical and lifts
+        with the brow, never covers it. Pewter, ink navy, translucent rose-gray; tortoise only in cool
+        ash-brown, never honey.</p></div>
+      <div class="lawcard"><h3>Nails</h3>
+        <p><b>Sheer Rose Veil or Shell for every day; Rose Garnet or Ink Navy as the statement.</b>
+        Short-to-medium, polished shape — the hand echoes the palette, quietly.</p></div>
+      <div class="lawcard"><h3>Hair, Styled</h3>
+        <p><b>Length with movement: long layers, polished wave, face-framing, the low knot that shows the
+        neck.</b> Depth kept at the root, ribbons only in ash and pearl — and the sterling displayed at the
+        face like the jewelry it is.</p></div>
+      <div class="lawcard"><h3>Jewelry, Restated</h3>
+        <p><b>Threaders, drops, lariats — long lines in sterling and pewter.</b> Moonstone as your iris,
+        gray pearl as your surface, amber small as the corona, rose garnet or dark sapphire as the pole.
+        One sculptural cuff beats a wrist of clutter.</p></div>
+    </div>
+  </section>
+
+  <section aria-label="The wardrobe formulas">
+    <div class="rail-head"><span class="rail-title">XV · The Formulas</span>
+      <span class="rail-note">poles, live wire, done — by context</span></div>
+    <div class="plates">
+      <div class="lawcard"><h3>Command</h3>
+        <p><b>Ink Navy column</b> — dress or suit — Silver White at the neckline, sterling hardware,
+        Rose Garnet lip. The room reads it before you speak.</p></div>
+      <div class="lawcard"><h3>Soft Power</h3>
+        <p><b>Shell silk blouse, Espresso Ink trouser,</b> pewter earring, Rose Veil blush worn high.
+        For the meetings where warmth is the strategy.</p></div>
+      <div class="lawcard"><h3>Client Day</h3>
+        <p><b>Sterling-gray knit, Mid Denim trouser, oyster coat,</b> moonstone drops. You are the walking
+        proof of your own method — second skins plus one pole.</p></div>
+      <div class="lawcard"><h3>Casual</h3>
+        <p><b>Black fitted knit, straight denim, Petal at the lip or scarf,</b> silver hoop.
+        Black works at breakfast; the measurement says so.</p></div>
+      <div class="lawcard"><h3>Stage</h3>
+        <p><b>Poles only under lights:</b> ink or black column, Silver White or one live wire at the face,
+        Rose Garnet mouth. Stage distance devours midtones — contrast is what reaches the back row,
+        and you own it natively.</p></div>
+      <div class="lawcard"><h3>Evening, Silver</h3>
+        <p><b>Silver White or Sterling washed-satin column,</b> Ink Navy wrap, moonstone. The Whistler
+        direction — the nocturne wears you.</p></div>
+      <div class="lawcard"><h3>Evening, Ink</h3>
+        <p><b>Deep Petrol or Violet Navy velvet, bare luminous shoulder, Rose Garnet mouth.</b>
+        The Madame X direction — with circulation.</p></div>
+      <div class="lawcard"><h3>The Capsule</h3>
+        <p><b>Twelve pieces:</b> ink column dress · black turtleneck · white poplin shirt · Shell silk blouse ·
+        sterling knit · espresso trouser · wide-leg ink trouser · straight denim · bias slip skirt ·
+        oyster long coat · espresso leather jacket · Petal scarf. Every pairing inside it obeys the formula
+        automatically.</p></div>
+    </div>
+  </section>
+
+  <section aria-label="The laws">
+    <div class="rail-head"><span class="rail-title">XVI · The Laws</span>
+      <span class="rail-note">the whole system, compressed — full portrait in the document</span></div>
+    <div class="plates">
+      <div class="lawcard"><h3>Law One — Low chroma</h3>
+        <p>Nothing you own exceeds C≈21. <b>High saturation performs beside you; it never joins you.</b>
+        Surfaces matte-luminous: crepe, velvet, fine merino, washed satin.</p></div>
+      <div class="lawcard"><h3>Law Two — Poles, not midtones</h3>
+        <p>L85 surface, L45 anchors, 40 units of gulf. <b>Wear the poles straight</b> — black, silver-white,
+        ink navy included. Foreign midtones are the mousy trap; your own midtones are second skins.</p></div>
+      <div class="lawcard"><h3>Law Three — The rose is the rarity</h3>
+        <p>Your flush is the color painting undersupplies. <b>Rose is not decoration; it is the missing
+        pigment of your own portrait</b> — supply it at the lip, the collar, the cheek.</p></div>
+      <div class="lawcard"><h3>Law Four — The closet knew</h3>
+        <p>Navy is the darkened complement of your own eyes — both zones of them. Black and white are your
+        measured poles. <b>Black-white-navy was never a retreat; it was the derivation, worn early.</b></p></div>
+      <div class="lawcard"><h3>The One Formula</h3>
+        <p><b>A pole at the face, a pole at the anchor, one live wire.</b> Necklines are contrast placement:
+        V and wrap for the vertical; an ink turtleneck is Madame X as knitwear. Prints must carry a pole.</p></div>
+      <div class="lawcard"><h3>The Signature</h3>
+        <p><b>Head-to-toe ink navy, sterling at the ear, nothing else.</b>
+        <span class="accent">The quietest sentence that says everything the measurements say.</span></p></div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="formula">One formula: a pole at the face, a pole at the anchor,<br>one <span class="rose-word">live wire</span>.</p>
+    <p class="provenance">
+      Pixel-measured · dual-calibrated · audit-surviving · corrected in public. Skin replicated at L≈85 in two
+      frames · brow 41.5 L* below the surface · iris: amber corona h≈58 inside a gray-green field h≈94,
+      confirmed by radial hue analysis after an earlier wrong-axis test said otherwise · silver true-neutral at
+      chroma ≈4 · navy is the darkened complement of both countries of your eyes. Nothing invented —
+      and everything the sitter disputed was retested.
+    </p>
+  </footer>
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var SITTER = [
+    ["Skin", "#F2CEBE", "measured, replicated L85", "measured"],
+    ["Flush", "#F9CCB8", "skin + measured +5.3 a\u2217 rosiness", "measured"],
+    ["Lips", "#D3AA9F", "measured, lit portion", "measured"],
+    ["Under-eye", "#C6A091", "measured, shadow-inclusive", "measured"],
+    ["Iris Field", "#ABA599", "outer country \u2014 gray-green h\u224894", "measured"],
+    ["Iris Corona", "#8E7E75", "inner country \u2014 amber-olive h\u224858 \u00b7 found by radial test", "corona"],
+    ["Brow", "#86624F", "the graphic line, \u221241.5 L\u2217", "measured"],
+    ["Root", "#7F6C64", "ash-taupe bed", "measured"],
+    ["Lengths", "#A69882", "toned ash \u2014 zero honey", "measured"],
+    ["Silver", "#A2978F", "true neutral, +16.4 L\u2217 over root", "measured"]
+  ];
+  var PAINTINGS = [
+    ["Morisot \u2014 Woman at Her Toilette", "A#1 \u00b7 B#2",
+     ["#938D86","#9C9B98","#B1AEA8","#7E7F7E","#70685A","#5C5544","#847666","#AEA091","#C9C2BA","#423E2C"],
+     "The painting of your <b>hair</b> \u2014 lengths \u0394E 4.2, silver 4.3. Its powder-silver world is your surface family."],
+    ["Monet \u2014 Water Lilies", "A#3 \u00b7 B#1",
+     ["#2B2C2E","#4F443C","#98683E","#CEC1BA","#9C8A80","#B8ABA6","#E3A55F","#DAD2CD","#485B78","#F2E4DE"],
+     "The painting of your <b>eyes</b> \u2014 gray-green light on silver water. Broad-palette advantage noted honestly."],
+    ["Sargent \u2014 Madame X", "A#5 \u00b7 B#3",
+     ["#4C3B25","#59462F","#101318","#3F321F","#24221D","#32281D","#181D1B","#0E181A","#CBB8AB","#8E7D6B"],
+     "The painting of your <b>structure</b> \u2014 iris \u0394E 2.4, essentially native. It fits your bones and lacks only your flush: you are Madame X with circulation."],
+    ["Klimt \u2014 Adele Bloch-Bauer I", "A#8 \u00b7 B#4",
+     ["#85510D","#B3782A","#C98A30","#A26716","#DFA546","#846139","#483916","#9F846A","#C5AE99","#120D0F"],
+     "Hosts your ash and brow as its <b>quiet register</b> \u2014 and its golds now echo the corona, not a fiction."],
+    ["Vermeer \u2014 Girl with a Pearl Earring", "A#6 \u00b7 B#5",
+     ["#292419","#251E12","#22190C","#B29C7C","#414643","#8C7B60","#1E1308","#66573E","#D5C6B4","#322E24"],
+     "Your <b>lighting diagram</b> \u2014 a luminous fair face on dark ground, your complement painted beside it."],
+    ["Sargent \u2014 Lady Agnew of Lochnaw", "A#4 \u00b7 B#6",
+     ["#BEB7B5","#698085","#424745","#D2CEC8","#536367","#AAA49F","#2D2B28","#958E83","#7F7565","#655C4C"],
+     "The silver world that holds you softly \u2014 its worst fit is your <b>brow</b> (12.8): you out-contrast Lady Agnew."]
+  ];
+  var GROUNDS = [
+    ["Silver White", "#F1EAE6", "skin hue stripped to C3, L93"],
+    ["Petal", "#FFC7C9", "flush at full lightness"],
+    ["Rose Veil", "#F6CBC8", "flush analogue, \u221225\u00B0"],
+    ["Rose Quartz Veil", "#ECD1D1", "h20 at L86"],
+    ["Shell", "#F2CEBE", "measured skin"],
+    ["Sand Shell", "#E8D2B8", "skin analogue, +25\u00B0"],
+    ["Candlelight", "#E5D8C3", "h85 at L87 \u2014 corona-kin light"],
+    ["Celadon Mist", "#D8D8C5", "h110 at L86"],
+    ["Light Sage Veil", "#DBD7C8", "iris-field analogue at L86"],
+    ["Sea Glass", "#BED9E1", "h224 at L85"],
+    ["Pale Rain", "#BDD6E0", "skin complement, kept light"],
+    ["Frost Violet", "#CBD1E4", "h278 at L84"],
+    ["Dove", "#CED5DB", "cool neutral at L85"],
+    ["Shell Pink", "#EFD7DC", "h5 at L88"],
+    ["Peach Veil", "#ECD2C5", "corona hue at L86"],
+    ["Mint Milk", "#D3DDCF", "h135 at L87"],
+    ["Powder Blue", "#BFCEDA", "h250 at L82"],
+    ["Pale Wisteria", "#CFCDDC", "h295 at L83"]
+  ];
+  var HALFLIGHTS = [
+    ["Ballet Rose", "#D9B9BC", "h15 at L78"],
+    ["Faded Rose", "#D0AEAC", "h25 at L74"],
+    ["Apricot Milk", "#D4BCAE", "corona hue at L78"],
+    ["Oat", "#CABFB2", "h80 at L78"],
+    ["Willow", "#BABAA9", "h110 at L75"],
+    ["Eucalyptus Mist", "#A9BAB1", "h160 at L74"],
+    ["Rain", "#A5BDC4", "h225 at L75"],
+    ["Chambray", "#A5B5C5", "h255 at L73"],
+    ["Lavender Gray", "#B6B5C1", "h295 at L74"],
+    ["Rosewater Gray", "#C6B8BD", "h350 at L76"]
+  ];
+  var SKINS = [
+    ["Sterling Light", "#C6C0BC", "silver family at L78"],
+    ["Sage Silver", "#BDB9AB", "your iris field, worn"],
+    ["Ash", "#A69882", "your lengths, worn"],
+    ["Moss Greige", "#9C9C83", "lengths analogue, +25\u00B0"],
+    ["Corona Umber", "#8E7E75", "your corona zone, worn"],
+    ["Taupe Root", "#7F6C64", "your root bed, worn"],
+    ["Mushroom", "#B5A9A2", "hair-family neutral at L70"],
+    ["Pearl Greige", "#C1BAB4", "silver-family at L76"],
+    ["Driftwood", "#938A82", "root-kin at L58 \u2014 exempt: it is your hair"]
+  ];
+  var BRIDGES = [
+    ["Rose Taupe", "#A18580", "kinship visa \u2014 skin-rose hue at L58", "kin"],
+    ["Smoky Quartz", "#867369", "kinship visa \u2014 corona hue at L50", "kin"],
+    ["Antler", "#A09487", "kinship visa \u2014 hair hue at L62", "kin"],
+    ["Sage Mid", "#95917F", "kinship visa \u2014 iris-field hue at L60", "kin"],
+    ["Damask Rose", "#AD7977", "rose visa \u2014 h25 at C22: reads as color, not fog", "rose"],
+    ["Coral Rose", "#BC8A80", "rose visa \u2014 h35 at L62", "rose"],
+    ["Berry Rose", "#A26E76", "rose visa \u2014 h10 at L52", "rose"],
+    ["Raspberry Mid", "#985D61", "rose visa \u2014 h18 at C26", "rose"],
+    ["French Blue", "#5D7FA1", "chroma visa \u2014 C22 where slate failed at C10", "chroma"],
+    ["Mid Denim", "#52708A", "chroma visa \u2014 the worn neutral, h258", "chroma"],
+    ["Teal Bridge", "#3C8189", "chroma visa \u2014 flush complement at mid", "chroma"],
+    ["Petrol Mid", "#3C7584", "chroma visa \u2014 skin complement at mid", "chroma"],
+    ["Verdigris", "#6B8E7F", "chroma visa \u2014 h165 at L56", "chroma"],
+    ["Juniper Mid", "#537A6F", "chroma visa \u2014 h175 at L48", "chroma"],
+    ["Ivy Mid", "#66775F", "chroma visa \u2014 h135 at L48", "chroma"]
+  ];
+  var INKS = [
+    ["Rose Garnet", "#864749", "flush rotated to red h22 \u2014 jewel, not brown", "ignite"],
+    ["Raspberry Ink", "#7A4649", "h15 at L36", ""],
+    ["Umber Ink", "#513E32", "corona hue at L28", ""],
+    ["Espresso Ink", "#3A2E27", "brow hue at L20", ""],
+    ["Deep Moss", "#4E4C33", "h105 at L32", ""],
+    ["Pine Ink", "#284333", "h155 at L26", ""],
+    ["Deep Spruce", "#364634", "iris-analogue green, deep", "ignite"],
+    ["Deep Teal", "#003C4B", "flush complement, deep", "ignite"],
+    ["Deep Petrol", "#003B4E", "skin + corona complement \u2014 double duty", "ignite"],
+    ["Ink Navy", "#13384D", "iris-field complement h253", "ignite"],
+    ["Ink Blue", "#0E3755", "lengths complement h264", "ignite"],
+    ["Indigo Denim", "#364D64", "h262 at L32", ""],
+    ["Violet Navy", "#323E55", "field complement h278 at L26", ""],
+    ["Iron Ink", "#2E363B", "cool neutral at L22", ""],
+    ["Cranberry", "#824149", "h15 at L36", ""],
+    ["Berry Ink", "#753D46", "h12 at L33", ""],
+    ["Rose Ink", "#925457", "h20 at L43 \u2014 the lighter garnet", ""],
+    ["Deep Sapphire", "#2D4361", "h272 at L28", "ignite"],
+    ["Storm Petrol", "#3E676E", "h215 at L41", ""],
+    ["Juniper", "#375650", "h180 at L34", ""],
+    ["Ivy", "#4E5E48", "h135 at L38", ""],
+    ["Bitter Chocolate", "#45362F", "corona hue at L24", ""],
+    ["Midnight", "#1D272F", "h255 at L15", ""],
+    ["True Black", "#000000", "the anchor pole itself", ""]
+  ];
+  var RISK = [
+    ["Slate", "#6C7B8B", "foreign midtone"],
+    ["Plum Smoke", "#7B6790", "foreign midtone"],
+    ["Damson", "#6C486E", "foreign midtone"],
+    ["Bordeaux Smoke", "#6B3244", "foreign midtone"],
+    ["Mid Olive", "#6F6F4C", "foreign midtone"]
+  ];
+  var METALS = [
+    ["Sterling", "metal-sterling", "leads \u2014 repeats your hair"],
+    ["Pewter", "metal-pewter", "the soft-graphic metal"],
+    ["White Gold", "metal-whitegold", "silver warmed one step"],
+    ["Antique Gold", "metal-gold", "corona-kin \u2014 small, at the face"]
+  ];
+  var MAKEUP = [
+    ["Everyday Lip", "#CFA096", "your lips, warmed one step", ""],
+    ["Statement Lip", "#864749", "Rose Garnet \u2014 the corrected deep rose", ""],
+    ["Blush", "#F9CCB8", "your flush, returned", ""],
+    ["Navy Liner", "#13384D", "field complement \u2014 igniter one", "ignite"],
+    ["Petrol Liner", "#003B4E", "corona complement \u2014 igniter two", "ignite"],
+    ["Espresso Liner", "#3A2E27", "the soft-graphic line", ""],
+    ["Lid Olive-Bronze", "#856442", "corona-kin \u2014 reinstated, worn soft", ""],
+    ["Lid Pewter", "#949CA3", "cool h250 at L64", ""],
+    ["Lid Bone", "#E5DBD2", "h75 at L88 \u2014 the highlight", ""]
+  ];
+
+  function luminance(hex) {
+    var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  }
+  function makeDrape(name, hex, note, opts) {
+    opts = opts || {};
+    var d = document.createElement("div");
+    d.className = "drape " + (luminance(hex) > 150 ? "light" : "dark") + (opts.cls ? " " + opts.cls : "");
+    if (!opts.metal) d.style.background = hex;
+    d.setAttribute("tabindex", "0"); d.setAttribute("role", "button");
+    d.setAttribute("aria-label", "Copy " + name + " " + hex);
+    d.innerHTML =
+      (opts.hatch ? '<div class="hatch"></div>' : "") +
+      (opts.tag ? '<span class="tag ' + opts.tag + '">' + (opts.tag === "ignite" ? "igniter" : opts.tag) + "</span>" : "") +
+      '<div class="swatch-name">' + name + "</div>" +
+      (opts.metal ? "" : '<div class="swatch-hex">' + hex + "</div>") +
+      '<div class="swatch-note">' + note + "</div>";
+    d.addEventListener("click", function () { copyHex(name, hex); });
+    d.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); copyHex(name, hex); }
+    });
+    return d;
+  }
+  var toastTimer = null;
+  function copyHex(name, hex) {
+    function done() {
+      var t = document.getElementById("toast");
+      t.innerHTML = "Copied <b>" + hex + "</b> \u2014 " + name;
+      t.classList.add("show");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { t.classList.remove("show"); }, 1800);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(hex).then(done, done);
+    } else {
+      var ta = document.createElement("textarea");
+      ta.value = hex; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) { /* toast still confirms */ }
+      document.body.removeChild(ta); done();
+    }
+  }
+
+  SITTER.forEach(function (it) {
+    var opts = {};
+    if (it[3] === "corona") { opts.cls = "coronaglow"; opts.tag = "measured"; }
+    else opts.tag = "measured";
+    document.getElementById("sitter").appendChild(makeDrape(it[0], it[1], it[2], opts));
+  });
+
+  var gal = document.getElementById("gallery");
+  PAINTINGS.forEach(function (p) {
+    var el = document.createElement("div");
+    el.className = "painting";
+    var strip = p[2].map(function (h) { return '<span style="background:' + h + '"></span>'; }).join("");
+    el.innerHTML =
+      '<div class="painting-top"><span class="painting-name">' + p[0] + '</span>' +
+      '<span class="painting-rank">' + p[1] + "</span></div>" +
+      '<div class="painting-strip">' + strip + "</div>" +
+      '<div class="painting-cite">' + p[3] + "</div>";
+    gal.appendChild(el);
+  });
+
+  GROUNDS.forEach(function (it) { document.getElementById("grounds").appendChild(makeDrape(it[0], it[1], it[2])); });
+  HALFLIGHTS.forEach(function (it) { document.getElementById("halflights").appendChild(makeDrape(it[0], it[1], it[2])); });
+  SKINS.forEach(function (it) {
+    var opts = it[0] === "Corona Umber" ? { cls: "coronaglow" } : {};
+    document.getElementById("skins").appendChild(makeDrape(it[0], it[1], it[2], opts));
+  });
+  BRIDGES.forEach(function (it) {
+    document.getElementById("bridges").appendChild(makeDrape(it[0], it[1], it[2], { tag: it[3] }));
+  });
+  INKS.forEach(function (it) {
+    var opts = it[3] === "ignite" ? { cls: "wirepulse", tag: "ignite" } : {};
+    document.getElementById("inks").appendChild(makeDrape(it[0], it[1], it[2], opts));
+  });
+  RISK.forEach(function (it) { document.getElementById("risk").appendChild(makeDrape(it[0], it[1], it[2], { hatch: true })); });
+  METALS.forEach(function (m) {
+    var d = makeDrape(m[0], "#B9B4AE", m[2], { metal: true, cls: m[1] + " metal-shimmer dark" });
+    d.classList.remove("light");
+    document.getElementById("metals").appendChild(d);
+  });
+  MAKEUP.forEach(function (it) {
+    var opts = it[3] === "ignite" ? { cls: "wirepulse", tag: "ignite" } : {};
+    document.getElementById("makeup").appendChild(makeDrape(it[0], it[1], it[2], opts));
+  });
+
+  var dust = document.getElementById("dust");
+  var MOTES = Math.min(46, Math.max(26, Math.floor(window.innerWidth / 28)));
+  var roseIndex = Math.floor(Math.random() * MOTES);
+  for (var i = 0; i < MOTES; i++) {
+    var m = document.createElement("div");
+    m.className = "mote" + (i === roseIndex ? " rose" : "");
+    var size = i === roseIndex ? 5 : 1.5 + Math.random() * 2.6;
+    m.style.width = size + "px"; m.style.height = size + "px";
+    m.style.left = (Math.random() * 100) + "vw"; m.style.top = (Math.random() * 100) + "vh";
+    m.style.setProperty("--dur", (26 + Math.random() * 30) + "s");
+    m.style.setProperty("--tw", (3.5 + Math.random() * 4) + "s");
+    m.style.setProperty("--delay", (-Math.random() * 30) + "s");
+    m.style.setProperty("--dx", ((Math.random() * 2 - 1) * 14) + "vw");
+    m.style.setProperty("--op", i === roseIndex ? 0.95 : 0.35 + Math.random() * 0.45);
+    dust.appendChild(m);
+  }
+})();
+</script>
+</body>
+</html>
